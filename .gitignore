@@ -1,0 +1,6 @@
+!.eslint*
+bak
+build
+node_modules
+
+

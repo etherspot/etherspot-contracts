@@ -1,0 +1,42 @@
+{
+  "name": "@etherspot/contracts",
+  "version": "1.0.0-alpha.10",
+  "private": true,
+  "description": "EtherSpot contracts",
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.dev"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/newobject-dev/etherspot-contracts.git"
+  },
+  "scripts": {
+    "lint": "eslint ./{test,migrations} --ext .js",
+    "compile": "truffle compile",
+    "compile:all": "truffle compile --all",
+    "test": "./scripts/test.sh --network test",
+    "test:log-gas-usage": "cross-env LOG_GAS_USAGE=1 ./scripts/test.sh --network test",
+    "test:compile-all": "./scripts/test.sh --network test --compile-all"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "1.0.33",
+    "@types/bn.js": "4.11.6",
+    "@types/mocha": "7.0.2",
+    "@types/node": "13.9.2",
+    "bn.js": "4.11.8",
+    "cross-env": "7.0.2",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "2.5.1",
+    "expect": "25.1.0",
+    "ganache-cli": "6.9.1",
+    "truffle": "5.1.18",
+    "web3": "1.2.6"
+  }
+}
