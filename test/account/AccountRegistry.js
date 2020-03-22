@@ -43,6 +43,58 @@ contract.only('AccountRegistry', (addresses) => {
       });
     });
 
+    describe('isAccountDeployed()', () => {
+      before(resetAccount);
+
+      it('expect to return false when account is not deployed', async () => {
+        await expect(accountRegistry.isAccountDeployed(
+          account,
+        )).resolves.toBeFalsy();
+      });
+
+      it('expect to return true when account is deployed', async () => {
+        await accountRegistry.executeAccountTransaction(
+          account,
+          0,
+          randomAddress(),
+          0,
+          '0x', {
+            from: saltOwner,
+          },
+        );
+
+        await expect(accountRegistry.isAccountDeployed(
+          account,
+        )).resolves.toBeTruthy();
+      });
+    });
+
+    describe('getAccountNonce()', () => {
+      before(resetAccount);
+
+      it('expect to return false when account is not deployed', async () => {
+        await expect(accountRegistry.getAccountNonce(
+          account,
+        )).resolves.toBeBN(0);
+      });
+
+      it('expect to return true when account is deployed', async () => {
+        await accountRegistry.executeAccountTransaction(
+          account,
+          0,
+          randomAddress(),
+          0,
+          '0x', {
+            from: saltOwner,
+          },
+        );
+
+        await expect(accountRegistry.getAccountNonce(
+          account,
+        )).resolves.toBeBN(1);
+      });
+    });
+
     describe('isAccountOwner()', () => {
       const newOwner = addresses[2];
 
