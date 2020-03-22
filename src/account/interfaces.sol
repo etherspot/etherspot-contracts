@@ -37,4 +37,19 @@ interface IAccountRegistry {
     uint256 _nonce,
     address _owner
   ) external;
+
+  function executeAccountTransaction(
+    address _account,
+    uint256 _nonce,
+    address payable _to,
+    uint256 _value,
+    bytes calldata _data
+  ) external;
+
+  function refundAccountCall(
+    address _account,
+    uint256 _nonce,
+    address payable _refundToken,
+    uint256 _refundAmount
+  ) external;
 }
