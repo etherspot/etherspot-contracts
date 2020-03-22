@@ -76,16 +76,16 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     );
   }
 
-  function deployDepositAccount(
-    address _owner
-  ) external {
-    _deployDepositAccount(_owner);
-  }
-
   function getPaymentChannel(
     bytes32 _hash
   ) external view returns (uint256 _committedAmount) {
     _committedAmount = paymentChannels[_hash].committedAmount;
+  }
+
+  function deployDepositAccount(
+    address _owner
+  ) external {
+    _deployDepositAccount(_owner);
   }
 
   function commitPaymentChannelAndWithdraw(
