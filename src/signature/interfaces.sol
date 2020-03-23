@@ -5,7 +5,7 @@ pragma solidity 0.5.12;
  */
 interface ISignatureValidator {
   function verifySignature(
-    bytes32 _signedMessageHash,
+    bytes32 _messageHash,
     bytes calldata _signature,
     address _signer
   ) external view returns (bool);

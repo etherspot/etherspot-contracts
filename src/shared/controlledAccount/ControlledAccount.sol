@@ -39,7 +39,9 @@ contract ControlledAccount is IControlledAccount {
     // solhint-disable-next-line avoid-low-level-calls
     (bool _succeeded, bytes memory _returnData) = _to.call.value(_value)(_data);
 
-    require(_succeeded);
+    require(
+      _succeeded
+    );
 
     if (_returnData.length > 0) {
       require(

@@ -12,8 +12,13 @@ contract MetaTxRelayedMock is Initializable, MetaTxRelayed {
 
   // events
 
-  event ExampleCall1Sender(address sender);
-  event ExampleCall2Sender(address sender);
+  event ExampleCall1Sender(
+    address sender
+  );
+
+  event ExampleCall2Sender(
+    address sender
+  );
 
   /**
    * @dev public constructor

@@ -17,8 +17,13 @@ contract Guarded {
 
   // events
 
-  event GuardianAdded(address guardian);
-  event GuardianRemoved(address guardian);
+  event GuardianAdded(
+    address guardian
+  );
+
+  event GuardianRemoved(
+    address guardian
+  );
 
   // modifiers
 

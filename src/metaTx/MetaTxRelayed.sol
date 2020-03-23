@@ -13,9 +13,9 @@ contract MetaTxRelayed is NoFallback {
   address public metaTxRelay;
 
   /**
-   * @dev public constructor
+   * @dev internal constructor
    */
-  constructor() public {}
+  constructor() internal {}
 
   // internal access
 

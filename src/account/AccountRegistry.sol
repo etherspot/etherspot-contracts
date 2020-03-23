@@ -32,11 +32,33 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
 
   // events
 
-  event AccountDeployed(address account);
-  event AccountOwnerAdded(address account, address owner);
-  event AccountOwnerRemoved(address account, address owner);
-  event AccountTransactionExecuted(address account, address to, uint256 value, bytes data);
-  event AccountCallRefunded(address account, address sender, uint256 refundAmount, address refundToken);
+  event AccountDeployed(
+    address account
+  );
+
+  event AccountOwnerAdded(
+    address account,
+    address owner
+  );
+
+  event AccountOwnerRemoved(
+    address account,
+    address owner
+  );
+
+  event AccountTransactionExecuted(
+    address account,
+    address to,
+    uint256 value,
+    bytes data
+  );
+
+  event AccountCallRefunded(
+    address account,
+    address sender,
+    uint256 refundAmount,
+    address refundToken
+  );
 
   /**
    * @dev public constructor

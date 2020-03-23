@@ -33,17 +33,17 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
   }
 
   function verifySignature(
-    bytes32 _signedMessageHash,
+    bytes32 _messageHash,
     bytes calldata _signature,
     address _signer
   ) external view returns (bool _result) {
     if (_signature.length == 0) {
       _result = signedMessageRegistry.verifySignedMessageHash(
-        _signedMessageHash,
+        _messageHash,
         _signer
       );
     } else {
-      address _recovered = _signedMessageHash.recoverAddress(_signature);
+      address _recovered = _messageHash.recoverAddress(_signature);
       if (_recovered != address(0)) {
         if (_recovered == _signer) {
           _result = true;
