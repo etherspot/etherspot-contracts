@@ -14,6 +14,7 @@ const AccountRegistry = artifacts.require('AccountRegistry');
 const PaymentRegistry = artifacts.require('PaymentRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
 const SignedMessageRegistry = artifacts.require('SignedMessageRegistry');
+const ERC20TokenMock = artifacts.require('ERC20TokenMock');
 
 contract('PaymentRegistry', (addresses) => {
   const {
@@ -31,6 +32,7 @@ contract('PaymentRegistry', (addresses) => {
   let paymentRegistry;
   let signatureValidator;
   let signedMessageRegistry;
+  let tokenMock;
 
   const resetAccountRegistry = async () => {
     const accountRegistry = await AccountRegistry.new();
@@ -38,6 +40,7 @@ contract('PaymentRegistry', (addresses) => {
     paymentRegistry = await PaymentRegistry.new();
     signatureValidator = await SignatureValidator.new();
     signedMessageRegistry = await SignedMessageRegistry.new();
+    tokenMock = await ERC20TokenMock.new();
 
     await signatureValidator.initialize(
       accountRegistry.address,
@@ -203,11 +206,13 @@ contract('PaymentRegistry', (addresses) => {
     const recipient = addresses[2];
     let senderDeposit;
     let weiAmount;
+    let tokenAmount;
 
     const resetAccountRegistryAndDeposit = async () => {
       await resetAccountRegistry();
 
       weiAmount = 1000;
+      tokenAmount = 1000;
 
       senderDeposit = computeCreate2Address(
         paymentRegistry.address,
@@ -220,89 +225,220 @@ contract('PaymentRegistry', (addresses) => {
         to: senderDeposit,
         value: weiAmount,
       });
+
+      await tokenMock.mint(
+        senderDeposit,
+        tokenAmount,
+      );
+    };
+
+    const commitPaymentChannel = async (method, useToken = false) => {
+      const token = useToken ? tokenMock.address : ZERO_ADDRESS;
+      const uid = randomBytes32();
+      const amount = 250;
+      const hash = soliditySha3(
+        sender,
+        recipient,
+        token,
+        uid,
+      );
+      const messageHash = soliditySha3(
+        CHAIN_ID,
+        paymentRegistry.address,
+        sender,
+        recipient,
+        token,
+        uid,
+        amount,
+      );
+      const senderSignature = await sign(messageHash, sender);
+      const guardianSignature = await sign(messageHash, guardian);
+
+      const output = await paymentRegistry[method](
+        sender,
+        token,
+        uid,
+        amount,
+        senderSignature,
+        guardianSignature, {
+          from: recipient,
+        },
+      );
+
+      logGasUsed(output);
+
+      const { logs } = output;
+
+      return {
+        hash,
+        uid,
+        logs,
+      };
     };
 
     describe('commitPaymentChannelAndWithdraw()', () => {
-      before(resetAccountRegistryAndDeposit);
+      context('without token', () => {
+        before(resetAccountRegistryAndDeposit);
 
-      const commitPaymentChannelAndWithdraw = async () => {
-        const token = ZERO_ADDRESS;
-        const uid = randomBytes32();
-        const amount = 250;
-        const hash = soliditySha3(
-          sender,
-          recipient,
-          token,
-          uid,
-        );
-        const messageHash = soliditySha3(
-          CHAIN_ID,
-          paymentRegistry.address,
-          sender,
-          recipient,
-          token,
-          uid,
-          amount,
-        );
-        const senderSignature = await sign(messageHash, sender);
-        const guardianSignature = await sign(messageHash, guardian);
+        it('expect to commit channel and withdraw', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw');
 
-        const output = await paymentRegistry.commitPaymentChannelAndWithdraw(
-          sender,
-          token,
-          uid,
-          amount,
-          senderSignature,
-          guardianSignature, {
-            from: recipient,
-          },
-        );
+          expect(logs[0].event).toBe('DepositAccountDeployed');
+          expect(logs[0].args.account).toBe(senderDeposit);
+          expect(logs[0].args.owner).toBe(sender);
 
-        logGasUsed(output);
+          expect(logs[1].event).toBe('PaymentChannelCommitted');
+          expect(logs[1].args.hash).toBe(hash);
+          expect(logs[1].args.sender).toBe(sender);
+          expect(logs[1].args.recipient).toBe(recipient);
+          expect(logs[1].args.token).toBeZeroAddress();
+          expect(logs[1].args.uid).toBe(uid);
+          expect(logs[1].args.amount).toBeBN(250);
 
-        const { logs } = output;
+          expect(logs[2].event).toBe('PaymentWithdrawn');
+          expect(logs[2].args.channelHash).toBe(hash);
+          expect(logs[2].args.value).toBeBN(250);
+        });
 
-        return {
-          hash,
-          uid,
-          logs,
-        };
-      };
+        it('expect to commit channel and withdraw second run', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw');
 
-      it('expect to commit channel and withdraw', async () => {
-        const { hash, uid, logs } = await commitPaymentChannelAndWithdraw();
+          expect(logs[0].event).toBe('PaymentChannelCommitted');
+          expect(logs[0].args.hash).toBe(hash);
+          expect(logs[0].args.sender).toBe(sender);
+          expect(logs[0].args.recipient).toBe(recipient);
+          expect(logs[0].args.token).toBeZeroAddress();
+          expect(logs[0].args.uid).toBe(uid);
+          expect(logs[0].args.amount).toBeBN(250);
 
-        expect(logs[0].event).toBe('DepositAccountDeployed');
-        expect(logs[0].args.account).toBe(senderDeposit);
-        expect(logs[0].args.owner).toBe(sender);
-
-        expect(logs[1].event).toBe('PaymentChannelCommitted');
-        expect(logs[1].args.hash).toBe(hash);
-        expect(logs[1].args.sender).toBe(sender);
-        expect(logs[1].args.recipient).toBe(recipient);
-        expect(logs[1].args.token).toBeZeroAddress();
-        expect(logs[1].args.uid).toBe(uid);
-        expect(logs[1].args.amount).toBeBN(250);
-
-        expect(logs[2].event).toBe('PaymentWithdrawn');
-        expect(logs[2].args.channelHash).toBe(hash);
-        expect(logs[2].args.value).toBeBN(250);
+          expect(logs[1].event).toBe('PaymentWithdrawn');
+          expect(logs[1].args.channelHash).toBe(hash);
+          expect(logs[1].args.value).toBeBN(250);
+        });
       });
 
-      it('expect to commit channel and withdraw', async () => {
-        const { hash, uid, logs } = await commitPaymentChannelAndWithdraw();
+      context('with token', () => {
+        before(resetAccountRegistryAndDeposit);
 
-        expect(logs[0].event).toBe('PaymentChannelCommitted');
-        expect(logs[0].args.hash).toBe(hash);
-        expect(logs[0].args.sender).toBe(sender);
-        expect(logs[0].args.recipient).toBe(recipient);
-        expect(logs[0].args.token).toBeZeroAddress();
-        expect(logs[0].args.uid).toBe(uid);
-        expect(logs[0].args.amount).toBeBN(250);
+        it('expect to commit channel and withdraw', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw', true);
 
-        expect(logs[1].event).toBe('PaymentWithdrawn');
-        expect(logs[1].args.channelHash).toBe(hash);
-        expect(logs[1].args.value).toBeBN(250);
+          expect(logs[0].event).toBe('DepositAccountDeployed');
+          expect(logs[0].args.account).toBe(senderDeposit);
+          expect(logs[0].args.owner).toBe(sender);
+
+          expect(logs[1].event).toBe('PaymentChannelCommitted');
+          expect(logs[1].args.hash).toBe(hash);
+          expect(logs[1].args.sender).toBe(sender);
+          expect(logs[1].args.recipient).toBe(recipient);
+          expect(logs[1].args.token).toBe(tokenMock.address);
+          expect(logs[1].args.uid).toBe(uid);
+          expect(logs[1].args.amount).toBeBN(250);
+
+          expect(logs[2].event).toBe('PaymentWithdrawn');
+          expect(logs[2].args.channelHash).toBe(hash);
+          expect(logs[2].args.value).toBeBN(250);
+
+          await expect(tokenMock.balanceOf(recipient)).resolves.toBeBN(250);
+        });
+
+        it('expect to commit channel and withdraw second run', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw', true);
+
+          expect(logs[0].event).toBe('PaymentChannelCommitted');
+          expect(logs[0].args.hash).toBe(hash);
+          expect(logs[0].args.sender).toBe(sender);
+          expect(logs[0].args.recipient).toBe(recipient);
+          expect(logs[0].args.token).toBe(tokenMock.address);
+          expect(logs[0].args.uid).toBe(uid);
+          expect(logs[0].args.amount).toBeBN(250);
+
+          expect(logs[1].event).toBe('PaymentWithdrawn');
+          expect(logs[1].args.channelHash).toBe(hash);
+          expect(logs[1].args.value).toBeBN(250);
+        });
+      });
+    });
+
+    describe('commitPaymentChannelAndDeposit()', () => {
+      context('without token', () => {
+        before(resetAccountRegistryAndDeposit);
+
+        it('expect to commit channel and deposit', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit');
+
+          expect(logs[0].event).toBe('DepositAccountDeployed');
+          expect(logs[0].args.account).toBe(senderDeposit);
+          expect(logs[0].args.owner).toBe(sender);
+
+          expect(logs[1].event).toBe('PaymentChannelCommitted');
+          expect(logs[1].args.hash).toBe(hash);
+          expect(logs[1].args.sender).toBe(sender);
+          expect(logs[1].args.recipient).toBe(recipient);
+          expect(logs[1].args.token).toBeZeroAddress();
+          expect(logs[1].args.uid).toBe(uid);
+          expect(logs[1].args.amount).toBeBN(250);
+
+          expect(logs[2].event).toBe('PaymentDeposited');
+          expect(logs[2].args.channelHash).toBe(hash);
+          expect(logs[2].args.value).toBeBN(250);
+        });
+
+        it('expect to commit channel and deposit second run', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit');
+
+          expect(logs[0].event).toBe('PaymentChannelCommitted');
+          expect(logs[0].args.hash).toBe(hash);
+          expect(logs[0].args.sender).toBe(sender);
+          expect(logs[0].args.recipient).toBe(recipient);
+          expect(logs[0].args.token).toBeZeroAddress();
+          expect(logs[0].args.uid).toBe(uid);
+          expect(logs[0].args.amount).toBeBN(250);
+
+          expect(logs[1].event).toBe('PaymentDeposited');
+          expect(logs[1].args.channelHash).toBe(hash);
+          expect(logs[1].args.value).toBeBN(250);
+        });
+      });
+
+      context('with token', () => {
+        before(resetAccountRegistryAndDeposit);
+
+        it('expect to commit channel and deposit', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit', true);
+
+          expect(logs[0].event).toBe('DepositAccountDeployed');
+          expect(logs[0].args.account).toBe(senderDeposit);
+          expect(logs[0].args.owner).toBe(sender);
+
+          expect(logs[1].event).toBe('PaymentChannelCommitted');
+          expect(logs[1].args.hash).toBe(hash);
+          expect(logs[1].args.sender).toBe(sender);
+          expect(logs[1].args.recipient).toBe(recipient);
+          expect(logs[1].args.token).toBe(tokenMock.address);
+          expect(logs[1].args.uid).toBe(uid);
+          expect(logs[1].args.amount).toBeBN(250);
+
+          expect(logs[2].event).toBe('PaymentDeposited');
+          expect(logs[2].args.channelHash).toBe(hash);
+          expect(logs[2].args.value).toBeBN(250);
+        });
+
+        it('expect to commit channel and deposit second run', async () => {
+          const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit', true);
+
+          expect(logs[0].event).toBe('PaymentChannelCommitted');
+          expect(logs[0].args.hash).toBe(hash);
+          expect(logs[0].args.sender).toBe(sender);
+          expect(logs[0].args.recipient).toBe(recipient);
+          expect(logs[0].args.token).toBe(tokenMock.address);
+          expect(logs[0].args.uid).toBe(uid);
+          expect(logs[0].args.amount).toBeBN(250);
+
+          expect(logs[1].event).toBe('PaymentDeposited');
+          expect(logs[1].args.channelHash).toBe(hash);
+          expect(logs[1].args.value).toBeBN(250);
+        });
       });
     });
   });
