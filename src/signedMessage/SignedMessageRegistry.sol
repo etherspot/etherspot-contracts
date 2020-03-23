@@ -11,7 +11,7 @@ contract SignedMessageRegistry is NoFallback, ISignedMessageRegistry {
   using SignedMessageLib for bytes;
   using SignedMessageLib for bytes32;
 
-  mapping(bytes32 => mapping(address => bool)) private messageHashes;
+  mapping(bytes32 => mapping(address => bool)) private signatures;
 
   // events
 
@@ -32,24 +32,17 @@ contract SignedMessageRegistry is NoFallback, ISignedMessageRegistry {
 
   // external access
 
-  function isMessageSigned(
-    bytes calldata _message,
+  function verifySignedMessageHash(
+    bytes32 _signedMessageHash,
     address _signer
   ) external view returns(bool) {
-    return messageHashes[_message.toSignedMessageHash()][_signer];
-  }
-
-  function isMessageHashSigned(
-    bytes32 _messageHash,
-    address _signer
-  ) external view returns(bool) {
-    return messageHashes[_messageHash.toSignedMessageHash()][_signer];
+    return signatures[_signedMessageHash][_signer];
   }
 
   function setMessage(
     bytes calldata _message
   ) external {
-    messageHashes[_message.toSignedMessageHash()][msg.sender] = true;
+    signatures[_message.toSignedMessageHash()][msg.sender] = true;
 
     emit MessageSigned(msg.sender, _message);
   }
@@ -57,7 +50,7 @@ contract SignedMessageRegistry is NoFallback, ISignedMessageRegistry {
   function setMessageHash(
     bytes32 _messageHash
   ) external {
-    messageHashes[_messageHash.toSignedMessageHash()][msg.sender] = true;
+    signatures[_messageHash.toSignedMessageHash()][msg.sender] = true;
 
     emit MessageHashSigned(msg.sender, _messageHash);
   }

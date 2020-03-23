@@ -100,6 +100,17 @@ function computeCreate2Address(deployer, salt, byteCode) {
   );
 }
 
+function createSignedMessageHash(message) {
+  const messageHash = message.length === 66
+    ? message
+    : soliditySha3(message);
+
+  return soliditySha3(
+    '\x19Ethereum Signed Message:\n32',
+    messageHash,
+  );
+}
+
 module.exports = {
   logGasUsed,
   randomAddress,
@@ -108,4 +119,5 @@ module.exports = {
   now,
   getBalance,
   computeCreate2Address,
+  createSignedMessageHash,
 };

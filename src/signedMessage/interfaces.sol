@@ -4,13 +4,8 @@ pragma solidity 0.5.12;
  * @title ISignedMessageRegistry
  */
 interface ISignedMessageRegistry {
-  function isMessageSigned(
-    bytes calldata _message,
-    address _signer
-  ) external view returns(bool);
-
-  function isMessageHashSigned(
-    bytes32 _messageHash,
+  function verifySignedMessageHash(
+    bytes32 _signedMessageHash,
     address _signer
   ) external view returns(bool);
 
