@@ -15,7 +15,7 @@ const PaymentRegistry = artifacts.require('PaymentRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
 const SignedMessageRegistry = artifacts.require('SignedMessageRegistry');
 
-contract.only('PaymentRegistry', (addresses) => {
+contract('PaymentRegistry', (addresses) => {
   const {
     eth: {
       sign,
@@ -198,7 +198,7 @@ contract.only('PaymentRegistry', (addresses) => {
     });
   });
 
-  context.only('methods', () => {
+  context('methods', () => {
     const sender = addresses[1];
     const recipient = addresses[2];
     let senderDeposit;
