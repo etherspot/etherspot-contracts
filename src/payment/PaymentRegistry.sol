@@ -23,21 +23,50 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
 
   struct Deposit {
     address account;
+    mapping(address => uint256) withdrawalLockedUntil;
   }
 
   struct PaymentChannel {
     uint256 committedAmount;
   }
 
+  uint256 public depositWithdrawalLockPeriod;
   ISignatureValidator private signatureValidator;
   mapping(address => Deposit) private deposits;
   mapping(bytes32 => PaymentChannel) private paymentChannels;
 
   // events
 
-  event DepositAccountDeployed(address account, address owner);
-  event PaymentChannelCommitted(bytes32 hash, uint256 amount);
+  event DepositAccountDeployed(
+    address account,
+    address owner
+  );
+
+  event DepositWithdrawalRequested(
+    address account,
+    address owner,
+    address token,
+    uint256 lockedUntil
+  );
+
+  event DepositWithdrawn(
+    address account,
+    address owner,
+    address token,
+    uint256 amount
+  );
+
+  event PaymentChannelCommitted(
+    bytes32 hash,
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid,
+    uint256 amount
+  );
+
   event PaymentWithdrawn(bytes32 channelHash, uint256 value);
+
   event PaymentDeposited(bytes32 channelHash, uint256 value);
 
   /**
@@ -49,10 +78,12 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
 
   function initialize(
     address[] calldata _guardians,
+    uint256 _depositWithdrawalLockPeriod,
     ISignatureValidator _signatureValidator
   ) external onlyInitializer {
     _initializeGuarded(_guardians);
 
+    depositWithdrawalLockPeriod = _depositWithdrawalLockPeriod;
     signatureValidator = _signatureValidator;
   }
 
@@ -82,10 +113,66 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     _committedAmount = paymentChannels[_hash].committedAmount;
   }
 
+  function getDepositWithdrawalLockedUntil(
+    address _owner,
+    address _token
+  ) external view returns (uint256)  {
+    return deposits[_owner].withdrawalLockedUntil[_token];
+  }
+
   function deployDepositAccount(
     address _owner
   ) external {
     _deployDepositAccount(_owner);
+  }
+
+  function withdrawDeposit(
+    address _token
+  ) public {
+    uint256 _lockedUntil = deposits[msg.sender].withdrawalLockedUntil[_token];
+
+    if (_lockedUntil != 0 && _lockedUntil <= now) {
+      deposits[msg.sender].withdrawalLockedUntil[_token] = 0;
+
+      address _depositAccount = deposits[msg.sender].account;
+      uint256 _depositValue;
+
+      if (_token == address(0)) {
+        _depositValue = _depositAccount.balance;
+      } else {
+        _depositValue = IERC20Token(_token).balanceOf(_depositAccount);
+      }
+
+      _transferFromDeposit(
+        _depositAccount,
+        msg.sender,
+        _token,
+        _depositValue
+      );
+
+      emit DepositWithdrawn(
+        deposits[msg.sender].account,
+        msg.sender,
+        _token,
+        _depositValue
+      );
+    } else {
+      // deploy deposit account if not deployed yet
+      if (deposits[msg.sender].account == address(0)) {
+        _deployDepositAccount(msg.sender);
+      }
+
+      _lockedUntil = now.add(depositWithdrawalLockPeriod);
+
+      deposits[msg.sender].withdrawalLockedUntil[_token] = _lockedUntil;
+
+      emit DepositWithdrawalRequested(
+        deposits[msg.sender].account,
+        msg.sender,
+        _token,
+        _lockedUntil
+      );
+    }
   }
 
   function commitPaymentChannelAndWithdraw(
@@ -245,7 +332,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     bytes memory _guardianSignature,
     bytes memory _senderSignature
   ) private returns (bytes32 _hash, address _depositAccount, uint256 _paymentValue) {
-    bytes32 _messageHash = abi.encodePacked(
+    bytes32 _signedMessageHash = abi.encodePacked(
       chainId,
       address(this),
       _sender,
@@ -257,11 +344,11 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     .toSignedMessageHash();
 
     require(
-      _verifyGuardianSignature(_messageHash, _guardianSignature)
+      _verifyGuardianSignature(_signedMessageHash, _guardianSignature)
     );
 
     require(
-      signatureValidator.verifySignature(_messageHash, _senderSignature, _sender)
+      signatureValidator.verifySignature(_signedMessageHash, _senderSignature, _sender)
     );
 
     _hash = _computePaymentChannelHash(
@@ -289,6 +376,10 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
 
     emit PaymentChannelCommitted(
       _hash,
+      _sender,
+      _recipient,
+      _token,
+      _uid,
       _amount
     );
   }
