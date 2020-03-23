@@ -107,10 +107,10 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     );
   }
 
-  function getPaymentChannel(
-    bytes32 _hash
-  ) external view returns (uint256 _committedAmount) {
-    _committedAmount = paymentChannels[_hash].committedAmount;
+  function isDepositAccountDeployed(
+    address _owner
+  ) external view returns (bool) {
+    return deposits[_owner].account != address(0);
   }
 
   function getDepositWithdrawalLockedUntil(
@@ -118,6 +118,12 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _token
   ) external view returns (uint256)  {
     return deposits[_owner].withdrawalLockedUntil[_token];
+  }
+
+  function getPaymentChannelCommittedAmount(
+    bytes32 _hash
+  ) external view returns (uint256) {
+    return paymentChannels[_hash].committedAmount;
   }
 
   function deployDepositAccount(
@@ -180,8 +186,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _token,
     bytes32 _uid,
     uint256 _amount,
-    bytes calldata _guardianSignature,
-    bytes calldata _senderSignature
+    bytes calldata _senderSignature,
+    bytes calldata _guardianSignature
   ) external {
     (bytes32 _hash, address _depositAccount, uint256 _paymentValue) = _commitPaymentChannel(
       _sender,
@@ -189,8 +195,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       _token,
       _uid,
       _amount,
-      _guardianSignature,
-      _senderSignature
+      _senderSignature,
+      _guardianSignature
     );
 
     _transferFromDeposit(
@@ -208,8 +214,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _token,
     bytes32 _uid,
     uint256 _amount,
-    bytes calldata _guardianSignature,
-    bytes calldata _senderSignature
+    bytes calldata _senderSignature,
+    bytes calldata _guardianSignature
   ) external {
     (bytes32 _hash, address _depositAccount, uint256 _paymentValue) = _commitPaymentChannel(
       _sender,
@@ -217,8 +223,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       _token,
       _uid,
       _amount,
-      _guardianSignature,
-      _senderSignature
+      _senderSignature,
+      _guardianSignature
     );
 
     _transferFromDeposit(
@@ -237,8 +243,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     bytes32 _uid,
     uint256 _amount,
     uint256 _depositPaymentValue,
-    bytes calldata _guardianSignature,
-    bytes calldata _senderSignature
+    bytes calldata _senderSignature,
+    bytes calldata _guardianSignature
   ) external {
     require(
       _depositPaymentValue > 0
@@ -250,8 +256,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       _token,
       _uid,
       _amount,
-      _guardianSignature,
-      _senderSignature
+      _senderSignature,
+      _guardianSignature
     );
 
     uint256 _withdrawPaymentValue = _paymentValue.sub(_depositPaymentValue);
@@ -329,8 +335,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _token,
     bytes32 _uid,
     uint256 _amount,
-    bytes memory _guardianSignature,
-    bytes memory _senderSignature
+    bytes memory _senderSignature,
+    bytes memory _guardianSignature
   ) private returns (bytes32 _hash, address _depositAccount, uint256 _paymentValue) {
     bytes32 _signedMessageHash = abi.encodePacked(
       chainId,
