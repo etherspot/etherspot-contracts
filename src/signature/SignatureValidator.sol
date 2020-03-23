@@ -5,12 +5,13 @@ import {NoFallback} from "../shared/noFallback/NoFallback.sol";
 import {IAccountRegistry} from "../account/interfaces.sol";
 import {ISignedMessageRegistry} from "../signedMessage/interfaces.sol";
 import {SignatureLib} from "./SignatureLib.sol";
+import {ISignatureValidator} from "./interfaces.sol";
 
 
 /**
  * @title SignatureValidator
  */
-contract SignatureValidator is Initializable, NoFallback {
+contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
   using SignatureLib for bytes32;
 
   IAccountRegistry public accountRegistry;
@@ -32,17 +33,17 @@ contract SignatureValidator is Initializable, NoFallback {
   }
 
   function verifySignature(
-    bytes32 _messageHash,
+    bytes32 _signedMessageHash,
     bytes calldata _signature,
     address _signer
   ) external view returns (bool _result) {
     if (_signature.length == 0) {
-      _result = signedMessageRegistry.isMessageHashSigned(
-        _messageHash,
+      _result = signedMessageRegistry.verifySignedMessageHash(
+        _signedMessageHash,
         _signer
       );
     } else {
-      address _recovered = _messageHash.recoverAddress(_signature);
+      address _recovered = _signedMessageHash.recoverAddress(_signature);
       if (_recovered != address(0)) {
         if (_recovered == _signer) {
           _result = true;

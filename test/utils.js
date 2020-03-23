@@ -88,10 +88,14 @@ function getBalance(target) {
 }
 
 function computeCreate2Address(deployer, salt, byteCode) {
+  const saltHash = salt.length === 66
+    ? salt
+    : soliditySha3(salt);
+
   const hash = soliditySha3(
     '0xff',
     deployer,
-    salt,
+    saltHash,
     sha3(byteCode),
   );
 

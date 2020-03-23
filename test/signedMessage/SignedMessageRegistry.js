@@ -10,7 +10,7 @@ const {
 
 const SignedMessageRegistry = artifacts.require('SignedMessageRegistry');
 
-contract.only('SignedMessageRegistry', (addresses) => {
+contract('SignedMessageRegistry', (addresses) => {
   const {
     utils: {
       randomHex,
