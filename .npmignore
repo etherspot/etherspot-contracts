@@ -1,0 +1,13 @@
+.*
+!.npmignore
+build/contracts/
+docs/
+migrations/
+node_modules/
+scripts/
+src/Migrations.sol
+test/
+/*.js
+/*.ts
+/*.log
+/tsconfig.json

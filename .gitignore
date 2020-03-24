@@ -1,7 +1,6 @@
 .idea
 !.eslint*
-bak
-build
+/build/contracts
 node_modules
 
 

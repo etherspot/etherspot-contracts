@@ -1,6 +1,13 @@
+const { createProvider } = require('./shared');
+
 module.exports = {
   contracts_directory: './src',
   networks: {
+    default: {
+      provider: createProvider,
+      gas: 2000000,
+      network_id: '*',
+    },
     test: {
       host: '127.0.0.1',
       port: 8555,
