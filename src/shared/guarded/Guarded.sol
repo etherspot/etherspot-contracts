@@ -11,7 +11,6 @@ contract Guarded {
 
   string private constant ERR_ONLY_GUARDIAN = "reverted by onlyGuardian";
   string private constant ERR_INVALID_GUARDIAN = "invalid guardian";
-  string private constant ERR_INVALID_GUARDIANS = "invalid guardians";
 
   mapping(address => bool) private guardians;
 
@@ -39,7 +38,9 @@ contract Guarded {
   /**
    * @dev internal constructor
    */
-  constructor() internal {}
+  constructor() internal {
+    guardians[msg.sender] = true;
+  }
 
   // external access
 
@@ -96,26 +97,6 @@ contract Guarded {
   }
 
   // internal access
-
-  function _initializeGuarded(
-    address[] memory _guardians
-  ) internal {
-    uint _guardiansLen = _guardians.length;
-
-    require(
-      _guardiansLen > 0,
-      ERR_INVALID_GUARDIANS
-    );
-
-    for (uint i = 0; i < _guardiansLen; i++) {
-      require(
-        _guardians[i] != address(0),
-        ERR_INVALID_GUARDIAN
-      );
-
-      guardians[_guardians[i]] = true;
-    }
-  }
 
   function _verifyGuardianSignature(
     bytes32 _messageHash,

@@ -48,7 +48,6 @@ contract('PaymentRegistry', (addresses) => {
     );
 
     await paymentRegistry.initialize(
-      [guardian],
       depositWithdrawalLockPeriod,
       signatureValidator.address,
     );

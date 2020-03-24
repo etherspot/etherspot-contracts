@@ -30,6 +30,8 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     uint256 committedAmount;
   }
 
+  uint256 private constant DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD = 30 days;
+
   uint256 public depositWithdrawalLockPeriod;
   ISignatureValidator private signatureValidator;
   mapping(address => Deposit) private deposits;
@@ -72,18 +74,20 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
   /**
    * @dev public constructor
    */
-  constructor() public Chained() Initializable() {}
+  constructor() public Chained() Guarded() Initializable() {}
 
   // external access
 
   function initialize(
-    address[] calldata _guardians,
     uint256 _depositWithdrawalLockPeriod,
     ISignatureValidator _signatureValidator
   ) external onlyInitializer {
-    _initializeGuarded(_guardians);
+    if (_depositWithdrawalLockPeriod == 0) {
+      depositWithdrawalLockPeriod = DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD;
+    } else {
+      depositWithdrawalLockPeriod = _depositWithdrawalLockPeriod;
+    }
 
-    depositWithdrawalLockPeriod = _depositWithdrawalLockPeriod;
     signatureValidator = _signatureValidator;
   }
 
