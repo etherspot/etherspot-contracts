@@ -1756,7 +1756,7 @@ module.exports = {
     ],
     "byteCodeHash": "0x49c4a9ad3b5a934a08c3caf4e65c3f350254fbd24278710aa4669d415709de3c",
     "addresses": {
-      "9999": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46"
+      "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
     }
   },
   "MetaTxRelayed": {
@@ -2434,7 +2434,7 @@ module.exports = {
     ],
     "byteCodeHash": "0xbfbdb510f63b80b41bc8c55f308c99c2e3d219d9cdfb8b567ad0f3890eb708f8",
     "addresses": {
-      "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
+      "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
     }
   },
   "SignatureValidator": {
@@ -2555,7 +2555,7 @@ module.exports = {
     ],
     "byteCodeHash": "0x66cd8b97d812cdc484b42c8f9aaebb88cb5176e3ef2f1ffa426d18069b2a6388",
     "addresses": {
-      "9999": "0xa0CC33936b602f3459e16f343329E0aC074008f7"
+      "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
     }
   },
   "SignedMessageRegistry": {
@@ -2668,7 +2668,7 @@ module.exports = {
     ],
     "byteCodeHash": "0xb06d3f9a5707939619e1fae4ee9a9bf97c55793e31fd7e498d0a3dbc0359cbe4",
     "addresses": {
-      "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
+      "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
     }
   }
 };
