@@ -1,6 +1,7 @@
-const { resolve, join } = require('path');
+const { resolve, join, basename } = require('path');
 const { readdir, readJSON, writeFile } = require('fs-extra');
 const { utils: { soliditySha3 } } = require('web3');
+const logger = require('../shared/logger');
 const templates = require('./templates');
 
 const BUILD_ROOT_PATH = resolve(__dirname, '../../build');
@@ -17,6 +18,8 @@ async function main() {
   } catch (err) {
     contractsOldMap = {};
   }
+
+  logger.info('preparing files');
 
   const contracts = (
     await Promise.all(
@@ -58,26 +61,41 @@ async function main() {
 
   const contractNames = contracts.map(({ name }) => name);
 
-  await writeFile(
-    `${CONTRACTS_BUILD_PATH}.js`,
-    templates.contractsJs(
-      contracts
-        .reduce((result, { name, ...rest }) => ({
-          ...result,
-          [name]: rest,
-        }), {}),
-    ),
-  );
+  {
+    const filePath = `${CONTRACTS_BUILD_PATH}.js`;
+    logger.info(`saving ${basename(filePath)}`);
 
-  await writeFile(
-    `${CONSTANTS_BUILD_PATH}.js`,
-    templates.constantsJs(contractNames),
-  );
+    await writeFile(
+      filePath,
+      templates.contractsJs(
+        contracts
+          .reduce((result, { name, ...rest }) => ({
+            ...result,
+            [name]: rest,
+          }), {}),
+      ),
+    );
+  }
 
-  await writeFile(
-    `${CONSTANTS_BUILD_PATH}.d.ts`,
-    templates.constantsDts(contractNames),
-  );
+  {
+    const filePath = `${CONSTANTS_BUILD_PATH}.js`;
+    logger.info(`saving ${basename(filePath)}`);
+
+    await writeFile(
+      filePath,
+      templates.constantsJs(contractNames),
+    );
+  }
+
+  {
+    const filePath = `${CONSTANTS_BUILD_PATH}.d.ts`;
+    logger.info(`saving ${basename(filePath)}`);
+
+    await writeFile(
+      filePath,
+      templates.constantsDts(contractNames),
+    );
+  }
 }
 
 module.exports = main;

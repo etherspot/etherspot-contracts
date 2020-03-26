@@ -31,6 +31,4 @@ function createProvider() {
     );
 }
 
-module.exports = {
-  createProvider,
-};
+module.exports = createProvider;

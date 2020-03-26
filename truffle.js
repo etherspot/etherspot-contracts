@@ -1,10 +1,10 @@
-const { createProvider } = require('./shared');
+const provider = require('./provider');
 
 module.exports = {
   contracts_directory: './src',
   networks: {
     default: {
-      provider: createProvider,
+      provider,
       gas: 2000000,
       network_id: '*',
     },

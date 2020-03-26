@@ -9,6 +9,7 @@
     "no-shadow": "off",
     "no-await-in-loop": "off",
     "no-loop-func": "off",
+    "no-lone-blocks": "off",
     "import/no-unresolved": "off",
     "import/no-extraneous-dependencies": "off",
     "max-len": [
