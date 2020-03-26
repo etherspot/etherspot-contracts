@@ -49,6 +49,16 @@ import {AccountRegistry} from "@etherspot/contracts/src/account/AccountRegistry.
 // ...
 ```
 
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# unit tests (log gas usage)
+$ npm run test:log-gas-usage
+```
+
 ## License
 
 [MIT](./LICENSE)
