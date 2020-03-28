@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "description": "EtherSpot contracts",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -17,7 +17,7 @@
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "scripts": {
-    "lint": "eslint ./{test,migrations} --ext .js",
+    "lint": "eslint ./{migrations,scripts,test} --ext .js",
     "build": "node ./scripts/build",
     "compile": "truffle compile",
     "compile:all": "truffle compile --all",

@@ -10,8 +10,8 @@ const {
 
 const Account = artifacts.require('ControlledAccount');
 const AccountRegistry = artifacts.require('AccountRegistry');
+const MessageRegistry = artifacts.require('MessageRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
-const SignedMessageRegistry = artifacts.require('SignedMessageRegistry');
 
 contract('SignatureValidator', (addresses) => {
   const {
@@ -27,17 +27,17 @@ contract('SignatureValidator', (addresses) => {
   const accountOwner = addresses[3];
 
   let account;
+  let messageRegistry;
   let signatureValidator;
-  let signedMessageRegistry;
 
   before(async () => {
     const accountRegistry = await AccountRegistry.new();
+    messageRegistry = await MessageRegistry.new();
     signatureValidator = await SignatureValidator.new();
-    signedMessageRegistry = await SignedMessageRegistry.new();
 
     await signatureValidator.initialize(
       accountRegistry.address,
-      signedMessageRegistry.address,
+      messageRegistry.address,
     );
 
     account = computeCreate2Address(
@@ -46,7 +46,7 @@ contract('SignatureValidator', (addresses) => {
       Account.bytecode,
     );
 
-    await signedMessageRegistry.setMessageHash(messageHash, {
+    await messageRegistry.addMessageHash(signedMessageHash, {
       from: registrySigner,
     });
   });

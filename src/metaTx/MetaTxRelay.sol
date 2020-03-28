@@ -3,15 +3,15 @@ pragma experimental ABIEncoderV2;
 
 import {Chained} from "../shared/chained/Chained.sol";
 import {NoFallback} from "../shared/noFallback/NoFallback.sol";
+import {HashLib} from "../shared/HashLib.sol";
 import {SignatureLib} from "../signature/SignatureLib.sol";
-import {SignedMessageLib} from "../signedMessage/SignedMessageLib.sol";
 
 /**
  * @title MetaTxRelay
  */
 contract MetaTxRelay is Chained, NoFallback {
+  using HashLib for bytes;
   using SignatureLib for bytes32;
-  using SignedMessageLib for bytes;
 
   /**
    * @dev public constructor

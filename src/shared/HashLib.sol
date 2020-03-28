@@ -1,9 +1,9 @@
 pragma solidity 0.5.12;
 
 /**
- * @title SignedMessageLib
+ * @title HashLib
  */
-library SignedMessageLib {
+library HashLib {
   string private constant MESSAGE_PREFIX = "\x19Ethereum Signed Message:\n32";
 
   function toSignedMessageHash(

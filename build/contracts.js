@@ -409,7 +409,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x677c07f0f98cadb83315e02631f0ccea7486c84fcc4085dab892aad0e8063843",
+    "byteCodeHash": "0x5a5914d250d523070dc329d025b14c6acec8989feb9c54d62995ce2f86d21b45",
     "addresses": {
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
     }
@@ -1568,6 +1568,94 @@ module.exports = {
     "byteCodeHash": null,
     "addresses": {}
   },
+  "IMessageRegistry": {
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "_message",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "_sender",
+            "type": "address"
+          }
+        ],
+        "name": "verifyMessage",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_sender",
+            "type": "address"
+          }
+        ],
+        "name": "verifyMessageHash",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "_message",
+            "type": "bytes"
+          }
+        ],
+        "name": "addMessage",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "addMessageHash",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "byteCodeHash": null,
+    "addresses": {}
+  },
   "ISignatureValidator": {
     "abi": [
       {
@@ -1599,68 +1687,6 @@ module.exports = {
         ],
         "payable": false,
         "stateMutability": "view",
-        "type": "function"
-      }
-    ],
-    "byteCodeHash": null,
-    "addresses": {}
-  },
-  "ISignedMessageRegistry": {
-    "abi": [
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "_signedMessageHash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "address",
-            "name": "_signer",
-            "type": "address"
-          }
-        ],
-        "name": "verifySignedMessageHash",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
-          }
-        ],
-        "name": "setMessage",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "_messageHash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "setMessageHash",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
         "type": "function"
       }
     ],
@@ -1699,6 +1725,145 @@ module.exports = {
     ],
     "byteCodeHash": null,
     "addresses": {}
+  },
+  "MessageRegistry": {
+    "abi": [
+      {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "message",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          }
+        ],
+        "name": "MessageAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "messageHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          }
+        ],
+        "name": "MessageHashAdded",
+        "type": "event"
+      },
+      {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "_message",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "_sender",
+            "type": "address"
+          }
+        ],
+        "name": "verifyMessage",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_sender",
+            "type": "address"
+          }
+        ],
+        "name": "verifyMessageHash",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "_message",
+            "type": "bytes"
+          }
+        ],
+        "name": "addMessage",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "addMessageHash",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "byteCodeHash": "0x40b5e9e3cb3a629d5696aaaa61f77634837fd9bc3c4d72544145848b9055b721",
+    "addresses": {
+      "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
+    }
   },
   "MetaTxRelay": {
     "abi": [
@@ -1754,9 +1919,9 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x49c4a9ad3b5a934a08c3caf4e65c3f350254fbd24278710aa4669d415709de3c",
+    "byteCodeHash": "0x444815007b74b4fb79fa5314736844ed287d838db802a4d13b5146a83d7271d3",
     "addresses": {
-      "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
+      "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
     }
   },
   "MetaTxRelayed": {
@@ -2432,9 +2597,9 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xbfbdb510f63b80b41bc8c55f308c99c2e3d219d9cdfb8b567ad0f3890eb708f8",
+    "byteCodeHash": "0xcb0f664a44dc8c8865b02cb9091cab1461cf5e04f05c8691ca2eedea9b505e5f",
     "addresses": {
-      "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
+      "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
     }
   },
   "SignatureValidator": {
@@ -2489,10 +2654,10 @@ module.exports = {
       {
         "constant": true,
         "inputs": [],
-        "name": "signedMessageRegistry",
+        "name": "messageRegistry",
         "outputs": [
           {
-            "internalType": "contract ISignedMessageRegistry",
+            "internalType": "contract IMessageRegistry",
             "name": "",
             "type": "address"
           }
@@ -2510,8 +2675,8 @@ module.exports = {
             "type": "address"
           },
           {
-            "internalType": "contract ISignedMessageRegistry",
-            "name": "_signedMessageRegistry",
+            "internalType": "contract IMessageRegistry",
+            "name": "_messageRegistry",
             "type": "address"
           }
         ],
@@ -2553,120 +2718,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x66cd8b97d812cdc484b42c8f9aaebb88cb5176e3ef2f1ffa426d18069b2a6388",
-    "addresses": {
-      "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
-    }
-  },
-  "SignedMessageRegistry": {
-    "abi": [
-      {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes32",
-            "name": "messageHash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "MessageHashSigned",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes",
-            "name": "message",
-            "type": "bytes"
-          }
-        ],
-        "name": "MessageSigned",
-        "type": "event"
-      },
-      {
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "fallback"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "_signedMessageHash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "address",
-            "name": "_signer",
-            "type": "address"
-          }
-        ],
-        "name": "verifySignedMessageHash",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
-          }
-        ],
-        "name": "setMessage",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "_messageHash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "setMessageHash",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-    ],
-    "byteCodeHash": "0xb06d3f9a5707939619e1fae4ee9a9bf97c55793e31fd7e498d0a3dbc0359cbe4",
+    "byteCodeHash": "0xcaa3996fcae7119bac9a8e6375be0f22a008162fe670850cbc9b9e093e5d3ec4",
     "addresses": {
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
     }

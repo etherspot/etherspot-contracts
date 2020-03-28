@@ -18,6 +18,7 @@ declare global {
 
   export interface IContract {
     address: string;
+
     [key: string]: (...args: any[]) => Promise<any>;
   }
 

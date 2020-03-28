@@ -7,10 +7,10 @@ import {Guarded} from "../shared/guarded/Guarded.sol";
 import {Initializable} from "../shared/initializable/Initializable.sol";
 import {NoFallback} from "../shared/noFallback/NoFallback.sol";
 import {AddressLib} from "../shared/AddressLib.sol";
+import {HashLib} from "../shared/HashLib.sol";
 import {SafeMathLib} from "../shared/SafeMathLib.sol";
 import {ISignatureValidator} from "../signature/interfaces.sol";
-import {SignedMessageLib} from "../signedMessage/SignedMessageLib.sol";
-import {IERC20Token} from "../tokens/interfaces.sol";
+import {IERC20Token} from "../tokens/erc20/interfaces.sol";
 
 
 /**
@@ -18,8 +18,8 @@ import {IERC20Token} from "../tokens/interfaces.sol";
  */
 contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initializable, NoFallback {
   using AddressLib for address;
+  using HashLib for bytes;
   using SafeMathLib for uint256;
-  using SignedMessageLib for bytes;
 
   struct Deposit {
     address account;

@@ -5,7 +5,7 @@ import {IControlledAccount} from "../shared/controlledAccount/interfaces.sol";
 import {Initializable} from "../shared/initializable/Initializable.sol";
 import {SafeMathLib} from "../shared/SafeMathLib.sol";
 import {MetaTxRelayed} from "../metaTx/MetaTxRelayed.sol";
-import {IERC20Token} from "../tokens/interfaces.sol";
+import {IERC20Token} from "../tokens/erc20/interfaces.sol";
 import {IAccountRegistry} from "./interfaces.sol";
 
 

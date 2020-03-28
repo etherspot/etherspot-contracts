@@ -11,9 +11,9 @@ const {
 
 const Account = artifacts.require('ControlledAccount');
 const AccountRegistry = artifacts.require('AccountRegistry');
+const MessageRegistry = artifacts.require('MessageRegistry');
 const PaymentRegistry = artifacts.require('PaymentRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
-const SignedMessageRegistry = artifacts.require('SignedMessageRegistry');
 const ERC20TokenMock = artifacts.require('ERC20TokenMock');
 
 contract('PaymentRegistry', (addresses) => {
@@ -29,22 +29,22 @@ contract('PaymentRegistry', (addresses) => {
 
   const depositWithdrawalLockPeriod = 5;
   const guardian = addresses[0];
+  let messageRegistry;
   let paymentRegistry;
   let signatureValidator;
-  let signedMessageRegistry;
   let tokenMock;
 
   const resetAccountRegistry = async () => {
     const accountRegistry = await AccountRegistry.new();
 
+    messageRegistry = await MessageRegistry.new();
     paymentRegistry = await PaymentRegistry.new();
     signatureValidator = await SignatureValidator.new();
-    signedMessageRegistry = await SignedMessageRegistry.new();
     tokenMock = await ERC20TokenMock.new();
 
     await signatureValidator.initialize(
       accountRegistry.address,
-      signedMessageRegistry.address,
+      messageRegistry.address,
     );
 
     await paymentRegistry.initialize(

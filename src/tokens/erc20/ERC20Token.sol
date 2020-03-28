@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import {SafeMathLib} from "../shared/SafeMathLib.sol";
+import {SafeMathLib} from "../../shared/SafeMathLib.sol";
 import {IERC20Token} from "./interfaces.sol";
 
 

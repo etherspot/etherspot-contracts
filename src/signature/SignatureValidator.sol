@@ -3,7 +3,7 @@ pragma solidity 0.5.12;
 import {Initializable} from "../shared/initializable/Initializable.sol";
 import {NoFallback} from "../shared/noFallback/NoFallback.sol";
 import {IAccountRegistry} from "../account/interfaces.sol";
-import {ISignedMessageRegistry} from "../signedMessage/interfaces.sol";
+import {IMessageRegistry} from "../message/interfaces.sol";
 import {SignatureLib} from "./SignatureLib.sol";
 import {ISignatureValidator} from "./interfaces.sol";
 
@@ -15,7 +15,7 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
   using SignatureLib for bytes32;
 
   IAccountRegistry public accountRegistry;
-  ISignedMessageRegistry public signedMessageRegistry;
+  IMessageRegistry public messageRegistry;
 
   /**
    * @dev public constructor
@@ -26,10 +26,10 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
 
   function initialize(
     IAccountRegistry _accountRegistry,
-    ISignedMessageRegistry _signedMessageRegistry
+    IMessageRegistry _messageRegistry
   ) external onlyInitializer {
     accountRegistry = _accountRegistry;
-    signedMessageRegistry = _signedMessageRegistry;
+    messageRegistry = _messageRegistry;
   }
 
   function verifySignature(
@@ -38,7 +38,7 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
     address _signer
   ) external view returns (bool _result) {
     if (_signature.length == 0) {
-      _result = signedMessageRegistry.verifySignedMessageHash(
+      _result = messageRegistry.verifyMessageHash(
         _messageHash,
         _signer
       );

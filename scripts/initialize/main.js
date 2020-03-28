@@ -9,15 +9,15 @@ const {
 async function main() {
   const [
     accountRegistry,
+    messageRegistry,
     metaTxRelay,
     paymentRegistry,
-    signedMessageRegistry,
     signatureValidator,
   ] = await getContracts(
     ContractNames.AccountRegistry,
+    ContractNames.MessageRegistry,
     ContractNames.MetaTxRelay,
     ContractNames.PaymentRegistry,
-    ContractNames.SignedMessageRegistry,
     ContractNames.SignatureValidator,
   );
 
@@ -49,7 +49,7 @@ async function main() {
         await executeRequest(
           signatureValidator.methods.initialize(
             accountRegistry.address,
-            signedMessageRegistry.address,
+            messageRegistry.address,
           ),
         ),
       );

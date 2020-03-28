@@ -26,7 +26,9 @@ function createProvider() {
       1,
     )
     : new PrivateKeyProvider(
-      PROVIDER_PRIVATE_KEY,
+      PROVIDER_PRIVATE_KEY.startsWith('0x')
+        ? PROVIDER_PRIVATE_KEY.substr(2)
+        : PROVIDER_PRIVATE_KEY,
       providerEndpoint,
     );
 }

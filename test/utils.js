@@ -1,5 +1,4 @@
 const {
-  currentProvider,
   eth: {
     getBalance: web3GetBalance,
   },
