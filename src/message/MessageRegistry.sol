@@ -16,19 +16,9 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
 
   // events
 
-  event MessageAdded(
-    address sender,
-    bytes message
-  );
-
   event MessageHashAdded(
     address sender,
     bytes32 messageHash
-  );
-
-  event MessageRemoved(
-    address sender,
-    bytes message
   );
 
   event MessageHashRemoved(
@@ -43,18 +33,6 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
 
   // external access
 
-  function verifySenderMessageAtBlock(
-    address _sender,
-    bytes calldata _message,
-    uint256 _blockNumber
-  ) external view returns (bool) {
-    return _verifySenderMessageHashAtBlock(
-      _sender,
-      keccak256(_message),
-      _blockNumber
-    );
-  }
-
   function verifySenderMessageHashAtBlock(
     address _sender,
     bytes32 _messageHash,
@@ -67,25 +45,15 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
     );
   }
 
-  function addMessage(
-    bytes calldata _message
-  ) external {
-    _addMessageHash(
-      keccak256(_message)
-    );
-
-    emit MessageAdded(
-      msg.sender,
-      _message
-    );
-  }
-
   function addMessageHash(
     bytes32 _messageHash
   ) external {
-    _addMessageHash(
-      _messageHash
+    require(
+      !_verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
     );
+
+    senderMessageHashes[msg.sender][_messageHash].added = true;
+    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = 0;
 
     emit MessageHashAdded(
       msg.sender,
@@ -93,25 +61,14 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
     );
   }
 
-  function removeMessage(
-    bytes calldata _message
-  ) external {
-    _removeMessageHash(
-      keccak256(_message)
-    );
-
-    emit MessageRemoved(
-      msg.sender,
-      _message
-    );
-  }
-
   function removeMessageHash(
     bytes32 _messageHash
   ) external {
-    _removeMessageHash(
-      _messageHash
+    require(
+      _verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
     );
+
+    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = block.number;
 
     emit MessageHashRemoved(
       msg.sender,
@@ -139,26 +96,5 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
     }
 
     return _result;
-  }
-
-  function _addMessageHash(
-    bytes32 _messageHash
-  ) private {
-    require(
-      !_verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
-    );
-
-    senderMessageHashes[msg.sender][_messageHash].added = true;
-    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = 0;
-  }
-
-  function _removeMessageHash(
-    bytes32 _messageHash
-  ) private {
-    require(
-      _verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
-    );
-
-    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = block.number;
   }
 }

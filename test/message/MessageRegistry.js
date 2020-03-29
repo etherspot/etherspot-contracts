@@ -11,12 +11,6 @@ const {
 const MessageRegistry = artifacts.require('MessageRegistry');
 
 contract('MessageRegistry', (addresses) => {
-  const {
-    utils: {
-      randomHex,
-    },
-  } = web3;
-
   const sender = addresses[0];
   let messageRegistry;
 
@@ -25,48 +19,11 @@ contract('MessageRegistry', (addresses) => {
   });
 
   context('views', () => {
-    const message = randomHex(64);
     const messageHash = randomBytes32();
-    let messageBlockNumber;
     let messageHashBlockNumber;
 
     before(async () => {
-      messageBlockNumber = parseBlockNumber(await messageRegistry.addMessage(message));
       messageHashBlockNumber = parseBlockNumber(await messageRegistry.addMessageHash(messageHash));
-    });
-
-    describe('verifySenderMessageAtBlock()', () => {
-      it('expect to return true on correct sender', async () => {
-        await expect(messageRegistry.verifySenderMessageAtBlock(
-          sender,
-          message,
-          0,
-        )).resolves.toBeTruthy();
-      });
-
-      it('expect to return true on correct block number', async () => {
-        await expect(messageRegistry.verifySenderMessageAtBlock(
-          sender,
-          message,
-          messageBlockNumber - 1,
-        )).resolves.toBeTruthy();
-      });
-
-      it('expect to return false on wrong sender', async () => {
-        await expect(messageRegistry.verifySenderMessageAtBlock(
-          randomAddress(),
-          message,
-          0,
-        )).resolves.toBeFalsy();
-      });
-
-      it('expect to return false on wrong block number', async () => {
-        await expect(messageRegistry.verifySenderMessageAtBlock(
-          randomAddress(),
-          message,
-          messageBlockNumber,
-        )).resolves.toBeFalsy();
-      });
     });
 
     describe('verifySenderMessageHashAtBlock()', () => {
@@ -105,22 +62,7 @@ contract('MessageRegistry', (addresses) => {
   });
 
   context('methods', () => {
-    const message = randomHex(64);
     const messageHash = randomBytes32();
-
-    describe('addMessage()', () => {
-      it('expect to add message', async () => {
-        const output = await messageRegistry.addMessage(message);
-
-        logGasUsed(output);
-
-        const { logs: [log] } = output;
-
-        expect(log.event).toBe('MessageAdded');
-        expect(log.args.sender).toBe(sender);
-        expect(log.args.message).toBe(message);
-      });
-    });
 
     describe('addMessageHash()', () => {
       it('expect to add message hash', async () => {
@@ -133,20 +75,6 @@ contract('MessageRegistry', (addresses) => {
         expect(log.event).toBe('MessageHashAdded');
         expect(log.args.sender).toBe(sender);
         expect(log.args.messageHash).toBe(messageHash);
-      });
-    });
-
-    describe('removeMessageHash()', () => {
-      it('expect to remove message', async () => {
-        const output = await messageRegistry.removeMessage(message);
-
-        logGasUsed(output);
-
-        const { logs: [log] } = output;
-
-        expect(log.event).toBe('MessageRemoved');
-        expect(log.args.sender).toBe(sender);
-        expect(log.args.message).toBe(message);
       });
     });
 
