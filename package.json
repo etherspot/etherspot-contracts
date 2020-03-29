@@ -18,7 +18,6 @@
   "types": "./build/index.d.ts",
   "scripts": {
     "lint": "eslint ./{migrations,scripts,test} --ext .js",
-    "build": "node ./scripts/build",
     "compile": "truffle compile",
     "compile:all": "truffle compile --all",
     "migrate": "truffle migrate --network=default",
@@ -26,6 +25,7 @@
     "test": "./scripts/test.sh --network test",
     "test:log-gas-usage": "cross-env LOG_GAS_USAGE=1 ./scripts/test.sh --network test",
     "test:compile-all": "./scripts/test.sh --network test --compile-all",
+    "build": "node ./scripts/build",
     "initialize": "node ./scripts/initialize",
     "generate-events": "node ./scripts/generate-events"
   },

@@ -15,13 +15,19 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "account",
             "type": "address"
           },
           {
             "indexed": false,
             "internalType": "address",
-            "name": "sender",
+            "name": "beneficiary",
             "type": "address"
           },
           {
@@ -46,6 +52,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "account",
             "type": "address"
           }
@@ -56,6 +68,12 @@ module.exports = {
       {
         "anonymous": false,
         "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
           {
             "indexed": false,
             "internalType": "address",
@@ -78,6 +96,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "account",
             "type": "address"
           },
@@ -94,6 +118,12 @@ module.exports = {
       {
         "anonymous": false,
         "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
           {
             "indexed": false,
             "internalType": "address",
@@ -279,9 +309,14 @@ module.exports = {
             "internalType": "address",
             "name": "_owner",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
           }
         ],
-        "name": "hasEverBeenAccountOwner",
+        "name": "verifyAccountOwnerAtBlock",
         "outputs": [
           {
             "internalType": "bool",
@@ -409,7 +444,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x5a5914d250d523070dc329d025b14c6acec8989feb9c54d62995ce2f86d21b45",
+    "byteCodeHash": "0xb01028c28d3bc2072a442d7de4dea4c19a55859aaed238b6eb3f7b24db9b967f",
     "addresses": {
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
     }
@@ -1203,9 +1238,14 @@ module.exports = {
             "internalType": "address",
             "name": "_owner",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
           }
         ],
-        "name": "hasEverBeenAccountOwner",
+        "name": "verifyAccountOwnerAtBlock",
         "outputs": [
           {
             "internalType": "bool",
@@ -1574,43 +1614,22 @@ module.exports = {
         "constant": true,
         "inputs": [
           {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
-          },
-          {
             "internalType": "address",
             "name": "_sender",
             "type": "address"
-          }
-        ],
-        "name": "verifyMessage",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
+          },
           {
             "internalType": "bytes32",
             "name": "_messageHash",
             "type": "bytes32"
           },
           {
-            "internalType": "address",
-            "name": "_sender",
-            "type": "address"
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
           }
         ],
-        "name": "verifyMessageHash",
+        "name": "verifySenderMessageHashAtBlock",
         "outputs": [
           {
             "internalType": "bool",
@@ -1626,12 +1645,12 @@ module.exports = {
         "constant": false,
         "inputs": [
           {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
           }
         ],
-        "name": "addMessage",
+        "name": "addMessageHash",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -1646,7 +1665,7 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "name": "addMessageHash",
+        "name": "removeMessageHash",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -1678,6 +1697,42 @@ module.exports = {
           }
         ],
         "name": "verifySignature",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_signature",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "_signer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "name": "verifySignatureAtBlock",
         "outputs": [
           {
             "internalType": "bool",
@@ -1739,18 +1794,18 @@ module.exports = {
         "inputs": [
           {
             "indexed": false,
-            "internalType": "bytes",
-            "name": "message",
-            "type": "bytes"
-          },
-          {
-            "indexed": false,
             "internalType": "address",
             "name": "sender",
             "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "messageHash",
+            "type": "bytes32"
           }
         ],
-        "name": "MessageAdded",
+        "name": "MessageHashAdded",
         "type": "event"
       },
       {
@@ -1758,18 +1813,18 @@ module.exports = {
         "inputs": [
           {
             "indexed": false,
-            "internalType": "bytes32",
-            "name": "messageHash",
-            "type": "bytes32"
-          },
-          {
-            "indexed": false,
             "internalType": "address",
             "name": "sender",
             "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "messageHash",
+            "type": "bytes32"
           }
         ],
-        "name": "MessageHashAdded",
+        "name": "MessageHashRemoved",
         "type": "event"
       },
       {
@@ -1781,43 +1836,22 @@ module.exports = {
         "constant": true,
         "inputs": [
           {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
-          },
-          {
             "internalType": "address",
             "name": "_sender",
             "type": "address"
-          }
-        ],
-        "name": "verifyMessage",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
+          },
           {
             "internalType": "bytes32",
             "name": "_messageHash",
             "type": "bytes32"
           },
           {
-            "internalType": "address",
-            "name": "_sender",
-            "type": "address"
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
           }
         ],
-        "name": "verifyMessageHash",
+        "name": "verifySenderMessageHashAtBlock",
         "outputs": [
           {
             "internalType": "bool",
@@ -1827,21 +1861,6 @@ module.exports = {
         ],
         "payable": false,
         "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "bytes",
-            "name": "_message",
-            "type": "bytes"
-          }
-        ],
-        "name": "addMessage",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1858,9 +1877,24 @@ module.exports = {
         "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "removeMessageHash",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
       }
     ],
-    "byteCodeHash": "0x40b5e9e3cb3a629d5696aaaa61f77634837fd9bc3c4d72544145848b9055b721",
+    "byteCodeHash": "0xc88f0cac4a857a3975d30abab4efc6fe0348943f1bbadf66fc41f5aaf20acf62",
     "addresses": {
       "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
     }
@@ -2491,6 +2525,11 @@ module.exports = {
           },
           {
             "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "_amount",
             "type": "uint256"
           },
@@ -2528,6 +2567,11 @@ module.exports = {
             "internalType": "bytes32",
             "name": "_uid",
             "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -2571,6 +2615,11 @@ module.exports = {
           },
           {
             "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "_amount",
             "type": "uint256"
           },
@@ -2597,7 +2646,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x3a90bb3f82e100aa094354f3981e140188a90783c7c69da217c83a10bb02d95f",
+    "byteCodeHash": "0x2b8e21710942e4c7d7f7e6cd31d7e43ad86787c355e54b035c4c50bbf319beed",
     "addresses": {
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
     }
@@ -2709,7 +2758,43 @@ module.exports = {
         "outputs": [
           {
             "internalType": "bool",
-            "name": "_result",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_messageHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_signature",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "_signer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "name": "verifySignatureAtBlock",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
             "type": "bool"
           }
         ],
@@ -2718,7 +2803,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x8b93c6c9132b4af7661c2697cf85486e9ebd4d1d08657f17dff38b0d46fe5537",
+    "byteCodeHash": "0x22cffcb663767540c6f5b2c125b09d0bcab5ddb45f20525d3a49dc42b703564c",
     "addresses": {
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
     }
