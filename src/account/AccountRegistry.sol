@@ -15,17 +15,16 @@ import {IAccountRegistry} from "./interfaces.sol";
 contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelayed, IAccountRegistry {
   using SafeMathLib for uint256;
 
-  enum OwnerState {
-    None,
-    Active,
-    Removed
+  struct Owner {
+    bool added;
+    uint256 removedAtBlockNumber;
   }
 
   struct Account {
     bool deployed;
     bytes32 salt;
     uint256 nonce;
-    mapping(address => OwnerState) ownerStates;
+    mapping(address => Owner) owners;
   }
 
   mapping(address => Account) private accounts;
@@ -33,20 +32,24 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
   // events
 
   event AccountDeployed(
+    address sender,
     address account
   );
 
   event AccountOwnerAdded(
+    address sender,
     address account,
     address owner
   );
 
   event AccountOwnerRemoved(
+    address sender,
     address account,
     address owner
   );
 
   event AccountTransactionExecuted(
+    address sender,
     address account,
     address to,
     uint256 value,
@@ -54,8 +57,9 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
   );
 
   event AccountCallRefunded(
-    address account,
     address sender,
+    address account,
+    address beneficiary,
     uint256 refundAmount,
     address refundToken
   );
@@ -98,14 +102,19 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     return _isAccountOwner(_account, _owner);
   }
 
-  function hasEverBeenAccountOwner(
+  function verifyAccountOwnerAtBlock(
     address _account,
-    address _owner
+    address _owner,
+    uint256 _blockNumber
   ) external view returns (bool _result) {
     if (_isAccountOwner(_account, _owner)) {
       _result = true;
-    } else {
-      _result = accounts[_account].ownerStates[_owner] != OwnerState.None;
+    } else if (accounts[_account].owners[_owner].added) {
+      if (_blockNumber == 0) {
+        _result = true;
+      } else {
+        _result = accounts[_account].owners[_owner].removedAtBlockNumber > _blockNumber;
+      }
     }
 
     return _result;
@@ -116,19 +125,24 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     uint256 _nonce,
     address _owner
   ) external {
-    _verifySenderAndAccountNonce(_account, _nonce);
+    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
 
     require(
       _owner != address(0)
     );
 
     require(
-      accounts[_account].ownerStates[_owner] != OwnerState.Active
+      !accounts[_account].owners[_owner].added || accounts[_account].owners[_owner].removedAtBlockNumber > 0
     );
 
-    accounts[_account].ownerStates[_owner] = OwnerState.Active;
+    accounts[_account].owners[_owner].added = true;
+    accounts[_account].owners[_owner].removedAtBlockNumber = 0;
 
-    emit AccountOwnerAdded(_account, _owner);
+    emit AccountOwnerAdded(
+      _sender,
+      _account,
+      _owner
+    );
   }
 
   function removeAccountOwner(
@@ -143,12 +157,16 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     );
 
     require(
-      accounts[_account].ownerStates[_owner] == OwnerState.Active
+      accounts[_account].owners[_owner].added && accounts[_account].owners[_owner].removedAtBlockNumber == 0
     );
 
-    accounts[_account].ownerStates[_owner] = OwnerState.Removed;
+    accounts[_account].owners[_owner].removedAtBlockNumber = block.number;
 
-    emit AccountOwnerRemoved(_account, _owner);
+    emit AccountOwnerRemoved(
+      _sender,
+      _account,
+      _owner
+    );
   }
 
   function executeAccountTransaction(
@@ -158,9 +176,10 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     uint256 _value,
     bytes calldata _data
   ) external {
-    _verifySenderAndAccountNonce(_account, _nonce);
+    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
 
     _executeAccountTransaction(
+      _sender,
       _account,
       _to,
       _value,
@@ -168,6 +187,7 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     );
 
     emit AccountTransactionExecuted(
+      _sender,
       _account,
       _to,
       _value,
@@ -181,10 +201,11 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     address payable _refundToken,
     uint256 _refundAmount
   ) external {
-    _verifySenderAndAccountNonce(_account, _nonce);
+    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
 
     if (_refundToken == address(0)) {
       _executeAccountTransaction(
+        _sender,
         _account,
         tx.origin,
         _refundAmount,
@@ -192,6 +213,7 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
       );
     } else {
       _executeAccountTransaction(
+        _sender,
         _account,
         _refundToken,
         0,
@@ -204,6 +226,7 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     }
 
     emit AccountCallRefunded(
+      _sender,
       _account,
       tx.origin,
       _refundAmount,
@@ -227,8 +250,8 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
     address _account,
     address _owner
   ) private view returns (bool _result) {
-    if (accounts[_account].ownerStates[_owner] == OwnerState.Active) {
-      _result = true;
+    if (accounts[_account].owners[_owner].added) {
+      _result = accounts[_account].owners[_owner].removedAtBlockNumber == 0;
     } else if (accounts[_account].salt == 0) {
       _result = _account == _computeAccountAddress(_owner);
     }
@@ -242,7 +265,7 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
   ) private returns (address) {
     address _sender = _getSender();
 
-    if (accounts[_account].ownerStates[_sender] != OwnerState.Active) {
+    if (!accounts[_account].owners[_sender].added) {
       require(
         accounts[_account].salt == 0
       );
@@ -256,9 +279,13 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
       );
 
       accounts[_account].salt = _salt;
-      accounts[_account].ownerStates[_sender] = OwnerState.Active;
+      accounts[_account].owners[_sender].added = true;
 
-      emit AccountOwnerAdded(_account, _sender);
+      emit AccountOwnerAdded(
+        _sender,
+        _account,
+        _sender
+      );
     }
 
     require(
@@ -271,6 +298,7 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
   }
 
   function _executeAccountTransaction(
+    address _sender,
     address _account,
     address payable _to,
     uint256 _value,
@@ -295,7 +323,10 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
 
       accounts[_account].deployed = true;
 
-      emit AccountDeployed(_account);
+      emit AccountDeployed(
+        _sender,
+        _account
+      );
     }
 
     IControlledAccount(_account).executeTransaction(

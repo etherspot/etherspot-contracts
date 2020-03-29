@@ -189,6 +189,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _sender,
     address _token,
     bytes32 _uid,
+    uint256 _blockNumber,
     uint256 _amount,
     bytes calldata _senderSignature,
     bytes calldata _guardianSignature
@@ -198,6 +199,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       msg.sender,
       _token,
       _uid,
+      _blockNumber,
       _amount,
       _senderSignature,
       _guardianSignature
@@ -217,6 +219,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _sender,
     address _token,
     bytes32 _uid,
+    uint256 _blockNumber,
     uint256 _amount,
     bytes calldata _senderSignature,
     bytes calldata _guardianSignature
@@ -226,6 +229,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       msg.sender,
       _token,
       _uid,
+      _blockNumber,
       _amount,
       _senderSignature,
       _guardianSignature
@@ -245,6 +249,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _sender,
     address _token,
     bytes32 _uid,
+    uint256 _blockNumber,
     uint256 _amount,
     uint256 _depositPaymentValue,
     bytes calldata _senderSignature,
@@ -259,6 +264,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       msg.sender,
       _token,
       _uid,
+      _blockNumber,
       _amount,
       _senderSignature,
       _guardianSignature
@@ -338,6 +344,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     address _recipient,
     address _token,
     bytes32 _uid,
+    uint256 _blockNumber,
     uint256 _amount,
     bytes memory _senderSignature,
     bytes memory _guardianSignature
@@ -349,6 +356,7 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
       _recipient,
       _token,
       _uid,
+      _blockNumber,
       _amount
     )
     .toSignedMessageHash();
@@ -358,7 +366,12 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     );
 
     require(
-      signatureValidator.verifySignature(_signedMessageHash, _senderSignature, _sender)
+      signatureValidator.verifySignatureAtBlock(
+        _signedMessageHash,
+        _senderSignature,
+        _sender,
+        _blockNumber
+      )
     );
 
     _hash = _computePaymentChannelHash(

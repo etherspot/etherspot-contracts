@@ -21,9 +21,10 @@ interface IAccountRegistry {
     address _owner
   ) external view returns(bool);
 
-  function hasEverBeenAccountOwner(
+  function verifyAccountOwnerAtBlock(
     address _account,
-    address _owner
+    address _owner,
+    uint256 _blockNumber
   ) external view returns(bool);
 
   function addAccountOwner(

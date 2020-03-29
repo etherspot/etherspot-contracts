@@ -7,18 +7,33 @@ import {IMessageRegistry} from "./interfaces.sol";
  * @title MessageRegistry
  */
 contract MessageRegistry is NoFallback, IMessageRegistry {
-  mapping(bytes32 => mapping(address => bool)) private messageHashesSenders;
+  struct SenderMessageHash {
+    bool added;
+    uint256 removedAtBlockNumber;
+  }
+
+  mapping(address => mapping(bytes32 => SenderMessageHash)) private senderMessageHashes;
 
   // events
 
   event MessageAdded(
-    bytes message,
-    address sender
+    address sender,
+    bytes message
   );
 
   event MessageHashAdded(
-    bytes32 messageHash,
-    address sender
+    address sender,
+    bytes32 messageHash
+  );
+
+  event MessageRemoved(
+    address sender,
+    bytes message
+  );
+
+  event MessageHashRemoved(
+    address sender,
+    bytes32 messageHash
   );
 
   /**
@@ -28,18 +43,28 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
 
   // external access
 
-  function verifyMessage(
+  function verifySenderMessageAtBlock(
+    address _sender,
     bytes calldata _message,
-    address _sender
+    uint256 _blockNumber
   ) external view returns (bool) {
-    return messageHashesSenders[keccak256(_message)][_sender];
+    return _verifySenderMessageHashAtBlock(
+      _sender,
+      keccak256(_message),
+      _blockNumber
+    );
   }
 
-  function verifyMessageHash(
+  function verifySenderMessageHashAtBlock(
+    address _sender,
     bytes32 _messageHash,
-    address _sender
+    uint256 _blockNumber
   ) external view returns (bool) {
-    return messageHashesSenders[_messageHash][_sender];
+    return _verifySenderMessageHashAtBlock(
+      _sender,
+      _messageHash,
+      _blockNumber
+    );
   }
 
   function addMessage(
@@ -50,8 +75,8 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
     );
 
     emit MessageAdded(
-      _message,
-      msg.sender
+      msg.sender,
+      _message
     );
   }
 
@@ -63,20 +88,77 @@ contract MessageRegistry is NoFallback, IMessageRegistry {
     );
 
     emit MessageHashAdded(
-      _messageHash,
-      msg.sender
+      msg.sender,
+      _messageHash
+    );
+  }
+
+  function removeMessage(
+    bytes calldata _message
+  ) external {
+    _removeMessageHash(
+      keccak256(_message)
+    );
+
+    emit MessageRemoved(
+      msg.sender,
+      _message
+    );
+  }
+
+  function removeMessageHash(
+    bytes32 _messageHash
+  ) external {
+    _removeMessageHash(
+      _messageHash
+    );
+
+    emit MessageHashRemoved(
+      msg.sender,
+      _messageHash
     );
   }
 
   // private access
 
+  function _verifySenderMessageHashAtBlock(
+    address _sender,
+    bytes32 _messageHash,
+    uint256 _blockNumber
+  ) private view returns (bool _result) {
+    if (senderMessageHashes[_sender][_messageHash].added) {
+      uint256 _removedAtBlockNumber = senderMessageHashes[_sender][_messageHash].removedAtBlockNumber;
+
+      if (_removedAtBlockNumber == 0) {
+        _result = true;
+      } else if (_blockNumber == 0) {
+        _result = true;
+      } else {
+        _result = _removedAtBlockNumber < _blockNumber;
+      }
+    }
+
+    return _result;
+  }
+
   function _addMessageHash(
     bytes32 _messageHash
   ) private {
     require(
-      !messageHashesSenders[_messageHash][msg.sender]
+      !_verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
     );
 
-    messageHashesSenders[_messageHash][msg.sender] = true;
+    senderMessageHashes[msg.sender][_messageHash].added = true;
+    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = 0;
+  }
+
+  function _removeMessageHash(
+    bytes32 _messageHash
+  ) private {
+    require(
+      _verifySenderMessageHashAtBlock(msg.sender, _messageHash, 0)
+    );
+
+    senderMessageHashes[msg.sender][_messageHash].removedAtBlockNumber = block.number;
   }
 }

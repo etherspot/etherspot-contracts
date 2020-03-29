@@ -38,11 +38,42 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
     bytes32 _messageHash,
     bytes calldata _signature,
     address _signer
-  ) external view returns (bool _result) {
+  ) external view returns (bool) {
+    return _verifySignature(
+      _messageHash,
+      _signature,
+      _signer,
+      block.number
+    );
+  }
+
+  function verifySignatureAtBlock(
+    bytes32 _messageHash,
+    bytes calldata _signature,
+    address _signer,
+    uint256 _blockNumber
+  ) external view returns (bool) {
+    return _verifySignature(
+      _messageHash,
+      _signature,
+      _signer,
+      _blockNumber
+    );
+  }
+
+  // private
+
+  function _verifySignature(
+    bytes32 _messageHash,
+    bytes memory _signature,
+    address _signer,
+    uint256 _blockNumber
+  ) private view returns (bool _result) {
     if (_signature.length == 0) {
-      _result = messageRegistry.verifyMessageHash(
+      _result = messageRegistry.verifySenderMessageHashAtBlock(
+        _signer,
         _messageHash,
-        _signer
+        _blockNumber
       );
     } else {
       address _recovered = _messageHash.recoverAddress(_signature);
@@ -50,15 +81,17 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
         if (_recovered == _signer) {
           _result = true;
         } else {
-          _result = accountRegistry.hasEverBeenAccountOwner(
+          _result = accountRegistry.verifyAccountOwnerAtBlock(
             _signer,
-            _recovered
+            _recovered,
+            _blockNumber
           );
 
           if (!_result) {
-            _result = messageRegistry.verifyMessageHash(
+            _result = messageRegistry.verifySenderMessageHashAtBlock(
+              _signer,
               _recovered.toAuthorizedMessageHash(),
-              _signer
+              _blockNumber
             );
           }
         }
@@ -67,4 +100,5 @@ contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
 
     return _result;
   }
+
 }

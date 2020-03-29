@@ -171,6 +171,7 @@ contract('PaymentRegistry', (addresses) => {
           recipient,
           token,
           uid,
+          0,
           amount,
         );
         const senderSignature = await sign(messageHash, sender);
@@ -186,6 +187,7 @@ contract('PaymentRegistry', (addresses) => {
           sender,
           token,
           uid,
+          0,
           amount,
           senderSignature,
           guardianSignature, {
@@ -248,6 +250,7 @@ contract('PaymentRegistry', (addresses) => {
         recipient,
         token,
         uid,
+        0,
         amount,
       );
       const senderSignature = await sign(messageHash, sender);
@@ -257,6 +260,7 @@ contract('PaymentRegistry', (addresses) => {
         sender,
         token,
         uid,
+        0,
         amount,
         senderSignature,
         guardianSignature, {

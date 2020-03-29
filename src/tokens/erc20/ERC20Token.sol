@@ -14,11 +14,6 @@ contract ERC20Token is IERC20Token {
     uint256 totalSupply;
   }
 
-  string private constant ERR_INVALID_FROM = "invalid from";
-  string private constant ERR_INVALID_TO = "invalid to";
-  string private constant ERR_INVALID_OWNER = "invalid owner";
-  string private constant ERR_INVALID_SPENDER = "invalid spender";
-
   mapping(address => uint256) private balances;
   mapping(address => mapping(address => uint256)) private allowances;
 
@@ -82,12 +77,10 @@ contract ERC20Token is IERC20Token {
     uint256 _value
   ) internal {
     require(
-      _from != address(0),
-      ERR_INVALID_FROM
+      _from != address(0)
     );
     require(
-      _to != address(0),
-      ERR_INVALID_TO
+      _to != address(0)
     );
 
     balances[_from] = balances[_from].sub(_value);
@@ -102,12 +95,10 @@ contract ERC20Token is IERC20Token {
     uint256 _value
   ) internal {
     require(
-      _owner != address(0),
-      ERR_INVALID_OWNER
+      _owner != address(0)
     );
     require(
-      _spender != address(0),
-      ERR_INVALID_SPENDER
+      _spender != address(0)
     );
 
     allowances[_owner][_spender] = _value;
@@ -120,8 +111,7 @@ contract ERC20Token is IERC20Token {
     uint256 _value
   ) internal {
     require(
-      _owner != address(0),
-      ERR_INVALID_OWNER
+      _owner != address(0)
     );
 
     balances[_owner] = balances[_owner].add(_value);
@@ -135,8 +125,7 @@ contract ERC20Token is IERC20Token {
     uint256 _value
   ) internal {
     require(
-      _owner != address(0),
-      ERR_INVALID_OWNER
+      _owner != address(0)
     );
 
     balances[_owner] = balances[_owner].sub(_value);

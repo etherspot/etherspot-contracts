@@ -33,6 +33,21 @@ function logGasUsed(output) {
   );
 }
 
+function parseBlockNumber(output) {
+  let result;
+  if (typeof output === 'number') {
+    result = output;
+  } else {
+    try {
+      ({ receipt: { blockNumber: result } } = output);
+    } catch (err) {
+      ({ blockNumber: result } = output);
+    }
+  }
+
+  return result;
+}
+
 function randomAddress() {
   return toChecksumAddress(randomHex(20));
 }
@@ -87,6 +102,7 @@ function createSignedMessageHash(message) {
 
 module.exports = {
   logGasUsed,
+  parseBlockNumber,
   randomAddress,
   randomBytes32,
   now,

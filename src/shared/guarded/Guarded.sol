@@ -9,9 +9,6 @@ import {SignatureLib} from "../../signature/SignatureLib.sol";
 contract Guarded {
   using SignatureLib for bytes32;
 
-  string private constant ERR_ONLY_GUARDIAN = "reverted by onlyGuardian";
-  string private constant ERR_INVALID_GUARDIAN = "invalid guardian";
-
   mapping(address => bool) private guardians;
 
   // events
@@ -28,8 +25,7 @@ contract Guarded {
 
   modifier onlyGuardian() {
     require(
-      guardians[msg.sender],
-      ERR_ONLY_GUARDIAN
+      guardians[msg.sender]
     );
 
     _;
@@ -64,13 +60,11 @@ contract Guarded {
     address _guardian
   ) external onlyGuardian {
     require(
-      _guardian != address(0),
-      ERR_INVALID_GUARDIAN
+      _guardian != address(0)
     );
 
     require(
-      !guardians[_guardian],
-      ERR_INVALID_GUARDIAN
+      !guardians[_guardian]
     );
 
     guardians[_guardian] = true;
@@ -82,13 +76,11 @@ contract Guarded {
     address _guardian
   ) external onlyGuardian {
     require(
-      msg.sender != _guardian,
-      ERR_INVALID_GUARDIAN
+      msg.sender != _guardian
     );
 
     require(
-      guardians[_guardian],
-      ERR_INVALID_GUARDIAN
+      guardians[_guardian]
     );
 
     guardians[_guardian] = false;

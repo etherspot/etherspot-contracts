@@ -182,15 +182,16 @@ contract('AccountRegistry', (addresses) => {
       });
     });
 
-    describe('hasEverBeenAccountOwner()', () => {
+    describe('verifyAccountOwnerAtBlock()', () => {
       const newOwner = addresses[2];
 
       before(resetAccount);
 
       it('expect to return true on salt owner', async () => {
-        await expect(accountRegistry.hasEverBeenAccountOwner(
+        await expect(accountRegistry.verifyAccountOwnerAtBlock(
           account,
           saltOwner,
+          0,
         )).resolves.toBeTruthy();
       });
 
@@ -205,9 +206,10 @@ contract('AccountRegistry', (addresses) => {
 
         nonce += 1;
 
-        await expect(accountRegistry.hasEverBeenAccountOwner(
+        await expect(accountRegistry.verifyAccountOwnerAtBlock(
           account,
           newOwner,
+          0,
         )).resolves.toBeTruthy();
       });
 
@@ -222,16 +224,18 @@ contract('AccountRegistry', (addresses) => {
 
         nonce += 1;
 
-        await expect(accountRegistry.hasEverBeenAccountOwner(
+        await expect(accountRegistry.verifyAccountOwnerAtBlock(
           account,
           newOwner,
+          0,
         )).resolves.toBeTruthy();
       });
 
       it('expect to return false on invalid owner', async () => {
-        await expect(accountRegistry.hasEverBeenAccountOwner(
+        await expect(accountRegistry.verifyAccountOwnerAtBlock(
           account,
           randomAddress(),
+          0,
         )).resolves.toBeFalsy();
       });
 
@@ -254,9 +258,10 @@ contract('AccountRegistry', (addresses) => {
           },
         );
 
-        await expect(accountRegistry.hasEverBeenAccountOwner(
+        await expect(accountRegistry.verifyAccountOwnerAtBlock(
           account,
           saltOwner,
+          0,
         )).resolves.toBeTruthy();
       });
     });
@@ -544,7 +549,7 @@ contract('AccountRegistry', (addresses) => {
 
         expect(logs[0].event).toBe('AccountCallRefunded');
         expect(logs[0].args.account).toBe(account);
-        expect(logs[0].args.sender).toBe(saltOwner);
+        expect(logs[0].args.beneficiary).toBe(saltOwner);
         expect(logs[0].args.refundAmount).toBeBN(value);
         expect(logs[0].args.refundToken).toBeZeroAddress();
 
@@ -573,7 +578,7 @@ contract('AccountRegistry', (addresses) => {
 
         expect(logs[0].event).toBe('AccountCallRefunded');
         expect(logs[0].args.account).toBe(account);
-        expect(logs[0].args.sender).toBe(saltOwner);
+        expect(logs[0].args.beneficiary).toBe(saltOwner);
         expect(logs[0].args.refundAmount).toBeBN(value);
         expect(logs[0].args.refundToken).toBe(token.address);
 

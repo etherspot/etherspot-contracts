@@ -4,8 +4,6 @@ pragma solidity 0.5.12;
  * @title Initializable
  */
 contract Initializable {
-  string private constant ERR_ONLY_INITIALIZER = "reverted by onlyInitializer";
-
   address private initializer;
 
   // events
@@ -16,8 +14,7 @@ contract Initializable {
 
   modifier onlyInitializer() {
     require(
-      initializer == msg.sender,
-      ERR_ONLY_INITIALIZER
+      initializer == msg.sender
     );
 
     initializer = address(0);
