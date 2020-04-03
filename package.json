@@ -27,7 +27,8 @@
     "test:compile-all": "./scripts/test.sh --network test --compile-all",
     "build": "node ./scripts/build",
     "initialize": "node ./scripts/initialize",
-    "generate-events": "node ./scripts/generate-events"
+    "generate-events:account-registry": "node ./scripts/generate-events account-registry",
+    "generate-events:message-registry": "node ./scripts/generate-events message-registry"
   },
   "dependencies": {},
   "devDependencies": {

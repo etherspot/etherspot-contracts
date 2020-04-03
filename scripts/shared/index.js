@@ -124,6 +124,7 @@ module.exports = {
   ZERO_ADDRESS: `0x${'0'.repeat(40)}`,
   logger,
   web3,
+  utils,
   getNetworkId,
   getContracts,
   getDefaultAccount,
