@@ -4,7 +4,7 @@ pragma solidity 0.5.12;
  * @title HashLib
  */
 library HashLib {
-  string private constant AUTHORIZED_MESSAGE_PREFIX = "\x19Ethereum Authorized Message:\n32";
+  string private constant AUTHORIZED_MESSAGE_PREFIX = "\x19Ethereum Authorized Message:\n20";
   string private constant SIGNED_MESSAGE_PREFIX = "\x19Ethereum Signed Message:\n32";
 
   function toAuthorizedMessageHash(
