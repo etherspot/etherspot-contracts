@@ -34,7 +34,7 @@ contract('ControlledAccountFactory (using mock)', () => {
           Account.bytecode,
         );
 
-        await expect(accountFactory.computeControlledAccountAddress(salt))
+        await expect(accountFactory.computeControlledAccountAddressMock(salt))
           .resolves
           .toBe(expectedAddress);
       });
@@ -55,7 +55,7 @@ contract('ControlledAccountFactory (using mock)', () => {
       });
 
       it('expect to create contract', async () => {
-        const output = await accountFactory.createControlledAccount(salt);
+        const output = await accountFactory.createControlledAccountMock(salt);
 
         logGasUsed(output);
 
@@ -68,7 +68,7 @@ contract('ControlledAccountFactory (using mock)', () => {
       it('expect to create contract with initial balance', async () => {
         const salt = randomBytes32();
         const value = toWei('1');
-        const output = await accountFactory.createControlledAccount(salt, {
+        const output = await accountFactory.createControlledAccountMock(salt, {
           value,
         });
 
@@ -80,7 +80,7 @@ contract('ControlledAccountFactory (using mock)', () => {
       });
 
       it('expect to revert when contract is created', async () => {
-        const promise = accountFactory.createControlledAccount(salt);
+        const promise = accountFactory.createControlledAccountMock(salt);
 
         await expect(promise).rejects.toThrow(/revert/);
       });

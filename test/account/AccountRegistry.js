@@ -25,6 +25,7 @@ contract('AccountRegistry', (addresses) => {
   } = web3;
 
   const saltOwner = addresses[1];
+
   let accountRegistry;
   let account;
   let nonce;
@@ -32,6 +33,8 @@ contract('AccountRegistry', (addresses) => {
   const resetAccount = async () => {
     nonce = 0;
     accountRegistry = await AccountRegistry.new();
+
+    await accountRegistry.initialize(ZERO_ADDRESS);
 
     account = computeCreate2Address(
       accountRegistry.address,
@@ -42,7 +45,7 @@ contract('AccountRegistry', (addresses) => {
 
   context('views', () => {
     describe('computeAccountAddress()', () => {
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to return account address', async () => {
         await expect(accountRegistry.computeAccountAddress(
@@ -52,7 +55,7 @@ contract('AccountRegistry', (addresses) => {
     });
 
     describe('isAccountDeployed()', () => {
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to return false when account is not deployed', async () => {
         await expect(accountRegistry.isAccountDeployed(
@@ -78,7 +81,7 @@ contract('AccountRegistry', (addresses) => {
     });
 
     describe('getAccountNonce()', () => {
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to return false when account is not deployed', async () => {
         await expect(accountRegistry.getAccountNonce(
@@ -106,7 +109,7 @@ contract('AccountRegistry', (addresses) => {
     describe('isAccountOwner()', () => {
       const newOwner = addresses[2];
 
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to return true on salt owner', async () => {
         await expect(accountRegistry.isAccountOwner(
@@ -182,13 +185,13 @@ contract('AccountRegistry', (addresses) => {
       });
     });
 
-    describe('verifyAccountOwnerAtBlock()', () => {
+    describe('isAccountOwnerAtBlock()', () => {
       const newOwner = addresses[2];
 
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to return true on salt owner', async () => {
-        await expect(accountRegistry.verifyAccountOwnerAtBlock(
+        await expect(accountRegistry.isAccountOwnerAtBlock(
           account,
           saltOwner,
           0,
@@ -206,7 +209,7 @@ contract('AccountRegistry', (addresses) => {
 
         nonce += 1;
 
-        await expect(accountRegistry.verifyAccountOwnerAtBlock(
+        await expect(accountRegistry.isAccountOwnerAtBlock(
           account,
           newOwner,
           0,
@@ -224,7 +227,7 @@ contract('AccountRegistry', (addresses) => {
 
         nonce += 1;
 
-        await expect(accountRegistry.verifyAccountOwnerAtBlock(
+        await expect(accountRegistry.isAccountOwnerAtBlock(
           account,
           newOwner,
           0,
@@ -232,7 +235,7 @@ contract('AccountRegistry', (addresses) => {
       });
 
       it('expect to return false on invalid owner', async () => {
-        await expect(accountRegistry.verifyAccountOwnerAtBlock(
+        await expect(accountRegistry.isAccountOwnerAtBlock(
           account,
           randomAddress(),
           0,
@@ -258,7 +261,7 @@ contract('AccountRegistry', (addresses) => {
           },
         );
 
-        await expect(accountRegistry.verifyAccountOwnerAtBlock(
+        await expect(accountRegistry.isAccountOwnerAtBlock(
           account,
           saltOwner,
           0,
@@ -272,7 +275,7 @@ contract('AccountRegistry', (addresses) => {
       const owner1 = addresses[2];
       const owner2 = addresses[3];
 
-      before(resetAccount);
+      before(() => resetAccount());
 
       it('expect to add first owner', async () => {
         const output = await accountRegistry.addAccountOwner(
@@ -353,7 +356,7 @@ contract('AccountRegistry', (addresses) => {
     });
 
     describe('executeAccountTransaction()', () => {
-      beforeEach(resetAccount);
+      beforeEach(() => resetAccount());
 
       it('expect to send first transaction by salt owner', async () => {
         const to = randomAddress();

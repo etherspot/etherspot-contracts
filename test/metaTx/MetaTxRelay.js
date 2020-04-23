@@ -1,33 +1,46 @@
 /* eslint-env node, mocha */
 
 const expect = require('expect');
-const { CHAIN_ID, GAS_PRICE } = require('../constants');
+const {
+  GAS_PRICE,
+  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_SALT,
+  ZERO_ADDRESS,
+} = require('../constants');
 const {
   logGasUsed,
+  buildTypedData,
+  signTypedData,
 } = require('../utils');
 
 const Relay = artifacts.require('MetaTxRelay');
 const RelayedMock = artifacts.require('MetaTxRelayedMock');
+const SignatureValidator = artifacts.require('SignatureValidator');
 
 contract('MetaTxRelay', (addresses) => {
-  const {
-    eth: {
-      sign,
-      abi,
-    },
-    utils: {
-      sha3,
-    },
-  } = web3;
-
   context('methods', () => {
     describe('relayCalls()', () => {
       let relay;
       let relayedMock;
 
       beforeEach(async () => {
+        const signatureValidator = await SignatureValidator.new();
+
         relay = await Relay.new();
         relayedMock = await RelayedMock.new();
+
+        await signatureValidator.initialize(
+          ZERO_ADDRESS,
+          ZERO_ADDRESS,
+          TYPED_DATA_DOMAIN_HASH,
+          TYPED_DATA_SALT,
+        );
+
+        await relay.initialize(
+          signatureValidator.address,
+          TYPED_DATA_DOMAIN_HASH,
+          TYPED_DATA_SALT,
+        );
 
         await relayedMock.initialize(
           relay.address,
@@ -36,7 +49,8 @@ contract('MetaTxRelay', (addresses) => {
 
       it('expect to relay single call', async () => {
         const sender = addresses[1];
-        const calls = [
+        const to = [relayedMock.address];
+        const data = [
           relayedMock
             .contract
             .methods
@@ -44,26 +58,34 @@ contract('MetaTxRelay', (addresses) => {
             .encodeABI(),
         ];
 
-        const messageHash = sha3(
-          abi.encodeParameters([
-            'uint256',
-            'address',
-            'address',
-            'bytes[]',
-            'uint256',
-          ], [
-            CHAIN_ID,
-            relay.address,
-            relayedMock.address,
-            calls,
-            GAS_PRICE,
-          ]),
+        const typedData = buildTypedData(
+          relay.address,
+          'RelayedCall', [
+            {
+              name: 'to',
+              type: 'address[]',
+            },
+            {
+              name: 'data',
+              type: 'bytes[]',
+            },
+            {
+              name: 'gasPrice',
+              type: 'uint256',
+            },
+          ], {
+            to,
+            data,
+            gasPrice: GAS_PRICE,
+          },
         );
-        const senderSignature = await sign(messageHash, sender);
 
-        const output = await relay.relayCalls(
-          relayedMock.address,
-          calls,
+        const senderSignature = await signTypedData(typedData, sender);
+
+        const output = await relay.relayCall(
+          sender,
+          to,
+          data,
           senderSignature,
         );
 
@@ -77,7 +99,8 @@ contract('MetaTxRelay', (addresses) => {
 
       it('expect to relay multiple calls', async () => {
         const sender = addresses[1];
-        const calls = [
+        const to = [relayedMock.address, relayedMock.address];
+        const data = [
           relayedMock
             .contract
             .methods
@@ -90,26 +113,34 @@ contract('MetaTxRelay', (addresses) => {
             .encodeABI(),
         ];
 
-        const messageHash = sha3(
-          abi.encodeParameters([
-            'uint256',
-            'address',
-            'address',
-            'bytes[]',
-            'uint256',
-          ], [
-            CHAIN_ID,
-            relay.address,
-            relayedMock.address,
-            calls,
-            GAS_PRICE,
-          ]),
+        const typedData = buildTypedData(
+          relay.address,
+          'RelayedCall', [
+            {
+              name: 'to',
+              type: 'address[]',
+            },
+            {
+              name: 'data',
+              type: 'bytes[]',
+            },
+            {
+              name: 'gasPrice',
+              type: 'uint256',
+            },
+          ], {
+            to,
+            data,
+            gasPrice: GAS_PRICE,
+          },
         );
-        const senderSignature = await sign(messageHash, sender);
 
-        const output = await relay.relayCalls(
-          relayedMock.address,
-          calls,
+        const senderSignature = await signTypedData(typedData, sender);
+
+        const output = await relay.relayCall(
+          sender,
+          to,
+          data,
           senderSignature,
         );
 

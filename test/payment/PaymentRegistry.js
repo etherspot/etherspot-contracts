@@ -1,17 +1,23 @@
 /* eslint-env node, mocha */
 
 const expect = require('expect');
-const { CHAIN_ID, ZERO_ADDRESS } = require('../constants');
+const {
+  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_SALT,
+  ZERO_ADDRESS,
+} = require('../constants');
 const {
   computeCreate2Address,
   randomAddress,
   randomBytes32,
   logGasUsed,
+  buildTypedData,
+  signTypedData,
 } = require('../utils');
 
 const Account = artifacts.require('ControlledAccount');
 const AccountRegistry = artifacts.require('AccountRegistry');
-const MessageRegistry = artifacts.require('MessageRegistry');
+const MessageRegistry = artifacts.require('MessageHashRegistry');
 const PaymentRegistry = artifacts.require('PaymentRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
 const ERC20TokenMock = artifacts.require('ERC20TokenMock');
@@ -19,7 +25,6 @@ const ERC20TokenMock = artifacts.require('ERC20TokenMock');
 contract('PaymentRegistry', (addresses) => {
   const {
     eth: {
-      sign,
       sendTransaction,
     },
     utils: {
@@ -45,16 +50,21 @@ contract('PaymentRegistry', (addresses) => {
     await signatureValidator.initialize(
       accountRegistry.address,
       messageRegistry.address,
+      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_SALT,
     );
 
     await paymentRegistry.initialize(
       depositWithdrawalLockPeriod,
       signatureValidator.address,
+      ZERO_ADDRESS,
+      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_SALT,
     );
   };
 
   context('views', () => {
-    before(resetAccountRegistry);
+    before(() => resetAccountRegistry());
 
     describe('computeDepositAccountAddress()', () => {
       it('expect to return correct address', async () => {
@@ -164,18 +174,46 @@ contract('PaymentRegistry', (addresses) => {
           token,
           uid,
         );
-        const messageHash = soliditySha3(
-          CHAIN_ID,
+
+        const typedData = buildTypedData(
           paymentRegistry.address,
-          sender,
-          recipient,
-          token,
-          uid,
-          0,
-          amount,
+          'PaymentChannelCommit', [
+            {
+              name: 'sender',
+              type: 'address',
+            },
+            {
+              name: 'recipient',
+              type: 'address',
+            },
+            {
+              name: 'token',
+              type: 'address',
+            },
+            {
+              name: 'uid',
+              type: 'bytes32',
+            },
+            {
+              name: 'blockNumber',
+              type: 'uint256',
+            },
+            {
+              name: 'amount',
+              type: 'uint256',
+            },
+          ], {
+            sender,
+            recipient,
+            token,
+            uid,
+            amount,
+            blockNumber: 0,
+          },
         );
-        const senderSignature = await sign(messageHash, sender);
-        const guardianSignature = await sign(messageHash, guardian);
+
+        const senderSignature = await signTypedData(typedData, sender);
+        const guardianSignature = await signTypedData(typedData, guardian);
 
         await sendTransaction({
           from: sender,
@@ -243,18 +281,46 @@ contract('PaymentRegistry', (addresses) => {
         token,
         uid,
       );
-      const messageHash = soliditySha3(
-        CHAIN_ID,
+
+      const typedData = buildTypedData(
         paymentRegistry.address,
-        sender,
-        recipient,
-        token,
-        uid,
-        0,
-        amount,
+        'PaymentChannelCommit', [
+          {
+            name: 'sender',
+            type: 'address',
+          },
+          {
+            name: 'recipient',
+            type: 'address',
+          },
+          {
+            name: 'token',
+            type: 'address',
+          },
+          {
+            name: 'uid',
+            type: 'bytes32',
+          },
+          {
+            name: 'blockNumber',
+            type: 'uint256',
+          },
+          {
+            name: 'amount',
+            type: 'uint256',
+          },
+        ], {
+          sender,
+          recipient,
+          token,
+          uid,
+          amount,
+          blockNumber: 0,
+        },
       );
-      const senderSignature = await sign(messageHash, sender);
-      const guardianSignature = await sign(messageHash, guardian);
+
+      const senderSignature = await signTypedData(typedData, sender);
+      const guardianSignature = await signTypedData(typedData, guardian);
 
       const output = await paymentRegistry[method](
         sender,
@@ -281,7 +347,7 @@ contract('PaymentRegistry', (addresses) => {
 
     describe('commitPaymentChannelAndWithdraw()', () => {
       context('without token', () => {
-        before(resetAccountRegistryAndDeposit);
+        before(() => resetAccountRegistryAndDeposit());
 
         it('expect to commit channel and withdraw', async () => {
           const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw');
@@ -321,7 +387,7 @@ contract('PaymentRegistry', (addresses) => {
       });
 
       context('with token', () => {
-        before(resetAccountRegistryAndDeposit);
+        before(() => resetAccountRegistryAndDeposit());
 
         it('expect to commit channel and withdraw', async () => {
           const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndWithdraw', true);
@@ -365,7 +431,7 @@ contract('PaymentRegistry', (addresses) => {
 
     describe('commitPaymentChannelAndDeposit()', () => {
       context('without token', () => {
-        before(resetAccountRegistryAndDeposit);
+        before(() => resetAccountRegistryAndDeposit());
 
         it('expect to commit channel and deposit', async () => {
           const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit');
@@ -405,7 +471,7 @@ contract('PaymentRegistry', (addresses) => {
       });
 
       context('with token', () => {
-        before(resetAccountRegistryAndDeposit);
+        before(() => resetAccountRegistryAndDeposit());
 
         it('expect to commit channel and deposit', async () => {
           const { hash, uid, logs } = await commitPaymentChannel('commitPaymentChannelAndDeposit', true);

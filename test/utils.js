@@ -1,9 +1,17 @@
+const BN = require('bn.js');
+const { TypedDataUtils } = require('eth-sig-util');
 const {
+  CHAIN_ID,
+  TYPED_DATA_DOMAIN,
+  TYPED_DATA_SALT,
+} = require('./constants');
+
+const {
+  currentProvider,
   eth: {
     getBalance: web3GetBalance,
   },
   utils: {
-    BN,
     randomHex,
     toChecksumAddress,
     soliditySha3,
@@ -100,6 +108,70 @@ function createSignedMessageHash(message) {
   );
 }
 
+function buildTypedData(verifyingContract, primaryType, primarySchema, message) {
+  return {
+    message,
+    primaryType,
+    domain: {
+      verifyingContract,
+      chainId: CHAIN_ID,
+      name: TYPED_DATA_DOMAIN,
+      version: '4',
+      salt: TYPED_DATA_SALT,
+    },
+    types: {
+      EIP712Domain: [
+        {
+          name: 'name',
+          type: 'string',
+        },
+        {
+          name: 'version',
+          type: 'string',
+        },
+        {
+          name: 'chainId',
+          type: 'uint256',
+        },
+        {
+          name: 'verifyingContract',
+          type: 'address',
+        },
+        {
+          name: 'salt',
+          type: 'bytes32',
+        },
+      ],
+      [primaryType]: primarySchema,
+    },
+  };
+}
+
+function hashTypedData(data) {
+  const hash = TypedDataUtils.sign(data);
+  return `0x${hash.toString('hex')}`;
+}
+
+function signTypedData(data, from) {
+  return new Promise((resolve, reject) => {
+    currentProvider.send({
+      jsonrpc: '2.0',
+      method: 'eth_signTypedData',
+      params: [
+        from,
+        data,
+      ],
+      id: Date.now(),
+    }, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.result);
+      }
+    });
+  });
+}
+
 module.exports = {
   logGasUsed,
   parseBlockNumber,
@@ -107,6 +179,9 @@ module.exports = {
   randomBytes32,
   now,
   getBalance,
+  buildTypedData,
+  hashTypedData,
+  signTypedData,
   computeCreate2Address,
   createSignedMessageHash,
 };

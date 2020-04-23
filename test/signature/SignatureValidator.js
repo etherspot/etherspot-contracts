@@ -2,15 +2,22 @@
 
 const expect = require('expect');
 const {
+  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_SALT,
+  ZERO_ADDRESS,
+} = require('../constants');
+const {
   computeCreate2Address,
+  createSignedMessageHash,
   randomAddress,
   randomBytes32,
-  createSignedMessageHash,
+  buildTypedData,
+  hashTypedData,
 } = require('../utils');
 
 const Account = artifacts.require('ControlledAccount');
 const AccountRegistry = artifacts.require('AccountRegistry');
-const MessageRegistry = artifacts.require('MessageRegistry');
+const MessageHashRegistry = artifacts.require('MessageHashRegistry');
 const SignatureValidator = artifacts.require('SignatureValidator');
 
 contract('SignatureValidator', (addresses) => {
@@ -24,20 +31,33 @@ contract('SignatureValidator', (addresses) => {
   const signedMessageHash = createSignedMessageHash(messageHash);
   const rawSigner = addresses[1];
   const registrySigner = addresses[2];
-  const accountOwner = addresses[3];
+  const authorizedSigner = addresses[3];
+  const accountOwner = addresses[4];
 
   let account;
-  let messageRegistry;
+  let messageHashRegistry;
   let signatureValidator;
+  let typedData;
+  let typedDataHash;
 
   before(async () => {
     const accountRegistry = await AccountRegistry.new();
-    messageRegistry = await MessageRegistry.new();
+    messageHashRegistry = await MessageHashRegistry.new();
     signatureValidator = await SignatureValidator.new();
+
+    await accountRegistry.initialize(
+      ZERO_ADDRESS,
+    );
+
+    await messageHashRegistry.initialize(
+      ZERO_ADDRESS,
+    );
 
     await signatureValidator.initialize(
       accountRegistry.address,
-      messageRegistry.address,
+      messageHashRegistry.address,
+      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_SALT,
     );
 
     account = computeCreate2Address(
@@ -46,12 +66,43 @@ contract('SignatureValidator', (addresses) => {
       Account.bytecode,
     );
 
-    await messageRegistry.addMessageHash(signedMessageHash, {
+    typedData = buildTypedData(
+      signatureValidator.address,
+      'AuthorizeAccountKey', [
+        {
+          name: 'account',
+          type: 'address',
+        },
+        {
+          name: 'key',
+          type: 'address',
+        },
+      ], {
+        account: rawSigner,
+        key: authorizedSigner,
+      },
+    );
+
+    typedDataHash = hashTypedData(typedData);
+
+    await messageHashRegistry.submitMessageHash(typedDataHash, {
+      from: rawSigner,
+    });
+
+    await messageHashRegistry.submitMessageHash(signedMessageHash, {
       from: registrySigner,
     });
   });
 
-  context('methods', () => {
+  context('views', () => {
+    describe('hashAuthorizeAccountKey', () => {
+      it('expect to return correct hash', async () => {
+        const output = await signatureValidator.hashAuthorizeAccountKey(typedData.message);
+
+        expect(output).toBe(typedDataHash);
+      });
+    });
+
     describe('verifySignature()', () => {
       it('expect to return true when message hash was signed by raw signer', async () => {
         await expect(signatureValidator.verifySignature(
@@ -74,6 +125,14 @@ contract('SignatureValidator', (addresses) => {
           signedMessageHash,
           '0x',
           registrySigner,
+        )).resolves.toBeTruthy();
+      });
+
+      it('expect to return true when message hash was signed by authorized key', async () => {
+        await expect(signatureValidator.verifySignature(
+          signedMessageHash,
+          await sign(messageHash, authorizedSigner),
+          rawSigner,
         )).resolves.toBeTruthy();
       });
 
