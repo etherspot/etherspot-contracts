@@ -4,7 +4,6 @@ compiled/
 migrations/
 node_modules/
 scripts/
-src/
 test/
 /*.js
 /*.ts
