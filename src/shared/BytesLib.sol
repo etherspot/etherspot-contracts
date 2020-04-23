@@ -18,6 +18,7 @@ library BytesLib {
       data.length >= (start + 20)
     );
 
+    // solhint-disable-next-line no-inline-assembly
     assembly {
       result := div(mload(add(add(data, 0x20), start)), 0x1000000000000000000000000)
     }

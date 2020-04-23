@@ -10,11 +10,7 @@ contract ControlledAccountFactory {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 
   // internal functions
 
@@ -39,10 +35,9 @@ contract ControlledAccountFactory {
   {
     address result = address(0);
 
-    /* solhint-disable */
     bytes memory creationCode = type(ControlledAccount).creationCode;
-    /* solhint-enable */
 
+    // solhint-disable-next-line no-inline-assembly
     assembly {
       let p := add(creationCode, 0x20)
       let n := mload(creationCode)
@@ -80,9 +75,7 @@ contract ControlledAccountFactory {
     view
     returns (address)
   {
-    /* solhint-disable */
     bytes memory creationCode = type(ControlledAccount).creationCode;
-    /* solhint-enable */
 
     bytes32 data = keccak256(
       abi.encodePacked(

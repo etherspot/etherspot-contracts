@@ -47,7 +47,7 @@ contract ControlledAccount {
     external
     onlyController
   {
-    // solhint-disable-next-line avoid-low-level-calls
+    // solhint-disable-next-line avoid-call-value, avoid-low-level-calls
     (bool succeeded, bytes memory returnData) = to.call.value(value)(data);
 
     require(

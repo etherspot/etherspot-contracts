@@ -15,11 +15,7 @@ contract TypedData {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 
   // internal functions
 
@@ -31,6 +27,7 @@ contract TypedData {
   {
     uint256 chainId;
 
+    // solhint-disable-next-line no-inline-assembly
     assembly {
       chainId := chainid
     }

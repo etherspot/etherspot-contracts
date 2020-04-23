@@ -14,11 +14,7 @@ contract ControlledAccountFactoryMock is ControlledAccountFactory {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-  {
-    //
-  }
+  constructor() public {}
 
   // external functions
 

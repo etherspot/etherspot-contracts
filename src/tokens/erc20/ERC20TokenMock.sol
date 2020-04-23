@@ -10,11 +10,7 @@ contract ERC20TokenMock is ERC20Token {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-  {
-    //
-  }
+  constructor() public {}
 
   // external functions
 

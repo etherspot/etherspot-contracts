@@ -30,12 +30,7 @@ contract MessageHashRegistry is MetaTxRelayed, Initializable {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Initializable()
-  {
-    //
-  }
+  constructor() public Initializable() {}
 
   // external functions
 

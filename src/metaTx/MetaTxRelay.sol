@@ -26,12 +26,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Initializable()
-  {
-    //
-  }
+  constructor() public Initializable() {}
 
   // external functions
 
@@ -98,6 +93,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
         to[i] != address(0)
       );
 
+      // solhint-disable-next-line avoid-low-level-calls
       (succeeded,) = to[i].call(abi.encodePacked(data[i], sender, originalSigner));
 
       require(

@@ -15,11 +15,7 @@ contract MetaTxRelayed is NoFallback {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 
   // internal functions
 

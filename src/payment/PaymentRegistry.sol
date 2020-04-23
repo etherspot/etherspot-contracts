@@ -96,13 +96,7 @@ contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, In
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Guarded()
-    Initializable()
-  {
-    //
-  }
+  constructor() public Guarded() Initializable() {}
 
   // external functions
 
@@ -152,6 +146,7 @@ contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, In
     address owner = getSender();
     uint256 lockedUntil = deposits[owner].withdrawalLockedUntil[token];
 
+    /* solhint-disable not-rely-on-time */
     if (lockedUntil != 0 && lockedUntil <= now) {
       deposits[owner].withdrawalLockedUntil[token] = 0;
 
@@ -194,6 +189,7 @@ contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, In
         lockedUntil
       );
     }
+    /* solhint-enable not-rely-on-time */
   }
 
   function commitPaymentChannelAndWithdraw(

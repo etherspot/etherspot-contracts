@@ -14,9 +14,5 @@ contract ERC20DetailedToken is ERC20Token {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 }

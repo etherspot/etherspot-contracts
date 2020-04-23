@@ -23,12 +23,7 @@ contract MetaTxRelayedMock is Initializable, MetaTxRelayed {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Initializable()
-  {
-    //
-  }
+  constructor() public Initializable() {}
 
   // external access
 

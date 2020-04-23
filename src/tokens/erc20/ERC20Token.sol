@@ -31,11 +31,7 @@ contract ERC20Token {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 
   // external functions
 

@@ -7,11 +7,7 @@ contract NoFallback {
   /**
    * @dev internal constructor
    */
-  constructor()
-    internal
-  {
-    //
-  }
+  constructor() internal {}
 
   /**
    * @dev fallback

@@ -67,12 +67,7 @@ contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializab
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Initializable()
-  {
-    //
-  }
+  constructor() public Initializable() {}
 
   // external functions
 
@@ -183,6 +178,7 @@ contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializab
   {
     address sender = verifySenderAndAccountNonce(account, nonce);
 
+    /* solhint-disable avoid-tx-origin */
     if (refundToken == address(0)) {
       privatelyExecuteAccountTransaction(
         sender,
@@ -212,6 +208,7 @@ contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializab
       refundAmount,
       refundToken
     );
+    /* solhint-enable avoid-tx-origin */
   }
 
   // external functions (views)

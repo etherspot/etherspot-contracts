@@ -30,12 +30,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
   /**
    * @dev public constructor
    */
-  constructor()
-    public
-    Initializable()
-  {
-    //
-  }
+  constructor() public Initializable() {}
 
   // external functions
 
