@@ -444,7 +444,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x0c5883b3740153275a000d48d69dd1ddb0c9f0330e37b6f3e31996f7afb89d68",
+    "byteCodeHash": "0x91e0eb29381572beed981c94daf7b2fe366987abd598281080bc591096e986cd",
     "typedDataDomainName": null,
     "addresses": {
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
@@ -504,7 +504,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xba61212a60f4c19a780d40158f899a3451be22e927851f23b0f58978e300692f",
+    "byteCodeHash": "0x7f292c09df419879b9ee58cb1c742dcfbbfb03c06ff7f72b1152c2bb73252825",
     "typedDataDomainName": null,
     "addresses": {}
   },
@@ -1322,7 +1322,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xc232632191a6a37fcce2453f9f08b204c23c02d5e14fe7e90a56ba0768f59af4",
+    "byteCodeHash": "0x0048a4840fac50f7f63e9ef1c0be161dce16bb517b431b485012c03d8048415e",
     "typedDataDomainName": null,
     "addresses": {
       "9999": "0xd8442BE7714D3726CF7dEfad849d84efAB340510"
@@ -1471,7 +1471,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x204dd11e284907654ae807761b6436e27f34071eef531622708eeb66ef73eab7",
+    "byteCodeHash": "0x7b96c25f1e45b692d4dedb3361e0e164b240347d0a14643e464fce5e9dcf19ad",
     "typedDataDomainName": "ETHERspot MetaTx Relay",
     "addresses": {
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
@@ -2228,7 +2228,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xa213da3699eaf0c7e8af7105fdd4ffc71fc22108c050684829415170540c394a",
+    "byteCodeHash": "0xba5914215314292f20b23d99e1188865161ec3ab511ffd6cfa974100daa80db7",
     "typedDataDomainName": "ETHERspot Payment Network",
     "addresses": {
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
@@ -2511,7 +2511,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x4ab36dc48789be1a57ee7ff20371c5cbdb176be02f68c16ca990e7e4bf067fc3",
+    "byteCodeHash": "0x53c3949d52461717240624c1c5f570a773a379ae380a194e7ff871e2d7cd7290",
     "typedDataDomainName": "ETHERspot Signature Validator",
     "addresses": {
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
