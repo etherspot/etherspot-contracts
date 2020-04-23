@@ -13,3 +13,7 @@ export declare function getContractByteCodeHash(
   contractName: ContractNames,
 ): string | null;
 
+export declare function getContractTypedDataDomainName(
+  contractName: ContractNames,
+): string | null;
+

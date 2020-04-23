@@ -1,28 +1,28 @@
 declare global {
   import Web3 from 'web3';
 
-  export interface IContractFunction {
+  export interface ContractFunction {
     (name: string, fn: (addresses: string[]) => void): any;
 
     only: (name: string, fn: (addresses: string[]) => void) => any;
     skip: (name: string, fn: (addresses: string[]) => void) => any;
   }
 
-  export interface IArtifacts {
-    require<T = any>(name: string): IContractFactory<T>;
+  export interface Artifacts {
+    require<T = any>(name: string): ContractFactory;
   }
 
-  export interface IContractFactory {
-    new: (...args: any[]) => Promise<IContract>;
+  export interface ContractFactory {
+    new: (...args: any[]) => Promise<Contract>;
   }
 
-  export interface IContract {
+  export interface Contract {
     address: string;
 
     [key: string]: (...args: any[]) => Promise<any>;
   }
 
-  export const contract: IContractFunction;
+  export const contract: ContractFunction;
   export const web3: Web3;
-  export const artifacts: IArtifacts;
+  export const artifacts: Artifacts;
 }

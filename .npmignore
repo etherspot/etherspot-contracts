@@ -1,11 +1,10 @@
 .*
 !.npmignore
-build/contracts/
-docs/
+compiled/
 migrations/
 node_modules/
 scripts/
-src/Migrations.sol
+src/
 test/
 /*.js
 /*.ts

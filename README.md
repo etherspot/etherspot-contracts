@@ -1,4 +1,4 @@
-# EtherSpot contracts
+# ETHERspot contracts
 
 [![NPM version][npm-image]][npm-url]
 [![MIT licensed][license-image]][license-url]
@@ -14,7 +14,8 @@ $ npm i @etherspot/contracts -S
 ### Javascript
 
 ```javascript
-import { 
+import {
+  TYPED_DATA_DOMAIN_SALT,
   ContractNames, 
   getContractAddress, 
   getContractAbi, 
@@ -25,38 +26,32 @@ console.log(
   'AccountRegistry mainnet address:', 
   getContractAddress(ContractNames.AccountRegistry),
 );
+
 console.log(
   'AccountRegistry görli address:', 
   getContractAddress(ContractNames.AccountRegistry, '5'),
 );
+
 console.log(
   'SignatureValidator abi:', 
   getContractAbi(ContractNames.SignatureValidator),
 );
+
 console.log(
   'ControlledAccount byte code hash:',
   getContractByteCodeHash(ContractNames.ControlledAccount),
 );
-```
 
-### Solidity
+// see: https://eips.ethereum.org/EIPS/eip-712
+console.log(
+  'Typed data domain salt (used in all contracts):',
+  TYPED_DATA_DOMAIN_SALT,
+);
 
-```Solidity
-pragma solidity 0.5.12;
-
-import {AccountRegistry} from "@etherspot/contracts/src/account/AccountRegistry.sol";
-
-// ...
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# unit tests (log gas usage)
-$ npm run test:log-gas-usage
+console.log(
+  'SignatureValidator typed data domain name:',
+  getContractTypedDataDomainName(ContractNames.SignatureValidator),
+);
 ```
 
 ## License

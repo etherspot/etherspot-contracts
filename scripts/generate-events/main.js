@@ -97,17 +97,17 @@ async function main() {
     }
 
     // message registry
-    case 'message-registry': {
-      logger.info(`contract ${ContractNames.MessageRegistry}`);
+    case 'message-hash-registry': {
+      logger.info(`contract ${ContractNames.MessageHashRegistry}`);
 
-      const [contract] = await getContracts(ContractNames.MessageRegistry);
+      const [contract] = await getContracts(ContractNames.MessageHashRegistry);
 
       {
         const messageHash = utils.randomHex(32);
 
         processEvents(
           await executeRequest(
-            contract.methods.addMessageHash(messageHash),
+            contract.methods.submitMessageHash(messageHash),
           ),
         );
       }
@@ -117,13 +117,13 @@ async function main() {
 
         processEvents(
           await executeRequest(
-            contract.methods.addMessageHash(messageHash),
+            contract.methods.submitMessageHash(messageHash),
           ),
         );
 
         processEvents(
           await executeRequest(
-            contract.methods.removeMessageHash(messageHash),
+            contract.methods.expireMessageHash(messageHash),
           ),
         );
       }

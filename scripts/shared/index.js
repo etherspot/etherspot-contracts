@@ -1,21 +1,18 @@
+const Web3 = require('web3');
 const { getContractAbi, getContractAddress } = require('../..');
+const createProvider = require('../../provider');
 const logger = require('./logger');
-const web3 = require('./web3');
 
-const { eth, utils } = web3;
-
-async function getNetworkId() {
-  return eth.net.getId();
-}
+const { eth, utils } = new Web3(createProvider());
 
 async function getContracts(...names) {
-  const networkId = await getNetworkId();
+  const networkId = await eth.net.getId();
 
   return names
     .map((name) => {
       const address = getContractAddress(name, networkId);
       const abi = getContractAbi(name);
-      const result = new web3.eth.Contract(
+      const result = new eth.Contract(
         abi,
         address,
       );
@@ -123,11 +120,8 @@ function processEvents(output) {
 module.exports = {
   ZERO_ADDRESS: `0x${'0'.repeat(40)}`,
   logger,
-  web3,
   utils,
-  getNetworkId,
   getContracts,
-  getDefaultAccount,
   sendTransaction,
   executeRequest,
   createRandomWallet,

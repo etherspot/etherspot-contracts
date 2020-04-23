@@ -1,6 +1,5 @@
-.idea
 !.eslint*
+.idea
 /build/contracts
+compiled
 node_modules
-
-

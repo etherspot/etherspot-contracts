@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "sourceMap": false,
     "declaration": false,
     "allowJs": true,
     "module": "commonjs",
     "target": "es6",
+    "baseUrl": "./",
     "lib": [
       "es6"
     ],
     "typeRoots": [
       "./node_modules/@types"
     ]
-  }
+  },
+  "include": []
 }

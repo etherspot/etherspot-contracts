@@ -12,14 +12,21 @@ function getContractAddress(contractName, networkId = 1) {
     : null;
 }
 
-
 function getContractByteCodeHash(contractName) {
   return contracts[contractName]
     ? contracts[contractName].byteCodeHash || null
     : null;
 }
+
+function getContractTypedDataDomainName(contractName) {
+  return contracts[contractName]
+    ? contracts[contractName].typedDataDomainName || null
+    : null;
+}
+
 module.exports = {
   getContractAbi,
   getContractAddress,
   getContractByteCodeHash,
+  getContractTypedDataDomainName,
 };

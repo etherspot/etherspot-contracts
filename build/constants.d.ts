@@ -1,21 +1,18 @@
-export enum ContractNames {
+export declare const TYPED_DATA_DOMAIN_SALT: string;
+
+export declare enum ContractNames {
   AccountRegistry = 'AccountRegistry',
-  Chained = 'Chained',
   ControlledAccount = 'ControlledAccount',
   ControlledAccountFactory = 'ControlledAccountFactory',
   ERC20DetailedToken = 'ERC20DetailedToken',
   ERC20Token = 'ERC20Token',
   Guarded = 'Guarded',
-  IAccountRegistry = 'IAccountRegistry',
-  IControlledAccount = 'IControlledAccount',
-  IERC20Token = 'IERC20Token',
-  IMessageRegistry = 'IMessageRegistry',
-  ISignatureValidator = 'ISignatureValidator',
   Initializable = 'Initializable',
-  MessageRegistry = 'MessageRegistry',
+  MessageHashRegistry = 'MessageHashRegistry',
   MetaTxRelay = 'MetaTxRelay',
   MetaTxRelayed = 'MetaTxRelayed',
   NoFallback = 'NoFallback',
   PaymentRegistry = 'PaymentRegistry',
   SignatureValidator = 'SignatureValidator',
+  TypedData = 'TypedData',
 }

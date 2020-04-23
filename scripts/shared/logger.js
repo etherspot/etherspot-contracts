@@ -32,7 +32,7 @@ const loggerLogFormat = format((info) => {
 
   const padding = (info.padding && info.padding[info.level]) || '';
 
-  result[MESSAGE] = `[PID: ${process.pid}] ${info.level}:${padding}${info.message}`;
+  result[MESSAGE] = `${info.level}:${padding}${info.message}`;
 
   if (data !== '{}') {
     result[MESSAGE] = `${info[MESSAGE]} ${data}`;

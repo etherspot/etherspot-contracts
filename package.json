@@ -1,18 +1,14 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.0.0-alpha.15",
-  "description": "EtherSpot contracts",
+  "version": "1.0.0-alpha.16",
+  "description": "ETHERspot contracts",
+  "license": "MIT",
   "author": {
-    "name": "Stanislaw Glogowski",
+    "name": "NEWOBJECT.dev",
     "email": "hello@newobject.dev"
   },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/newobject-dev/etherspot-contracts.git"
-  },
   "bugs": {
-    "url": "https://github.com/newobject-dev/etherspot-contracts/issues"
+    "email": "support@newobject.dev"
   },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -28,15 +24,16 @@
     "build": "node ./scripts/build",
     "initialize": "node ./scripts/initialize",
     "generate-events:account-registry": "node ./scripts/generate-events account-registry",
-    "generate-events:message-registry": "node ./scripts/generate-events message-registry"
+    "generate-events:message-hash-registry": "node ./scripts/generate-events message-hash-registry"
   },
   "dependencies": {},
   "devDependencies": {
-    "@truffle/hdwallet-provider": "1.0.33",
+    "@truffle/hdwallet-provider": "1.0.34",
     "@types/bn.js": "4.11.6",
     "@types/fs-extra": "8.1.0",
     "@types/mocha": "7.0.2",
     "@types/node": "13.9.2",
+    "@types/web3": "1.0.20",
     "bn.js": "4.11.8",
     "cross-env": "7.0.2",
     "eslint": "6.8.0",
@@ -45,13 +42,14 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-hooks": "2.5.1",
+    "eth-sig-util": "2.5.3",
     "expect": "25.1.0",
     "fs-extra": "9.0.0",
     "ganache-cli": "6.9.1",
     "triple-beam": "1.3.0",
-    "truffle": "5.1.18",
+    "truffle": "5.1.22",
     "truffle-privatekey-provider": "1.3.0",
-    "web3": "1.2.6",
+    "web3": "1.2.1",
     "winston": "3.2.1"
   }
 }

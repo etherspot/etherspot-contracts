@@ -1,25 +1,21 @@
 /* eslint-disable */
 
 module.exports = {
+  TYPED_DATA_DOMAIN_SALT: '0x898a8ea3b763747ffeb4985d8c04cd68a03c2835474af22e596654ab9cd895d5',
   ContractNames: {
     AccountRegistry: 'AccountRegistry',
-    Chained: 'Chained',
     ControlledAccount: 'ControlledAccount',
     ControlledAccountFactory: 'ControlledAccountFactory',
     ERC20DetailedToken: 'ERC20DetailedToken',
     ERC20Token: 'ERC20Token',
     Guarded: 'Guarded',
-    IAccountRegistry: 'IAccountRegistry',
-    IControlledAccount: 'IControlledAccount',
-    IERC20Token: 'IERC20Token',
-    IMessageRegistry: 'IMessageRegistry',
-    ISignatureValidator: 'ISignatureValidator',
     Initializable: 'Initializable',
-    MessageRegistry: 'MessageRegistry',
+    MessageHashRegistry: 'MessageHashRegistry',
     MetaTxRelay: 'MetaTxRelay',
     MetaTxRelayed: 'MetaTxRelayed',
     NoFallback: 'NoFallback',
     PaymentRegistry: 'PaymentRegistry',
     SignatureValidator: 'SignatureValidator',
+    TypedData: 'TypedData',
   },
 };

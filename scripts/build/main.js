@@ -4,12 +4,30 @@ const { utils: { soliditySha3 } } = require('web3');
 const logger = require('../shared/logger');
 const templates = require('./templates');
 
-const BUILD_ROOT_PATH = resolve(__dirname, '../../build');
+const ROOT_PATH = resolve(__dirname, '../..');
+const PACKAGE_PATH = join(ROOT_PATH, 'package.json');
+const BUILD_ROOT_PATH = join(ROOT_PATH, 'build');
+const COMPILED_ROOT_PATH = join(ROOT_PATH, 'compiled');
 const CONTRACTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'contracts');
 const CONSTANTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'constants');
 
+const TYPED_DATA_DOMAIN_NAMES = {
+  MetaTxRelay: 'ETHERspot MetaTx Relay',
+  PaymentRegistry: 'ETHERspot Payment Network',
+  SignatureValidator: 'ETHERspot Signature Validator',
+};
+
 async function main() {
-  const files = await readdir(CONTRACTS_BUILD_PATH);
+  let salt;
+
+  logger.info('preparing salt');
+
+  {
+    const { name, version } = await readJSON(PACKAGE_PATH);
+    salt = soliditySha3(`${name}@${version}`);
+  }
+
+  const files = await readdir(COMPILED_ROOT_PATH);
   let contractsOldMap;
 
   try {
@@ -35,7 +53,7 @@ async function main() {
             networks,
             bytecode,
             contractName: name,
-          } = await readJSON(join(CONTRACTS_BUILD_PATH, file));
+          } = await readJSON(join(COMPILED_ROOT_PATH, file));
 
           const addressesOld = contractsOldMap[name]
             ? contractsOldMap[name].addresses
@@ -45,6 +63,7 @@ async function main() {
             name,
             abi,
             byteCodeHash: soliditySha3(bytecode),
+            typedDataDomainName: TYPED_DATA_DOMAIN_NAMES[name] || null,
             addresses: {
               ...addressesOld,
               ...Object
@@ -83,7 +102,7 @@ async function main() {
 
     await writeFile(
       filePath,
-      templates.constantsJs(contractNames),
+      templates.constantsJs(salt, contractNames),
     );
   }
 

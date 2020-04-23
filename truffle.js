@@ -2,6 +2,7 @@ const provider = require('./provider');
 
 module.exports = {
   contracts_directory: './src',
+  contracts_build_directory: './compiled',
   networks: {
     default: {
       provider,
@@ -16,7 +17,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.12',
+      version: '0.5.15',
       settings: {
         optimizer: {
           enabled: true,
