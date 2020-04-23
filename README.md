@@ -15,10 +15,10 @@ $ npm i @etherspot/contracts -S
 
 ```javascript
 import {
-  TYPED_DATA_DOMAIN_SALT,
   ContractNames, 
-  getContractAddress, 
+  TYPED_DATA_DOMAIN_SALT,
   getContractAbi, 
+  getContractAddress, 
   getContractByteCodeHash, 
 } from '@etherspot/contracts'; 
 
@@ -43,6 +43,7 @@ console.log(
 );
 
 // see: https://eips.ethereum.org/EIPS/eip-712
+
 console.log(
   'Typed data domain salt (used in all contracts):',
   TYPED_DATA_DOMAIN_SALT,
@@ -56,7 +57,7 @@ console.log(
 
 ## License
 
-[MIT](./LICENSE)
+MIT
 
 [npm-image]: https://badge.fury.io/js/%40etherspot%2Fcontracts.svg
 [npm-url]: https://npmjs.org/package/@etherspot/contracts
