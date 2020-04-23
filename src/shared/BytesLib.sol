@@ -1,19 +1,27 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 /**
  * @title BytesLib
  */
 library BytesLib {
   function toAddress(
-    bytes memory _data,
-    uint _start
-  ) internal  pure returns (address _result) {
-    require(_data.length >= (_start + 20));
+    bytes memory data,
+    uint256 start
+  )
+    internal
+    pure
+    returns (address)
+  {
+    address result;
+
+    require(
+      data.length >= (start + 20)
+    );
 
     assembly {
-      _result := div(mload(add(add(_data, 0x20), _start)), 0x1000000000000000000000000)
+      result := div(mload(add(add(data, 0x20), start)), 0x1000000000000000000000000)
     }
 
-    return _result;
+    return result;
   }
 }

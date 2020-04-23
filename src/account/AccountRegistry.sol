@@ -1,18 +1,18 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {ControlledAccountFactory} from "../shared/controlledAccount/ControlledAccountFactory.sol";
-import {IControlledAccount} from "../shared/controlledAccount/interfaces.sol";
-import {Initializable} from "../shared/initializable/Initializable.sol";
-import {SafeMathLib} from "../shared/SafeMathLib.sol";
-import {MetaTxRelayed} from "../metaTx/MetaTxRelayed.sol";
-import {IERC20Token} from "../tokens/erc20/interfaces.sol";
-import {IAccountRegistry} from "./interfaces.sol";
+import "../metaTx/MetaTxRelayed.sol";
+import "../shared/AddressLib.sol";
+import "../shared/SafeMathLib.sol";
+import "../shared/controlledAccount/ControlledAccountFactory.sol";
+import "../shared/initializable/Initializable.sol";
+import "../tokens/erc20/ERC20Token.sol";
 
 
 /**
  * @title AccountRegistry
  */
-contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelayed, IAccountRegistry {
+contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializable {
+  using AddressLib for address;
   using SafeMathLib for uint256;
 
   struct Owner {
@@ -67,272 +67,344 @@ contract AccountRegistry is ControlledAccountFactory, Initializable, MetaTxRelay
   /**
    * @dev public constructor
    */
-  constructor() public Initializable() {}
+  constructor()
+    public
+    Initializable()
+  {
+    //
+  }
 
-  // external access
+  // external functions
 
   function initialize(
-    address _metaTxRelay
-  ) external onlyInitializer {
-    _initializeMetaTxRelayed(_metaTxRelay);
-  }
-
-  function computeAccountAddress(
-    address _saltOwner
-  ) external view returns (address) {
-    return _computeAccountAddress(_saltOwner);
-  }
-
-  function isAccountDeployed(
-    address _account
-  ) external view returns (bool) {
-    return accounts[_account].deployed;
-  }
-
-  function getAccountNonce(
-    address _account
-  ) external view returns (uint256) {
-    return accounts[_account].nonce;
-  }
-
-  function isAccountOwner(
-    address _account,
-    address _owner
-  ) external view returns (bool) {
-    return _isAccountOwner(_account, _owner);
-  }
-
-  function verifyAccountOwnerAtBlock(
-    address _account,
-    address _owner,
-    uint256 _blockNumber
-  ) external view returns (bool _result) {
-    if (_isAccountOwner(_account, _owner)) {
-      _result = true;
-    } else if (accounts[_account].owners[_owner].added) {
-      if (_blockNumber == 0) {
-        _result = true;
-      } else {
-        _result = accounts[_account].owners[_owner].removedAtBlockNumber > _blockNumber;
-      }
-    }
-
-    return _result;
+    address metaTxRelay_
+  )
+    external
+    onlyInitializer
+  {
+    // MetaTxRelayed
+    initializeMetaTxRelayed(metaTxRelay_);
   }
 
   function addAccountOwner(
-    address _account,
-    uint256 _nonce,
-    address _owner
-  ) external {
-    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
-
+    address account,
+    uint256 nonce,
+    address owner
+  )
+    external
+    afterInitialization
+  {
     require(
-      _owner != address(0)
+      owner != address(0)
     );
 
     require(
-      !accounts[_account].owners[_owner].added || accounts[_account].owners[_owner].removedAtBlockNumber > 0
+      !accounts[account].owners[owner].added ||
+      accounts[account].owners[owner].removedAtBlockNumber > 0
     );
 
-    accounts[_account].owners[_owner].added = true;
-    accounts[_account].owners[_owner].removedAtBlockNumber = 0;
+    address sender = verifySenderAndAccountNonce(account, nonce);
+
+    accounts[account].owners[owner].added = true;
+    accounts[account].owners[owner].removedAtBlockNumber = 0;
 
     emit AccountOwnerAdded(
-      _sender,
-      _account,
-      _owner
+      sender,
+      account,
+      owner
     );
   }
 
   function removeAccountOwner(
-    address _account,
-    uint256 _nonce,
-    address _owner
-  ) external {
-    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
+    address account,
+    uint256 nonce,
+    address owner
+  )
+    external
+    afterInitialization
+  {
+    address sender = verifySenderAndAccountNonce(account, nonce);
 
     require(
-      _owner != _sender
+      owner != sender
     );
 
     require(
-      accounts[_account].owners[_owner].added && accounts[_account].owners[_owner].removedAtBlockNumber == 0
+      accounts[account].owners[owner].added &&
+      accounts[account].owners[owner].removedAtBlockNumber == 0
     );
 
-    accounts[_account].owners[_owner].removedAtBlockNumber = block.number;
+    accounts[account].owners[owner].removedAtBlockNumber = block.number;
 
     emit AccountOwnerRemoved(
-      _sender,
-      _account,
-      _owner
+      sender,
+      account,
+      owner
     );
   }
 
   function executeAccountTransaction(
-    address _account,
-    uint256 _nonce,
-    address payable _to,
-    uint256 _value,
-    bytes calldata _data
-  ) external {
-    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
+    address payable account,
+    uint256 nonce,
+    address payable to,
+    uint256 value,
+    bytes calldata data
+  )
+    external
+    afterInitialization
+  {
+    address sender = verifySenderAndAccountNonce(account, nonce);
 
-    _executeAccountTransaction(
-      _sender,
-      _account,
-      _to,
-      _value,
-      _data
+    privatelyExecuteAccountTransaction(
+      sender,
+      account,
+      to,
+      value,
+      data
     );
 
     emit AccountTransactionExecuted(
-      _sender,
-      _account,
-      _to,
-      _value,
-      _data
+      sender,
+      account,
+      to,
+      value,
+      data
     );
   }
 
   function refundAccountCall(
-    address _account,
-    uint256 _nonce,
-    address payable _refundToken,
-    uint256 _refundAmount
-  ) external {
-    address _sender = _verifySenderAndAccountNonce(_account, _nonce);
+    address payable account,
+    uint256 nonce,
+    address payable refundToken,
+    uint256 refundAmount
+  )
+    external
+    afterInitialization
+  {
+    address sender = verifySenderAndAccountNonce(account, nonce);
 
-    if (_refundToken == address(0)) {
-      _executeAccountTransaction(
-        _sender,
-        _account,
+    if (refundToken == address(0)) {
+      privatelyExecuteAccountTransaction(
+        sender,
+        account,
         tx.origin,
-        _refundAmount,
+        refundAmount,
         new bytes(0)
       );
     } else {
-      _executeAccountTransaction(
-        _sender,
-        _account,
-        _refundToken,
+      privatelyExecuteAccountTransaction(
+        sender,
+        account,
+        refundToken,
         0,
         abi.encodeWithSelector(
-          IERC20Token(_refundToken).transfer.selector,
+          ERC20Token(refundToken).transfer.selector,
           tx.origin,
-          _refundAmount
+          refundAmount
         )
       );
     }
 
     emit AccountCallRefunded(
-      _sender,
-      _account,
+      sender,
+      account,
       tx.origin,
-      _refundAmount,
-      _refundToken
+      refundAmount,
+      refundToken
     );
   }
 
-  // private access
+  // external functions (views)
 
-  function _computeAccountAddress(
-    address _saltOwner
-  ) private view returns (address) {
-    bytes32 _salt = keccak256(
-      abi.encodePacked(_saltOwner)
-    );
-
-    return _computeControlledAccountAddress(_salt);
+  function computeAccountAddress(
+    address saltOwner
+  )
+    external
+    view
+    afterInitialization
+    returns (address)
+  {
+    return privatelyComputeAccountAddress(saltOwner);
   }
 
-  function _isAccountOwner(
-    address _account,
-    address _owner
-  ) private view returns (bool _result) {
-    if (accounts[_account].owners[_owner].added) {
-      _result = accounts[_account].owners[_owner].removedAtBlockNumber == 0;
-    } else if (accounts[_account].salt == 0) {
-      _result = _account == _computeAccountAddress(_owner);
+  function isAccountDeployed(
+    address account
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    return accounts[account].deployed;
+  }
+
+  function getAccountNonce(
+    address account
+  )
+    external
+    view
+    afterInitialization
+    returns (uint256)
+  {
+    return accounts[account].nonce;
+  }
+
+  function isAccountOwner(
+    address account,
+    address owner
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    return checkAccountOwner(account, owner);
+  }
+
+  function isAccountOwnerAtBlock(
+    address account,
+    address owner,
+    uint256 blockNumber
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    bool result = false;
+
+    if (checkAccountOwner(account, owner)) {
+      result = true;
+    } else if (accounts[account].owners[owner].added) {
+      if (blockNumber == 0) {
+        result = true;
+      } else {
+        result = accounts[account].owners[owner].removedAtBlockNumber > blockNumber;
+      }
     }
 
-    return _result;
+    return result;
   }
 
-  function _verifySenderAndAccountNonce(
-    address _account,
-    uint256 _nonce
-  ) private returns (address) {
-    address _sender = _getSender();
+  // private functions
 
-    if (!accounts[_account].owners[_sender].added) {
+  function verifySenderAndAccountNonce(
+    address account,
+    uint256 nonce
+  )
+    private
+    returns (address)
+  {
+    address sender = getOriginalSenders();
+
+    if (
+      !accounts[account].owners[sender].added
+    ) {
       require(
-        accounts[_account].salt == 0
+        accounts[account].salt == 0
       );
 
-      bytes32 _salt = keccak256(
-        abi.encodePacked(_sender)
+      bytes32 salt = keccak256(
+        abi.encodePacked(sender)
       );
 
       require(
-        _account == _computeControlledAccountAddress(_salt)
+        account == computeControlledAccountAddress(salt)
       );
 
-      accounts[_account].salt = _salt;
-      accounts[_account].owners[_sender].added = true;
+      accounts[account].salt = salt;
+      accounts[account].owners[sender].added = true;
 
       emit AccountOwnerAdded(
-        _sender,
-        _account,
-        _sender
+        sender,
+        account,
+        sender
       );
     }
 
     require(
-      accounts[_account].nonce == _nonce
+      accounts[account].nonce == nonce
     );
 
-    accounts[_account].nonce = accounts[_account].nonce.add(1);
+    accounts[account].nonce = accounts[account].nonce.add(1);
 
-    return _sender;
+    return sender;
   }
 
-  function _executeAccountTransaction(
-    address _sender,
-    address _account,
-    address payable _to,
-    uint256 _value,
-    bytes memory _data
-  ) private {
+  function privatelyExecuteAccountTransaction(
+    address sender,
+    address payable account,
+    address payable to,
+    uint256 value,
+    bytes memory data
+  )
+    private
+  {
     require(
-      _to != address(0)
+      to != address(0)
     );
 
     require(
-      _to != address(this)
+      to != address(this)
     );
 
     require(
-      _to != _account
+      to != account
     );
 
-    if (!accounts[_account].deployed) {
-      _createControlledAccount(
-        accounts[_account].salt
+    if (!accounts[account].deployed) {
+      createControlledAccount(
+        accounts[account].salt
       );
 
-      accounts[_account].deployed = true;
+      accounts[account].deployed = true;
 
       emit AccountDeployed(
-        _sender,
-        _account
+        sender,
+        account
       );
     }
 
-    IControlledAccount(_account).executeTransaction(
-      _to,
-      _value,
-      _data
+    executeControlledAccountTransaction(
+      account,
+      to,
+      value,
+      data
     );
+  }
+
+  // private functions (views)
+
+  function checkAccountOwner(
+    address account,
+    address owner
+  )
+    private
+    view
+    returns (bool)
+  {
+    bool result;
+
+    if (accounts[account].owners[owner].added) {
+      result = accounts[account].owners[owner].removedAtBlockNumber == 0;
+    } else if (accounts[account].salt == 0) {
+      result = account == privatelyComputeAccountAddress(owner);
+    }
+
+    return result;
+  }
+
+  function privatelyComputeAccountAddress(
+    address saltOwner
+  )
+    private
+    view
+    returns (address)
+  {
+    bytes32 salt = keccak256(
+      abi.encodePacked(saltOwner)
+    );
+
+    return computeControlledAccountAddress(salt);
   }
 }

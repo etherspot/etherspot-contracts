@@ -1,7 +1,7 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {Initializable} from "../shared/initializable/Initializable.sol";
-import {MetaTxRelayed} from "./MetaTxRelayed.sol";
+import "../shared/initializable/Initializable.sol";
+import "./MetaTxRelayed.sol";
 
 
 /**
@@ -23,25 +23,39 @@ contract MetaTxRelayedMock is Initializable, MetaTxRelayed {
   /**
    * @dev public constructor
    */
-  constructor() public Initializable() {}
+  constructor()
+    public
+    Initializable()
+  {
+    //
+  }
 
   // external access
 
   function initialize(
-    address _metaTxRelay
-  ) external onlyInitializer {
-    _initializeMetaTxRelayed(_metaTxRelay);
+    address metaTxRelay
+  )
+    external
+    onlyInitializer
+  {
+    initializeMetaTxRelayed(metaTxRelay);
   }
 
-  function exampleCall1() external {
-    emit ExampleCall1Sender(_getSender());
+  function exampleCall1()
+    external
+    afterInitialization
+  {
+    emit ExampleCall1Sender(getSender());
   }
 
   function exampleCall2(
-    uint256 _example
-  ) external {
-    example = _example;
+    uint256 example_
+  )
+    external
+    afterInitialization
+  {
+    example = example_;
 
-    emit ExampleCall2Sender(_getSender());
+    emit ExampleCall2Sender(getSender());
   }
 }

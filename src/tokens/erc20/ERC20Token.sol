@@ -1,136 +1,175 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {SafeMathLib} from "../../shared/SafeMathLib.sol";
-import {IERC20Token} from "./interfaces.sol";
+import "../../shared/SafeMathLib.sol";
 
 
 /**
  * @title ERC20Token
  */
-contract ERC20Token is IERC20Token {
+contract ERC20Token {
   using SafeMathLib for uint256;
 
-  struct Stats {
-    uint256 totalSupply;
-  }
+  uint256 public totalSupply;
 
   mapping(address => uint256) private balances;
   mapping(address => mapping(address => uint256)) private allowances;
 
-  Stats private stats;
+  // events
+
+  event Transfer(
+    address indexed from,
+    address indexed to,
+    uint256 value
+  );
+
+  event Approval(
+    address indexed owner,
+    address indexed spender,
+    uint256 value
+  );
 
   /**
    * @dev internal constructor
    */
-  constructor() internal {}
-
-  // external access
-
-  function totalSupply() external view returns (uint256) {
-    return stats.totalSupply;
+  constructor()
+    internal
+  {
+    //
   }
 
-  function balanceOf(
-    address _owner
-  ) external view returns (uint256) {
-    return balances[_owner];
-  }
-
-  function allowance(
-    address _owner,
-    address _spender
-  ) external view returns (uint256) {
-    return allowances[_owner][_spender];
-  }
+  // external functions
 
   function transfer(
-    address _to,
-    uint256 _value
-  ) external returns (bool) {
-    _transfer(msg.sender, _to, _value);
+    address to,
+    uint256 value
+  )
+    external
+    returns (bool)
+  {
+    internallyTransfer(msg.sender, to, value);
+
     return true;
   }
 
   function transferFrom(
-    address _from,
-    address _to,
-    uint256 _value
-  ) external returns (bool) {
-    _transfer(_from, _to, _value);
-    _approve(_from, msg.sender, allowances[_from][msg.sender].sub(_value));
+    address from,
+    address to,
+    uint256 value
+  )
+    external
+    returns (bool)
+  {
+    internallyTransfer(from, to, value);
+    internallyApprove(from, msg.sender, allowances[from][msg.sender].sub(value));
+
     return true;
   }
 
   function approve(
-    address _spender,
-    uint256 _value
-  ) external returns (bool) {
-    _approve(msg.sender, _spender, _value);
+    address spender,
+    uint256 value
+  )
+    external
+    returns (bool)
+  {
+    internallyApprove(msg.sender, spender, value);
+
     return true;
   }
 
-  // internal access
+  // external functions (views)
 
-  function _transfer(
-    address _from,
-    address _to,
-    uint256 _value
-  ) internal {
-    require(
-      _from != address(0)
-    );
-    require(
-      _to != address(0)
-    );
-
-    balances[_from] = balances[_from].sub(_value);
-    balances[_to] = balances[_to].add(_value);
-
-    emit Transfer(_from, _to, _value);
+  function balanceOf(
+    address owner
+  )
+    external
+    view
+    returns (uint256)
+  {
+    return balances[owner];
   }
 
-  function _approve(
-    address _owner,
-    address _spender,
-    uint256 _value
-  ) internal {
-    require(
-      _owner != address(0)
-    );
-    require(
-      _spender != address(0)
-    );
-
-    allowances[_owner][_spender] = _value;
-
-    emit Approval(_owner, _spender, _value);
+  function allowance(
+    address owner,
+    address spender
+  )
+    external
+    view
+    returns (uint256)
+  {
+    return allowances[owner][spender];
   }
 
-  function _mint(
-    address _owner,
-    uint256 _value
-  ) internal {
+  // internal functions
+
+  function internallyTransfer(
+    address from,
+    address to,
+    uint256 value
+  )
+    internal
+  {
     require(
-      _owner != address(0)
+      from != address(0)
+    );
+    require(
+      to != address(0)
     );
 
-    balances[_owner] = balances[_owner].add(_value);
-    stats.totalSupply = stats.totalSupply.add(_value);
+    balances[from] = balances[from].sub(value);
+    balances[to] = balances[to].add(value);
 
-    emit Transfer(address(0), _owner, _value);
+    emit Transfer(from, to, value);
   }
 
-  function _burn(
-    address _owner,
-    uint256 _value
-  ) internal {
+  function internallyApprove(
+    address owner,
+    address spender,
+    uint256 value
+  )
+    internal
+  {
     require(
-      _owner != address(0)
+      owner != address(0)
+    );
+    require(
+      spender != address(0)
     );
 
-    balances[_owner] = balances[_owner].sub(_value);
-    stats.totalSupply = stats.totalSupply.sub(_value);
+    allowances[owner][spender] = value;
 
-    emit Transfer(_owner, address(0), _value);
+    emit Approval(owner, spender, value);
+  }
+
+  function internallyMint(
+    address owner,
+    uint256 value
+  )
+    internal
+  {
+    require(
+      owner != address(0)
+    );
+
+    balances[owner] = balances[owner].add(value);
+    totalSupply = totalSupply.add(value);
+
+    emit Transfer(address(0), owner, value);
+  }
+
+  function internallyBurn(
+    address owner,
+    uint256 value
+  )
+    internal
+  {
+    require(
+      owner != address(0)
+    );
+
+    balances[owner] = balances[owner].sub(value);
+    totalSupply = totalSupply.sub(value);
+
+    emit Transfer(owner, address(0), value);
   }
 }

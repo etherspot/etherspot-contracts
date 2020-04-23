@@ -1,9 +1,11 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 /**
  * @title Initializable
  */
 contract Initializable {
+  bool public initialized;
+
   address private initializer;
 
   // events
@@ -21,19 +23,25 @@ contract Initializable {
 
     _;
 
+    initialized = true;
+
     emit Initialized();
+  }
+
+  modifier afterInitialization() {
+    require(
+      initialized
+    );
+
+    _;
   }
 
   /**
    * @dev internal constructor
    */
-  constructor() internal {
+  constructor()
+    internal
+  {
     initializer = msg.sender;
-  }
-
-  // external access
-
-  function isInitialized() external view returns (bool) {
-    return initializer == address(0);
   }
 }

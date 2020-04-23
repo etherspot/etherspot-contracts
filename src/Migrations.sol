@@ -1,12 +1,11 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 /**
  * @title Migrations
  */
 contract Migrations {
   address public owner;
-
-  uint public last_completed_migration;
+  uint256 public last_completed_migration;
 
   // modifiers
 
@@ -19,17 +18,29 @@ contract Migrations {
   /**
    * @dev public constructor
    */
-  constructor() public {
+  constructor()
+    public
+  {
     owner = msg.sender;
   }
 
-  // external access
+  // external functions
 
-  function setCompleted(uint completed) external restricted {
+  function setCompleted(
+    uint256 completed
+  )
+    external
+    restricted
+  {
     last_completed_migration = completed;
   }
 
-  function upgrade(address new_address) external restricted {
+  function upgrade(
+    address new_address
+  )
+    external
+    restricted
+  {
     Migrations upgraded = Migrations(new_address);
     upgraded.setCompleted(last_completed_migration);
   }

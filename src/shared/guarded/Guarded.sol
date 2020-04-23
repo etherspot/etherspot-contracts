@@ -1,6 +1,6 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {SignatureLib} from "../../signature/SignatureLib.sol";
+import "../../signature/SignatureLib.sol";
 
 
 /**
@@ -34,67 +34,92 @@ contract Guarded {
   /**
    * @dev internal constructor
    */
-  constructor() internal {
+  constructor()
+    internal
+  {
     guardians[msg.sender] = true;
   }
 
-  // external access
-
-  function isGuardian(
-    address _guardian
-  ) external view returns (bool) {
-    return guardians[_guardian];
-  }
-
-  function verifyGuardianSignature(
-    bytes32 _messageHash,
-    bytes calldata _signature
-  ) external view returns (bool) {
-    return _verifyGuardianSignature(
-      _messageHash,
-      _signature
-    );
-  }
+  // external functions
 
   function addGuardian(
-    address _guardian
-  ) external onlyGuardian {
+    address guardian
+  )
+    external
+    onlyGuardian
+  {
     require(
-      _guardian != address(0)
+      guardian != address(0)
     );
 
     require(
-      !guardians[_guardian]
+      !guardians[guardian]
     );
 
-    guardians[_guardian] = true;
+    guardians[guardian] = true;
 
-    emit GuardianAdded(_guardian);
+    emit GuardianAdded(guardian);
   }
 
   function removeGuardian(
-    address _guardian
-  ) external onlyGuardian {
+    address guardian
+  )
+    external
+    onlyGuardian
+  {
     require(
-      msg.sender != _guardian
+      msg.sender != guardian
     );
 
     require(
-      guardians[_guardian]
+      guardians[guardian]
     );
 
-    guardians[_guardian] = false;
+    guardians[guardian] = false;
 
-    emit GuardianRemoved(_guardian);
+    emit GuardianRemoved(
+      guardian
+    );
   }
 
-  // internal access
+  // external functions (views)
 
-  function _verifyGuardianSignature(
-    bytes32 _messageHash,
-    bytes memory _signature
-  ) internal view returns (bool) {
-    address _guardian = _messageHash.recoverAddress(_signature);
-    return guardians[_guardian];
+  function isGuardian(
+    address guardian
+  )
+    external
+    view
+    returns (bool)
+  {
+    return guardians[guardian];
+  }
+
+  function verifyGuardianSignature(
+    bytes32 messageHash,
+    bytes calldata signature
+  )
+    external
+    view
+    returns (bool)
+  {
+    return internallyVerifyGuardianSignature(
+      messageHash,
+      signature
+    );
+  }
+
+  // internal functions (views)
+
+  function internallyVerifyGuardianSignature(
+    bytes32 messageHash,
+    bytes memory signature
+  )
+    internal
+    view
+    returns (bool)
+  {
+    address guardian = messageHash.recoverAddress(signature);
+
+    return guardians[guardian];
   }
 }

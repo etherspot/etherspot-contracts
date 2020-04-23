@@ -1,7 +1,7 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {NoFallback} from "../shared/noFallback/NoFallback.sol";
-import {BytesLib} from "../shared/BytesLib.sol";
+import "../shared/BytesLib.sol";
+import "../shared/noFallback/NoFallback.sol";
 
 
 /**
@@ -15,23 +15,53 @@ contract MetaTxRelayed is NoFallback {
   /**
    * @dev internal constructor
    */
-  constructor() internal {}
-
-  // internal access
-
-  function _initializeMetaTxRelayed(
-    address _metaTxRelay
-  ) internal {
-    metaTxRelay = _metaTxRelay;
+  constructor()
+    internal
+  {
+    //
   }
 
-  function _getSender() internal view returns (address _result) {
+  // internal functions
+
+  function initializeMetaTxRelayed(
+    address metaTxRelay_
+  )
+    internal
+  {
+    metaTxRelay = metaTxRelay_;
+  }
+
+  // internal functions (views)
+
+  function getSender()
+    internal
+    view
+    returns (address)
+  {
+    address result;
+
     if (msg.sender == metaTxRelay) {
-      _result = msg.data.toAddress(msg.data.length - 20);
+      result = msg.data.toAddress(msg.data.length - 40);
     } else {
-      _result = msg.sender;
+      result = msg.sender;
     }
 
-    return _result;
+    return result;
+  }
+
+  function getOriginalSenders()
+    internal
+    view
+    returns (address)
+  {
+    address result;
+
+    if (msg.sender == metaTxRelay) {
+      result = msg.data.toAddress(msg.data.length - 20);
+    } else {
+      result = msg.sender;
+    }
+
+    return result;
   }
 }

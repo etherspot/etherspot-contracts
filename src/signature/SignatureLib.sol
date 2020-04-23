@@ -1,33 +1,39 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 /**
  * @title SignatureLib
  */
 library SignatureLib {
   function recoverAddress(
-    bytes32 _messageHash,
-    bytes memory _signature
-  ) internal pure returns (address) {
-    if (_signature.length == 65) {
-      bytes32 _r;
-      bytes32 _s;
-      uint8 _v;
+    bytes32 messageHash,
+    bytes memory signature
+  )
+    internal
+    pure
+    returns (address)
+  {
+    address result = address(0);
+
+    if (signature.length == 65) {
+      bytes32 r;
+      bytes32 s;
+      uint8 v;
 
       assembly {
-        _r := mload(add(_signature, 0x20))
-        _s := mload(add(_signature, 0x40))
-        _v := byte(0, mload(add(_signature, 0x60)))
+        r := mload(add(signature, 0x20))
+        s := mload(add(signature, 0x40))
+        v := byte(0, mload(add(signature, 0x60)))
       }
 
-      if (_v < 27) {
-        _v += 27;
+      if (v < 27) {
+        v += 27;
       }
 
-      if (_v == 27 || _v == 28) {
-        return ecrecover(_messageHash, _v, _r, _s);
+      if (v == 27 || v == 28) {
+        result = ecrecover(messageHash, v, r, s);
       }
     }
 
-    return address(0);
+    return result;
   }
 }

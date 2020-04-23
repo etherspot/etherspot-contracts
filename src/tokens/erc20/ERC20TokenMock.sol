@@ -1,6 +1,6 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {ERC20Token} from "./ERC20Token.sol";
+import "./ERC20Token.sol";
 
 
 /**
@@ -10,14 +10,20 @@ contract ERC20TokenMock is ERC20Token {
   /**
    * @dev public constructor
    */
-  constructor() public {}
+  constructor()
+    public
+  {
+    //
+  }
 
-  // external access
+  // external functions
 
   function mint(
-    address _owner,
-    uint256 _value
-  ) external {
-    _mint(_owner, _value);
+    address owner,
+    uint256 value
+  )
+    external
+  {
+    internallyMint(owner, value);
   }
 }

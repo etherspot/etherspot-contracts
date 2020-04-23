@@ -1,104 +1,244 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
+pragma experimental ABIEncoderV2;
 
-import {Initializable} from "../shared/initializable/Initializable.sol";
-import {NoFallback} from "../shared/noFallback/NoFallback.sol";
-import {HashLib} from "../shared/HashLib.sol";
-import {IAccountRegistry} from "../account/interfaces.sol";
-import {IMessageRegistry} from "../message/interfaces.sol";
-import {SignatureLib} from "./SignatureLib.sol";
-import {ISignatureValidator} from "./interfaces.sol";
+import "../account/AccountRegistry.sol";
+import "../messageHash/MessageHashRegistry.sol";
+import "../shared/initializable/Initializable.sol";
+import "../shared/noFallback/NoFallback.sol";
+import "../shared/typedData/TypedData.sol";
+import "./SignatureLib.sol";
 
 
 /**
  * @title SignatureValidator
  */
-contract SignatureValidator is Initializable, NoFallback, ISignatureValidator {
-  using HashLib for address;
+contract SignatureValidator is Initializable, NoFallback, TypedData {
   using SignatureLib for bytes32;
 
-  IAccountRegistry public accountRegistry;
-  IMessageRegistry public messageRegistry;
+  struct AuthorizeAccountKey {
+    address account;
+    address key;
+  }
+
+  bytes32 private constant AUTHORIZE_ACCOUNT_KEY_TYPE_HASH = keccak256(
+    "AuthorizeAccountKey(address account,address key)"
+  );
+
+  AccountRegistry public accountRegistry;
+  MessageHashRegistry public messageHashRegistry;
 
   /**
    * @dev public constructor
    */
-  constructor() public Initializable() {}
+  constructor()
+    public
+    Initializable()
+  {
+    //
+  }
 
-  // external access
+  // external functions
 
   function initialize(
-    IAccountRegistry _accountRegistry,
-    IMessageRegistry _messageRegistry
-  ) external onlyInitializer {
-    accountRegistry = _accountRegistry;
-    messageRegistry = _messageRegistry;
+    AccountRegistry accountRegistry_,
+    MessageHashRegistry messageHashRegistry_,
+    bytes32 typedDataDomainNameHash,
+    bytes32 typedDataDomainSalt
+  )
+    external
+    onlyInitializer
+  {
+    accountRegistry = accountRegistry_;
+    messageHashRegistry = messageHashRegistry_;
+
+    // TypedData
+    initializeTypedData(
+      typedDataDomainNameHash,
+      typedDataDomainSalt
+    );
+  }
+
+  // external functions (views)
+
+  function hashAuthorizeAccountKey(
+    AuthorizeAccountKey calldata authorizeAccountKey
+  )
+    external
+    view
+    afterInitialization
+    returns (bytes32)
+  {
+    return hashPrimaryTypedData(
+      hashTypedData(authorizeAccountKey)
+    );
+  }
+
+  function recoverOriginalSigner(
+    bytes32 messageHash,
+    bytes calldata signature,
+    address signer
+  )
+    external
+    view
+    afterInitialization
+    returns (address)
+  {
+    return privatelyRecoverOriginalSigner(
+      messageHash,
+      signature,
+      signer,
+      block.number
+    );
+  }
+
+  function recoverOriginalSignerAtBlock(
+    bytes32 messageHash,
+    bytes calldata signature,
+    address signer,
+    uint256 blockNumber
+  )
+    external
+    view
+    afterInitialization
+    returns (address)
+  {
+    return privatelyRecoverOriginalSigner(
+      messageHash,
+      signature,
+      signer,
+      blockNumber
+    );
   }
 
   function verifySignature(
-    bytes32 _messageHash,
-    bytes calldata _signature,
-    address _signer
-  ) external view returns (bool) {
-    return _verifySignature(
-      _messageHash,
-      _signature,
-      _signer,
+    bytes32 messageHash,
+    bytes calldata signature,
+    address signer
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    return privatelyVerifySignature(
+      messageHash,
+      signature,
+      signer,
       block.number
     );
   }
 
   function verifySignatureAtBlock(
-    bytes32 _messageHash,
-    bytes calldata _signature,
-    address _signer,
-    uint256 _blockNumber
-  ) external view returns (bool) {
-    return _verifySignature(
-      _messageHash,
-      _signature,
-      _signer,
-      _blockNumber
+    bytes32 messageHash,
+    bytes calldata signature,
+    address signer,
+    uint256 blockNumber
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    return privatelyVerifySignature(
+      messageHash,
+      signature,
+      signer,
+      blockNumber
     );
   }
 
-  // private
+  // private functions (views)
 
-  function _verifySignature(
-    bytes32 _messageHash,
-    bytes memory _signature,
-    address _signer,
-    uint256 _blockNumber
-  ) private view returns (bool _result) {
-    if (_signature.length == 0) {
-      _result = messageRegistry.verifySenderMessageHashAtBlock(
-        _signer,
-        _messageHash,
-        _blockNumber
-      );
+  function privatelyRecoverOriginalSigner(
+    bytes32 messageHash,
+    bytes memory signature,
+    address signer,
+    uint256 blockNumber
+  )
+    private
+    view
+    returns (address)
+  {
+    address result = address(0);
+
+    if (signature.length == 0) {
+      if (
+        messageHashRegistry.verifySenderMessageHashAtBlock(
+          signer,
+          messageHash,
+          blockNumber
+        )
+      ) {
+        result = signer;
+      }
     } else {
-      address _recovered = _messageHash.recoverAddress(_signature);
-      if (_recovered != address(0)) {
-        if (_recovered == _signer) {
-          _result = true;
+      address recovered = messageHash.recoverAddress(signature);
+
+      if (recovered != address(0)) {
+        if (recovered == signer) {
+          result = recovered;
+        } else if (
+          accountRegistry.isAccountOwnerAtBlock(
+            signer,
+            recovered,
+            blockNumber
+          )
+        ) {
+          result = recovered;
         } else {
-          _result = accountRegistry.verifyAccountOwnerAtBlock(
-            _signer,
-            _recovered,
-            _blockNumber
+          bytes32 authorizedMessageHash = hashPrimaryTypedData(
+            hashTypedData(AuthorizeAccountKey(signer, recovered))
           );
 
-          if (!_result) {
-            _result = messageRegistry.verifySenderMessageHashAtBlock(
-              _signer,
-              _recovered.toAuthorizedMessageHash(),
-              _blockNumber
-            );
+          if (
+            messageHashRegistry.verifySenderMessageHashAtBlock(
+              signer,
+              authorizedMessageHash,
+              blockNumber
+            )
+          ) {
+            result = recovered;
           }
         }
       }
     }
 
-    return _result;
+    return result;
   }
 
+  function privatelyVerifySignature(
+    bytes32 messageHash,
+    bytes memory signature,
+    address signer,
+    uint256 blockNumber
+  )
+    private
+    view
+    returns (bool)
+  {
+    address originalSigner = privatelyRecoverOriginalSigner(
+      messageHash,
+      signature,
+      signer,
+      blockNumber
+    );
+
+    return originalSigner != address(0);
+  }
+
+  // private functions (pure)
+
+  function hashTypedData(
+    AuthorizeAccountKey memory authorizeAccountKey
+  )
+    private
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encode(
+      AUTHORIZE_ACCOUNT_KEY_TYPE_HASH,
+      authorizeAccountKey.account,
+      authorizeAccountKey.key
+    ));
+  }
 }

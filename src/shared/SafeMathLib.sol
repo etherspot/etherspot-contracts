@@ -1,67 +1,89 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 /**
  * @title SafeMathLib
  */
 library SafeMathLib {
-  // internal pures
-
   function add(
-    uint256 _a,
-    uint256 _b
-  ) internal pure returns (uint256 _result) {
-    _result = _a + _b;
+    uint256 a,
+    uint256 b
+  )
+    internal
+    pure
+    returns (uint256)
+  {
+    uint256 result = a + b;
 
     require(
-      _result >= _a
+      result >= a
     );
+
+    return result;
   }
 
   function sub(
-    uint256 _a,
-    uint256 _b
-  ) internal pure returns (uint256) {
+    uint256 a,
+    uint256 b
+  )
+    internal
+    pure
+    returns (uint256)
+  {
     require(
-      _b <= _a
+      b <= a
     );
 
-    return _a - _b;
+    return a - b;
   }
 
   function mul(
-    uint256 _a,
-    uint256 _b
-  ) internal pure returns (uint256 _result) {
-    if (_a != 0 && _b != 0) {
-      _result = _a * _b;
+    uint256 a,
+    uint256 b
+  )
+    internal
+    pure
+    returns (uint256)
+  {
+    uint256 result = 0;
+
+    if (a != 0 && b != 0) {
+      result = a * b;
 
       require(
-        _result / _a == _b
+        result / a == b
       );
-    } else {
-      _result = 0;
     }
+
+    return result;
   }
 
   function div(
-    uint256 _a,
-    uint256 _b
-  ) internal pure returns (uint256) {
+    uint256 a,
+    uint256 b
+  )
+    internal
+    pure
+    returns (uint256)
+  {
     require(
-      _b != 0
+      b != 0
     );
 
-    return _a / _b;
+    return a / b;
   }
 
   function mod(
-    uint256 _a,
-    uint256 _b
-  ) internal pure returns (uint256) {
+    uint256 a,
+    uint256 b
+  )
+    internal
+    pure
+    returns (uint256)
+  {
     require(
-      _b != 0
+      b != 0
     );
 
-    return _a % _b;
+    return a % b;
   }
 }

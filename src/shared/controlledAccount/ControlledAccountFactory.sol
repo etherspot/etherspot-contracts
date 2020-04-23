@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
 import {ControlledAccount} from "./ControlledAccount.sol";
 
@@ -10,55 +10,89 @@ contract ControlledAccountFactory {
   /**
    * @dev internal constructor
    */
-  constructor() internal {}
-
-  // internal access
-
-  function _computeControlledAccountAddress(
-    bytes32 _salt
-  ) internal view returns (address) {
-    /* solhint-disable */
-    bytes32 _creationCodeHash = keccak256(type(ControlledAccount).creationCode);
-    /* solhint-enable */
-
-    bytes32 _data = keccak256(
-      abi.encodePacked(
-        bytes1(0xff),
-        address(this),
-        _salt,
-        _creationCodeHash
-      )
-    );
-
-    return address(bytes20(_data << 96));
+  constructor()
+    internal
+  {
+    //
   }
 
-  function _createControlledAccount(
-    bytes32 _salt
-  ) internal returns (address) {
-    return _createControlledAccount(
-      _salt,
+  // internal functions
+
+  function createControlledAccount(
+    bytes32 salt
+  )
+    internal
+    returns (address)
+  {
+    return createControlledAccount(
+      salt,
       0
     );
   }
 
-  function _createControlledAccount(
-    bytes32 _salt,
-    uint256 _value
-  ) internal returns (address _result) {
+  function createControlledAccount(
+    bytes32 salt,
+    uint256 value
+  )
+    internal
+    returns (address)
+  {
+    address result = address(0);
+
     /* solhint-disable */
-    bytes memory _creationCode = type(ControlledAccount).creationCode;
+    bytes memory creationCode = type(ControlledAccount).creationCode;
     /* solhint-enable */
 
     assembly {
-      let p := add(_creationCode, 0x20)
-      let n := mload(_creationCode)
-      _result := create2(_value, p, n, _salt)
-      if iszero(extcodesize(_result)) {
+      let p := add(creationCode, 0x20)
+      let n := mload(creationCode)
+      result := create2(value, p, n, salt)
+
+      if iszero(extcodesize(result)) {
         revert(0, 0)
       }
     }
 
-    return _result;
+    return result;
+  }
+
+  function executeControlledAccountTransaction(
+    address payable account,
+    address payable to,
+    uint256 value,
+    bytes memory data
+  )
+    internal
+  {
+    ControlledAccount(account).executeTransaction(
+      to,
+      value,
+      data
+    );
+  }
+
+  // internal functions (views)
+
+  function computeControlledAccountAddress(
+    bytes32 salt
+  )
+    internal
+    view
+    returns (address)
+  {
+    /* solhint-disable */
+    bytes memory creationCode = type(ControlledAccount).creationCode;
+    /* solhint-enable */
+
+    bytes32 data = keccak256(
+      abi.encodePacked(
+        bytes1(0xff),
+        address(this),
+        salt,
+        keccak256(creationCode)
+      )
+    );
+
+    return address(bytes20(data << 96));
   }
 }

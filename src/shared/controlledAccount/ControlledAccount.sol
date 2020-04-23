@@ -1,12 +1,10 @@
-pragma solidity 0.5.12;
-
-import {IControlledAccount} from "./interfaces.sol";
+pragma solidity 0.5.15;
 
 
 /**
  * @title ControlledAccount
  */
-contract ControlledAccount is IControlledAccount {
+contract ControlledAccount {
   address public controller;
 
   // modifiers
@@ -22,30 +20,43 @@ contract ControlledAccount is IControlledAccount {
   /**
    * @dev public constructor
    */
-  constructor() public payable {
+  constructor()
+    public
+    payable
+  {
     controller = msg.sender;
   }
 
-  // external access
+  /**
+   * @dev fallback
+   */
+  function()
+    external
+    payable
+  {
+    //
+  }
 
-  function() external payable {}
+  // external functions
 
   function executeTransaction(
-    address payable _to,
-    uint256 _value,
-    bytes calldata _data
-  ) external onlyController {
-
+    address payable to,
+    uint256 value,
+    bytes calldata data
+  )
+    external
+    onlyController
+  {
     // solhint-disable-next-line avoid-low-level-calls
-    (bool _succeeded, bytes memory _returnData) = _to.call.value(_value)(_data);
+    (bool succeeded, bytes memory returnData) = to.call.value(value)(data);
 
     require(
-      _succeeded
+      succeeded
     );
 
-    if (_returnData.length > 0) {
+    if (returnData.length > 0) {
       require(
-        abi.decode(_returnData, (bool))
+        abi.decode(returnData, (bool))
       );
     }
   }

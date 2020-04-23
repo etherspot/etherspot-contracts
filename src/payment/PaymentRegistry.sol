@@ -1,24 +1,22 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.15;
 
-import {Chained} from "../shared/chained/Chained.sol";
-import {ControlledAccountFactory} from "../shared/controlledAccount/ControlledAccountFactory.sol";
-import {IControlledAccount} from "../shared/controlledAccount/interfaces.sol";
-import {Guarded} from "../shared/guarded/Guarded.sol";
-import {Initializable} from "../shared/initializable/Initializable.sol";
-import {NoFallback} from "../shared/noFallback/NoFallback.sol";
-import {AddressLib} from "../shared/AddressLib.sol";
-import {HashLib} from "../shared/HashLib.sol";
-import {SafeMathLib} from "../shared/SafeMathLib.sol";
-import {ISignatureValidator} from "../signature/interfaces.sol";
-import {IERC20Token} from "../tokens/erc20/interfaces.sol";
+import "../metaTx/MetaTxRelayed.sol";
+import "../shared/AddressLib.sol";
+import "../shared/SafeMathLib.sol";
+import "../shared/controlledAccount/ControlledAccount.sol";
+import "../shared/controlledAccount/ControlledAccountFactory.sol";
+import "../shared/guarded/Guarded.sol";
+import "../shared/initializable/Initializable.sol";
+import "../shared/typedData/TypedData.sol";
+import "../signature/SignatureValidator.sol";
+import "../tokens/erc20/ERC20Token.sol";
 
 
 /**
  * @title PaymentRegistry
  */
-contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initializable, NoFallback {
+contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, Initializable, TypedData {
   using AddressLib for address;
-  using HashLib for bytes;
   using SafeMathLib for uint256;
 
   struct Deposit {
@@ -30,10 +28,22 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     uint256 committedAmount;
   }
 
+  struct PaymentChannelCommit {
+    address sender;
+    address recipient;
+    address token;
+    bytes32 uid;
+    uint256 blockNumber;
+    uint256 amount;
+  }
+
+  bytes32 private constant PAYMENT_CHANNEL_COMMIT_TYPE_HASH = keccak256(
+    "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
+  );
   uint256 private constant DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD = 30 days;
 
   uint256 public depositWithdrawalLockPeriod;
-  ISignatureValidator private signatureValidator;
+  SignatureValidator private signatureValidator;
   mapping(address => Deposit) private deposits;
   mapping(bytes32 => PaymentChannel) private paymentChannels;
 
@@ -67,368 +77,512 @@ contract PaymentRegistry is Chained, ControlledAccountFactory, Guarded, Initiali
     uint256 amount
   );
 
-  event PaymentWithdrawn(bytes32 channelHash, uint256 value);
+  event PaymentWithdrawn(
+    bytes32 channelHash,
+    uint256 value
+  );
 
-  event PaymentDeposited(bytes32 channelHash, uint256 value);
+  event PaymentDeposited(
+    bytes32 channelHash,
+    uint256 value
+  );
+
+  event PaymentSplitted(
+    bytes32 channelHash,
+    uint256 totalValue,
+    uint256 depositValue
+  );
 
   /**
    * @dev public constructor
    */
-  constructor() public Chained() Guarded() Initializable() {}
+  constructor()
+    public
+    Guarded()
+    Initializable()
+  {
+    //
+  }
 
-  // external access
+  // external functions
 
   function initialize(
-    uint256 _depositWithdrawalLockPeriod,
-    ISignatureValidator _signatureValidator
-  ) external onlyInitializer {
-    if (_depositWithdrawalLockPeriod == 0) {
+    uint256 depositWithdrawalLockPeriod_,
+    SignatureValidator signatureValidator_,
+    address metaTxRelay_,
+    bytes32 typedDataDomainNameHash,
+    bytes32 typedDataDomainSalt
+  )
+    external
+    onlyInitializer
+  {
+    if (depositWithdrawalLockPeriod_ == 0) {
       depositWithdrawalLockPeriod = DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD;
     } else {
-      depositWithdrawalLockPeriod = _depositWithdrawalLockPeriod;
+      depositWithdrawalLockPeriod = depositWithdrawalLockPeriod_;
     }
 
-    signatureValidator = _signatureValidator;
-  }
+    signatureValidator = signatureValidator_;
 
-  function computeDepositAccountAddress(
-    address _owner
-  ) external view returns (address) {
-    return _computeDepositAccountAddress(_owner);
-  }
+    // MetaTxRelayed
+    initializeMetaTxRelayed(metaTxRelay_);
 
-  function computePaymentChannelHash(
-    address _sender,
-    address _recipient,
-    address _token,
-    bytes32 _uid
-  ) external pure returns (bytes32) {
-    return _computePaymentChannelHash(
-      _sender,
-      _recipient,
-      _token,
-      _uid
+    // TypedData
+    initializeTypedData(
+      typedDataDomainNameHash,
+      typedDataDomainSalt
     );
   }
 
-  function isDepositAccountDeployed(
-    address _owner
-  ) external view returns (bool) {
-    return deposits[_owner].account != address(0);
-  }
-
-  function getDepositWithdrawalLockedUntil(
-    address _owner,
-    address _token
-  ) external view returns (uint256)  {
-    return deposits[_owner].withdrawalLockedUntil[_token];
-  }
-
-  function getPaymentChannelCommittedAmount(
-    bytes32 _hash
-  ) external view returns (uint256) {
-    return paymentChannels[_hash].committedAmount;
-  }
-
   function deployDepositAccount(
-    address _owner
-  ) external {
-    _deployDepositAccount(_owner);
+    address owner
+  )
+    external
+    afterInitialization
+  {
+    privatelyDeployDepositAccount(owner);
   }
 
   function withdrawDeposit(
-    address _token
-  ) public {
-    uint256 _lockedUntil = deposits[msg.sender].withdrawalLockedUntil[_token];
+    address token
+  )
+    external
+    afterInitialization
+  {
+    address owner = getSender();
+    uint256 lockedUntil = deposits[owner].withdrawalLockedUntil[token];
 
-    if (_lockedUntil != 0 && _lockedUntil <= now) {
-      deposits[msg.sender].withdrawalLockedUntil[_token] = 0;
+    if (lockedUntil != 0 && lockedUntil <= now) {
+      deposits[owner].withdrawalLockedUntil[token] = 0;
 
-      address _depositAccount = deposits[msg.sender].account;
-      uint256 _depositValue;
+      address depositAccount = deposits[owner].account;
+      uint256 depositValue;
 
-      if (_token == address(0)) {
-        _depositValue = _depositAccount.balance;
+      if (token == address(0)) {
+        depositValue = depositAccount.balance;
       } else {
-        _depositValue = IERC20Token(_token).balanceOf(_depositAccount);
+        depositValue = ERC20Token(token).balanceOf(depositAccount);
       }
 
-      _transferFromDeposit(
-        _depositAccount,
-        msg.sender,
-        _token,
-        _depositValue
+      transferFromDeposit(
+        depositAccount,
+        owner,
+        token,
+        depositValue
       );
 
       emit DepositWithdrawn(
-        deposits[msg.sender].account,
-        msg.sender,
-        _token,
-        _depositValue
+        depositAccount,
+        owner,
+        token,
+        depositValue
       );
     } else {
       // deploy deposit account if not deployed yet
-      if (deposits[msg.sender].account == address(0)) {
-        _deployDepositAccount(msg.sender);
+      if (deposits[owner].account == address(0)) {
+        privatelyDeployDepositAccount(owner);
       }
 
-      _lockedUntil = now.add(depositWithdrawalLockPeriod);
+      lockedUntil = now.add(depositWithdrawalLockPeriod);
 
-      deposits[msg.sender].withdrawalLockedUntil[_token] = _lockedUntil;
+      deposits[owner].withdrawalLockedUntil[token] = lockedUntil;
 
       emit DepositWithdrawalRequested(
-        deposits[msg.sender].account,
-        msg.sender,
-        _token,
-        _lockedUntil
+        deposits[owner].account,
+        owner,
+        token,
+        lockedUntil
       );
     }
   }
 
   function commitPaymentChannelAndWithdraw(
-    address _sender,
-    address _token,
-    bytes32 _uid,
-    uint256 _blockNumber,
-    uint256 _amount,
-    bytes calldata _senderSignature,
-    bytes calldata _guardianSignature
-  ) external {
-    (bytes32 _hash, address _depositAccount, uint256 _paymentValue) = _commitPaymentChannel(
-      _sender,
-      msg.sender,
-      _token,
-      _uid,
-      _blockNumber,
-      _amount,
-      _senderSignature,
-      _guardianSignature
+    address sender,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount,
+    bytes calldata senderSignature,
+    bytes calldata guardianSignature
+  )
+    external
+    afterInitialization
+  {
+    address recipient = getSender();
+
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount,
+      senderSignature,
+      guardianSignature
     );
 
-    _transferFromDeposit(
-      _depositAccount,
-      msg.sender,
-      _token,
-      _paymentValue
+    transferFromDeposit(
+      depositAccount,
+      recipient,
+      token,
+      paymentValue
     );
 
-    emit PaymentWithdrawn(_hash, _paymentValue);
+    emit PaymentWithdrawn(hash, paymentValue);
   }
 
   function commitPaymentChannelAndDeposit(
-    address _sender,
-    address _token,
-    bytes32 _uid,
-    uint256 _blockNumber,
-    uint256 _amount,
-    bytes calldata _senderSignature,
-    bytes calldata _guardianSignature
-  ) external {
-    (bytes32 _hash, address _depositAccount, uint256 _paymentValue) = _commitPaymentChannel(
-      _sender,
-      msg.sender,
-      _token,
-      _uid,
-      _blockNumber,
-      _amount,
-      _senderSignature,
-      _guardianSignature
+    address sender,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount,
+    bytes calldata senderSignature,
+    bytes calldata guardianSignature
+  )
+    external
+    afterInitialization
+  {
+    address recipient = getSender();
+
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount,
+      senderSignature,
+      guardianSignature
     );
 
-    _transferFromDeposit(
-      _depositAccount,
-      _computeDepositAccountAddress(msg.sender),
-      _token,
-      _paymentValue
+    transferFromDeposit(
+      depositAccount,
+      privatelyComputeDepositAccountAddress(recipient),
+      token,
+      paymentValue
     );
 
-    emit PaymentDeposited(_hash, _paymentValue);
+    emit PaymentDeposited(hash, paymentValue);
   }
 
   function commitPaymentChannelAndSplit(
-    address _sender,
-    address _token,
-    bytes32 _uid,
-    uint256 _blockNumber,
-    uint256 _amount,
-    uint256 _depositPaymentValue,
-    bytes calldata _senderSignature,
-    bytes calldata _guardianSignature
-  ) external {
-    require(
-      _depositPaymentValue > 0
+    address sender,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount,
+    uint256 depositPaymentValue,
+    bytes calldata senderSignature,
+    bytes calldata guardianSignature
+  )
+    external
+    afterInitialization
+  {
+    address recipient = getSender();
+
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount,
+      senderSignature,
+      guardianSignature
     );
 
-    (bytes32 _hash, address _depositAccount, uint256 _paymentValue) = _commitPaymentChannel(
-      _sender,
-      msg.sender,
-      _token,
-      _uid,
-      _blockNumber,
-      _amount,
-      _senderSignature,
-      _guardianSignature
+    transferFromDepositAndSplit(
+      depositAccount,
+      recipient,
+      token,
+      paymentValue,
+      depositPaymentValue
     );
 
-    uint256 _withdrawPaymentValue = _paymentValue.sub(_depositPaymentValue);
-
-    require(
-      _withdrawPaymentValue > 0
-    );
-
-    _transferFromDeposit(
-      _depositAccount,
-      msg.sender,
-      _token,
-      _withdrawPaymentValue
-    );
-
-    emit PaymentWithdrawn(_hash, _withdrawPaymentValue);
-
-    _transferFromDeposit(
-      _depositAccount,
-      _computeDepositAccountAddress(msg.sender),
-      _token,
-      _depositPaymentValue
-    );
-
-    emit PaymentDeposited(_hash, _depositPaymentValue);
+    emit PaymentSplitted(hash, paymentValue, depositPaymentValue);
   }
 
-  // private access
+  // external functions (views)
 
-  function _computeDepositAccountAddress(
-    address _owner
-  ) private view returns (address) {
-    bytes32 _salt = keccak256(
+  function computeDepositAccountAddress(
+    address owner
+  )
+    external
+    view
+    afterInitialization
+    returns (address)
+  {
+    return privatelyComputeDepositAccountAddress(owner);
+  }
+
+  function isDepositAccountDeployed(
+    address owner
+  )
+    external
+    view
+    afterInitialization
+    returns (bool)
+  {
+    return deposits[owner].account != address(0);
+  }
+
+  function getDepositWithdrawalLockedUntil(
+    address owner,
+    address token
+  )
+    external
+    view
+    afterInitialization
+    returns (uint256)
+  {
+    return deposits[owner].withdrawalLockedUntil[token];
+  }
+
+  function getPaymentChannelCommittedAmount(
+    bytes32 hash
+  )
+    external
+    view
+    afterInitialization
+    returns (uint256)
+  {
+    return paymentChannels[hash].committedAmount;
+  }
+
+  // external functions (pure)
+
+  function computePaymentChannelHash(
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid
+  )
+    external
+    pure
+    returns (bytes32)
+  {
+    return privatelyComputePaymentChannelHash(
+      sender,
+      recipient,
+      token,
+      uid
+    );
+  }
+
+  // private functions
+
+  function privatelyDeployDepositAccount(
+    address owner
+  )
+    private
+  {
+    bytes32 salt = keccak256(
       abi.encodePacked(
-        _owner
+        owner
       )
     );
 
-    return _computeControlledAccountAddress(_salt);
+    deposits[owner].account = createControlledAccount(salt);
+
+    emit DepositAccountDeployed(deposits[owner].account, owner);
   }
 
-  function _computePaymentChannelHash(
-    address _sender,
-    address _recipient,
-    address _token,
-    bytes32 _uid
-  ) private pure returns (bytes32) {
-    return keccak256(
-      abi.encodePacked(
-        _sender,
-        _recipient,
-        _token,
-        _uid
+  function commitPaymentChannel(
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount,
+    bytes memory senderSignature,
+    bytes memory guardianSignature
+  )
+    private
+    returns (bytes32 hash, address depositAccount, uint256 paymentValue)
+  {
+    bytes32 messageHash = hashPrimaryTypedData(
+      hashTypedData(
+        sender,
+        recipient,
+        token,
+        uid,
+        blockNumber,
+        amount
       )
-    );
-  }
-
-  function _deployDepositAccount(
-    address _owner
-  ) private {
-    bytes32 _salt = keccak256(
-      abi.encodePacked(
-        _owner
-      )
-    );
-
-    deposits[_owner].account = _createControlledAccount(_salt);
-
-    emit DepositAccountDeployed(deposits[_owner].account, _owner);
-  }
-
-  function _commitPaymentChannel(
-    address _sender,
-    address _recipient,
-    address _token,
-    bytes32 _uid,
-    uint256 _blockNumber,
-    uint256 _amount,
-    bytes memory _senderSignature,
-    bytes memory _guardianSignature
-  ) private returns (bytes32 _hash, address _depositAccount, uint256 _paymentValue) {
-    bytes32 _signedMessageHash = abi.encodePacked(
-      chainId,
-      address(this),
-      _sender,
-      _recipient,
-      _token,
-      _uid,
-      _blockNumber,
-      _amount
-    )
-    .toSignedMessageHash();
-
-    require(
-      _verifyGuardianSignature(_signedMessageHash, _guardianSignature)
     );
 
     require(
       signatureValidator.verifySignatureAtBlock(
-        _signedMessageHash,
-        _senderSignature,
-        _sender,
-        _blockNumber
+        messageHash,
+        senderSignature,
+        sender,
+        blockNumber
       )
     );
 
-    _hash = _computePaymentChannelHash(
-      _sender,
-      _recipient,
-      _token,
-      _uid
+    require(
+      internallyVerifyGuardianSignature(messageHash, guardianSignature)
+    );
+
+    hash = privatelyComputePaymentChannelHash(
+      sender,
+      recipient,
+      token,
+      uid
     );
 
     // calc payment value
-    _paymentValue = _amount.sub(paymentChannels[_hash].committedAmount);
+    paymentValue = amount.sub(paymentChannels[hash].committedAmount);
 
     require(
-      _paymentValue != 0
+      paymentValue != 0
     );
 
-    paymentChannels[_hash].committedAmount = _amount;
+    paymentChannels[hash].committedAmount = amount;
 
     // deploy deposit account if not deployed yet
-    if (deposits[_sender].account == address(0)) {
-      _deployDepositAccount(_sender);
+    if (deposits[sender].account == address(0)) {
+      privatelyDeployDepositAccount(sender);
     }
 
-    _depositAccount = deposits[_sender].account;
+    depositAccount = deposits[sender].account;
 
     emit PaymentChannelCommitted(
-      _hash,
-      _sender,
-      _recipient,
-      _token,
-      _uid,
-      _amount
+      hash,
+      sender,
+      recipient,
+      token,
+      uid,
+      amount
     );
+
+    return (hash, depositAccount, paymentValue);
   }
 
-  function _transferFromDeposit(
-    address _depositAccount,
-    address _to,
-    address _token,
-    uint256 _value
-  ) private {
-    if (_token == address(0)) {
-      IControlledAccount(_depositAccount).executeTransaction(
-        _to.toPayable(),
-        _value,
+  function transferFromDeposit(
+    address depositAccount,
+    address to,
+    address token,
+    uint256 value
+  )
+    private
+  {
+    if (token == address(0)) {
+      executeControlledAccountTransaction(
+        depositAccount.toPayable(),
+        to.toPayable(),
+        value,
         new bytes(0)
       );
     } else {
-      IControlledAccount(_depositAccount).executeTransaction(
-        _token.toPayable(),
+      executeControlledAccountTransaction(
+        depositAccount.toPayable(),
+        token.toPayable(),
         0,
         abi.encodeWithSelector(
-          IERC20Token(_token).transfer.selector,
-          _to,
-          _value
+          ERC20Token(token).transfer.selector,
+          to,
+          value
         )
       );
     }
+  }
+
+  function transferFromDepositAndSplit(
+    address depositAccount,
+    address to,
+    address token,
+    uint256 paymentValue,
+    uint256 depositValue
+  )
+    private
+  {
+    require(
+      depositValue > 0
+    );
+
+    uint256 withdrawValue = paymentValue.sub(depositValue);
+
+    require(
+      withdrawValue > 0
+    );
+
+    transferFromDeposit(
+      depositAccount,
+      to,
+      token,
+      withdrawValue
+    );
+
+    transferFromDeposit(
+      depositAccount,
+      privatelyComputeDepositAccountAddress(to),
+      token,
+      depositValue
+    );
+  }
+
+  // private functions (views)
+
+  function privatelyComputeDepositAccountAddress(
+    address owner
+  )
+    private
+    view
+    returns (address)
+  {
+    bytes32 salt = keccak256(
+      abi.encodePacked(
+        owner
+      )
+    );
+
+    return computeControlledAccountAddress(salt);
+  }
+
+  // private functions (pure)
+
+  function privatelyComputePaymentChannelHash(
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid
+  )
+    private
+    pure
+    returns (bytes32)
+  {
+    return keccak256(
+      abi.encodePacked(
+        sender,
+        recipient,
+        token,
+        uid
+      )
+    );
+  }
+
+  function hashTypedData(
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount
+  )
+    private
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encode(
+      PAYMENT_CHANNEL_COMMIT_TYPE_HASH,
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount
+    ));
   }
 }
