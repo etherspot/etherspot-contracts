@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 module.exports = {
-  TYPED_DATA_DOMAIN_SALT: '0x7e23d9edc5efdb8e4f4ff23bf92b193fb5e0e6ab0516d7ce808f7cf5a802892b',
+  TYPED_DATA_DOMAIN_SALT: '0x32f8f6be16eb5a6a8191f3d467406d7e65491ea8d52549cd7af992f8e348d6f9',
   ContractNames: {
     AccountRegistry: 'AccountRegistry',
     ControlledAccount: 'ControlledAccount',

@@ -1406,6 +1406,26 @@ module.exports = {
         "constant": false,
         "inputs": [
           {
+            "internalType": "address[]",
+            "name": "to",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "data",
+            "type": "bytes[]"
+          }
+        ],
+        "name": "relayCall",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
             "internalType": "address",
             "name": "sender",
             "type": "address"
@@ -1426,7 +1446,7 @@ module.exports = {
             "type": "bytes"
           }
         ],
-        "name": "relayCall",
+        "name": "relayDelegateCall",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -1471,7 +1491,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x7b96c25f1e45b692d4dedb3361e0e164b240347d0a14643e464fce5e9dcf19ad",
+    "byteCodeHash": "0xf8818279e93131225a0f6dae3ff9d50a579dccc0686162e45d5a541d1d921736",
     "typedDataDomainName": "ETHERspot MetaTx Relay",
     "addresses": {
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"

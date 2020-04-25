@@ -50,6 +50,21 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
   // public functions
 
   function relayCall(
+    address[] memory to,
+    bytes[] memory data
+  )
+    public
+    afterInitialization
+  {
+    privatelyRelayCall(
+      msg.sender,
+      msg.sender,
+      to,
+      data
+    );
+  }
+
+  function relayDelegateCall(
     address sender,
     address[] memory to,
     bytes[] memory data,
@@ -60,12 +75,6 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
   {
     require(
       sender != address(0)
-    );
-    require(
-      to.length > 0
-    );
-    require(
-      data.length == to.length
     );
 
     bytes32 messageHash = hashPrimaryTypedData(
@@ -86,20 +95,12 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
       originalSigner != address(0)
     );
 
-    bool succeeded;
-
-    for (uint256 i = 0; i < data.length; i++) {
-      require(
-        to[i] != address(0)
-      );
-
-      // solhint-disable-next-line avoid-low-level-calls
-      (succeeded,) = to[i].call(abi.encodePacked(data[i], sender, originalSigner));
-
-      require(
-        succeeded
-      );
-    }
+    privatelyRelayCall(
+      sender,
+      originalSigner,
+      to,
+      data
+    );
   }
 
   // public functions (views)
@@ -119,6 +120,39 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
         relayedCall.gasPrice
       )
     );
+  }
+
+  // private functions
+
+  function privatelyRelayCall(
+    address sender,
+    address originalSigner,
+    address[] memory to,
+    bytes[] memory data
+  )
+    private
+  {
+    require(
+      to.length > 0
+    );
+    require(
+      data.length == to.length
+    );
+
+    bool succeeded;
+
+    for (uint256 i = 0; i < data.length; i++) {
+      require(
+        to[i] != address(0)
+      );
+
+      // solhint-disable-next-line avoid-low-level-calls
+      (succeeded,) = to[i].call(abi.encodePacked(data[i], sender, originalSigner));
+
+      require(
+        succeeded
+      );
+    }
   }
 
   // private functions (pure)
