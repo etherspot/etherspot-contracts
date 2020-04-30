@@ -55,16 +55,6 @@ console.log(
 );
 ```
 
-### Solidity
-
-```Solidity
-pragma solidity 0.5.15;
-
-import {AccountRegistry} from "@etherspot/contracts/src/account/AccountRegistry.sol";
-
-// ...
-```
-
 ## License
 
 MIT

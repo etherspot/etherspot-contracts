@@ -1,11 +1,5 @@
-.*
-!.npmignore
-compiled/
-migrations/
-node_modules/
-scripts/
-test/
-/*.js
-/*.ts
-/*.log
-/tsconfig.json
+/*
+!/build
+!/package*
+!/README
+!/LICENSE
