@@ -444,7 +444,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x91e0eb29381572beed981c94daf7b2fe366987abd598281080bc591096e986cd",
+    "byteCodeHash": "0x29ab076525d4a8f092433fab61e663f53d5b6e6e76eaeaa8cbfa38f974426517",
     "typedDataDomainName": null,
     "addresses": {
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
@@ -773,6 +773,275 @@ module.exports = {
     "byteCodeHash": null,
     "typedDataDomainName": null,
     "addresses": {}
+  },
+  "ERC20O2OToken": {
+    "abi": [
+      {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "withdraw",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "byteCodeHash": "0x4e631e17719cfe5c69c3714a5be6e0371664fcdcaab256c27138abb6177e42b7",
+    "typedDataDomainName": null,
+    "addresses": {
+      "9999": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e"
+    }
   },
   "ERC20Token": {
     "abi": [
@@ -1491,7 +1760,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xf8818279e93131225a0f6dae3ff9d50a579dccc0686162e45d5a541d1d921736",
+    "byteCodeHash": "0x2f2779ac5e3452946e575e2a30f3cf7792bba9d270e58dab8416d3fd5ce09428",
     "typedDataDomainName": "ETHERspot MetaTx Relay",
     "addresses": {
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
@@ -2248,7 +2517,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xba5914215314292f20b23d99e1188865161ec3ab511ffd6cfa974100daa80db7",
+    "byteCodeHash": "0x7a18e9b8bb6675f9ea41410d199a85c751f59cecae77b9d2b91fa94adb17af18",
     "typedDataDomainName": "ETHERspot Payment Network",
     "addresses": {
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
@@ -2531,7 +2800,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x53c3949d52461717240624c1c5f570a773a379ae380a194e7ff871e2d7cd7290",
+    "byteCodeHash": "0x335aabdd613cf00a63b3153972310023753df4175a42b8ddff96ac794ebe79f7",
     "typedDataDomainName": "ETHERspot Signature Validator",
     "addresses": {
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"

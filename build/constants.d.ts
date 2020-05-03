@@ -5,6 +5,7 @@ export declare enum ContractNames {
   ControlledAccount = 'ControlledAccount',
   ControlledAccountFactory = 'ControlledAccountFactory',
   ERC20DetailedToken = 'ERC20DetailedToken',
+  ERC20O2OToken = 'ERC20O2OToken',
   ERC20Token = 'ERC20Token',
   Guarded = 'Guarded',
   Initializable = 'Initializable',
