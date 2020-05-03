@@ -11,8 +11,8 @@ contract ERC20O2OToken is ERC20DetailedToken {
    * @dev public constructor
    */
   constructor() public {
-    name = 'One to One';
-    symbol = 'O2O';
+    name = "One to One";
+    symbol = "O2O";
     decimals = 18;
   }
 
