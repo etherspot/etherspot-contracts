@@ -2,7 +2,7 @@ import { ContractNames } from './constants';
 
 export declare function getContractAbi(
   contractName: ContractNames,
-): string | null;
+): any | null;
 
 export declare function getContractAddress(
   contractName: ContractNames,
