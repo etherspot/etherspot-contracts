@@ -2,7 +2,6 @@ pragma solidity 0.5.15;
 pragma experimental ABIEncoderV2;
 
 import "../shared/initializable/Initializable.sol";
-import "../shared/noFallback/NoFallback.sol";
 import "../shared/typedData/TypedData.sol";
 import "../signature/SignatureValidator.sol";
 
@@ -10,7 +9,7 @@ import "../signature/SignatureValidator.sol";
 /**
  * @title Relay
  */
-contract Relay is Initializable, NoFallback, TypedData {
+contract Relay is Initializable, TypedData {
   struct DelegatedBatch {
     address[] to;
     bytes[] data;

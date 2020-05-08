@@ -1,13 +1,12 @@
 pragma solidity 0.5.15;
 
 import "../shared/BytesLib.sol";
-import "../shared/noFallback/NoFallback.sol";
 
 
 /**
  * @title Relayed
  */
-contract Relayed is NoFallback {
+contract Relayed {
   using BytesLib for bytes;
 
   address public relay;

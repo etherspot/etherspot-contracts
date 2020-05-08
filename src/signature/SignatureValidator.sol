@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 import "../account/AccountRegistry.sol";
 import "../messageHash/MessageHashRegistry.sol";
 import "../shared/initializable/Initializable.sol";
-import "../shared/noFallback/NoFallback.sol";
 import "../shared/typedData/TypedData.sol";
 import "./SignatureLib.sol";
 
@@ -12,7 +11,7 @@ import "./SignatureLib.sol";
 /**
  * @title SignatureValidator
  */
-contract SignatureValidator is Initializable, NoFallback, TypedData {
+contract SignatureValidator is Initializable, TypedData {
   using SignatureLib for bytes32;
 
   struct AuthorizeAccountKey {

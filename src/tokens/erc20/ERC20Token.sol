@@ -1,12 +1,13 @@
 pragma solidity 0.5.15;
 
+import "../../relay/Relayed.sol";
 import "../../shared/SafeMathLib.sol";
 
 
 /**
  * @title ERC20Token
  */
-contract ERC20Token {
+contract ERC20Token is Relayed {
   using SafeMathLib for uint256;
 
   uint256 public totalSupply;
@@ -42,7 +43,7 @@ contract ERC20Token {
     external
     returns (bool)
   {
-    internallyTransfer(msg.sender, to, value);
+    internallyTransfer(getSender(), to, value);
 
     return true;
   }
@@ -55,8 +56,10 @@ contract ERC20Token {
     external
     returns (bool)
   {
+    address sender = getSender();
+
     internallyTransfer(from, to, value);
-    internallyApprove(from, msg.sender, allowances[from][msg.sender].sub(value));
+    internallyApprove(from, sender, allowances[from][sender].sub(value));
 
     return true;
   }
@@ -68,7 +71,7 @@ contract ERC20Token {
     external
     returns (bool)
   {
-    internallyApprove(msg.sender, spender, value);
+    internallyApprove(getSender(), spender, value);
 
     return true;
   }

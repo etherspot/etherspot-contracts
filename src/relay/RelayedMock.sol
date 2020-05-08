@@ -25,7 +25,7 @@ contract RelayedMock is Initializable, Relayed {
    */
   constructor() public Initializable() {}
 
-  // external access
+  // external functions
 
   function initialize(
     address relay_
