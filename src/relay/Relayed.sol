@@ -5,12 +5,12 @@ import "../shared/noFallback/NoFallback.sol";
 
 
 /**
- * @title MetaTxRelayed
+ * @title Relayed
  */
-contract MetaTxRelayed is NoFallback {
+contract Relayed is NoFallback {
   using BytesLib for bytes;
 
-  address public metaTxRelay;
+  address public relay;
 
   /**
    * @dev internal constructor
@@ -19,12 +19,12 @@ contract MetaTxRelayed is NoFallback {
 
   // internal functions
 
-  function initializeMetaTxRelayed(
-    address metaTxRelay_
+  function initializeRelayed(
+    address relay_
   )
     internal
   {
-    metaTxRelay = metaTxRelay_;
+    relay = relay_;
   }
 
   // internal functions (views)
@@ -36,7 +36,7 @@ contract MetaTxRelayed is NoFallback {
   {
     address result;
 
-    if (msg.sender == metaTxRelay) {
+    if (msg.sender == relay) {
       result = msg.data.toAddress(msg.data.length - 40);
     } else {
       result = msg.sender;
@@ -52,7 +52,7 @@ contract MetaTxRelayed is NoFallback {
   {
     address result;
 
-    if (msg.sender == metaTxRelay) {
+    if (msg.sender == relay) {
       result = msg.data.toAddress(msg.data.length - 20);
     } else {
       result = msg.sender;

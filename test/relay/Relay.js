@@ -13,11 +13,11 @@ const {
   signTypedData,
 } = require('../utils');
 
-const Relay = artifacts.require('MetaTxRelay');
-const RelayedMock = artifacts.require('MetaTxRelayedMock');
+const Relay = artifacts.require('Relay');
+const RelayedMock = artifacts.require('RelayedMock');
 const SignatureValidator = artifacts.require('SignatureValidator');
 
-contract('MetaTxRelay', (addresses) => {
+contract('Relay', (addresses) => {
   context('methods', () => {
     let relay;
     let relayedMock;
@@ -46,8 +46,8 @@ contract('MetaTxRelay', (addresses) => {
       );
     });
 
-    describe('relayCall()', () => {
-      it('expect to relay single call', async () => {
+    describe('sendBatch()', () => {
+      it('expect to send single call', async () => {
         const sender = addresses[1];
         const to = [relayedMock.address];
         const data = [
@@ -58,7 +58,7 @@ contract('MetaTxRelay', (addresses) => {
             .encodeABI(),
         ];
 
-        const output = await relay.relayCall(
+        const output = await relay.sendBatch(
           to,
           data, {
             from: sender,
@@ -73,7 +73,7 @@ contract('MetaTxRelay', (addresses) => {
         expect(logs[0].returnValues.sender).toBe(sender);
       });
 
-      it('expect to relay multiple calls', async () => {
+      it('expect to send multiple calls', async () => {
         const sender = addresses[1];
         const to = [relayedMock.address, relayedMock.address];
         const data = [
@@ -89,7 +89,7 @@ contract('MetaTxRelay', (addresses) => {
             .encodeABI(),
         ];
 
-        const output = await relay.relayCall(
+        const output = await relay.sendBatch(
           to,
           data, {
             from: sender,
@@ -107,8 +107,8 @@ contract('MetaTxRelay', (addresses) => {
       });
     });
 
-    describe('relayDelegateCall()', () => {
-      it('expect to relay single call', async () => {
+    describe('delegateBatch()', () => {
+      it('expect to send single call', async () => {
         const sender = addresses[1];
         const to = [relayedMock.address];
         const data = [
@@ -121,7 +121,7 @@ contract('MetaTxRelay', (addresses) => {
 
         const typedData = buildTypedData(
           relay.address,
-          'RelayedCall', [
+          'DelegatedBatch', [
             {
               name: 'to',
               type: 'address[]',
@@ -143,7 +143,7 @@ contract('MetaTxRelay', (addresses) => {
 
         const senderSignature = await signTypedData(typedData, sender);
 
-        const output = await relay.relayDelegateCall(
+        const output = await relay.delegateBatch(
           sender,
           to,
           data,
@@ -158,7 +158,7 @@ contract('MetaTxRelay', (addresses) => {
         expect(logs[0].returnValues.sender).toBe(sender);
       });
 
-      it('expect to relay multiple calls', async () => {
+      it('expect to send multiple calls', async () => {
         const sender = addresses[1];
         const to = [relayedMock.address, relayedMock.address];
         const data = [
@@ -176,7 +176,7 @@ contract('MetaTxRelay', (addresses) => {
 
         const typedData = buildTypedData(
           relay.address,
-          'RelayedCall', [
+          'DelegatedBatch', [
             {
               name: 'to',
               type: 'address[]',
@@ -198,7 +198,7 @@ contract('MetaTxRelay', (addresses) => {
 
         const senderSignature = await signTypedData(typedData, sender);
 
-        const output = await relay.relayDelegateCall(
+        const output = await relay.delegateBatch(
           sender,
           to,
           data,

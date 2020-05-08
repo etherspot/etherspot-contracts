@@ -1,6 +1,6 @@
 pragma solidity 0.5.15;
 
-import "../metaTx/MetaTxRelayed.sol";
+import "../relay/Relayed.sol";
 import "../shared/AddressLib.sol";
 import "../shared/SafeMathLib.sol";
 import "../shared/controlledAccount/ControlledAccountFactory.sol";
@@ -11,7 +11,7 @@ import "../tokens/erc20/ERC20Token.sol";
 /**
  * @title AccountRegistry
  */
-contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializable {
+contract AccountRegistry is Relayed, ControlledAccountFactory, Initializable {
   using AddressLib for address;
   using SafeMathLib for uint256;
 
@@ -72,13 +72,13 @@ contract AccountRegistry is MetaTxRelayed, ControlledAccountFactory, Initializab
   // external functions
 
   function initialize(
-    address metaTxRelay_
+    address relay_
   )
     external
     onlyInitializer
   {
-    // MetaTxRelayed
-    initializeMetaTxRelayed(metaTxRelay_);
+    // Relayed
+    initializeRelayed(relay_);
   }
 
   function addAccountOwner(

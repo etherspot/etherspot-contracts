@@ -8,17 +8,17 @@ import "../signature/SignatureValidator.sol";
 
 
 /**
- * @title MetaTxRelay
+ * @title Relay
  */
-contract MetaTxRelay is Initializable, NoFallback, TypedData {
-  struct RelayedCall {
+contract Relay is Initializable, NoFallback, TypedData {
+  struct DelegatedBatch {
     address[] to;
     bytes[] data;
     uint256 gasPrice;
   }
 
-  bytes32 private constant RELAYED_CALL_TYPE_HASH = keccak256(
-    "RelayedCall(address[] to,bytes[] data,uint256 gasPrice)"
+  bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(
+    "DelegatedBatch(address[] to,bytes[] data,uint256 gasPrice)"
   );
 
   SignatureValidator private signatureValidator;
@@ -49,14 +49,14 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
 
   // public functions
 
-  function relayCall(
+  function sendBatch(
     address[] memory to,
     bytes[] memory data
   )
     public
     afterInitialization
   {
-    privatelyRelayCall(
+    privatelySendBatch(
       msg.sender,
       msg.sender,
       to,
@@ -64,7 +64,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
     );
   }
 
-  function relayDelegateCall(
+  function delegateBatch(
     address sender,
     address[] memory to,
     bytes[] memory data,
@@ -85,7 +85,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
       )
     );
 
-    address originalSigner = signatureValidator.recoverOriginalSigner(
+    address originalSigner = signatureValidator.recoverAndVerifyOriginalSigner(
       messageHash,
       senderSignature,
       sender
@@ -95,7 +95,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
       originalSigner != address(0)
     );
 
-    privatelyRelayCall(
+    privatelySendBatch(
       sender,
       originalSigner,
       to,
@@ -105,8 +105,8 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
 
   // public functions (views)
 
-  function hashRelayedCall(
-    RelayedCall memory relayedCall
+  function hashDelegatedBatch(
+    DelegatedBatch memory delegatedBatch
   )
     public
     view
@@ -115,16 +115,16 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
   {
     return hashPrimaryTypedData(
       hashTypedData(
-        relayedCall.to,
-        relayedCall.data,
-        relayedCall.gasPrice
+        delegatedBatch.to,
+        delegatedBatch.data,
+        delegatedBatch.gasPrice
       )
     );
   }
 
   // private functions
 
-  function privatelyRelayCall(
+  function privatelySendBatch(
     address sender,
     address originalSigner,
     address[] memory to,
@@ -173,7 +173,7 @@ contract MetaTxRelay is Initializable, NoFallback, TypedData {
     }
 
     return keccak256(abi.encode(
-      RELAYED_CALL_TYPE_HASH,
+      DELEGATED_BATCH_TYPE_HASH,
       keccak256(abi.encodePacked(to)),
       keccak256(abi.encodePacked(dataHashes)),
       gasPrice

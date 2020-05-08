@@ -1,13 +1,13 @@
 pragma solidity 0.5.15;
 
 import "../shared/initializable/Initializable.sol";
-import "./MetaTxRelayed.sol";
+import "./Relayed.sol";
 
 
 /**
- * @title MetaTxRelayedMock
+ * @title RelayedMock
  */
-contract MetaTxRelayedMock is Initializable, MetaTxRelayed {
+contract RelayedMock is Initializable, Relayed {
   uint256 private example;
 
   // events
@@ -28,12 +28,12 @@ contract MetaTxRelayedMock is Initializable, MetaTxRelayed {
   // external access
 
   function initialize(
-    address metaTxRelay
+    address relay_
   )
     external
     onlyInitializer
   {
-    initializeMetaTxRelayed(metaTxRelay);
+    initializeRelayed(relay_);
   }
 
   function exampleCall1()

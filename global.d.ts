@@ -26,3 +26,12 @@ declare global {
   export const web3: Web3;
   export const artifacts: Artifacts;
 }
+
+interface Matchers<T> {
+  toBeBN(value: any): void;
+  toBeGreaterThanBN(value: any): void;
+  toBeGreaterThanOrEqualBN(value: any): void;
+  toBeLessThanBN(value: any): void;
+  toBeLessThanOrEqualBN(value: any): void;
+  toBeZeroAddress(): void;
+}

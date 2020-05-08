@@ -1,13 +1,13 @@
 pragma solidity 0.5.15;
 
-import "../metaTx/MetaTxRelayed.sol";
+import "../relay/Relayed.sol";
 import "../shared/initializable/Initializable.sol";
 
 
 /**
  * @title MessageHashRegistry
  */
-contract MessageHashRegistry is MetaTxRelayed, Initializable {
+contract MessageHashRegistry is Relayed, Initializable {
   struct SenderMessageHash {
     bool submitted;
     uint256 expiredAtBlockNumber;
@@ -35,13 +35,13 @@ contract MessageHashRegistry is MetaTxRelayed, Initializable {
   // external functions
 
   function initialize(
-    address metaTxRelay_
+    address relay_
   )
     external
     onlyInitializer
   {
-    // MetaTxRelayed
-    initializeMetaTxRelayed(metaTxRelay_);
+    // Relayed
+    initializeRelayed(relay_);
   }
 
   function submitMessageHash(

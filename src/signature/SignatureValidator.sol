@@ -68,7 +68,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
     );
   }
 
-  function recoverOriginalSigner(
+  function recoverAndVerifyOriginalSigner(
     bytes32 messageHash,
     bytes calldata signature,
     address signer
@@ -78,7 +78,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
     afterInitialization
     returns (address)
   {
-    return privatelyRecoverOriginalSigner(
+    return privatelyRecoverAndVerifyOriginalSigner(
       messageHash,
       signature,
       signer,
@@ -86,7 +86,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
     );
   }
 
-  function recoverOriginalSignerAtBlock(
+  function recoverAndVerifyOriginalSignerAtBlock(
     bytes32 messageHash,
     bytes calldata signature,
     address signer,
@@ -97,7 +97,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
     afterInitialization
     returns (address)
   {
-    return privatelyRecoverOriginalSigner(
+    return privatelyRecoverAndVerifyOriginalSigner(
       messageHash,
       signature,
       signer,
@@ -144,7 +144,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
 
   // private functions (views)
 
-  function privatelyRecoverOriginalSigner(
+  function privatelyRecoverAndVerifyOriginalSigner(
     bytes32 messageHash,
     bytes memory signature,
     address signer,
@@ -211,7 +211,7 @@ contract SignatureValidator is Initializable, NoFallback, TypedData {
     view
     returns (bool)
   {
-    address originalSigner = privatelyRecoverOriginalSigner(
+    address originalSigner = privatelyRecoverAndVerifyOriginalSigner(
       messageHash,
       signature,
       signer,

@@ -1,6 +1,6 @@
 pragma solidity 0.5.15;
 
-import "../metaTx/MetaTxRelayed.sol";
+import "../relay/Relayed.sol";
 import "../shared/AddressLib.sol";
 import "../shared/SafeMathLib.sol";
 import "../shared/controlledAccount/ControlledAccount.sol";
@@ -15,7 +15,7 @@ import "../tokens/erc20/ERC20Token.sol";
 /**
  * @title PaymentRegistry
  */
-contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, Initializable, TypedData {
+contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initializable, TypedData {
   using AddressLib for address;
   using SafeMathLib for uint256;
 
@@ -103,7 +103,7 @@ contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, In
   function initialize(
     uint256 depositWithdrawalLockPeriod_,
     SignatureValidator signatureValidator_,
-    address metaTxRelay_,
+    address relay_,
     bytes32 typedDataDomainNameHash,
     bytes32 typedDataDomainSalt
   )
@@ -118,8 +118,8 @@ contract PaymentRegistry is MetaTxRelayed, ControlledAccountFactory, Guarded, In
 
     signatureValidator = signatureValidator_;
 
-    // MetaTxRelayed
-    initializeMetaTxRelayed(metaTxRelay_);
+    // Relayed
+    initializeRelayed(relay_);
 
     // TypedData
     initializeTypedData(
