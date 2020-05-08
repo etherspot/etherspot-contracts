@@ -54,6 +54,7 @@ contract O2OToken is Initializable, ERC20DetailedToken {
     internallyBurn(sender, senderBalance);
 
     require(
+      // solhint-disable-next-line check-send-result
       sender.toPayable().send(senderBalance)
     );
   }
