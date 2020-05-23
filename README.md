@@ -1,7 +1,7 @@
 # ETHERspot contracts
 
 [![NPM version][npm-image]][npm-url]
-[![MIT licensed][license-image]][license-url]
+![MIT licensed][license-image]
 
 ## Installation
 
