@@ -865,7 +865,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x0e03e7ceca9b3d8ea886e1bdf211ed03c10012ea5eabe6f5561b627c9c8c52a5",
+    "byteCodeHash": "0xd4c48d385f37571fb58e856b0de9203105e26f9e704d8a209b1b7051be9bffb9",
     "typedDataDomainName": "ETHERspot Gateway",
     "addresses": {
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
@@ -1798,7 +1798,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x70ee831fe19b8f19d52902d5ac2722402f1a942bb891153c5694486f88cc1f88",
+    "byteCodeHash": "0xdf836c70cffee7633aeef30f0c8aeca5f1b2edc7254904b109b355ef14a7cab6",
     "typedDataDomainName": "ETHERspot Payment Network",
     "addresses": {
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
@@ -2171,7 +2171,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xe380032e352497fc3dd07443609485ab22a522ceb640a89c23b5d67591720a21",
+    "byteCodeHash": "0xa8d1d7f402aa4304de5f7225fa0ed41c22ec06acfe346dfb2407ddecd317013d",
     "typedDataDomainName": null,
     "addresses": {
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
@@ -2533,7 +2533,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x7a0ace8aa9538b8084265ef8f4472bb005d345b7573381d55ad82c6495d43337",
+    "byteCodeHash": "0x77d0ef9e418aef9bfd13f758df53764ded7c79c2fb44273b0d55778cd55b30b7",
     "typedDataDomainName": null,
     "addresses": {
       "9999": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e"
