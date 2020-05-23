@@ -1,7 +1,6 @@
 # ETHERspot contracts
 
 [![NPM version][npm-image]][npm-url]
-![MIT licensed][license-image]
 
 ## Installation
 
@@ -61,6 +60,4 @@ MIT
 
 [npm-image]: https://badge.fury.io/js/%40etherspot%2Fcontracts.svg
 [npm-url]: https://npmjs.org/package/@etherspot/contracts
-[license-image]: https://img.shields.io/badge/license-MIT-blue.svg
-[license-url]: ./LICENSE
 
