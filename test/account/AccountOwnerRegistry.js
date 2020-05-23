@@ -13,7 +13,7 @@ contract('AccountOwnerRegistry', (addresses) => {
   const {
     eth: {
       getBlockNumber,
-    }
+    },
   } = web3;
   const account = addresses[0];
   let accountOwnerRegistry;
@@ -26,7 +26,7 @@ contract('AccountOwnerRegistry', (addresses) => {
     const owner = randomAddress();
 
     it('expect to add account owner', async () => {
-      const output = await accountOwnerRegistry.addAccountOwner(owner)
+      const output = await accountOwnerRegistry.addAccountOwner(owner);
 
       logGasUsed(output);
 
@@ -54,7 +54,7 @@ contract('AccountOwnerRegistry', (addresses) => {
     });
 
     it('expect to remove account owner', async () => {
-      const output = await accountOwnerRegistry.removeAccountOwner(owner)
+      const output = await accountOwnerRegistry.removeAccountOwner(owner);
 
       logGasUsed(output);
 

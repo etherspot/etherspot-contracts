@@ -13,7 +13,7 @@ contract('AccountProofRegistry', (addresses) => {
   const {
     eth: {
       getBlockNumber,
-    }
+    },
   } = web3;
   const account = addresses[0];
   let accountProofRegistry;
@@ -26,7 +26,7 @@ contract('AccountProofRegistry', (addresses) => {
     const hash = randomBytes32();
 
     it('expect to add account proof', async () => {
-      const output = await accountProofRegistry.addAccountProof(hash)
+      const output = await accountProofRegistry.addAccountProof(hash);
 
       logGasUsed(output);
 
@@ -54,7 +54,7 @@ contract('AccountProofRegistry', (addresses) => {
     });
 
     it('expect to remove account proof', async () => {
-      const output = await accountProofRegistry.removeAccountProof(hash)
+      const output = await accountProofRegistry.removeAccountProof(hash);
 
       logGasUsed(output);
 

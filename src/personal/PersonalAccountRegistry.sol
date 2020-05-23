@@ -160,7 +160,6 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     _deployAccount(account);
 
     /* solhint-disable avoid-tx-origin */
-
     if (token == address(0)) {
       _executeAccountTransaction(
         account,
@@ -181,14 +180,14 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
       );
     }
 
-    /* solhint-enable avoid-tx-origin */
-
     emit AccountCallRefunded(
       account,
       tx.origin,
       token,
       value
     );
+
+    /* solhint-enable avoid-tx-origin */
   }
 
   // external functions (views)

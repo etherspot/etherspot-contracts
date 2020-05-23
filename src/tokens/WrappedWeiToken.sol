@@ -91,6 +91,7 @@ contract WrappedWeiToken is ERC20Token {
     _burn(from, value);
 
     require(
+      // solhint-disable-next-line check-send-result
       to.send(value)
     );
   }
