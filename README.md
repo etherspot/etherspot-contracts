@@ -23,23 +23,23 @@ import {
 } from '@etherspot/contracts'; 
 
 console.log(
-  'AccountRegistry mainnet address:', 
-  getContractAddress(ContractNames.AccountRegistry),
+  'PersonalAccountRegistry mainnet address:', 
+  getContractAddress(ContractNames.PersonalAccountRegistry),
 );
 
 console.log(
-  'AccountRegistry görli address:', 
-  getContractAddress(ContractNames.AccountRegistry, '5'),
+  'PersonalAccountRegistry görli address:', 
+  getContractAddress(ContractNames.PersonalAccountRegistry, '5'),
 );
 
 console.log(
-  'SignatureValidator abi:', 
-  getContractAbi(ContractNames.SignatureValidator),
+  'ERC20Token abi:', 
+  getContractAbi(ContractNames.ERC20Token),
 );
 
 console.log(
-  'ControlledAccount byte code hash:',
-  getContractByteCodeHash(ContractNames.ControlledAccount),
+  'Account byte code hash:',
+  getContractByteCodeHash(ContractNames.Account),
 );
 
 // see: https://eips.ethereum.org/EIPS/eip-712
@@ -51,7 +51,7 @@ console.log(
 
 console.log(
   'SignatureValidator typed data domain name:',
-  getContractTypedDataDomainName(ContractNames.SignatureValidator),
+  getContractTypedDataDomainName(ContractNames.PaymentRegistry),
 );
 ```
 
