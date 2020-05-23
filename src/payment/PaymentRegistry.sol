@@ -1,23 +1,26 @@
 pragma solidity 0.5.15;
 
-import "../relay/Relayed.sol";
-import "../shared/AddressLib.sol";
-import "../shared/SafeMathLib.sol";
-import "../shared/controlledAccount/ControlledAccount.sol";
-import "../shared/controlledAccount/ControlledAccountFactory.sol";
-import "../shared/guarded/Guarded.sol";
-import "../shared/initializable/Initializable.sol";
-import "../shared/typedData/TypedData.sol";
-import "../signature/SignatureValidator.sol";
-import "../tokens/erc20/ERC20Token.sol";
+import "../account/AccountOwnerRegistry.sol";
+import "../account/AccountProofRegistry.sol";
+import "../common/access/Guarded.sol";
+import "../common/account/AccountController.sol";
+import "../common/libs/AddressLib.sol";
+import "../common/libs/SafeMathLib.sol";
+import "../common/libs/SignatureLib.sol";
+import "../common/lifecycle/Initializable.sol";
+import "../common/token/ERC20Token.sol";
+import "../common/typedData/TypedDataContainer.sol";
+import "../personal/PersonalAccountRegistry.sol";
+import "../gateway/GatewayRecipient.sol";
 
 
 /**
  * @title PaymentRegistry
  */
-contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initializable, TypedData {
+contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
   using AddressLib for address;
   using SafeMathLib for uint256;
+  using SignatureLib for bytes32;
 
   struct Deposit {
     address account;
@@ -42,27 +45,29 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   );
   uint256 private constant DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD = 30 days;
 
+  AccountOwnerRegistry public accountOwnerRegistry;
+  AccountProofRegistry public accountProofRegistry;
+  PersonalAccountRegistry public personalAccountRegistry;
   uint256 public depositWithdrawalLockPeriod;
-  SignatureValidator private signatureValidator;
   mapping(address => Deposit) private deposits;
   mapping(bytes32 => PaymentChannel) private paymentChannels;
 
   // events
 
   event DepositAccountDeployed(
-    address account,
+    address depositAccount,
     address owner
   );
 
   event DepositWithdrawalRequested(
-    address account,
+    address depositAccount,
     address owner,
     address token,
     uint256 lockedUntil
   );
 
   event DepositWithdrawn(
-    address account,
+    address depositAccount,
     address owner,
     address token,
     uint256 amount
@@ -101,28 +106,36 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   // external functions
 
   function initialize(
+    AccountOwnerRegistry accountOwnerRegistry_,
+    AccountProofRegistry accountProofRegistry_,
+    PersonalAccountRegistry personalAccountRegistry_,
     uint256 depositWithdrawalLockPeriod_,
-    SignatureValidator signatureValidator_,
-    address relay_,
+    address[] calldata guardians_,
+    address gateway_,
     bytes32 typedDataDomainNameHash,
     bytes32 typedDataDomainSalt
   )
     external
     onlyInitializer
   {
+    accountOwnerRegistry = accountOwnerRegistry_;
+    accountProofRegistry = accountProofRegistry_;
+    personalAccountRegistry = personalAccountRegistry_;
+
     if (depositWithdrawalLockPeriod_ == 0) {
       depositWithdrawalLockPeriod = DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD;
     } else {
       depositWithdrawalLockPeriod = depositWithdrawalLockPeriod_;
     }
 
-    signatureValidator = signatureValidator_;
+    // Guarded
+    _initializeGuarded(guardians_);
 
-    // Relayed
-    initializeRelayed(relay_);
+    // GatewayRecipient
+    _initializeGatewayRecipient(gateway_);
 
-    // TypedData
-    initializeTypedData(
+    // TypedDataContainer
+    _initializeTypedDataContainer(
       typedDataDomainNameHash,
       typedDataDomainSalt
     );
@@ -132,21 +145,20 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     address owner
   )
     external
-    afterInitialization
   {
-    privatelyDeployDepositAccount(owner);
+    _deployDepositAccount(owner);
   }
 
   function withdrawDeposit(
     address token
   )
     external
-    afterInitialization
   {
-    address owner = getSender();
+    address owner = _getContextAccount();
     uint256 lockedUntil = deposits[owner].withdrawalLockedUntil[token];
 
     /* solhint-disable not-rely-on-time */
+
     if (lockedUntil != 0 && lockedUntil <= now) {
       deposits[owner].withdrawalLockedUntil[token] = 0;
 
@@ -159,7 +171,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
         depositValue = ERC20Token(token).balanceOf(depositAccount);
       }
 
-      transferFromDeposit(
+      _transferFromDeposit(
         depositAccount,
         owner,
         token,
@@ -173,10 +185,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
         depositValue
       );
     } else {
-      // deploy deposit account if not deployed yet
-      if (deposits[owner].account == address(0)) {
-        privatelyDeployDepositAccount(owner);
-      }
+      _deployDepositAccount(owner);
 
       lockedUntil = now.add(depositWithdrawalLockPeriod);
 
@@ -202,11 +211,10 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     bytes calldata guardianSignature
   )
     external
-    afterInitialization
   {
-    address recipient = getSender();
+    address recipient = _getContextAccount();
 
-    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = _commitPaymentChannel(
       sender,
       recipient,
       token,
@@ -217,7 +225,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       guardianSignature
     );
 
-    transferFromDeposit(
+    _transferFromDeposit(
       depositAccount,
       recipient,
       token,
@@ -237,11 +245,10 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     bytes calldata guardianSignature
   )
     external
-    afterInitialization
   {
-    address recipient = getSender();
+    address recipient = _getContextAccount();
 
-    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = _commitPaymentChannel(
       sender,
       recipient,
       token,
@@ -252,9 +259,9 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       guardianSignature
     );
 
-    transferFromDeposit(
+    _transferFromDeposit(
       depositAccount,
-      privatelyComputeDepositAccountAddress(recipient),
+      _computeDepositAccountAddress(recipient),
       token,
       paymentValue
     );
@@ -273,11 +280,10 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     bytes calldata guardianSignature
   )
     external
-    afterInitialization
   {
-    address recipient = getSender();
+    address recipient = _getContextAccount();
 
-    (bytes32 hash, address depositAccount, uint256 paymentValue) = commitPaymentChannel(
+    (bytes32 hash, address depositAccount, uint256 paymentValue) = _commitPaymentChannel(
       sender,
       recipient,
       token,
@@ -288,7 +294,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       guardianSignature
     );
 
-    transferFromDepositAndSplit(
+    _transferSplittedFromDeposit(
       depositAccount,
       recipient,
       token,
@@ -306,10 +312,9 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   )
     external
     view
-    afterInitialization
     returns (address)
   {
-    return privatelyComputeDepositAccountAddress(owner);
+    return _computeDepositAccountAddress(owner);
   }
 
   function isDepositAccountDeployed(
@@ -317,7 +322,6 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   )
     external
     view
-    afterInitialization
     returns (bool)
   {
     return deposits[owner].account != address(0);
@@ -329,7 +333,6 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   )
     external
     view
-    afterInitialization
     returns (uint256)
   {
     return deposits[owner].withdrawalLockedUntil[token];
@@ -340,7 +343,6 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
   )
     external
     view
-    afterInitialization
     returns (uint256)
   {
     return paymentChannels[hash].committedAmount;
@@ -358,7 +360,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     pure
     returns (bytes32)
   {
-    return privatelyComputePaymentChannelHash(
+    return _computePaymentChannelHash(
       sender,
       recipient,
       token,
@@ -368,23 +370,25 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
 
   // private functions
 
-  function privatelyDeployDepositAccount(
+  function _deployDepositAccount(
     address owner
   )
     private
   {
-    bytes32 salt = keccak256(
-      abi.encodePacked(
-        owner
-      )
-    );
+    if (deposits[owner].account == address(0)) {
+      bytes32 salt = keccak256(
+        abi.encodePacked(
+          owner
+        )
+      );
 
-    deposits[owner].account = createControlledAccount(salt);
+      deposits[owner].account = _deployAccount(salt);
 
-    emit DepositAccountDeployed(deposits[owner].account, owner);
+      emit DepositAccountDeployed(deposits[owner].account, owner);
+    }
   }
 
-  function commitPaymentChannel(
+  function _commitPaymentChannel(
     address sender,
     address recipient,
     address token,
@@ -397,8 +401,8 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     private
     returns (bytes32 hash, address depositAccount, uint256 paymentValue)
   {
-    bytes32 messageHash = hashPrimaryTypedData(
-      hashTypedData(
+    bytes32 messageHash = _hashPrimaryTypedData(
+      _hashTypedData(
         sender,
         recipient,
         token,
@@ -408,20 +412,26 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       )
     );
 
-    require(
-      signatureValidator.verifySignatureAtBlock(
-        messageHash,
-        senderSignature,
-        sender,
-        blockNumber
-      )
-    );
+    if (senderSignature.length == 0) {
+      require(
+        accountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber)
+      );
+    } else {
+      address signer = messageHash.recoverAddress(senderSignature);
+
+      if (sender != signer) {
+        require(
+          personalAccountRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber) ||
+          accountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber)
+        );
+      }
+    }
 
     require(
-      internallyVerifyGuardianSignature(messageHash, guardianSignature)
+      _verifyGuardianSignature(messageHash, guardianSignature)
     );
 
-    hash = privatelyComputePaymentChannelHash(
+    hash = _computePaymentChannelHash(
       sender,
       recipient,
       token,
@@ -437,10 +447,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
 
     paymentChannels[hash].committedAmount = amount;
 
-    // deploy deposit account if not deployed yet
-    if (deposits[sender].account == address(0)) {
-      privatelyDeployDepositAccount(sender);
-    }
+    _deployDepositAccount(sender);
 
     depositAccount = deposits[sender].account;
 
@@ -456,7 +463,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     return (hash, depositAccount, paymentValue);
   }
 
-  function transferFromDeposit(
+  function _transferFromDeposit(
     address depositAccount,
     address to,
     address token,
@@ -465,14 +472,14 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     private
   {
     if (token == address(0)) {
-      executeControlledAccountTransaction(
+      _executeAccountTransaction(
         depositAccount.toPayable(),
         to.toPayable(),
         value,
         new bytes(0)
       );
     } else {
-      executeControlledAccountTransaction(
+      _executeAccountTransaction(
         depositAccount.toPayable(),
         token.toPayable(),
         0,
@@ -485,7 +492,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     }
   }
 
-  function transferFromDepositAndSplit(
+  function _transferSplittedFromDeposit(
     address depositAccount,
     address to,
     address token,
@@ -504,16 +511,16 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       withdrawValue > 0
     );
 
-    transferFromDeposit(
+    _transferFromDeposit(
       depositAccount,
       to,
       token,
       withdrawValue
     );
 
-    transferFromDeposit(
+    _transferFromDeposit(
       depositAccount,
-      privatelyComputeDepositAccountAddress(to),
+      _computeDepositAccountAddress(to),
       token,
       depositValue
     );
@@ -521,7 +528,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
 
   // private functions (views)
 
-  function privatelyComputeDepositAccountAddress(
+  function _computeDepositAccountAddress(
     address owner
   )
     private
@@ -534,12 +541,12 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
       )
     );
 
-    return computeControlledAccountAddress(salt);
+    return _computeAccountAddress(salt);
   }
 
   // private functions (pure)
 
-  function privatelyComputePaymentChannelHash(
+  function _computePaymentChannelHash(
     address sender,
     address recipient,
     address token,
@@ -559,7 +566,7 @@ contract PaymentRegistry is Relayed, ControlledAccountFactory, Guarded, Initiali
     );
   }
 
-  function hashTypedData(
+  function _hashTypedData(
     address sender,
     address recipient,
     address token,

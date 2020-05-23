@@ -12,11 +12,79 @@ const {
 
 async function main() {
   switch (process.argv[2]) {
-    // account registry
-    case 'account-registry': {
-      logger.info(`contract ${ContractNames.AccountRegistry}`);
+    // AccountOwnerRegistry
+    case ContractNames.AccountOwnerRegistry: {
+      logger.info(`contract ${ContractNames.AccountOwnerRegistry}`);
 
-      const [contract] = await getContracts(ContractNames.AccountRegistry);
+      const [contract] = await getContracts(ContractNames.AccountOwnerRegistry);
+
+      {
+        const owner = createRandomWallet().address;
+
+        processEvents(
+          await executeRequest(
+            contract.methods.addAccountOwner(owner),
+          ),
+        );
+      }
+
+      {
+        const owner = createRandomWallet().address;
+
+        processEvents(
+          await executeRequest(
+            contract.methods.addAccountOwner(owner),
+          ),
+        );
+
+        processEvents(
+          await executeRequest(
+            contract.methods.removeAccountOwner(owner),
+          ),
+        );
+      }
+      break;
+    }
+
+    // AccountProofRegistry
+    case ContractNames.AccountProofRegistry: {
+      logger.info(`contract ${ContractNames.AccountProofRegistry}`);
+
+      const [contract] = await getContracts(ContractNames.AccountProofRegistry);
+
+      {
+        const hash = utils.randomHex(32);
+
+        processEvents(
+          await executeRequest(
+            contract.methods.addAccountProof(hash),
+          ),
+        );
+      }
+
+      {
+        const hash = utils.randomHex(32);
+
+        processEvents(
+          await executeRequest(
+            contract.methods.addAccountProof(hash),
+          ),
+        );
+
+        processEvents(
+          await executeRequest(
+            contract.methods.removeAccountProof(hash),
+          ),
+        );
+      }
+      break;
+    }
+
+    // PersonalAccountRegistry
+    case ContractNames.PersonalAccountRegistry: {
+      logger.info(`contract ${ContractNames.PersonalAccountRegistry}`);
+
+      const [contract] = await getContracts(ContractNames.PersonalAccountRegistry);
       const saltOwner = createRandomWallet(true);
       const owner = createRandomWallet();
       const to = createRandomWallet();
@@ -35,27 +103,21 @@ async function main() {
         value: '0.5',
       });
 
-      let nonce = 0;
-
       processEvents(
         await executeRequest(
           contract.methods.addAccountOwner(
             account,
-            nonce,
             owner.address,
           ), {
             from: saltOwner,
           },
         ),
       );
-
-      nonce += 1;
 
       processEvents(
         await executeRequest(
           contract.methods.removeAccountOwner(
             account,
-            nonce,
             owner.address,
           ), {
             from: saltOwner,
@@ -63,13 +125,10 @@ async function main() {
         ),
       );
 
-      nonce += 1;
-
       processEvents(
         await executeRequest(
           contract.methods.executeAccountTransaction(
             account,
-            nonce,
             to.address,
             10,
             '0x01',
@@ -79,13 +138,10 @@ async function main() {
         ),
       );
 
-      nonce += 1;
-
       processEvents(
         await executeRequest(
           contract.methods.refundAccountCall(
             account,
-            nonce,
             ZERO_ADDRESS,
             10,
           ), {
@@ -93,40 +149,6 @@ async function main() {
           },
         ),
       );
-      break;
-    }
-
-    // message registry
-    case 'message-hash-registry': {
-      logger.info(`contract ${ContractNames.MessageHashRegistry}`);
-
-      const [contract] = await getContracts(ContractNames.MessageHashRegistry);
-
-      {
-        const messageHash = utils.randomHex(32);
-
-        processEvents(
-          await executeRequest(
-            contract.methods.submitMessageHash(messageHash),
-          ),
-        );
-      }
-
-      {
-        const messageHash = utils.randomHex(32);
-
-        processEvents(
-          await executeRequest(
-            contract.methods.submitMessageHash(messageHash),
-          ),
-        );
-
-        processEvents(
-          await executeRequest(
-            contract.methods.expireMessageHash(messageHash),
-          ),
-        );
-      }
       break;
     }
 

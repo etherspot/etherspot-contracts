@@ -12,9 +12,8 @@ const CONTRACTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'contracts');
 const CONSTANTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'constants');
 
 const TYPED_DATA_DOMAIN_NAMES = {
-  MetaTxRelay: 'ETHERspot MetaTx Relay',
+  Gateway: 'ETHERspot Gateway',
   PaymentRegistry: 'ETHERspot Payment Network',
-  SignatureValidator: 'ETHERspot Signature Validator',
 };
 
 async function main() {

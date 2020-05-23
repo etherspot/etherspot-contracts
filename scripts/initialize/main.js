@@ -13,66 +13,33 @@ const {
 
 async function main() {
   const [
-    accountRegistry,
-    messageHashRegistry,
-    metaTxRelay,
+    accountOwnerRegistry,
+    accountProofRegistry,
+    gateway,
     paymentRegistry,
-    signatureValidator,
+    personalAccountRegistry,
   ] = await getContracts(
-    ContractNames.AccountRegistry,
-    ContractNames.MessageHashRegistry,
-    ContractNames.MetaTxRelay,
+    ContractNames.AccountOwnerRegistry,
+    ContractNames.AccountProofRegistry,
+    ContractNames.Gateway,
     ContractNames.PaymentRegistry,
-    ContractNames.SignatureValidator,
+    ContractNames.PersonalAccountRegistry,
   );
 
-  // AccountRegistry
+  // Gateway
   {
-    logger.info(`contract ${ContractNames.AccountRegistry}`);
+    logger.info(`contract ${ContractNames.Gateway}`);
 
-    if (await accountRegistry.methods.initialized().call()) {
+    if (await gateway.methods.isInitialized().call()) {
       logger.info('already initialized');
     } else {
       processEvents(
         await executeRequest(
-          accountRegistry.methods.initialize(
-            metaTxRelay.address,
-          ),
-        ),
-      );
-    }
-  }
-
-  // MessageHashRegistry
-  {
-    logger.info(`contract ${ContractNames.MessageHashRegistry}`);
-
-    if (await messageHashRegistry.methods.initialized().call()) {
-      logger.info('already initialized');
-    } else {
-      processEvents(
-        await executeRequest(
-          messageHashRegistry.methods.initialize(
-            metaTxRelay.address,
-          ),
-        ),
-      );
-    }
-  }
-
-  // MetaTxRelay
-  {
-    logger.info(`contract ${ContractNames.MetaTxRelay}`);
-
-    if (await metaTxRelay.methods.initialized().call()) {
-      logger.info('already initialized');
-    } else {
-      processEvents(
-        await executeRequest(
-          metaTxRelay.methods.initialize(
-            signatureValidator.address,
+          gateway.methods.initialize(
+            accountOwnerRegistry.address,
+            personalAccountRegistry.address,
             utils.soliditySha3(
-              getContractTypedDataDomainName(ContractNames.MetaTxRelay),
+              getContractTypedDataDomainName(ContractNames.Gateway),
             ),
             TYPED_DATA_DOMAIN_SALT,
           ),
@@ -85,15 +52,18 @@ async function main() {
   {
     logger.info(`contract ${ContractNames.PaymentRegistry}`);
 
-    if (await paymentRegistry.methods.initialized().call()) {
+    if (await paymentRegistry.methods.isInitialized().call()) {
       logger.info('already initialized');
     } else {
       processEvents(
         await executeRequest(
           paymentRegistry.methods.initialize(
+            accountOwnerRegistry.address,
+            accountProofRegistry.address,
+            personalAccountRegistry.address,
             0,
-            signatureValidator.address,
-            metaTxRelay.address,
+            [],
+            gateway.address,
             utils.soliditySha3(
               getContractTypedDataDomainName(ContractNames.PaymentRegistry),
             ),
@@ -104,22 +74,17 @@ async function main() {
     }
   }
 
-  // SignatureValidator
+  // PersonalAccountRegistry
   {
-    logger.info(`contract ${ContractNames.SignatureValidator}`);
+    logger.info(`contract ${ContractNames.PersonalAccountRegistry}`);
 
-    if (await signatureValidator.methods.initialized().call()) {
+    if (await personalAccountRegistry.methods.isInitialized().call()) {
       logger.info('already initialized');
     } else {
       processEvents(
         await executeRequest(
-          signatureValidator.methods.initialize(
-            accountRegistry.address,
-            messageHashRegistry.address,
-            utils.soliditySha3(
-              getContractTypedDataDomainName(ContractNames.SignatureValidator),
-            ),
-            TYPED_DATA_DOMAIN_SALT,
+          personalAccountRegistry.methods.initialize(
+            gateway.address,
           ),
         ),
       );

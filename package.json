@@ -18,15 +18,16 @@
     "lint": "npm run lint:sol",
     "compile": "truffle compile",
     "compile:all": "truffle compile --all",
-    "migrate": "truffle migrate --network=default",
-    "migrate:reset": "truffle migrate --network=default --reset",
     "test": "./scripts/test.sh --network test",
     "test:log-gas-usage": "cross-env LOG_GAS_USAGE=1 ./scripts/test.sh --network test",
     "test:compile-all": "./scripts/test.sh --network test --compile-all",
+    "migrate": "truffle migrate --network=default",
+    "migrate:reset": "truffle migrate --network=default --reset",
     "build": "node ./scripts/build",
     "initialize": "node ./scripts/initialize",
-    "generate-events:account-registry": "node ./scripts/generate-events account-registry",
-    "generate-events:message-hash-registry": "node ./scripts/generate-events message-hash-registry"
+    "generate-events:account-owner-registry": "node ./scripts/generate-events AccountOwnerRegistry",
+    "generate-events:account-proof-registry": "node ./scripts/generate-events AccountProofRegistry",
+    "generate-events:personal-account-registry": "node ./scripts/generate-events PersonalAccountRegistry"
   },
   "dependencies": {},
   "devDependencies": {
