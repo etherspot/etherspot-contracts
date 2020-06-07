@@ -8,14 +8,7 @@ const {
 } = process.env;
 
 function createProvider() {
-  if (
-    !PROVIDER_MNEMONIC && !PROVIDER_PRIVATE_KEY
-  ) {
-    throw new Error(
-      'Please setup PROVIDER_MNEMONIC or PROVIDER_PRIVATE_KEY env variable',
-    );
-  }
-
+  const providerPrivateKey = PROVIDER_PRIVATE_KEY || '5504956d5f39cbe19c7303d5df78dc43599ba661afe67fec14eafd044e162bd6'; // local
   const providerEndpoint = PROVIDER_ENDPOINT || 'http://localhost:8545';
 
   return PROVIDER_MNEMONIC
@@ -26,9 +19,9 @@ function createProvider() {
       1,
     )
     : new PrivateKeyProvider(
-      PROVIDER_PRIVATE_KEY.startsWith('0x')
-        ? PROVIDER_PRIVATE_KEY.substr(2)
-        : PROVIDER_PRIVATE_KEY,
+      providerPrivateKey.startsWith('0x')
+        ? providerPrivateKey.substr(2)
+        : providerPrivateKey,
       providerEndpoint,
     );
 }
