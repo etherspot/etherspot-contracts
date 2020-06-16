@@ -17,8 +17,8 @@ start_ganache() {
 
 stop_ganache() {
   # Kill the ganache instance that we started (if we started one and if it's still running).
-  if [ -n "$ganache_pid" ] && ps -p $ganache_pid > /dev/null; then
-    kill -9 $ganache_pid
+  if [[ -n "$ganache_pid" ]] && ps -p ${ganache_pid} > /dev/null; then
+    kill -9 ${ganache_pid}
   fi
 }
 
