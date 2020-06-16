@@ -13,7 +13,7 @@ const {
 
 const PaymentRegistry = artifacts.require('PaymentRegistry');
 
-contract.only('PaymentRegistry', (addresses) => {
+contract('PaymentRegistry', (addresses) => {
   const {
     eth: {
       sendTransaction,

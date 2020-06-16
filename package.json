@@ -19,7 +19,6 @@
     "compile": "truffle compile",
     "compile:all": "truffle compile --all",
     "test": "./scripts/test.sh --network test",
-    "test:log-gas-usage": "cross-env LOG_GAS_USAGE=1 ./scripts/test.sh --network test",
     "test:compile-all": "./scripts/test.sh --network test --compile-all",
     "migrate": "truffle migrate --network=default",
     "migrate:reset": "truffle migrate --network=default --reset",

@@ -1,3 +1,4 @@
+// @ts-ignore
 declare global {
   import Web3 from 'web3';
 
@@ -16,10 +17,12 @@ declare global {
     new: (...args: any[]) => Promise<Contract>;
   }
 
-  export interface Contract {
-    address: string;
-
+  export interface ContractMethods {
     [key: string]: (...args: any[]) => Promise<any>;
+  }
+
+  export type Contract = ContractMethods & {
+    address: string;
   }
 
   export const contract: ContractFunction;

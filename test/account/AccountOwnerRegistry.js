@@ -16,6 +16,10 @@ contract('AccountOwnerRegistry', (addresses) => {
     },
   } = web3;
   const account = addresses[0];
+
+  /**
+   * @type Contract
+   */
   let accountOwnerRegistry;
 
   before(async () => {

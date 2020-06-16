@@ -7,9 +7,9 @@
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "typeRoots": ["./node_modules/@types", "./types"]
-  },
-  "include": [
-    "./test/**/*.ts"
-  ]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  }
 }
