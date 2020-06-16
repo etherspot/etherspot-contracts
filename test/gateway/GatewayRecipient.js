@@ -4,6 +4,7 @@ const expect = require('expect');
 const {
   logGasUsage,
   randomAddress,
+  concatHex,
 } = require('../utils');
 
 const GatewayRecipientMock = artifacts.require('GatewayRecipientMock');
@@ -57,7 +58,7 @@ contract('GatewayRecipient (using mock)', (addresses) => {
         .encodeABI();
 
       // concat data with account and sender
-      data = `${data}${account.slice(2)}${sender.slice(2)}`.toLowerCase();
+      data = concatHex(data, account, sender);
 
       const output = await sendTransaction({
         from: gateway,

@@ -19,6 +19,12 @@ const {
   },
 } = web3;
 
+function concatHex(...items) {
+  return items.map((item, index) => {
+    return !index ? item : item.slice(2);
+  }).join('').toLowerCase();
+}
+
 function logGasUsage(output) {
   if (!process.env.LOG_GAS_USAGE) {
     return;
@@ -173,6 +179,7 @@ function signTypedData(data, from) {
 }
 
 module.exports = {
+  concatHex,
   logGasUsage,
   parseBlockNumber,
   randomAddress,
