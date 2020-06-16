@@ -5,6 +5,7 @@ const {
   logGasUsage,
   randomAddress,
   buildTypedData,
+  hashTypedData,
   signTypedData,
 } = require('../utils');
 const {
@@ -276,6 +277,52 @@ contract('Gateway', (addresses) => {
       }))
         .rejects
         .toThrow(/revert/);
+    });
+  });
+
+  context('hashDelegatedBatch()', () => {
+    it('expect to return correct hash', async () => {
+      const to = gatewayRecipientMock.address;
+      const data = gatewayRecipientMock.contract.methods.emitContext()
+        .encodeABI();
+
+      const typedData = buildTypedData(
+        gateway.address,
+        'DelegatedBatch', [
+          {
+            type: 'uint256',
+            name: 'nonce',
+          },
+          {
+            type: 'address[]',
+            name: 'to',
+          },
+          {
+            type: 'bytes[]',
+            name: 'data',
+          },
+          {
+            type: 'uint256',
+            name: 'gasPrice',
+          },
+        ], {
+          nonce: 1000,
+          to: [to],
+          data: [data],
+          gasPrice: GAS_PRICE,
+        },
+      );
+
+      const typedDataHash = hashTypedData(typedData);
+
+      await expect(gateway.hashDelegatedBatch({
+        nonce: 1000,
+        to: [to],
+        data: [data],
+        gasPrice: GAS_PRICE,
+      }))
+        .resolves
+        .toBe(typedDataHash);
     });
   });
 });
