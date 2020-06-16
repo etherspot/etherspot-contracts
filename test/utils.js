@@ -19,7 +19,7 @@ const {
   },
 } = web3;
 
-function logGasUsed(output) {
+function logGasUsage(output) {
   if (!process.env.LOG_GAS_USAGE) {
     return;
   }
@@ -173,7 +173,7 @@ function signTypedData(data, from) {
 }
 
 module.exports = {
-  logGasUsed,
+  logGasUsage,
   parseBlockNumber,
   randomAddress,
   randomBytes32,
