@@ -23,6 +23,13 @@ declare global {
 
   export type Contract = ContractMethods & {
     address: string;
+    contract: {
+      methods: {
+        [key: string]: (...args: any[]) => {
+          encodeABI(): string;
+        };
+      }
+    }
   }
 
   export const contract: ContractFunction;
