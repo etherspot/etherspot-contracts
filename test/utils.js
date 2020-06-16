@@ -2,6 +2,7 @@ const BN = require('bn.js');
 const { TypedDataUtils } = require('eth-sig-util');
 const {
   CHAIN_ID,
+  GAS_PRICE,
   TYPED_DATA_DOMAIN,
   TYPED_DATA_SALT,
 } = require('./constants');
@@ -22,14 +23,12 @@ const {
 function concatHex(...items) {
   return items.map((item, index) => {
     return !index ? item : item.slice(2);
-  }).join('').toLowerCase();
+  })
+    .join('')
+    .toLowerCase();
 }
 
-function logGasUsage(output) {
-  if (!process.env.LOG_GAS_USAGE) {
-    return;
-  }
-
+function getGasUsage(output) {
   let gasUsed;
   if (typeof output === 'number') {
     gasUsed = output;
@@ -41,10 +40,26 @@ function logGasUsage(output) {
     }
   }
 
+  return gasUsed;
+}
+
+function logGasUsage(output) {
+  if (!process.env.LOG_GAS_USAGE) {
+    return;
+  }
+
+  const gasUsed = getGasUsage(output);
+
   console.log();
   console.log(
-    `⛽ gas used: ${gasUsed} ⤵︎`,
+    `⛽ gas used: ${gasUsed || 'unknown'} ⤵︎`,
   );
+}
+
+function calcCost(output) {
+  const gasUsed = getGasUsage(output);
+
+  return (new BN(GAS_PRICE)).muln(gasUsed);
 }
 
 function parseBlockNumber(output) {
@@ -83,7 +98,8 @@ function getBalance(target) {
     ? target.address
     : target;
 
-  return web3GetBalance(address);
+  return web3GetBalance(address)
+    .then((balance) => new BN(balance, 10));
 }
 
 function computeCreate2Address(deployer, salt, byteCode) {
@@ -181,6 +197,7 @@ function signTypedData(data, from) {
 module.exports = {
   concatHex,
   logGasUsage,
+  calcCost,
   parseBlockNumber,
   randomAddress,
   randomBytes32,

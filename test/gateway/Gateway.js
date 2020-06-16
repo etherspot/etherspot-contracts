@@ -40,6 +40,37 @@ contract('Gateway', (addresses) => {
    */
   let personalAccountRegistry;
 
+  const buildDelegatedBatchTypedData = (
+    nonce,
+    to,
+    data,
+  ) => buildTypedData(
+    gateway.address,
+    'DelegatedBatch', [
+      {
+        type: 'uint256',
+        name: 'nonce',
+      },
+      {
+        type: 'address[]',
+        name: 'to',
+      },
+      {
+        type: 'bytes[]',
+        name: 'data',
+      },
+      {
+        type: 'uint256',
+        name: 'gasPrice',
+      },
+    ], {
+      nonce,
+      to,
+      data,
+      gasPrice: GAS_PRICE,
+    },
+  );
+
   before(async () => {
     accountOwnerRegistry = await AccountOwnerRegistry.new();
     gateway = await Gateway.new();
@@ -105,7 +136,7 @@ contract('Gateway', (addresses) => {
   });
 
   context('sendBatchFromAccount()', () => {
-    context('# account ownership store in AccountOwnerRegistry', () => {
+    context('# account ownership stored in AccountOwnerRegistry', () => {
       const account = addresses.pop();
       const sender = addresses.pop();
 
@@ -148,7 +179,7 @@ contract('Gateway', (addresses) => {
       });
     });
 
-    context('# account ownership store in PersonalAccountRegistry', () => {
+    context('# account ownership stored in PersonalAccountRegistry', () => {
       let account;
       const sender = addresses.pop();
 
@@ -193,32 +224,7 @@ contract('Gateway', (addresses) => {
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildTypedData(
-        gateway.address,
-        'DelegatedBatch', [
-          {
-            type: 'uint256',
-            name: 'nonce',
-          },
-          {
-            type: 'address[]',
-            name: 'to',
-          },
-          {
-            type: 'bytes[]',
-            name: 'data',
-          },
-          {
-            type: 'uint256',
-            name: 'gasPrice',
-          },
-        ], {
-          nonce: 0,
-          to: [to],
-          data: [data],
-          gasPrice: GAS_PRICE,
-        },
-      );
+      const typedData = buildDelegatedBatchTypedData(0, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
@@ -242,32 +248,7 @@ contract('Gateway', (addresses) => {
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildTypedData(
-        gateway.address,
-        'DelegatedBatch', [
-          {
-            type: 'uint256',
-            name: 'nonce',
-          },
-          {
-            type: 'address[]',
-            name: 'to',
-          },
-          {
-            type: 'bytes[]',
-            name: 'data',
-          },
-          {
-            type: 'uint256',
-            name: 'gasPrice',
-          },
-        ], {
-          nonce: 1000, // invalid nonce
-          to: [to],
-          data: [data],
-          gasPrice: GAS_PRICE,
-        },
-      );
+      const typedData = buildDelegatedBatchTypedData(1000, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
@@ -286,32 +267,7 @@ contract('Gateway', (addresses) => {
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildTypedData(
-        gateway.address,
-        'DelegatedBatch', [
-          {
-            type: 'uint256',
-            name: 'nonce',
-          },
-          {
-            type: 'address[]',
-            name: 'to',
-          },
-          {
-            type: 'bytes[]',
-            name: 'data',
-          },
-          {
-            type: 'uint256',
-            name: 'gasPrice',
-          },
-        ], {
-          nonce: 1000,
-          to: [to],
-          data: [data],
-          gasPrice: GAS_PRICE,
-        },
-      );
+      const typedData = buildDelegatedBatchTypedData(1000, [to], [data]);
 
       const typedDataHash = hashTypedData(typedData);
 
