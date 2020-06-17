@@ -45,7 +45,7 @@ library BlockLib {
       } else if (blockNumber == 0) {
         result = true;
       } else {
-        result = self.removedAtBlockNumber < blockNumber;
+        result = self.removedAtBlockNumber > blockNumber;
       }
     }
 
