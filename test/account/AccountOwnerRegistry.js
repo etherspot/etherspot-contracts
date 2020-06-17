@@ -2,7 +2,7 @@
 
 const expect = require('expect');
 const {
-  logGasUsed,
+  logGasUsage,
   parseBlockNumber,
   randomAddress,
 } = require('../utils');
@@ -15,7 +15,10 @@ contract('AccountOwnerRegistry', (addresses) => {
       getBlockNumber,
     },
   } = web3;
-  const account = addresses[0];
+
+  /**
+   * @type Contract
+   */
   let accountOwnerRegistry;
 
   before(async () => {
@@ -23,12 +26,15 @@ contract('AccountOwnerRegistry', (addresses) => {
   });
 
   context('addAccountOwner()', () => {
+    const account = addresses.pop();
     const owner = randomAddress();
 
     it('expect to add account owner', async () => {
-      const output = await accountOwnerRegistry.addAccountOwner(owner);
+      const output = await accountOwnerRegistry.addAccountOwner(owner, {
+        from: account,
+      });
 
-      logGasUsed(output);
+      logGasUsage(output);
 
       const { logs: [log] } = output;
 
@@ -38,25 +44,34 @@ contract('AccountOwnerRegistry', (addresses) => {
     });
 
     it('expect to revert when account owner exists', async () => {
-      await expect(accountOwnerRegistry.addAccountOwner(owner)).rejects.toThrow(/revert/);
+      await expect(accountOwnerRegistry.addAccountOwner(owner, {
+        from: account,
+      })).rejects.toThrow(/revert/);
     });
   });
 
   context('removeAccountOwner()', () => {
+    const account = addresses.pop();
     const owner = randomAddress();
 
     before(async () => {
-      await accountOwnerRegistry.addAccountOwner(owner);
+      await accountOwnerRegistry.addAccountOwner(owner, {
+        from: account,
+      });
     });
 
     it('expect to revert when account owner doesn\'t exist', async () => {
-      await expect(accountOwnerRegistry.removeAccountOwner(randomAddress())).rejects.toThrow(/revert/);
+      await expect(accountOwnerRegistry.removeAccountOwner(randomAddress(), {
+        from: account,
+      })).rejects.toThrow(/revert/);
     });
 
     it('expect to remove account owner', async () => {
-      const output = await accountOwnerRegistry.removeAccountOwner(owner);
+      const output = await accountOwnerRegistry.removeAccountOwner(owner, {
+        from: account,
+      });
 
-      logGasUsed(output);
+      logGasUsage(output);
 
       const { logs: [log] } = output;
 
@@ -67,13 +82,20 @@ contract('AccountOwnerRegistry', (addresses) => {
   });
 
   context('verifyAccountOwner()', () => {
+    const account = addresses.pop();
     const ownerAdded = randomAddress();
     const ownerRemoved = randomAddress();
 
     before(async () => {
-      await accountOwnerRegistry.addAccountOwner(ownerAdded);
-      await accountOwnerRegistry.addAccountOwner(ownerRemoved);
-      await accountOwnerRegistry.removeAccountOwner(ownerRemoved);
+      await accountOwnerRegistry.addAccountOwner(ownerAdded, {
+        from: account,
+      });
+      await accountOwnerRegistry.addAccountOwner(ownerRemoved, {
+        from: account,
+      });
+      await accountOwnerRegistry.removeAccountOwner(ownerRemoved, {
+        from: account,
+      });
     });
 
     it('expect to return true when account owner exists', async () => {
@@ -90,6 +112,7 @@ contract('AccountOwnerRegistry', (addresses) => {
   });
 
   context('verifyAccountOwnerAtBlock()', () => {
+    const account = addresses.pop();
     const ownerAdded = randomAddress();
     const ownerRemoved = randomAddress();
     let ownerRemovedAt;
@@ -97,9 +120,15 @@ contract('AccountOwnerRegistry', (addresses) => {
 
     before(async () => {
       blockNumber = await getBlockNumber();
-      await accountOwnerRegistry.addAccountOwner(ownerAdded);
-      await accountOwnerRegistry.addAccountOwner(ownerRemoved);
-      ownerRemovedAt = parseBlockNumber(await accountOwnerRegistry.removeAccountOwner(ownerRemoved));
+      await accountOwnerRegistry.addAccountOwner(ownerAdded, {
+        from: account,
+      });
+      await accountOwnerRegistry.addAccountOwner(ownerRemoved, {
+        from: account,
+      });
+      ownerRemovedAt = parseBlockNumber(await accountOwnerRegistry.removeAccountOwner(ownerRemoved, {
+        from: account,
+      }));
     });
 
     it('expect to return true when account owner exists', async () => {

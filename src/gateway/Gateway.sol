@@ -97,11 +97,13 @@ contract Gateway is Initializable, TypedDataContainer {
   )
     public
   {
-    address sender = _hashTypedData(
-      accountNonces[account],
-      to,
-      data,
-      tx.gasprice
+    address sender = _hashPrimaryTypedData(
+      _hashTypedData(
+        accountNonces[account],
+        to,
+        data,
+        tx.gasprice
+      )
     ).recoverAddress(senderSignature);
 
     accountNonces[account] = accountNonces[account].add(1);

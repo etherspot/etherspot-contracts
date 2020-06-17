@@ -1,4 +1,5 @@
 pragma solidity 0.5.15;
+pragma experimental ABIEncoderV2;
 
 import "../account/AccountOwnerRegistry.sol";
 import "../account/AccountProofRegistry.sol";
@@ -64,6 +65,12 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     address owner,
     address token,
     uint256 lockedUntil
+  );
+
+  event DepositWithdrawalRejected(
+    address depositAccount,
+    address owner,
+    address token
   );
 
   event DepositWithdrawn(
@@ -368,6 +375,27 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  // public functions (views)
+
+  function hashPaymentChannelCommit(
+    PaymentChannelCommit memory paymentChannelCommit
+  )
+  public
+  view
+  returns (bytes32)
+  {
+    return _hashPrimaryTypedData(
+      _hashTypedData(
+        paymentChannelCommit.sender,
+        paymentChannelCommit.recipient,
+        paymentChannelCommit.token,
+        paymentChannelCommit.uid,
+        paymentChannelCommit.blockNumber,
+        paymentChannelCommit.amount
+      )
+    );
+  }
+
   // private functions
 
   function _deployDepositAccount(
@@ -447,7 +475,17 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     paymentChannels[hash].committedAmount = amount;
 
-    _deployDepositAccount(sender);
+    if (deposits[sender].withdrawalLockedUntil[token] > 0) {
+      deposits[sender].withdrawalLockedUntil[token] = 0;
+
+      emit DepositWithdrawalRejected(
+        deposits[sender].account,
+        sender,
+        token
+      );
+    } else {
+      _deployDepositAccount(sender);
+    }
 
     depositAccount = deposits[sender].account;
 

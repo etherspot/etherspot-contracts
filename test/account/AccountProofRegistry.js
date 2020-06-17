@@ -2,7 +2,7 @@
 
 const expect = require('expect');
 const {
-  logGasUsed,
+  logGasUsage,
   parseBlockNumber,
   randomBytes32,
 } = require('../utils');
@@ -15,7 +15,10 @@ contract('AccountProofRegistry', (addresses) => {
       getBlockNumber,
     },
   } = web3;
-  const account = addresses[0];
+
+  /**
+   * @type Contract
+   */
   let accountProofRegistry;
 
   before(async () => {
@@ -23,12 +26,15 @@ contract('AccountProofRegistry', (addresses) => {
   });
 
   context('addAccountProof()', () => {
+    const account = addresses.pop();
     const hash = randomBytes32();
 
     it('expect to add account proof', async () => {
-      const output = await accountProofRegistry.addAccountProof(hash);
+      const output = await accountProofRegistry.addAccountProof(hash, {
+        from: account,
+      });
 
-      logGasUsed(output);
+      logGasUsage(output);
 
       const { logs: [log] } = output;
 
@@ -38,25 +44,34 @@ contract('AccountProofRegistry', (addresses) => {
     });
 
     it('expect to revert when account proof exists', async () => {
-      await expect(accountProofRegistry.addAccountProof(hash)).rejects.toThrow(/revert/);
+      await expect(accountProofRegistry.addAccountProof(hash, {
+        from: account,
+      })).rejects.toThrow(/revert/);
     });
   });
 
   context('removeAccountProof()', () => {
+    const account = addresses.pop();
     const hash = randomBytes32();
 
     before(async () => {
-      await accountProofRegistry.addAccountProof(hash);
+      await accountProofRegistry.addAccountProof(hash, {
+        from: account,
+      });
     });
 
     it('expect to revert when account proof doesn\'t exist', async () => {
-      await expect(accountProofRegistry.removeAccountProof(randomBytes32())).rejects.toThrow(/revert/);
+      await expect(accountProofRegistry.removeAccountProof(randomBytes32(), {
+        from: account,
+      })).rejects.toThrow(/revert/);
     });
 
     it('expect to remove account proof', async () => {
-      const output = await accountProofRegistry.removeAccountProof(hash);
+      const output = await accountProofRegistry.removeAccountProof(hash, {
+        from: account,
+      });
 
-      logGasUsed(output);
+      logGasUsage(output);
 
       const { logs: [log] } = output;
 
@@ -67,13 +82,20 @@ contract('AccountProofRegistry', (addresses) => {
   });
 
   context('verifyAccountProof()', () => {
+    const account = addresses.pop();
     const hashAdded = randomBytes32();
     const hashRemoved = randomBytes32();
 
     before(async () => {
-      await accountProofRegistry.addAccountProof(hashAdded);
-      await accountProofRegistry.addAccountProof(hashRemoved);
-      await accountProofRegistry.removeAccountProof(hashRemoved);
+      await accountProofRegistry.addAccountProof(hashAdded, {
+        from: account,
+      });
+      await accountProofRegistry.addAccountProof(hashRemoved, {
+        from: account,
+      });
+      await accountProofRegistry.removeAccountProof(hashRemoved, {
+        from: account,
+      });
     });
 
     it('expect to return true when account proof exists', async () => {
@@ -90,6 +112,7 @@ contract('AccountProofRegistry', (addresses) => {
   });
 
   context('verifyAccountProofAtBlock()', () => {
+    const account = addresses.pop();
     const hashAdded = randomBytes32();
     const hashRemoved = randomBytes32();
     let hashRemovedAt;
@@ -97,9 +120,15 @@ contract('AccountProofRegistry', (addresses) => {
 
     before(async () => {
       blockNumber = await getBlockNumber();
-      await accountProofRegistry.addAccountProof(hashAdded);
-      await accountProofRegistry.addAccountProof(hashRemoved);
-      hashRemovedAt = parseBlockNumber(await accountProofRegistry.removeAccountProof(hashRemoved));
+      await accountProofRegistry.addAccountProof(hashAdded, {
+        from: account,
+      });
+      await accountProofRegistry.addAccountProof(hashRemoved, {
+        from: account,
+      });
+      hashRemovedAt = parseBlockNumber(await accountProofRegistry.removeAccountProof(hashRemoved, {
+        from: account,
+      }));
     });
 
     it('expect to return true when account proof exists', async () => {

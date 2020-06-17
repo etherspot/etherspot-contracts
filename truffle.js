@@ -12,6 +12,7 @@ module.exports = {
     test: {
       host: '127.0.0.1',
       port: 8555,
+      gasPrice: 20000000000,
       network_id: '*',
     },
   },
