@@ -85,7 +85,7 @@ function randomBytes32() {
   return randomHex(32);
 }
 
-function now(additionalSeconds = 0) {
+function getNow(additionalSeconds = 0) {
   const add = BN.isBN(additionalSeconds)
     ? additionalSeconds.toNumber()
     : additionalSeconds;
@@ -107,26 +107,19 @@ function computeCreate2Address(deployer, salt, byteCode) {
     ? salt
     : soliditySha3(salt);
 
+  const deployerAddress = deployer && typeof deployer === 'object'
+    ? deployer.address
+    : deployer;
+
   const hash = soliditySha3(
     '0xff',
-    deployer,
+    deployerAddress,
     saltHash,
     sha3(byteCode),
   );
 
   return toChecksumAddress(
     `0x${hash.substr(-40)}`,
-  );
-}
-
-function createSignedMessageHash(message) {
-  const messageHash = message.length === 66
-    ? message
-    : soliditySha3(message);
-
-  return soliditySha3(
-    '\x19Ethereum Signed Message:\n32',
-    messageHash,
   );
 }
 
@@ -194,6 +187,27 @@ function signTypedData(data, from) {
   });
 }
 
+function increaseTime(seconds = 0) {
+  return new Promise((resolve, reject) => {
+    const value = (BN.isBN(seconds) ? seconds.toNumber() : seconds) + 1;
+
+    currentProvider.send({
+      jsonrpc: '2.0',
+      method: 'evm_increaseTime',
+      params: [
+        value,
+      ],
+      id: Date.now(),
+    }, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(new BN(data.result));
+      }
+    });
+  });
+}
+
 module.exports = {
   concatHex,
   logGasUsage,
@@ -201,11 +215,11 @@ module.exports = {
   parseBlockNumber,
   randomAddress,
   randomBytes32,
-  now,
+  getNow,
   getBalance,
   buildTypedData,
   hashTypedData,
   signTypedData,
   computeCreate2Address,
-  createSignedMessageHash,
+  increaseTime,
 };

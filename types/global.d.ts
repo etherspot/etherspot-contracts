@@ -15,6 +15,7 @@ declare global {
 
   export interface ContractFactory {
     new: (...args: any[]) => Promise<Contract>;
+    bytecode: string;
   }
 
   export interface ContractMethods {
