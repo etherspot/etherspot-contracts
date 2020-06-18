@@ -5,9 +5,11 @@ const logger = require('./logger');
 
 const { eth, utils } = new Web3(createProvider());
 
-async function getContracts(...names) {
-  const networkId = await eth.net.getId();
+function getNetworkId() {
+  return eth.net.getId();
+}
 
+function getContracts(networkId, ...names) {
   return names
     .map((name) => {
       const address = getContractAddress(name, networkId);
@@ -118,6 +120,8 @@ function processEvents(output) {
 }
 
 module.exports = {
+  getDefaultAccount,
+  getNetworkId,
   ZERO_ADDRESS: `0x${'0'.repeat(40)}`,
   logger,
   utils,

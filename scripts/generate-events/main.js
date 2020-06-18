@@ -3,6 +3,7 @@ const {
   ZERO_ADDRESS,
   logger,
   utils,
+  getNetworkId,
   getContracts,
   sendTransaction,
   executeRequest,
@@ -11,12 +12,14 @@ const {
 } = require('../shared');
 
 async function main() {
+  const networkId = await getNetworkId();
+
   switch (process.argv[2]) {
     // AccountOwnerRegistry
     case ContractNames.AccountOwnerRegistry: {
       logger.info(`contract ${ContractNames.AccountOwnerRegistry}`);
 
-      const [contract] = await getContracts(ContractNames.AccountOwnerRegistry);
+      const [contract] = getContracts(networkId, ContractNames.AccountOwnerRegistry);
 
       {
         const owner = createRandomWallet().address;
@@ -50,7 +53,7 @@ async function main() {
     case ContractNames.AccountProofRegistry: {
       logger.info(`contract ${ContractNames.AccountProofRegistry}`);
 
-      const [contract] = await getContracts(ContractNames.AccountProofRegistry);
+      const [contract] = getContracts(networkId, ContractNames.AccountProofRegistry);
 
       {
         const hash = utils.randomHex(32);
@@ -84,7 +87,7 @@ async function main() {
     case ContractNames.PersonalAccountRegistry: {
       logger.info(`contract ${ContractNames.PersonalAccountRegistry}`);
 
-      const [contract] = await getContracts(ContractNames.PersonalAccountRegistry);
+      const [contract] = getContracts(networkId, ContractNames.PersonalAccountRegistry);
       const saltOwner = createRandomWallet(true);
       const owner = createRandomWallet();
       const to = createRandomWallet();

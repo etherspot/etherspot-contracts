@@ -12,9 +12,9 @@ const CONTRACTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'contracts');
 const CONSTANTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'constants');
 
 const TYPED_DATA_DOMAIN_NAMES = {
-  Gateway: 'ETHERspot Gateway',
-  ENSController: 'ETHERspot ENS Controller',
-  PaymentRegistry: 'ETHERspot Payment Network',
+  Gateway: 'Pillar Gateway',
+  ENSController: 'Pillar ENS Controller',
+  PaymentRegistry: 'Pillar Payment Network',
 };
 
 // see: https://docs.ens.domains/ens-deployments
@@ -26,8 +26,8 @@ async function main() {
   logger.info('preparing salt');
 
   {
-    const { name, version } = await readJSON(PACKAGE_PATH);
-    salt = soliditySha3(`${name}@${version}`);
+    const { name } = await readJSON(PACKAGE_PATH);
+    salt = soliditySha3(name);
   }
 
   const files = await readdir(COMPILED_ROOT_PATH);
