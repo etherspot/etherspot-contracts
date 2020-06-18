@@ -6,6 +6,8 @@ export declare enum ContractNames {
   AccountOwnerRegistry = 'AccountOwnerRegistry',
   AccountProofRegistry = 'AccountProofRegistry',
   Controlled = 'Controlled',
+  ENSController = 'ENSController',
+  ENSRegistry = 'ENSRegistry',
   ERC20Token = 'ERC20Token',
   Gateway = 'Gateway',
   GatewayRecipient = 'GatewayRecipient',

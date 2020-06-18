@@ -1,13 +1,15 @@
 /* eslint-disable */
 
 module.exports = {
-  TYPED_DATA_DOMAIN_SALT: '0xda894ff4ab4902dab7d040ab5668534be842fac3790d71888f763645ed0ab40d',
+  TYPED_DATA_DOMAIN_SALT: '0xae840b0516d7c0205a60d22bb965a17525aa630ef218d5fc115d2ec8e839f652',
   ContractNames: {
     Account: 'Account',
     AccountController: 'AccountController',
     AccountOwnerRegistry: 'AccountOwnerRegistry',
     AccountProofRegistry: 'AccountProofRegistry',
     Controlled: 'Controlled',
+    ENSController: 'ENSController',
+    ENSRegistry: 'ENSRegistry',
     ERC20Token: 'ERC20Token',
     Gateway: 'Gateway',
     GatewayRecipient: 'GatewayRecipient',
