@@ -380,9 +380,9 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   function hashPaymentChannelCommit(
     PaymentChannelCommit memory paymentChannelCommit
   )
-  public
-  view
-  returns (bytes32)
+    public
+    view
+    returns (bytes32)
   {
     return _hashPrimaryTypedData(
       _hashTypedData(

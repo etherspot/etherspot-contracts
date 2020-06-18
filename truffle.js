@@ -6,7 +6,7 @@ module.exports = {
   networks: {
     default: {
       provider,
-      gas: 2000000,
+      gas: 2500000,
       network_id: '*',
     },
     test: {

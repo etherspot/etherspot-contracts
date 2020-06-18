@@ -54,6 +54,28 @@ console.log(
 );
 ```
 
+## Development
+
+### Configuration
+
+via `env` variables:
+
+| name | default value | note |
+| --- | --- | --- |
+| `PROVIDER_ENDPOINT` | `http://localhost:8545` | |
+| `PROVIDER_MNEMONIC` | `(empty)` | |
+| `PROVIDER_PRIVATE_KEY` | `0x5504956d5...` | uses first private key from local infra by default |
+| `LOG_GAS_USAGE` | `(empty)` | log gas usage in tests |
+
+### Scripts
+
+```bash
+$ npm run test        # run tests
+$ npm run migrate     # migrate contracts 
+$ npm run build       # build dist files
+$ npm run initialize  # initialize contracts
+```
+
 ## License
 
 MIT
