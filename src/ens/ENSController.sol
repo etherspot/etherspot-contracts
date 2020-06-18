@@ -165,6 +165,14 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
       )
     );
 
+    require(
+      nodes[node].addr == address(this)
+    );
+
+    require(
+      nodes[subNode].addr == address(0)
+    );
+
     nodes[subNode].addr = account;
 
     registry.setSubnodeOwner(node, label, address(this));

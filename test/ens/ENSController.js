@@ -1,13 +1,14 @@
 /* eslint-env node, mocha */
 
 const expect = require('expect');
-const { hash: hashEnsNode } = require('eth-ens-namehash');
+const { hash: hashName } = require('eth-ens-namehash');
 const {
   logGasUsage,
   randomAddress,
   randomBytes32,
   buildTypedData,
   signTypedData,
+  hashTypedData,
 } = require('../utils');
 const {
   TYPED_DATA_SALT,
@@ -17,12 +18,13 @@ const {
 const ENSController = artifacts.require('ENSController');
 const ENSRegistry = artifacts.require('ENSRegistry');
 
-contract.only('ENSController', (addresses) => {
+contract('ENSController', (addresses) => {
   const {
     utils: {
       soliditySha3,
     },
   } = web3;
+
   const gateway = addresses.pop();
   const guardian = addresses.pop();
 
@@ -43,7 +45,7 @@ contract.only('ENSController', (addresses) => {
 
     const name = `test${nameCounter}`;
     const labelHash = soliditySha3(name);
-    const node = hashEnsNode(name);
+    const node = hashName(name);
 
     const owner = addresses.pop();
     await ensRegistry.setSubnodeOwner('0x', labelHash, owner);
@@ -52,7 +54,6 @@ contract.only('ENSController', (addresses) => {
     });
 
     return {
-      owner,
       name,
       labelHash,
       node,
@@ -62,7 +63,7 @@ contract.only('ENSController', (addresses) => {
         return {
           name: `${label}.${name}`,
           labelHash: soliditySha3(label),
-          node: hashEnsNode(`${label}.${name}`),
+          node: hashName(`${label}.${name}`),
         };
       },
     };
@@ -107,17 +108,25 @@ contract.only('ENSController', (addresses) => {
     );
   });
 
-  context('setENSRegistry()', () => {
-    const newEnsRegistry = randomAddress();
+  context('registry()', () => {
+    it('expect to return current registry address', async () => {
+      await expect(ensController.registry())
+        .resolves
+        .toBe(ensRegistry.address);
+    });
+  });
+
+  context('setRegistry()', () => {
+    const newRegistry = randomAddress();
 
     after(async () => {
-      await ensController.setENSRegistry(ensRegistry.address, {
+      await ensController.setRegistry(ensRegistry.address, {
         from: guardian,
       });
     });
 
     it('expect to change registry address', async () => {
-      const output = await ensController.setENSRegistry(newEnsRegistry, {
+      const output = await ensController.setRegistry(newRegistry, {
         from: guardian,
       });
 
@@ -126,13 +135,13 @@ contract.only('ENSController', (addresses) => {
       const { logs: [log] } = output;
 
       expect(log.event)
-        .toBe('ENSRegistryChanged');
-      expect(log.args.ensRegistry)
-        .toBe(newEnsRegistry);
+        .toBe('RegistryChanged');
+      expect(log.args.registry)
+        .toBe(newRegistry);
     });
 
     it('expect to revert on same registry address', async () => {
-      await expect(ensController.setENSRegistry(newEnsRegistry, {
+      await expect(ensController.setRegistry(newRegistry, {
         from: guardian,
       }))
         .rejects
@@ -140,7 +149,7 @@ contract.only('ENSController', (addresses) => {
     });
 
     it('expect to revert when sender is not a guardian', async () => {
-      await expect(ensController.setENSRegistry(randomAddress()))
+      await expect(ensController.setRegistry(randomAddress()))
         .rejects
         .toThrow(/revert/);
     });
@@ -204,9 +213,7 @@ contract.only('ENSController', (addresses) => {
 
       const guardianSignature = await signTypedData(typedData, guardian);
 
-      const { labelHash } = subNode;
-
-      await ensController.registerSubNode(node, labelHash, guardianSignature, {
+      await ensController.registerSubNode(node, subNode.labelHash, guardianSignature, {
         from: account,
       });
     });
@@ -255,6 +262,177 @@ contract.only('ENSController', (addresses) => {
       await expect(ensController.setAddr(node, randomAddress()))
         .rejects
         .toThrow(/rever/);
+    });
+  });
+
+  context('registerSubNode()', () => {
+    let nodeFactory;
+    let subNode;
+
+    before(async () => {
+      nodeFactory = await createNodeFactory();
+
+      const { node } = nodeFactory;
+      await ensController.addNode(node);
+      subNode = nodeFactory.createSubNode();
+    });
+
+    it('expect to register sub node', async () => {
+      const account = addresses.pop();
+      const { node } = nodeFactory;
+
+      const typedData = buildSubNodeRegistrationTypedData(
+        account,
+        node,
+        subNode.labelHash,
+      );
+
+      const guardianSignature = await signTypedData(typedData, guardian);
+
+      const output = await ensController.registerSubNode(node, subNode.labelHash, guardianSignature, {
+        from: account,
+      });
+
+      logGasUsage(output);
+
+      const { logs: [log] } = output;
+
+      expect(log.event)
+        .toBe('AddrChanged');
+      expect(log.args.node)
+        .toBe(subNode.node);
+      expect(log.args.addr)
+        .toBe(account);
+    });
+
+    it('expect to revert when node is taken', async () => {
+      const account = addresses.pop();
+      const { node } = nodeFactory;
+
+      const typedData = buildSubNodeRegistrationTypedData(
+        account,
+        node,
+        subNode.labelHash,
+      );
+
+      const guardianSignature = await signTypedData(typedData, guardian);
+
+      await expect(ensController.registerSubNode(node, subNode.labelHash, guardianSignature, {
+        from: account,
+      }))
+        .rejects
+        .toThrow(/revert/);
+    });
+
+    it('expect to revert on invalid guardian signature', async () => {
+      const subNode = nodeFactory.createSubNode();
+      const account = addresses.pop();
+      const { node } = nodeFactory;
+
+      const typedData = buildSubNodeRegistrationTypedData(
+        randomAddress(),
+        node,
+        subNode.labelHash,
+      );
+
+      const guardianSignature = await signTypedData(typedData, guardian);
+
+      await expect(ensController.registerSubNode(node, subNode.labelHash, guardianSignature, {
+        from: account,
+      }))
+        .rejects
+        .toThrow(/revert/);
+    });
+  });
+
+  context('addr()', () => {
+    const account = addresses.pop();
+
+    let nodeFactory;
+    let subNode;
+
+    before(async () => {
+      nodeFactory = await createNodeFactory();
+
+      subNode = nodeFactory.createSubNode();
+
+      const { node } = nodeFactory;
+      await ensController.addNode(node);
+
+      const typedData = buildSubNodeRegistrationTypedData(
+        account,
+        node,
+        subNode.labelHash,
+      );
+
+      const guardianSignature = await signTypedData(typedData, guardian);
+
+      await ensController.registerSubNode(node, subNode.labelHash, guardianSignature, {
+        from: account,
+      });
+    });
+
+    it('expect to return controller address for root node', async () => {
+      await expect(ensController.addr(nodeFactory.node))
+        .resolves
+        .toBe(ensController.address);
+    });
+
+    it('expect to return owner address for sub node', async () => {
+      await expect(ensController.addr(subNode.node))
+        .resolves
+        .toBe(account);
+    });
+
+    it('expect to return zero address for unknown node', async () => {
+      await expect(ensController.addr(randomBytes32()))
+        .resolves
+        .toBeZeroAddress();
+    });
+  });
+
+  context('supportsInterface()', () => {
+    it('expect to return true for supportsInterface(bytes4) interface', async () => {
+      await expect(ensController.supportsInterface(soliditySha3('supportsInterface(bytes4)')
+        .slice(0, 10)))
+        .resolves
+        .toBeTruthy();
+    });
+
+    it('expect to return true for addr(bytes32) interface', async () => {
+      await expect(ensController.supportsInterface(soliditySha3('addr(bytes32)')
+        .slice(0, 10)))
+        .resolves
+        .toBeTruthy();
+    });
+
+    it('expect to return false for unsupported interface', async () => {
+      await expect(ensController.supportsInterface(soliditySha3('test(address)')
+        .slice(0, 10)))
+        .resolves
+        .toBeFalsy();
+    });
+  });
+
+  context('hashSubNodeRegistration()', () => {
+    it('expect to return correct hash', async () => {
+      const account = randomAddress();
+      const node = randomBytes32();
+      const label = randomBytes32();
+
+      const typedData = buildSubNodeRegistrationTypedData(
+        account,
+        node,
+        label,
+      );
+
+      await expect(ensController.hashSubNodeRegistration({
+        account,
+        node,
+        label,
+      }))
+        .resolves
+        .toBe(hashTypedData(typedData));
     });
   });
 });
