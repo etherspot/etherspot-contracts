@@ -28,7 +28,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   bytes4 private constant INTERFACE_META_ID = 0x01ffc9a7;
   bytes4 private constant INTERFACE_ADDR_ID = 0x3b3b57de;
 
-  ENSRegistry public ensRegistry;
+  ENSRegistry public registry;
 
   mapping(bytes32 => Node) private nodes;
 
@@ -43,8 +43,8 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     bytes32 node
   );
 
-  event ENSRegistryChanged(
-    address ensRegistry
+  event RegistryChanged(
+    address registry
   );
 
   /**
@@ -55,7 +55,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   // external functions
 
   function initialize(
-    ENSRegistry ensRegistry_,
+    ENSRegistry registry_,
     address[] calldata guardians_,
     address gateway_,
     bytes32 typedDataDomainNameHash,
@@ -65,10 +65,10 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     onlyInitializer
   {
     require(
-      address(ensRegistry_) != address(0)
+      address(registry_) != address(0)
     );
 
-    ensRegistry = ensRegistry_;
+    registry = registry_;
 
     // Guarded
     _initializeGuarded(guardians_);
@@ -83,24 +83,24 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
   }
 
-  function setENSRegistry(
-    ENSRegistry ensRegistry_
+  function setRegistry(
+    ENSRegistry registry_
   )
     external
     onlyGuardian
   {
     require(
-      address(ensRegistry_) != address(0)
+      address(registry_) != address(0)
     );
 
     require(
-      ensRegistry_ != ensRegistry
+      registry_ != registry
     );
 
-    ensRegistry = ensRegistry_;
+    registry = registry_;
 
-    emit ENSRegistryChanged(
-      address(ensRegistry)
+    emit RegistryChanged(
+      address(registry)
     );
   }
 
@@ -114,7 +114,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      ensRegistry.owner(node) == address(this)
+      registry.owner(node) == address(this)
     );
 
     nodes[node].addr = address(this);
@@ -167,9 +167,9 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
     nodes[subNode].addr = account;
 
-    ensRegistry.setSubnodeOwner(node, label, address(this));
-    ensRegistry.setResolver(subNode, address(this));
-    ensRegistry.setOwner(subNode, account);
+    registry.setSubnodeOwner(node, label, address(this));
+    registry.setResolver(subNode, address(this));
+    registry.setOwner(subNode, account);
 
     emit AddrChanged(subNode, account);
   }
