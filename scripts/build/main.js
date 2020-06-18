@@ -13,8 +13,12 @@ const CONSTANTS_BUILD_PATH = join(BUILD_ROOT_PATH, 'constants');
 
 const TYPED_DATA_DOMAIN_NAMES = {
   Gateway: 'ETHERspot Gateway',
+  ENSController: 'ETHERspot ENS Controller',
   PaymentRegistry: 'ETHERspot Payment Network',
 };
+
+// see: https://docs.ens.domains/ens-deployments
+const MAINNET_ENS_REGISTRY_ADDRESS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
 
 async function main() {
   let salt;
@@ -58,20 +62,30 @@ async function main() {
             ? contractsOldMap[name].addresses
             : {};
 
+          const byteCodeHash = soliditySha3(bytecode);
+
+          const typedDataDomainName = TYPED_DATA_DOMAIN_NAMES[name] || null;
+
+          const addresses = {
+            ...addressesOld,
+            ...Object
+              .entries(networks)
+              .reduce((result, [id, { address }]) => ({
+                ...result,
+                [id]: address,
+              }), {}),
+          };
+
+          if (name === 'ENSRegistry') {
+            addresses['1'] = MAINNET_ENS_REGISTRY_ADDRESS;
+          }
+
           return {
             name,
             abi,
-            byteCodeHash: soliditySha3(bytecode),
-            typedDataDomainName: TYPED_DATA_DOMAIN_NAMES[name] || null,
-            addresses: {
-              ...addressesOld,
-              ...Object
-                .entries(networks)
-                .reduce((result, [id, { address }]) => ({
-                  ...result,
-                  [id]: address,
-                }), {}),
-            },
+            byteCodeHash,
+            typedDataDomainName,
+            addresses,
           };
         })()),
     )
