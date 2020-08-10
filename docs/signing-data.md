@@ -1,7 +1,7 @@
 # Signing Data
 
 [EIP-712: Ethereum typed structured data hashing and signing](https://eips.ethereum.org/EIPS/eip-712) 
-is used throughout the project.
+is used across whole project.
 
 Domain message data structure:
  
