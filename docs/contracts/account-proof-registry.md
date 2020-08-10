@@ -76,7 +76,7 @@ Removing proof only affects future blocks (until proof is re-added).
 
 ### Account proof verification
 
-Account proof can verify in a current block (`verifyAccountProof`) or in previous (`verifyAccountProofAtBlock`) 
+Account proof can be verified in a current block (`verifyAccountProof`) or in previous (`verifyAccountProofAtBlock`) 
 using `blockNumber` argument. 
 
 ## Implementation
