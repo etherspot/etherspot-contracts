@@ -7,3 +7,4 @@
     - [Gateway and Gateway Recipients](./contracts/gateway-and-gateway-recipients.md)
     - [Payment Registry](./contracts/payment-registry.md)
     - [Personal Account Registry](./contracts/personal-account-registry.md)
+* [Signing Data](./signing-data.md)
