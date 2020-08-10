@@ -7,9 +7,10 @@ A registry for account proof management.
 ## Motivation
 
 There is no way to sign data using contract based wallet. 
-[ERC-1271 (Standard Signature Validation Method for Contracts)](https://github.com/ethereum/EIPs/issues/1271) 
+
+*Note: [ERC-1271 (Standard Signature Validation Method for Contracts)](https://github.com/ethereum/EIPs/issues/1271) 
 allow removing signer after signature verification. 
-Because of that, `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.
+Because of that, `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.*
 
 ## Definitions
 
