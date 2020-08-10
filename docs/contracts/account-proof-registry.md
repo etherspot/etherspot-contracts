@@ -20,7 +20,7 @@ Because of that, `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.*
 
 ## Specification
 
-The registry has the following interface:
+`AccountProofRegistry` has the following interface:
 
 ```solidity
 interface AccountProofRegistry {

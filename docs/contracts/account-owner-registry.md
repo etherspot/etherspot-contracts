@@ -15,7 +15,7 @@ Creating global owner registry for key and external (outside platform) contract 
 
 ## Specification
 
-The registry has the following interface:
+`AccountOwnerRegistry` has the following interface:
 
 ```solidity
 interface AccountOwnerRegistry {
