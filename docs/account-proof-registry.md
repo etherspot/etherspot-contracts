@@ -1,3 +1,0 @@
-# Account Proof Registry
-
-(TODO)

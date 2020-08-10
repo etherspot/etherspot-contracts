@@ -54,16 +54,6 @@ console.log(
 );
 ```
 
-## Documentation
-
-* [Account Owner Registry](./docs/account-owner-registry.md)
-* [Account Proof Registry](./docs/account-proof-registry.md)
-* [ENS Controller](./docs/ens-controller.md)
-* [Gateway](./docs/gateway.md)
-* [Payment Registry](./docs/payment-registry.md)
-* [Personal Account Registry](./docs/personal-account-registry.md)
-
-
 ## Development
 
 ### Configuration

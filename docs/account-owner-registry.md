@@ -1,3 +1,0 @@
-# Account Owner Registry
-
-(TODO)

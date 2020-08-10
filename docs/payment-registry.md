@@ -1,3 +1,0 @@
-# Payment Registry
-
-(TODO)
