@@ -16,5 +16,5 @@ Parameters:
 | `name` | available from npm package (`getContractTypedDataDomainName()` function) | 
 | `version` | `keccak256("4")` | 
 | `chainId` | current chain id | 
-| `verifyingContract` | current contract | 
+| `verifyingContract` | current contract address | 
 | `salt` | available from npm package (`TYPED_DATA_DOMAIN_SALT` constant) | 
