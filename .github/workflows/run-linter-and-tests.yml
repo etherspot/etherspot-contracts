@@ -22,4 +22,4 @@ jobs:
           npm run lint
       - name: tests
         run: |
-          npm test
+          npm run test:compile-all
