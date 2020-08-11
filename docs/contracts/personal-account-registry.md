@@ -2,11 +2,11 @@
 
 ## Simple Summary
 
-(TODO)
+A registry for personal (controlled by owners) account management.
 
 ## Motivation
 
-(TODO)
+Improve contract wallet onboarding process.
 
 ## Specification
 

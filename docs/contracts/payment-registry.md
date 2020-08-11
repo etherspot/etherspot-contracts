@@ -2,11 +2,7 @@
 
 ## Simple Summary
 
-(TODO)
-
-## Motivation
-
-(TODO)
+A registry for payment and payment channels.
 
 ## Specification
 
