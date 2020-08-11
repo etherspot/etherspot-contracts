@@ -2,11 +2,20 @@
 
 ## Simple Summary
 
-(TODO)
+[GSN](https://www.opengsn.org/) replacement.
 
 ## Motivation
 
-(TODO)
+Creating more developer friendly [GSN](https://www.opengsn.org/) with support for:
+* batch transactions
+* [Account Owner Registry](./account-owner-registry.md)
+* [Personal Account Registry](./personal-account-registry.md)
+
+## Definitions
+
+* sender - `msg.sender` or key used for sign delegate call,
+* account - contract or key based wallet,
+* batch - structure of target addresses `address[] to` and target data `bytes[] data`
 
 ## Specification
 
@@ -68,6 +77,47 @@ contract GatewayRecipient {
 }
 
 ```
+
+There are several options for batch sending.
+
+* `sendBatch()` - send direct batch
+* `sendBatchFromAccount()` - send direct batch from account
+* `delegateBatchFromAccount()` - send a batch from account using different account (eg. relayer)
+
+`delegateBatchFromAccount` recover address from sender signature. 
+
+Sender delegate batch message data structure:
+
+```solidity
+bytes32 TYPE_HASH = keccak256("DelegatedBatch(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)");
+```
+*See: [signing data section](../signing-data.md)* 
+
+In both `sendBatchFromAccount` and `delegateBatchFromAccount` sender need to be an owner of the account.
+
+Account owner verification diagram: 
+
+```mermaid
+graph TD
+    A{Is sender equal account}
+    A -->|Yes| B[set context account as sender]
+    A -->|No| C[PersonalAccountRegistry#verifyAccountOwner] 
+    C --> D{Is sender account owner}
+    D -->|Yes| E[set context account as account]
+    D -->|No| F[AccountOwnerRegistry#verifyAccountOwner] 
+    F --> G{Is sender account owner}
+    G -->|Yes| E[set context account as account]
+    G -->|No| H[revert] 
+```
+
+Target contract context addresses:
+
+| gateway method | `_getContextSender` | `_getContextSender` |
+| --- | --- | --- |
+| `sendBatch()` | `msg.sender` | `msg.sender` | 
+| `sendBatchFromAccount()` | `msg.sender` | `account` argument | 
+| `delegateBatchFromAccount()` | recover from `senderSignature` | `account` argument | 
+
 
 ## Implementation
 

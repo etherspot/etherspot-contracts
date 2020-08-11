@@ -70,7 +70,6 @@ Guardian message data structure:
 ```solidity
 bytes32 TYPE_HASH = keccak256("SubNodeRegistration(address account,bytes32 node,bytes32 label)");
 ```
-
 *See: [signing data section](../signing-data.md)* 
 
 
