@@ -6,7 +6,7 @@ ENS subnode registrar and [addr resolver](https://eips.ethereum.org/EIPS/eip-137
 
 ## Motivation
 
-Build a contract that allows you to reserve (off-chain) ENS names.
+To build a contract that allows you to reserve (off-chain) and manage ENS names.
 
 ## Definitions
 
