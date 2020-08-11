@@ -72,7 +72,7 @@ Removing an owner only affects the future blocks (until the owner is re-added).
 
 ### Account owner verification
 
-Account owner can be verified in a current block (`verifyAccountOwner`) or in previous (`verifyAccountOwnerAtBlock`) 
+The account owner can be verified in a current block (`verifyAccountOwner`) or in previous (`verifyAccountOwnerAtBlock`) 
 using `blockNumber` argument. 
 
 ## Implementation
