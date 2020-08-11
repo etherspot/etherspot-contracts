@@ -9,7 +9,7 @@ A registry for account proof management.
 Given the fact, there is no way to sign the data using a contract based wallet, we created a registry to store signed by the key wallet proofs. 
 
 *Note: [ERC-1271 (Standard Signature Validation Method for Contracts)](https://github.com/ethereum/EIPs/issues/1271) 
-allow removing signer after signature verification. 
+allows removing a signer after the signature was created. Thus store the signature for the later use doesn't guarantee the signer is still has access to that smart account.
 Because of that, `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.*
 
 ## Definitions
