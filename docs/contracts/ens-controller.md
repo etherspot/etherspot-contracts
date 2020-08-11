@@ -62,7 +62,8 @@ When transferring is done everyone can call `addNode`.
 
 To register sub node, `msg.sender` need to send valid signature from one of guardian key.
 Once registration is complete `msg.sender` becoming both node owner and `addr` record value.
-Once a sub node is registered, it cannot be replaced. 
+
+After registration sub node cannot be replaced. 
 
 Guardian message data structure:
 
