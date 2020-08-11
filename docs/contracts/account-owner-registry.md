@@ -66,7 +66,7 @@ interface AccountOwnerRegistry {
 
 ### Account owner management
 
-Account can call the registry to add (`addAccountOwner`) or remove (`removeAccountOwner`) own owners. 
+An account can call the registry to add (`addAccountOwner`) or remove (`removeAccountOwner`) its own owners. 
 When owner has been added, information about that fact will live in registry forever.
 Removing owner only affects future blocks (until owner is re-added).
 
