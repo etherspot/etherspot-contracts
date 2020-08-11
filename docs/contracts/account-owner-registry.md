@@ -6,7 +6,7 @@ A registry for account owner management.
 
 ## Motivation
 
-Creating global owner registry for key and external (outside platform) contract based wallets.
+Creating a global owners registry for key and external (outside of the platform) contract based wallets.
 
 ## Definitions
 
