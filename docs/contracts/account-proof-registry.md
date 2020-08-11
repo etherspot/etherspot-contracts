@@ -10,7 +10,7 @@ Given the fact, there is no way to sign the data using a contract based wallet, 
 
 *Note: [ERC-1271 (Standard Signature Validation Method for Contracts)](https://github.com/ethereum/EIPs/issues/1271) 
 allows removing a signer after the signature was created. Thus store the signature for the later use doesn't guarantee the signer is still has access to that smart account.
-Because of that, `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.*
+Because of that, the ERC1271's `isValidSignature()` cannot be used in e.g. `PaymentRegistry`.*
 
 ## Definitions
 
