@@ -41,7 +41,8 @@ contract BalanceChecker {
 
     // is it a contract and does it implement balanceOf
     // solhint-disable-next-line avoid-low-level-calls
-    if (tokenCode > 0 && token.call(bytes4(0x70a08231), user)) {
+    (bool methodExists,) = token.call(abi.encodeWithSignature("balanceOf(address)", user));
+    if (tokenCode > 0 && methodExists) {
       return ERC20Token(token).balanceOf(user);
     } else {
       return 0;
