@@ -1,17 +1,16 @@
 /* eslint-env node, mocha */
 
 const expect = require('expect');
+const { ZERO_ADDRESS } = require('../constants');
 const {
   randomAddress,
   getBalance,
 } = require('../utils');
-const {
-  ZERO_ADDRESS,
-} = require('../constants');
+
 const BalanceChecker = artifacts.require('BalanceChecker');
 const WrappedWeiToken = artifacts.require('WrappedWeiToken');
 
-contract.only('BalanceChecker', (addresses) => {
+contract('BalanceChecker', (addresses) => {
   /**
    * @type Contract
    */
