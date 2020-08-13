@@ -36,10 +36,41 @@ contract BalanceChecker {
         uint index = j.add(tokens.length.mul(i));
 
         if (tokens[j] != address(0x0)) {
-          result[index] = ERC20Token(tokens[j]).balanceOf(accounts[i]);
+          result[index] = _getBalance(accounts[i], tokens[j]);
         } else {
           result[index] = accounts[i].balance;
         }
+      }
+    }
+
+    return result;
+  }
+
+  function _getBalance(
+    address account,
+    address token
+  )
+    private
+    view
+    returns (uint256)
+  {
+    uint256 result = 0;
+    uint256 tokenCode;
+
+    // check if token is actually a contract
+    // solhint-disable-next-line no-inline-assembly
+    assembly { tokenCode := extcodesize(token) } // contract code size
+
+    if (tokenCode > 0) {
+      // is it a contract and does it implement balanceOf
+      // solhint-disable-next-line avoid-low-level-calls
+      (bool methodExists,) = token.staticcall(abi.encodeWithSelector(
+        ERC20Token(token).balanceOf.selector,
+        account
+      ));
+
+      if (methodExists) {
+        result = ERC20Token(token).balanceOf(account);
       }
     }
 
