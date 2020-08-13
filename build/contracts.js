@@ -340,6 +340,41 @@ module.exports = {
       "9999": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46"
     }
   },
+  "BalanceChecker": {
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "accounts",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          }
+        ],
+        "name": "getBalances",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "byteCodeHash": "0x4566c732037819795612b27e85e21199a68d486ba83aa1fbf3304f09d6767d61",
+    "typedDataDomainName": null,
+    "addresses": {
+      "9999": "0x622a7Aeb730b30283D35e50d6B6A900d505120D7"
+    }
+  },
   "Controlled": {
     "abi": [
       {
