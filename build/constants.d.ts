@@ -5,6 +5,7 @@ export declare enum ContractNames {
   AccountController = 'AccountController',
   AccountOwnerRegistry = 'AccountOwnerRegistry',
   AccountProofRegistry = 'AccountProofRegistry',
+  BalanceChecker = 'BalanceChecker',
   Controlled = 'Controlled',
   ENSController = 'ENSController',
   ENSRegistry = 'ENSRegistry',
