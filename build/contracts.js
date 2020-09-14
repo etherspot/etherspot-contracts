@@ -203,6 +203,7 @@ module.exports = {
     "byteCodeHash": "0x6d992e1f2cc8754cf93ae540028b162262eaa1a692818d61ba45bd6c2987df68",
     "typedDataDomainName": null,
     "addresses": {
+      "6666": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6",
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
     }
   },
@@ -337,6 +338,7 @@ module.exports = {
     "byteCodeHash": "0xa861770cb1b96c44ae0e68461fc11a01be7f4ac69c37ef9c3b741730b1660e33",
     "typedDataDomainName": null,
     "addresses": {
+      "6666": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46",
       "9999": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46"
     }
   },
@@ -372,6 +374,7 @@ module.exports = {
     "byteCodeHash": "0x4566c732037819795612b27e85e21199a68d486ba83aa1fbf3304f09d6767d61",
     "typedDataDomainName": null,
     "addresses": {
+      "6666": "0x622a7Aeb730b30283D35e50d6B6A900d505120D7",
       "9999": "0x622a7Aeb730b30283D35e50d6B6A900d505120D7"
     }
   },
@@ -819,6 +822,7 @@ module.exports = {
     "byteCodeHash": "0x86b4bdccaff1e9d468a34027bd83c895cb8ac6cb93387cf2a6893e4736e39419",
     "typedDataDomainName": "Pillar ENS Controller",
     "addresses": {
+      "6666": "0xa0CC33936b602f3459e16f343329E0aC074008f7",
       "9999": "0xa0CC33936b602f3459e16f343329E0aC074008f7"
     }
   },
@@ -1065,6 +1069,7 @@ module.exports = {
     "typedDataDomainName": null,
     "addresses": {
       "1": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+      "6666": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B",
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
     }
   },
@@ -1568,6 +1573,7 @@ module.exports = {
     "byteCodeHash": "0xad92963ad8d2d8e9c50683302ed48465ff444abbfdae2f8010e242093aabb2e7",
     "typedDataDomainName": "Pillar Gateway",
     "addresses": {
+      "6666": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B",
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
     }
   },
@@ -2579,6 +2585,7 @@ module.exports = {
     "byteCodeHash": "0xa099cf318618568a8c7e66de0bcd3688610c9182813bb5e2e88409d5509808bd",
     "typedDataDomainName": "Pillar Payment Network",
     "addresses": {
+      "6666": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845",
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
     }
   },
@@ -2952,6 +2959,7 @@ module.exports = {
     "byteCodeHash": "0xc46a6f2cbd6b9350371d84f72a48284d1ecd146100fef3d239388b002bfd8db0",
     "typedDataDomainName": null,
     "addresses": {
+      "6666": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e",
       "9999": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e"
     }
   },
@@ -3314,6 +3322,7 @@ module.exports = {
     "byteCodeHash": "0xba7e6f0ca9d4995d080d1ac00e4092129a5db73c6468a6a703f6ad49bf916ef4",
     "typedDataDomainName": null,
     "addresses": {
+      "6666": "0xA80a6FaBFF18a478deC3a833843eF9577F3553ca",
       "9999": "0xA80a6FaBFF18a478deC3a833843eF9577F3553ca"
     }
   }
