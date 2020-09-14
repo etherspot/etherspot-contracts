@@ -1,9 +1,9 @@
 const Web3 = require('web3');
 const { getContractAbi, getContractAddress } = require('../..');
-const createProvider = require('../../provider');
+const { createProvider } = require('../../provider');
 const logger = require('./logger');
 
-const { eth, utils } = new Web3(createProvider());
+const { eth, utils } = new Web3(createProvider(process.argv[2]));
 
 function getNetworkId() {
   return eth.net.getId();

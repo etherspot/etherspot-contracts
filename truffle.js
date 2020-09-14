@@ -1,14 +1,27 @@
-const provider = require('./provider');
+const { createProvider } = require('./provider');
+
+function createNetwork(name, id) {
+  return {
+    [name]: {
+      provider: () => createProvider(name),
+      gas: 2500000,
+      network_id: `${id}`,
+    },
+  };
+}
 
 module.exports = {
   contracts_directory: './src',
   contracts_build_directory: './compiled',
   networks: {
-    default: {
-      provider,
-      gas: 2500000,
-      network_id: '*',
-    },
+    ...createNetwork('mainnet', 1),
+    ...createNetwork('ropsten', 3),
+    ...createNetwork('rinkeby', 4),
+    ...createNetwork('goerli', 5),
+    ...createNetwork('kovan', 42),
+    ...createNetwork('xdai', 100),
+    ...createNetwork('local_a', 9999),
+    ...createNetwork('local_b', 6666),
     test: {
       host: '127.0.0.1',
       port: 8555,
