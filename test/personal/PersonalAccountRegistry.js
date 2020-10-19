@@ -658,5 +658,4 @@ contract('PersonalAccountRegistry', (addresses) => {
         .toBeFalsy();
     });
   });
-
 });
