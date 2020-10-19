@@ -3,7 +3,8 @@ const { TypedDataUtils } = require('eth-sig-util');
 const {
   CHAIN_ID,
   GAS_PRICE,
-  TYPED_DATA_DOMAIN,
+  TYPED_DATA_DOMAIN_NAME,
+  TYPED_DATA_DOMAIN_VERSION,
   TYPED_DATA_SALT,
 } = require('./constants');
 
@@ -130,8 +131,8 @@ function buildTypedData(verifyingContract, primaryType, primarySchema, message) 
     domain: {
       verifyingContract,
       chainId: CHAIN_ID,
-      name: TYPED_DATA_DOMAIN,
-      version: '4',
+      name: TYPED_DATA_DOMAIN_NAME,
+      version: TYPED_DATA_DOMAIN_VERSION,
       salt: TYPED_DATA_SALT,
     },
     types: {

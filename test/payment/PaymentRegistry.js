@@ -17,7 +17,8 @@ const {
 } = require('../utils');
 const {
   TYPED_DATA_SALT,
-  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_DOMAIN_NAME_HASH,
+  TYPED_DATA_DOMAIN_VERSION_HASH,
   ZERO_ADDRESS,
 } = require('../constants');
 
@@ -104,7 +105,8 @@ contract('PaymentRegistry', (addresses) => {
       depositWithdrawalLockPeriod,
       [guardian],
       gateway,
-      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_DOMAIN_NAME_HASH,
+      TYPED_DATA_DOMAIN_VERSION_HASH,
       TYPED_DATA_SALT,
     );
   });
@@ -609,7 +611,6 @@ contract('PaymentRegistry', (addresses) => {
         value: amount,
       });
     });
-
 
     it('expect to commit channel and split', async () => {
       const typedData = buildPaymentChannelCommitTypedData(

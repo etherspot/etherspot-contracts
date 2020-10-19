@@ -43,6 +43,7 @@ contract Gateway is Initializable, TypedDataContainer {
     AccountOwnerRegistry accountOwnerRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     bytes32 typedDataDomainNameHash,
+    bytes32 typedDataDomainVersionHash,
     bytes32 typedDataDomainSalt
   )
     external
@@ -54,6 +55,7 @@ contract Gateway is Initializable, TypedDataContainer {
     // TypedDataContainer
     _initializeTypedDataContainer(
       typedDataDomainNameHash,
+      typedDataDomainVersionHash,
       typedDataDomainSalt
     );
   }

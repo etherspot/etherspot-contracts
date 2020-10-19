@@ -59,6 +59,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     address[] calldata guardians_,
     address gateway_,
     bytes32 typedDataDomainNameHash,
+    bytes32 typedDataDomainVersionHash,
     bytes32 typedDataDomainSalt
   )
     external
@@ -79,6 +80,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     // TypedDataContainer
     _initializeTypedDataContainer(
       typedDataDomainNameHash,
+      typedDataDomainVersionHash,
       typedDataDomainSalt
     );
   }

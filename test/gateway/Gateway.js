@@ -11,7 +11,8 @@ const {
 const {
   GAS_PRICE,
   TYPED_DATA_SALT,
-  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_DOMAIN_NAME_HASH,
+  TYPED_DATA_DOMAIN_VERSION_HASH,
 } = require('../constants');
 
 const AccountOwnerRegistry = artifacts.require('AccountOwnerRegistry');
@@ -80,7 +81,8 @@ contract('Gateway', (addresses) => {
     await gateway.initialize(
       accountOwnerRegistry.address,
       personalAccountRegistry.address,
-      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_DOMAIN_NAME_HASH,
+      TYPED_DATA_DOMAIN_VERSION_HASH,
       TYPED_DATA_SALT,
     );
 

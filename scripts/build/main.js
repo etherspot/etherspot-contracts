@@ -17,6 +17,12 @@ const TYPED_DATA_DOMAIN_NAMES = {
   PaymentRegistry: 'Pillar Payment Network',
 };
 
+const TYPED_DATA_DOMAIN_VERSIONS = {
+  Gateway: '1',
+  ENSController: '1',
+  PaymentRegistry: '1',
+};
+
 // see: https://docs.ens.domains/ens-deployments
 const MAINNET_ENS_REGISTRY_ADDRESS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
 
@@ -65,6 +71,7 @@ async function main() {
           const byteCodeHash = soliditySha3(bytecode);
 
           const typedDataDomainName = TYPED_DATA_DOMAIN_NAMES[name] || null;
+          const typedDataDomainVersion = TYPED_DATA_DOMAIN_VERSIONS[name] || null;
 
           const addresses = {
             ...addressesOld,
@@ -85,6 +92,7 @@ async function main() {
             abi,
             byteCodeHash,
             typedDataDomainName,
+            typedDataDomainVersion,
             addresses,
           };
         })()),
