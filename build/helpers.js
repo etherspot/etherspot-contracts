@@ -24,9 +24,16 @@ function getContractTypedDataDomainName(contractName) {
     : null;
 }
 
+function getContractTypedDataDomainVersion(contractName) {
+  return contracts[contractName]
+    ? contracts[contractName].typedDataDomainVersion || null
+    : null;
+}
+
 module.exports = {
   getContractAbi,
   getContractAddress,
   getContractByteCodeHash,
   getContractTypedDataDomainName,
+  getContractTypedDataDomainVersion,
 };

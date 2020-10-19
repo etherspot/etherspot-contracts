@@ -17,3 +17,7 @@ export declare function getContractTypedDataDomainName(
   contractName: ContractNames,
 ): string | null;
 
+export declare function getContractTypedDataDomainVersion(
+  contractName: ContractNames,
+): string | null;
+

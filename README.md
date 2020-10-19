@@ -14,11 +14,13 @@ $ npm i @etherspot/contracts -S
 
 ```javascript
 import {
-  ContractNames, 
   TYPED_DATA_DOMAIN_SALT,
+  ContractNames, 
   getContractAbi, 
   getContractAddress, 
   getContractByteCodeHash, 
+  getContractTypedDataDomainName, 
+  getContractTypedDataDomainVersion, 
 } from '@etherspot/contracts'; 
 
 console.log(
@@ -49,8 +51,13 @@ console.log(
 );
 
 console.log(
-  'SignatureValidator typed data domain name:',
+  'PaymentRegistry typed data domain name:',
   getContractTypedDataDomainName(ContractNames.PaymentRegistry),
+);
+
+console.log(
+  'PaymentRegistry typed data domain version:',
+  getContractTypedDataDomainVersion(ContractNames.PaymentRegistry),
 );
 ```
 
