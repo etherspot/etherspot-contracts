@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 /**
  * @title TypedDataContainer
@@ -29,7 +30,7 @@ contract TypedDataContainer {
 
     // solhint-disable-next-line no-inline-assembly
     assembly {
-      chainId := chainid
+      chainId := chainid()
     }
 
     typedDataDomainSeparator = keccak256(abi.encode(

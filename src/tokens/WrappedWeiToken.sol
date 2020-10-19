@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 import "../common/token/ERC20Token.sol";
 
@@ -7,11 +8,6 @@ import "../common/token/ERC20Token.sol";
  * @title WrappedWeiToken
  */
 contract WrappedWeiToken is ERC20Token {
-  string public name;
-  string public symbol;
-  uint8 public decimals;
-  uint256 public totalSupply;
-
   /**
    * @dev public constructor
    */
@@ -28,9 +24,9 @@ contract WrappedWeiToken is ERC20Token {
   }
 
   /**
-   * @dev fallback
+   * @dev receive
    */
-  function()
+  receive()
     external
     payable
   {
