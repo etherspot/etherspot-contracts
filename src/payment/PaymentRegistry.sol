@@ -120,6 +120,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     address[] calldata guardians_,
     address gateway_,
     bytes32 typedDataDomainNameHash,
+    bytes32 typedDataDomainVersionHash,
     bytes32 typedDataDomainSalt
   )
     external
@@ -144,6 +145,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     // TypedDataContainer
     _initializeTypedDataContainer(
       typedDataDomainNameHash,
+      typedDataDomainVersionHash,
       typedDataDomainSalt
     );
   }
