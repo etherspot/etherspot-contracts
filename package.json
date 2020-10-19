@@ -15,7 +15,7 @@
   "scripts": {
     "lint-js": "eslint ./{migrations,scripts,test} --ext .js",
     "lint-sol": "solhint ./src/**/*.sol ./src/**/**/*.sol",
-    "lint": "npm run lint-sol",
+    "lint": "npm run lint-js && npm run lint-sol",
     "compile": "truffle compile",
     "compile-all": "truffle compile --all",
     "test": "./scripts/test.sh --network test",
