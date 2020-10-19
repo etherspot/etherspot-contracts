@@ -31,13 +31,16 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.15',
+      version: '0.6.12+commit.27d51765',
       settings: {
         optimizer: {
           enabled: true,
           runs: 200,
         },
         evmVersion: 'istanbul',
+        metadata: {
+          bytecodeHash: 'none',
+        },
       },
     },
   },
