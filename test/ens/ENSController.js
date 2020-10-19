@@ -12,7 +12,8 @@ const {
 } = require('../utils');
 const {
   TYPED_DATA_SALT,
-  TYPED_DATA_DOMAIN_HASH,
+  TYPED_DATA_DOMAIN_NAME_HASH,
+  TYPED_DATA_DOMAIN_VERSION_HASH,
 } = require('../constants');
 
 const ENSController = artifacts.require('ENSController');
@@ -103,7 +104,8 @@ contract('ENSController', (addresses) => {
       ensRegistry.address,
       [guardian],
       gateway,
-      TYPED_DATA_DOMAIN_HASH,
+      TYPED_DATA_DOMAIN_NAME_HASH,
+      TYPED_DATA_DOMAIN_VERSION_HASH,
       TYPED_DATA_SALT,
     );
   });
