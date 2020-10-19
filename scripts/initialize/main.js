@@ -3,6 +3,7 @@ const {
   TYPED_DATA_DOMAIN_SALT,
   ContractNames,
   getContractTypedDataDomainName,
+  getContractTypedDataDomainVersion,
 } = require('../..');
 const {
   logger,
@@ -11,7 +12,7 @@ const {
   getContracts,
   processEvents,
   executeRequest,
-  utils,
+  sha3String,
 } = require('../shared');
 
 async function main() {
@@ -50,8 +51,11 @@ async function main() {
           gateway.methods.initialize(
             accountOwnerRegistry.address,
             personalAccountRegistry.address,
-            utils.soliditySha3(
+            sha3String(
               getContractTypedDataDomainName(ContractNames.Gateway),
+            ),
+            sha3String(
+              getContractTypedDataDomainVersion(ContractNames.Gateway),
             ),
             TYPED_DATA_DOMAIN_SALT,
           ),
@@ -74,8 +78,11 @@ async function main() {
             ensRegistry.address,
             [],
             gateway.address,
-            utils.soliditySha3(
+            sha3String(
               getContractTypedDataDomainName(ContractNames.ENSController),
+            ),
+            sha3String(
+              getContractTypedDataDomainVersion(ContractNames.ENSController),
             ),
             TYPED_DATA_DOMAIN_SALT,
           ),
@@ -88,7 +95,7 @@ async function main() {
           await executeRequest(
             ensRegistry.methods.setSubnodeOwner(
               '0x',
-              utils.soliditySha3('dev'),
+              sha3String('test'),
               sender,
             ),
           ),
@@ -97,8 +104,8 @@ async function main() {
         processEvents(
           await executeRequest(
             ensRegistry.methods.setSubnodeOwner(
-              hashName('dev'),
-              utils.soliditySha3('pillar'),
+              hashName('test'),
+              sha3String('pillar'),
               ensController.address,
             ),
           ),
@@ -106,7 +113,7 @@ async function main() {
 
         processEvents(
           await executeRequest(
-            ensController.methods.addNode(hashName('pillar.dev')),
+            ensController.methods.addNode(hashName('pillar.test')),
           ),
         );
       }
@@ -130,8 +137,11 @@ async function main() {
             0,
             [],
             gateway.address,
-            utils.soliditySha3(
+            sha3String(
               getContractTypedDataDomainName(ContractNames.PaymentRegistry),
+            ),
+            sha3String(
+              getContractTypedDataDomainVersion(ContractNames.PaymentRegistry),
             ),
             TYPED_DATA_DOMAIN_SALT,
           ),

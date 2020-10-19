@@ -119,6 +119,13 @@ function processEvents(output) {
   return result;
 }
 
+function sha3String(value) {
+  return utils.soliditySha3({
+    type: 'string',
+    value,
+  });
+}
+
 module.exports = {
   getDefaultAccount,
   getNetworkId,
@@ -130,4 +137,5 @@ module.exports = {
   executeRequest,
   createRandomWallet,
   processEvents,
+  sha3String,
 };
