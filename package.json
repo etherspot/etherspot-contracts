@@ -3,13 +3,6 @@
   "version": "1.0.0-alpha.28",
   "description": "ETHERspot contracts",
   "license": "MIT",
-  "author": {
-    "name": "NEWOBJECT.dev",
-    "email": "hello@newobject.dev"
-  },
-  "bugs": {
-    "email": "support@newobject.dev"
-  },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "scripts": {
