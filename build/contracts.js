@@ -772,7 +772,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x2f8a4f6c7c5941f2fba6727779b6b4f7389f6b260e581f61ea5de71ca691ea81",
+    "byteCodeHash": "0x02bd66c403988da1aed40939bc8aa0e572771ec3081c3556d5cc180de8dcc5c3",
     "typedDataDomainName": "Pillar ENS Controller",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -1933,7 +1933,7 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "name": "PaymentSplitted",
+        "name": "PaymentSplit",
         "type": "event"
       },
       {
@@ -2510,7 +2510,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x6aebea37a40ce03376d2b9390f2400b41f0aaa73be03ccf0c7c979704c4fae5e",
+    "byteCodeHash": "0x3061ef5140766c545004961fe2374b1281518e66dd6b1cf7ed8d9f61ba758840",
     "typedDataDomainName": "Pillar Payment Network",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -2868,7 +2868,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x41ab7a34194921b7162058861aabf3dd4cc919e19656937906bd70a41a8071ab",
+    "byteCodeHash": "0x7160a8ffeb268c774ad097fc3df031cb1cf68966142921ef5eddff39b9c20c77",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
