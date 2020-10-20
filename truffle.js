@@ -1,4 +1,4 @@
-const { createProvider } = require('./provider');
+const { createProvider } = require('./shared');
 
 function createNetwork(name, id) {
   return {

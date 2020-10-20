@@ -24,3 +24,4 @@ compiled
 # develop
 bak
 .envrc
+.test*

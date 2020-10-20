@@ -1,9 +1,11 @@
 const Web3 = require('web3');
 const { getContractAbi, getContractAddress } = require('../..');
-const { createProvider } = require('../../provider');
+const { createProvider, getNetworkEnv, getNetworkEnvAsArray } = require('../../shared');
 const logger = require('./logger');
 
-const { eth, utils } = new Web3(createProvider(process.argv[2]));
+const NETWORK_NAME = process.argv[2];
+
+const { eth, utils } = new Web3(createProvider(NETWORK_NAME));
 
 function getNetworkId() {
   return eth.net.getId();
@@ -126,16 +128,26 @@ function sha3String(value) {
   });
 }
 
+function getEnv(envName) {
+  return getNetworkEnv(NETWORK_NAME, envName);
+}
+
+function getEnvAsArray(envName) {
+  return getNetworkEnvAsArray(NETWORK_NAME, envName);
+}
+
 module.exports = {
-  getDefaultAccount,
-  getNetworkId,
   ZERO_ADDRESS: `0x${'0'.repeat(40)}`,
-  logger,
-  utils,
-  getContracts,
-  sendTransaction,
-  executeRequest,
   createRandomWallet,
+  executeRequest,
+  getContracts,
+  getDefaultAccount,
+  getEnv,
+  getEnvAsArray,
+  getNetworkId,
+  logger,
   processEvents,
+  sendTransaction,
   sha3String,
+  utils,
 };
