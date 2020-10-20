@@ -5,17 +5,10 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": true,
         "stateMutability": "payable",
         "type": "constructor"
       },
       {
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "fallback"
-      },
-      {
-        "constant": true,
         "inputs": [],
         "name": "controller",
         "outputs": [
@@ -25,15 +18,17 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": false,
+        "stateMutability": "payable",
+        "type": "receive"
+      },
+      {
         "inputs": [
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "to",
             "type": "address"
           },
@@ -50,25 +45,17 @@ module.exports = {
         ],
         "name": "executeTransaction",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x77f75b975a4aecf784fff6292d063f637686fd1bf119dc46c5b450a57e8068bb",
+    "byteCodeHash": "0x3445530eece80e73ae544c2e95f49140d4aee4ce681966a0a763a4906e5a8578",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {}
   },
   "AccountController": {
-    "abi": [
-      {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      }
-    ],
+    "abi": [],
     "byteCodeHash": null,
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
@@ -115,7 +102,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -125,12 +111,10 @@ module.exports = {
         ],
         "name": "addAccountOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -140,12 +124,10 @@ module.exports = {
         ],
         "name": "removeAccountOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -166,12 +148,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -197,12 +178,12 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0x6d992e1f2cc8754cf93ae540028b162262eaa1a692818d61ba45bd6c2987df68",
+    "byteCodeHash": "0x51ae9f5a6d16d1f4b530351cdd2b50783997aa0f0cb256c918fb18ddcc57a4a7",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
@@ -251,7 +232,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -261,12 +241,10 @@ module.exports = {
         ],
         "name": "addAccountProof",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -276,12 +254,10 @@ module.exports = {
         ],
         "name": "removeAccountProof",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -302,12 +278,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -333,12 +308,12 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0xa861770cb1b96c44ae0e68461fc11a01be7f4ac69c37ef9c3b741730b1660e33",
+    "byteCodeHash": "0xf3dd24dc17639c3c8bf1c47cedd2b46c418b528edef0a8fb4fbc3caacfd1fe3e",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
@@ -349,7 +324,6 @@ module.exports = {
   "BalanceChecker": {
     "abi": [
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address[]",
@@ -370,12 +344,12 @@ module.exports = {
             "type": "uint256[]"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0x4566c732037819795612b27e85e21199a68d486ba83aa1fbf3304f09d6767d61",
+    "byteCodeHash": "0x63415201f43892304b3406e995ce39b5807a5ebb7e0c896fa4a4e9396c76ad15",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
@@ -387,13 +361,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "constant": true,
-        "inputs": [],
         "name": "controller",
         "outputs": [
           {
@@ -402,7 +369,6 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
@@ -416,7 +382,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -498,7 +463,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -508,12 +472,10 @@ module.exports = {
         ],
         "name": "addGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "gateway",
         "outputs": [
@@ -523,12 +485,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -544,12 +505,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "isInitialized",
         "outputs": [
@@ -559,12 +519,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "registry",
         "outputs": [
@@ -574,12 +533,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -589,12 +547,10 @@ module.exports = {
         ],
         "name": "removeGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "typedDataDomainSeparator",
         "outputs": [
@@ -604,12 +560,11 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -630,12 +585,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "contract ENSRegistry",
@@ -670,12 +624,10 @@ module.exports = {
         ],
         "name": "initialize",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "contract ENSRegistry",
@@ -685,12 +637,10 @@ module.exports = {
         ],
         "name": "setRegistry",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -700,12 +650,10 @@ module.exports = {
         ],
         "name": "addNode",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -720,12 +668,10 @@ module.exports = {
         ],
         "name": "setAddr",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -745,12 +691,10 @@ module.exports = {
         ],
         "name": "registerSubNode",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -766,12 +710,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes4",
@@ -787,12 +730,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "pure",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "components": [
@@ -825,12 +767,12 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0x00a116a9ac07cae6d519a429dbcd508627475587cbb74774deba5579520a4510",
+    "byteCodeHash": "0x2f8a4f6c7c5941f2fba6727779b6b4f7389f6b260e581f61ea5de71ca691ea81",
     "typedDataDomainName": "Pillar ENS Controller",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -842,7 +784,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -929,7 +870,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -944,12 +884,10 @@ module.exports = {
         ],
         "name": "setOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -969,12 +907,10 @@ module.exports = {
         ],
         "name": "setSubnodeOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -989,12 +925,10 @@ module.exports = {
         ],
         "name": "setResolver",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -1009,12 +943,10 @@ module.exports = {
         ],
         "name": "setTTL",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -1030,12 +962,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -1051,12 +982,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -1072,12 +1002,12 @@ module.exports = {
             "type": "uint64"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0xc7fd60af048426573b9721700a9469392a9b55dc60a64a9f2ac275cfc07cf082",
+    "byteCodeHash": "0x12c0a054fcf139f011980045a139ea3e422630bca92833c59fd4b2871fc582b3",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
@@ -1088,12 +1018,6 @@ module.exports = {
   },
   "ERC20Token": {
     "abi": [
-      {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
       {
         "anonymous": false,
         "inputs": [
@@ -1145,7 +1069,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "decimals",
         "outputs": [
@@ -1155,12 +1078,10 @@ module.exports = {
             "type": "uint8"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "name",
         "outputs": [
@@ -1170,12 +1091,10 @@ module.exports = {
             "type": "string"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "symbol",
         "outputs": [
@@ -1185,12 +1104,10 @@ module.exports = {
             "type": "string"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "totalSupply",
         "outputs": [
@@ -1200,12 +1117,10 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1226,12 +1141,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1257,12 +1170,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1283,12 +1194,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -1304,12 +1213,10 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -1330,7 +1237,6 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
@@ -1344,7 +1250,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -1355,7 +1260,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "accountOwnerRegistry",
         "outputs": [
@@ -1365,12 +1269,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "isInitialized",
         "outputs": [
@@ -1380,12 +1283,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "personalAccountRegistry",
         "outputs": [
@@ -1395,12 +1297,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "typedDataDomainSeparator",
         "outputs": [
@@ -1410,12 +1311,11 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "contract AccountOwnerRegistry",
@@ -1445,12 +1345,10 @@ module.exports = {
         ],
         "name": "initialize",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address[]",
@@ -1465,12 +1363,10 @@ module.exports = {
         ],
         "name": "sendBatch",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1490,12 +1386,10 @@ module.exports = {
         ],
         "name": "sendBatchFromAccount",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1520,12 +1414,38 @@ module.exports = {
         ],
         "name": "delegateBatchFromAccount",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "to",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "data",
+            "type": "bytes[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "senderSignature",
+            "type": "bytes"
+          }
+        ],
+        "name": "delegateBatchWithoutGasPriceFromAccount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "components": [
@@ -1563,12 +1483,48 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address[]",
+                "name": "to",
+                "type": "address[]"
+              },
+              {
+                "internalType": "bytes[]",
+                "name": "data",
+                "type": "bytes[]"
+              }
+            ],
+            "internalType": "struct Gateway.DelegatedBatchWithoutGasPrice",
+            "name": "delegatedBatch",
+            "type": "tuple"
+          }
+        ],
+        "name": "hashDelegatedBatchWithoutGasPrice",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1584,12 +1540,12 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0x7618f72352d977ec96c0477080c4c764867932c4e34a1bdd17663cbb3d38a6f4",
+    "byteCodeHash": "0x47d2ba3882eb32577f973869e4cb02fb2331e1dfc7405a081d5453b5fd8c4305",
     "typedDataDomainName": "Pillar Gateway",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -1601,13 +1557,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "constant": true,
-        "inputs": [],
         "name": "gateway",
         "outputs": [
           {
@@ -1616,7 +1565,6 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
@@ -1655,7 +1603,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1665,12 +1612,10 @@ module.exports = {
         ],
         "name": "addGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -1680,12 +1625,10 @@ module.exports = {
         ],
         "name": "removeGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -1701,12 +1644,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -1727,12 +1668,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x6f841af3433223384e2713d9cb88499ea985c86796a9b9866cdb372ee338ede9",
+    "byteCodeHash": "0xba49ee01ca7ddcd3f1f52d3fba7e636cdc86bfc28cb9c13c959a5313fec60bf2",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {}
@@ -1740,19 +1680,12 @@ module.exports = {
   "Initializable": {
     "abi": [
       {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
         "anonymous": false,
         "inputs": [],
         "name": "Initialized",
         "type": "event"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "isInitialized",
         "outputs": [
@@ -1762,7 +1695,6 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
@@ -1776,7 +1708,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -2025,7 +1956,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "accountOwnerRegistry",
         "outputs": [
@@ -2035,12 +1965,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "accountProofRegistry",
         "outputs": [
@@ -2050,12 +1979,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2065,12 +1993,10 @@ module.exports = {
         ],
         "name": "addGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "depositWithdrawalLockPeriod",
         "outputs": [
@@ -2080,12 +2006,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "gateway",
         "outputs": [
@@ -2095,12 +2020,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2116,12 +2040,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "isInitialized",
         "outputs": [
@@ -2131,12 +2054,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "personalAccountRegistry",
         "outputs": [
@@ -2146,12 +2068,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2161,12 +2082,10 @@ module.exports = {
         ],
         "name": "removeGuardian",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "typedDataDomainSeparator",
         "outputs": [
@@ -2176,12 +2095,11 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -2202,12 +2120,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "contract AccountOwnerRegistry",
@@ -2257,12 +2174,10 @@ module.exports = {
         ],
         "name": "initialize",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2272,12 +2187,10 @@ module.exports = {
         ],
         "name": "deployDepositAccount",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2287,12 +2200,10 @@ module.exports = {
         ],
         "name": "withdrawDeposit",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2332,12 +2243,10 @@ module.exports = {
         ],
         "name": "commitPaymentChannelAndWithdraw",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2377,12 +2286,10 @@ module.exports = {
         ],
         "name": "commitPaymentChannelAndDeposit",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2427,12 +2334,10 @@ module.exports = {
         ],
         "name": "commitPaymentChannelAndSplit",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2448,12 +2353,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2469,12 +2373,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2495,12 +2398,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "bytes32",
@@ -2516,12 +2418,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2552,12 +2453,11 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "pure",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "components": [
@@ -2605,12 +2505,12 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0xf69896e10197430aeb90eb14696278201d4ddc4e56a6a8ce8f7b9b5a8e37ad4e",
+    "byteCodeHash": "0x6aebea37a40ce03376d2b9390f2400b41f0aaa73be03ccf0c7c979704c4fae5e",
     "typedDataDomainName": "Pillar Payment Network",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -2622,7 +2522,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -2746,7 +2645,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "gateway",
         "outputs": [
@@ -2756,12 +2654,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "isInitialized",
         "outputs": [
@@ -2771,12 +2668,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2786,12 +2682,10 @@ module.exports = {
         ],
         "name": "initialize",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2806,12 +2700,10 @@ module.exports = {
         ],
         "name": "addAccountOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -2826,20 +2718,18 @@ module.exports = {
         ],
         "name": "removeAccountOwner",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "account",
             "type": "address"
           },
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "to",
             "type": "address"
           },
@@ -2856,20 +2746,18 @@ module.exports = {
         ],
         "name": "executeAccountTransaction",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "account",
             "type": "address"
           },
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "token",
             "type": "address"
           },
@@ -2881,12 +2769,10 @@ module.exports = {
         ],
         "name": "refundAccountCall",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2902,12 +2788,11 @@ module.exports = {
             "type": "address"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2923,12 +2808,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2949,12 +2833,11 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -2980,12 +2863,12 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0xc46a6f2cbd6b9350371d84f72a48284d1ecd146100fef3d239388b002bfd8db0",
+    "byteCodeHash": "0x41ab7a34194921b7162058861aabf3dd4cc919e19656937906bd70a41a8071ab",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
@@ -2997,13 +2880,6 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "constant": true,
-        "inputs": [],
         "name": "typedDataDomainSeparator",
         "outputs": [
           {
@@ -3012,7 +2888,6 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
@@ -3026,9 +2901,9 @@ module.exports = {
     "abi": [
       {
         "inputs": [],
-        "payable": true,
         "stateMutability": "payable",
-        "type": "constructor"
+        "type": "constructor",
+        "payable": true
       },
       {
         "anonymous": false,
@@ -3059,6 +2934,38 @@ module.exports = {
         "anonymous": false,
         "inputs": [
           {
+            "indexed": false,
+            "internalType": "address",
+            "name": "consumer",
+            "type": "address"
+          }
+        ],
+        "name": "ConsumerAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "consumer",
+            "type": "address"
+          }
+        ],
+        "name": "ConsumerRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
             "indexed": true,
             "internalType": "address",
             "name": "from",
@@ -3081,12 +2988,6 @@ module.exports = {
         "type": "event"
       },
       {
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "fallback"
-      },
-      {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -3107,12 +3008,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -3133,12 +3033,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": true,
         "inputs": [
           {
             "internalType": "address",
@@ -3154,12 +3052,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "decimals",
         "outputs": [
@@ -3169,12 +3066,25 @@ module.exports = {
             "type": "uint8"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
+        "inputs": [],
+        "name": "isInitialized",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
         "inputs": [],
         "name": "name",
         "outputs": [
@@ -3184,12 +3094,11 @@ module.exports = {
             "type": "string"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "symbol",
         "outputs": [
@@ -3199,12 +3108,11 @@ module.exports = {
             "type": "string"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": true,
         "inputs": [],
         "name": "totalSupply",
         "outputs": [
@@ -3214,12 +3122,11 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "payable": false,
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -3240,12 +3147,10 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "address",
@@ -3271,12 +3176,42 @@ module.exports = {
             "type": "bool"
           }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
+        "stateMutability": "payable",
+        "type": "receive",
+        "payable": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "consumers_",
+            "type": "address[]"
+          }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "startConsuming",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "stopConsuming",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -3286,12 +3221,11 @@ module.exports = {
         ],
         "name": "depositTo",
         "outputs": [],
-        "payable": true,
         "stateMutability": "payable",
-        "type": "function"
+        "type": "function",
+        "payable": true
       },
       {
-        "constant": false,
         "inputs": [
           {
             "internalType": "uint256",
@@ -3301,15 +3235,13 @@ module.exports = {
         ],
         "name": "withdraw",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "to",
             "type": "address"
           },
@@ -3321,36 +3253,51 @@ module.exports = {
         ],
         "name": "withdrawTo",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [],
         "name": "withdrawAll",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "constant": false,
         "inputs": [
           {
-            "internalType": "address payable",
+            "internalType": "address",
             "name": "to",
             "type": "address"
           }
         ],
         "name": "withdrawAllTo",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "consumer",
+            "type": "address"
+          }
+        ],
+        "name": "isConsumer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
       }
     ],
-    "byteCodeHash": "0xba7e6f0ca9d4995d080d1ac00e4092129a5db73c6468a6a703f6ad49bf916ef4",
+    "byteCodeHash": "0x6ba42ad7fbf23318dce1e278be52b3b801bde113518fff6cae3bf24e4888d858",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
