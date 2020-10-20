@@ -8,6 +8,18 @@ import "../common/token/ERC20Token.sol";
  * @title WrappedWeiToken
  */
 contract WrappedWeiToken is ERC20Token {
+  mapping(address => bool) private consumers;
+
+  // events
+
+  event ConsumerAdded(
+    address consumer
+  );
+
+  event ConsumerRemoved(
+    address consumer
+  );
+
   /**
    * @dev public constructor
    */
@@ -35,6 +47,26 @@ contract WrappedWeiToken is ERC20Token {
 
   // external functions
 
+  function startConsuming()
+    external
+  {
+    require(!consumers[msg.sender]);
+
+    consumers[msg.sender] = true;
+
+    emit ConsumerAdded(msg.sender);
+  }
+
+  function stopConsuming()
+    external
+  {
+    require(consumers[msg.sender]);
+
+    consumers[msg.sender] = false;
+
+    emit ConsumerRemoved(msg.sender);
+  }
+
   function depositTo(
     address to
   )
@@ -53,7 +85,7 @@ contract WrappedWeiToken is ERC20Token {
   }
 
   function withdrawTo(
-    address payable to,
+    address to,
     uint256 value
   )
     external
@@ -68,18 +100,47 @@ contract WrappedWeiToken is ERC20Token {
   }
 
   function withdrawAllTo(
-    address payable to
+    address to
   )
     external
   {
     _withdraw(msg.sender, to, balances[msg.sender]);
   }
 
+  // external functions (views)
+
+  function isConsumer(
+    address consumer
+  )
+    external
+    view
+    returns (bool)
+  {
+    return consumers[consumer];
+  }
+
+  // internal functions
+
+  function _transfer(
+    address from,
+    address to,
+    uint256 value
+  )
+    override
+    internal
+  {
+    if (consumers[to]) {
+      _withdraw(from, to, value);
+    } else {
+      super._transfer(from, to, value);
+    }
+  }
+
   // private functions
 
   function _withdraw(
     address from,
-    address payable to,
+    address to,
     uint256 value
   )
     private
@@ -88,7 +149,7 @@ contract WrappedWeiToken is ERC20Token {
 
     require(
       // solhint-disable-next-line check-send-result
-      to.send(value)
+      payable(to).send(value)
     );
   }
 }

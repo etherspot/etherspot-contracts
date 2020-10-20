@@ -6,7 +6,6 @@ import "../account/AccountOwnerRegistry.sol";
 import "../account/AccountProofRegistry.sol";
 import "../common/access/Guarded.sol";
 import "../common/account/AccountController.sol";
-import "../common/libs/AddressLib.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
@@ -20,7 +19,6 @@ import "../gateway/GatewayRecipient.sol";
  * @title PaymentRegistry
  */
 contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
-  using AddressLib for address;
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
 
@@ -514,15 +512,15 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   {
     if (token == address(0)) {
       _executeAccountTransaction(
-        depositAccount.toPayable(),
-        to.toPayable(),
+        depositAccount,
+        to,
         value,
         new bytes(0)
       );
     } else {
       _executeAccountTransaction(
-        depositAccount.toPayable(),
-        token.toPayable(),
+        depositAccount,
+        token,
         0,
         abi.encodeWithSelector(
           ERC20Token(token).transfer.selector,

@@ -12,7 +12,8 @@ contract GatewayRecipientMock is GatewayRecipient {
 
   event Context(
     address account,
-    address sender
+    address sender,
+    bytes data
   );
 
   /**
@@ -27,7 +28,8 @@ contract GatewayRecipientMock is GatewayRecipient {
   {
     emit Context(
       _getContextAccount(),
-      _getContextSender()
+      _getContextSender(),
+      _getContextData()
     );
   }
 }

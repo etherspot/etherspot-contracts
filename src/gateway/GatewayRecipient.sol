@@ -45,6 +45,22 @@ contract GatewayRecipient {
     return _getContextAddress(20);
   }
 
+  function _getContextData()
+    internal
+    view
+    returns (bytes calldata)
+  {
+    bytes calldata result;
+
+    if (msg.sender == gateway) {
+      result = msg.data[:40];
+    } else {
+      result = msg.data;
+    }
+
+    return result;
+  }
+
   // private functions (views)
 
   function _getContextAddress(
