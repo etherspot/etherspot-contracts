@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
+import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
-
 
 /**
  * @title WrappedWeiToken
  */
-contract WrappedWeiToken is ERC20Token {
+contract WrappedWeiToken is Initializable, ERC20Token {
   mapping(address => bool) private consumers;
 
   // events
@@ -26,6 +26,7 @@ contract WrappedWeiToken is ERC20Token {
   constructor()
     public
     payable
+    Initializable()
   {
     name = "Wrapped Wei";
     symbol = "WWEI";
@@ -47,20 +48,34 @@ contract WrappedWeiToken is ERC20Token {
 
   // external functions
 
+  function initialize(
+    address[] calldata consumers_
+  )
+    external
+    onlyInitializer
+  {
+    if (consumers_.length == 0) {
+      consumers[msg.sender] = true;
+    } else {
+      uint consumersLen = consumers_.length;
+      for (uint i = 0; i < consumersLen; i++) {
+        _addConsumer(consumers_[i]);
+      }
+    }
+  }
+
   function startConsuming()
     external
   {
-    require(!consumers[msg.sender]);
-
-    consumers[msg.sender] = true;
-
-    emit ConsumerAdded(msg.sender);
+    _addConsumer(msg.sender);
   }
 
   function stopConsuming()
     external
   {
-    require(consumers[msg.sender]);
+    require(
+      consumers[msg.sender]
+    );
 
     consumers[msg.sender] = false;
 
@@ -137,6 +152,20 @@ contract WrappedWeiToken is ERC20Token {
   }
 
   // private functions
+
+  function _addConsumer(
+    address consumer
+  )
+    private
+  {
+    require(
+      !consumers[consumer]
+    );
+
+    consumers[consumer] = true;
+
+    emit ConsumerAdded(consumer);
+  }
 
   function _withdraw(
     address from,
