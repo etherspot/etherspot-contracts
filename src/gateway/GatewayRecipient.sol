@@ -52,8 +52,8 @@ contract GatewayRecipient {
   {
     bytes calldata result;
 
-    if (msg.sender == gateway) {
-      result = msg.data[:40];
+    if (_isGatewaySender()) {
+      result = msg.data[:msg.data.length - 40];
     } else {
       result = msg.data;
     }
@@ -72,12 +72,29 @@ contract GatewayRecipient {
   {
     address result = address(0);
 
-    if (msg.sender == gateway) {
-      result = msg.data.toAddress(msg.data.length - offset);
+    if (_isGatewaySender()) {
+      uint from = msg.data.length - offset;
+      result = bytes(msg.data[from:from + 20]).toAddress();
+    } else {
+      result = msg.sender;
     }
 
-    if (result == address(0)) {
-      result = msg.sender;
+    return result;
+  }
+
+  function _isGatewaySender()
+    private
+    view
+    returns (bool)
+  {
+    bool result;
+
+    if (msg.sender == gateway) {
+      require(
+        msg.data.length >= 44
+      );
+
+      result = true;
     }
 
     return result;

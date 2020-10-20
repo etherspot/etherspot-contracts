@@ -6,8 +6,7 @@ pragma solidity ^0.6.0;
  */
 library BytesLib {
   function toAddress(
-    bytes memory data,
-    uint256 start
+    bytes memory data
   )
     internal
     pure
@@ -16,12 +15,12 @@ library BytesLib {
     address result;
 
     require(
-      data.length >= (start + 20)
+      data.length == 20
     );
 
     // solhint-disable-next-line no-inline-assembly
     assembly {
-      result := div(mload(add(add(data, 0x20), start)), 0x1000000000000000000000000)
+      result := div(mload(add(data, 0x20)), 0x1000000000000000000000000)
     }
 
     return result;

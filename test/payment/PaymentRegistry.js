@@ -643,7 +643,7 @@ contract('PaymentRegistry', (addresses) => {
       const { logs } = output;
 
       expect(logs[2].event)
-        .toBe('PaymentSplitted');
+        .toBe('PaymentSplit');
       expect(logs[2].args.totalValue)
         .toBeBN(amount);
       expect(logs[2].args.depositValue)

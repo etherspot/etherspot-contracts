@@ -36,6 +36,10 @@ contract('GatewayRecipient (using mock)', (addresses) => {
   context('emitContext()', () => {
     it('expect to emit msg.sender', async () => {
       const from = addresses.pop();
+
+      const expectedData = gatewayRecipientMock.contract.methods.emitContext()
+        .encodeABI();
+
       const output = await gatewayRecipientMock.emitContext({
         from,
       });
@@ -48,17 +52,19 @@ contract('GatewayRecipient (using mock)', (addresses) => {
         .toBe(from);
       expect(logs[0].args.sender)
         .toBe(from);
+      expect(logs[0].args.data)
+        .toBe(expectedData);
     });
 
     it('expect to emit account and sender', async () => {
       const account = randomAddress();
       const sender = randomAddress();
 
-      let data = gatewayRecipientMock.contract.methods.emitContext()
+      const expectedData = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
       // concat data with account and sender
-      data = concatHex(data, account, sender);
+      const data = concatHex(expectedData, account, sender);
 
       const output = await sendTransaction({
         from: gateway,
@@ -75,6 +81,8 @@ contract('GatewayRecipient (using mock)', (addresses) => {
         .toBe(account);
       expect(logs[0].args.sender)
         .toBe(sender);
+      expect(logs[0].args.data)
+        .toBe(expectedData);
     });
   });
 });
