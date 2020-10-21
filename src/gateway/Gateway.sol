@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "../account/AccountOwnerRegistry.sol";
@@ -8,13 +9,13 @@ import "../common/lifecycle/Initializable.sol";
 import "../common/typedData/TypedDataContainer.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
-
 /**
  * @title Gateway
  */
 contract Gateway is Initializable, TypedDataContainer {
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
+
 
   struct DelegatedBatch {
     uint256 nonce;
@@ -23,14 +24,24 @@ contract Gateway is Initializable, TypedDataContainer {
     uint256 gasPrice;
   }
 
+  struct DelegatedBatchWithoutGasPrice {
+    uint256 nonce;
+    address[] to;
+    bytes[] data;
+  }
+
   bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(
     "DelegatedBatch(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
+  );
+
+  bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITHOUT_GAS_PRICE = keccak256(
+    "DelegatedBatchWithoutGasPrice(uint256 nonce,address[] to,bytes[] data)"
   );
 
   AccountOwnerRegistry public accountOwnerRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
-  mapping(address => uint256) private accountNonces;
+  mapping(address => uint256) private accountNonce;
 
   /**
    * @dev public constructor
@@ -101,14 +112,40 @@ contract Gateway is Initializable, TypedDataContainer {
   {
     address sender = _hashPrimaryTypedData(
       _hashTypedData(
-        accountNonces[account],
+        accountNonce[account],
         to,
         data,
         tx.gasprice
       )
     ).recoverAddress(senderSignature);
 
-    accountNonces[account] = accountNonces[account].add(1);
+    accountNonce[account] = accountNonce[account].add(1);
+
+    _sendBatch(
+      account,
+      sender,
+      to,
+      data
+    );
+  }
+
+  function delegateBatchWithoutGasPriceFromAccount(
+    address account,
+    address[] memory to,
+    bytes[] memory data,
+    bytes memory senderSignature
+  )
+    public
+  {
+    address sender = _hashPrimaryTypedData(
+      _hashTypedData(
+        accountNonce[account],
+        to,
+        data
+      )
+    ).recoverAddress(senderSignature);
+
+    accountNonce[account] = accountNonce[account].add(1);
 
     _sendBatch(
       account,
@@ -137,6 +174,22 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  function hashDelegatedBatchWithoutGasPrice(
+    DelegatedBatchWithoutGasPrice memory delegatedBatch
+  )
+    public
+    view
+    returns (bytes32)
+  {
+    return _hashPrimaryTypedData(
+      _hashTypedData(
+        delegatedBatch.nonce,
+        delegatedBatch.to,
+        delegatedBatch.data
+      )
+    );
+  }
+
   // external functions (views)
 
   function getAccountNonce(
@@ -146,7 +199,7 @@ contract Gateway is Initializable, TypedDataContainer {
     view
     returns (uint256)
   {
-    return accountNonces[account];
+    return accountNonce[account];
   }
 
   // private functions
@@ -198,6 +251,29 @@ contract Gateway is Initializable, TypedDataContainer {
   function _hashTypedData(
     uint256 nonce,
     address[] memory to,
+    bytes[] memory data
+  )
+    private
+    pure
+    returns (bytes32)
+  {
+    bytes32[] memory dataHashes = new bytes32[](data.length);
+
+    for (uint256 i = 0; i < data.length; i++) {
+      dataHashes[i] = keccak256(data[i]);
+    }
+
+    return keccak256(abi.encode(
+      DELEGATED_BATCH_TYPE_HASH_WITHOUT_GAS_PRICE,
+      nonce,
+      keccak256(abi.encodePacked(to)),
+      keccak256(abi.encodePacked(dataHashes))
+    ));
+  }
+
+  function _hashTypedData(
+    uint256 nonce,
+    address[] memory to,
     bytes[] memory data,
     uint256 gasPrice
   )
@@ -212,11 +288,11 @@ contract Gateway is Initializable, TypedDataContainer {
     }
 
     return keccak256(abi.encode(
-      DELEGATED_BATCH_TYPE_HASH,
-      nonce,
-      keccak256(abi.encodePacked(to)),
-      keccak256(abi.encodePacked(dataHashes)),
-      gasPrice
-    ));
+        DELEGATED_BATCH_TYPE_HASH,
+        nonce,
+        keccak256(abi.encodePacked(to)),
+        keccak256(abi.encodePacked(dataHashes)),
+        gasPrice
+      ));
   }
 }

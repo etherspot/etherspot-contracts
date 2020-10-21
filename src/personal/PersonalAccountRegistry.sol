@@ -1,7 +1,7 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 import "../common/account/AccountController.sol";
-import "../common/libs/AddressLib.sol";
 import "../common/libs/BlockLib.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/lifecycle/Initializable.sol";
@@ -14,7 +14,6 @@ import "../gateway/GatewayRecipient.sol";
  */
 contract PersonalAccountRegistry is AccountController, Initializable, GatewayRecipient {
   using BlockLib for BlockLib.BlockRelated;
-  using AddressLib for address;
   using SafeMathLib for uint256;
 
   struct Account {
@@ -122,8 +121,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   }
 
   function executeAccountTransaction(
-    address payable account,
-    address payable to,
+    address account,
+    address to,
     uint256 value,
     bytes calldata data
   )
@@ -149,8 +148,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   }
 
   function refundAccountCall(
-    address payable account,
-    address payable token,
+    address account,
+    address token,
     uint256 value
   )
     external

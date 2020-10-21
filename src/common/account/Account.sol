@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 import "../access/Controlled.sol";
 
@@ -13,9 +14,9 @@ contract Account is Controlled {
   constructor() public payable Controlled() {}
 
   /**
-   * @dev fallback
+   * @dev receive
    */
-  function()
+  receive()
     external
     payable
   {
@@ -25,7 +26,7 @@ contract Account is Controlled {
   // external functions
 
   function executeTransaction(
-    address payable to,
+    address to,
     uint256 value,
     bytes calldata data
   )
@@ -33,7 +34,7 @@ contract Account is Controlled {
     onlyController
   {
     // solhint-disable-next-line avoid-call-value, avoid-low-level-calls
-    (bool succeeded, bytes memory returnData) = to.call.value(value)(data);
+    (bool succeeded, bytes memory returnData) = payable(to).call{value: value}(data);
 
     require(
       succeeded

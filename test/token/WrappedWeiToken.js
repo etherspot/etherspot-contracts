@@ -254,4 +254,88 @@ contract('WrappedWeiToken', (addresses) => {
         .toBeBN(amount);
     });
   });
+
+  context('transfer()', () => {
+    const senderA = addresses.pop();
+    const senderB = addresses.pop();
+    const consumer = addresses.pop();
+    const amount = 1000;
+
+    let consumerBalance;
+
+    before(async () => {
+      await token.sendTransaction({
+        from: senderA,
+        value: amount,
+      });
+
+      await token.sendTransaction({
+        from: senderB,
+        value: amount,
+      });
+
+      await token.startConsuming({
+        from: consumer,
+      });
+
+      consumerBalance = await getBalance(consumer);
+    });
+
+    it('expect to transfer tokens to recipient', async () => {
+      const recipient = randomAddress();
+      const output = await token.transfer(recipient, amount, {
+        from: senderA,
+      });
+
+      logGasUsage(output);
+
+      const { logs: [log] } = output;
+
+      expect(log.event)
+        .toBe('Transfer');
+
+      expect(log.args.from)
+        .toBe(senderA);
+      expect(log.args.to)
+        .toBe(recipient);
+      expect(log.args.value)
+        .toBeBN(amount);
+
+      await expect(token.balanceOf(senderA))
+        .resolves
+        .toBeBN(0);
+
+      await expect(token.balanceOf(recipient))
+        .resolves
+        .toBeBN(amount);
+    });
+
+    it('expect to withdraw when transfer to consumer', async () => {
+      const output = await token.transfer(consumer, amount, {
+        from: senderB,
+      });
+
+      logGasUsage(output);
+
+      const { logs: [log] } = output;
+
+      expect(log.event)
+        .toBe('Transfer');
+
+      expect(log.args.from)
+        .toBe(senderB);
+      expect(log.args.to)
+        .toBeZeroAddress();
+      expect(log.args.value)
+        .toBeBN(amount);
+
+      await expect(token.balanceOf(senderB))
+        .resolves
+        .toBeBN(0);
+
+      await expect(getBalance(consumer))
+        .resolves
+        .toBeBN(consumerBalance.addn(amount));
+    });
+  });
 });

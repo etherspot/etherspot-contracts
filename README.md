@@ -61,6 +61,18 @@ console.log(
 );
 ```
 
+### Solidity
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+
+import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
+
+// ...
+
+```
+
 ## License
 
 MIT

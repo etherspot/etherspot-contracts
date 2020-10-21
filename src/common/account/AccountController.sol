@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 import "./Account.sol";
 
@@ -33,27 +34,12 @@ contract AccountController {
     internal
     returns (address)
   {
-    address result = address(0);
-
-    bytes memory creationCode = type(Account).creationCode;
-
-    // solhint-disable-next-line no-inline-assembly
-    assembly {
-      let p := add(creationCode, 0x20)
-      let n := mload(creationCode)
-      result := create2(value, p, n, salt)
-
-      if iszero(extcodesize(result)) {
-        revert(0, 0)
-      }
-    }
-
-    return result;
+    return address(new Account{salt: salt, value: value}());
   }
 
   function _executeAccountTransaction(
-    address payable account,
-    address payable to,
+    address account,
+    address to,
     uint256 value,
     bytes memory data
   )
@@ -71,7 +57,7 @@ contract AccountController {
       to != account
     );
 
-    Account(account).executeTransaction(
+    Account(payable(account)).executeTransaction(
       to,
       value,
       data
@@ -98,6 +84,6 @@ contract AccountController {
       )
     );
 
-    return address(bytes20(data << 96));
+    return address(uint160(uint256(data)));
   }
 }

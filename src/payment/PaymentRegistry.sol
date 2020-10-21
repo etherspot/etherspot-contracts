@@ -1,11 +1,11 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "../account/AccountOwnerRegistry.sol";
 import "../account/AccountProofRegistry.sol";
 import "../common/access/Guarded.sol";
 import "../common/account/AccountController.sol";
-import "../common/libs/AddressLib.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
@@ -19,7 +19,6 @@ import "../gateway/GatewayRecipient.sol";
  * @title PaymentRegistry
  */
 contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
-  using AddressLib for address;
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
 
@@ -99,7 +98,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 value
   );
 
-  event PaymentSplitted(
+  event PaymentSplit(
     bytes32 channelHash,
     uint256 totalValue,
     uint256 depositValue
@@ -303,7 +302,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       guardianSignature
     );
 
-    _transferSplittedFromDeposit(
+    _transferSplitFromDeposit(
       depositAccount,
       recipient,
       token,
@@ -311,7 +310,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       depositPaymentValue
     );
 
-    emit PaymentSplitted(hash, paymentValue, depositPaymentValue);
+    emit PaymentSplit(hash, paymentValue, depositPaymentValue);
   }
 
   // external functions (views)
@@ -513,15 +512,15 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   {
     if (token == address(0)) {
       _executeAccountTransaction(
-        depositAccount.toPayable(),
-        to.toPayable(),
+        depositAccount,
+        to,
         value,
         new bytes(0)
       );
     } else {
       _executeAccountTransaction(
-        depositAccount.toPayable(),
-        token.toPayable(),
+        depositAccount,
+        token,
         0,
         abi.encodeWithSelector(
           ERC20Token(token).transfer.selector,
@@ -532,7 +531,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     }
   }
 
-  function _transferSplittedFromDeposit(
+  function _transferSplitFromDeposit(
     address depositAccount,
     address to,
     address token,

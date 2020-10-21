@@ -1,4 +1,5 @@
-pragma solidity 0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
 import "../libs/SafeMathLib.sol";
 
@@ -55,6 +56,7 @@ contract ERC20Token {
     address to,
     uint256 value
   )
+    virtual
     external
     returns (bool)
   {
@@ -68,6 +70,7 @@ contract ERC20Token {
     address spender,
     uint256 value
   )
+    virtual
     external
     returns (bool)
   {
@@ -81,6 +84,7 @@ contract ERC20Token {
   function balanceOf(
     address owner
   )
+    virtual
     external
     view
     returns (uint256)
@@ -92,6 +96,7 @@ contract ERC20Token {
     address owner,
     address spender
   )
+    virtual
     external
     view
     returns (uint256)
@@ -106,6 +111,7 @@ contract ERC20Token {
     address to,
     uint256 value
   )
+    virtual
     internal
   {
     require(
@@ -126,6 +132,7 @@ contract ERC20Token {
     address spender,
     uint256 value
   )
+    virtual
     internal
   {
     require(
@@ -144,6 +151,7 @@ contract ERC20Token {
     address owner,
     uint256 value
   )
+    virtual
     internal
   {
     require(
@@ -164,6 +172,7 @@ contract ERC20Token {
     address owner,
     uint256 value
   )
+    virtual
     internal
   {
     require(

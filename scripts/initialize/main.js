@@ -13,6 +13,7 @@ const {
   processEvents,
   executeRequest,
   sha3String,
+  getEnvAsArray,
 } = require('../shared');
 
 async function main() {
@@ -27,6 +28,7 @@ async function main() {
     gateway,
     paymentRegistry,
     personalAccountRegistry,
+    wrappedWeiToken,
   ] = getContracts(
     networkId,
     ContractNames.AccountOwnerRegistry,
@@ -36,6 +38,7 @@ async function main() {
     ContractNames.Gateway,
     ContractNames.PaymentRegistry,
     ContractNames.PersonalAccountRegistry,
+    ContractNames.WrappedWeiToken,
   );
 
   // Gateway
@@ -162,6 +165,26 @@ async function main() {
         await executeRequest(
           personalAccountRegistry.methods.initialize(
             gateway.address,
+          ),
+        ),
+      );
+    }
+  }
+
+  // WrappedWeiToken
+  {
+    logger.info(`contract ${ContractNames.WrappedWeiToken}`);
+
+    if (await wrappedWeiToken.methods.isInitialized()
+      .call()) {
+      logger.info('already initialized');
+    } else {
+      const consumers = getEnvAsArray('WRAPPED_WEI_TOKEN_CONSUMERS');
+
+      processEvents(
+        await executeRequest(
+          wrappedWeiToken.methods.initialize(
+            consumers,
           ),
         ),
       );

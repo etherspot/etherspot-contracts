@@ -72,6 +72,32 @@ contract('Gateway', (addresses) => {
     },
   );
 
+  const buildDelegatedBatchWithoutGasPriceTypedData = (
+    nonce,
+    to,
+    data,
+  ) => buildTypedData(
+    gateway.address,
+    'DelegatedBatchWithoutGasPrice', [
+      {
+        type: 'uint256',
+        name: 'nonce',
+      },
+      {
+        type: 'address[]',
+        name: 'to',
+      },
+      {
+        type: 'bytes[]',
+        name: 'data',
+      },
+    ], {
+      nonce,
+      to,
+      data,
+    },
+  );
+
   before(async () => {
     accountOwnerRegistry = await AccountOwnerRegistry.new();
     gateway = await Gateway.new();
@@ -263,6 +289,41 @@ contract('Gateway', (addresses) => {
     });
   });
 
+  context('delegateBatchWithoutGasPriceFromAccount()', () => {
+    const from = addresses.pop();
+    const account = addresses.pop();
+    const sender = addresses.pop();
+
+    before(async () => {
+      await accountOwnerRegistry.addAccountOwner(sender, {
+        from: account,
+      });
+    });
+
+    it('expect to send single call', async () => {
+      const to = gatewayRecipientMock.address;
+      const data = gatewayRecipientMock.contract.methods.emitContext()
+        .encodeABI();
+
+      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(0, [to], [data]);
+
+      const senderSignature = await signTypedData(typedData, sender);
+
+      const output = await gateway.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature, {
+        from,
+      });
+
+      logGasUsage(output);
+
+      const logs = await gatewayRecipientMock.getPastEvents('Context');
+
+      expect(logs[0].args.account)
+        .toBe(account);
+      expect(logs[0].args.sender)
+        .toBe(sender);
+    });
+  });
+
   context('hashDelegatedBatch()', () => {
     it('expect to return correct hash', async () => {
       const to = gatewayRecipientMock.address;
@@ -278,6 +339,26 @@ contract('Gateway', (addresses) => {
         to: [to],
         data: [data],
         gasPrice: GAS_PRICE,
+      }))
+        .resolves
+        .toBe(typedDataHash);
+    });
+  });
+
+  context('hashDelegatedBatchWithoutGasPrice()', () => {
+    it('expect to return correct hash', async () => {
+      const to = gatewayRecipientMock.address;
+      const data = gatewayRecipientMock.contract.methods.emitContext()
+        .encodeABI();
+
+      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(2000, [to], [data]);
+
+      const typedDataHash = hashTypedData(typedData);
+
+      await expect(gateway.hashDelegatedBatchWithoutGasPrice({
+        nonce: 2000,
+        to: [to],
+        data: [data],
       }))
         .resolves
         .toBe(typedDataHash);

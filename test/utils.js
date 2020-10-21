@@ -23,7 +23,13 @@ const {
 
 function concatHex(...items) {
   return items.map((item, index) => {
-    return !index ? item : item.slice(2);
+    let result = item;
+
+    if (index) {
+      result = item.slice(2);
+    }
+
+    return result;
   })
     .join('')
     .toLowerCase();
