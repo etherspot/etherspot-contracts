@@ -44,7 +44,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     address account,
     address to,
     uint256 value,
-    bytes data
+    bytes data,
+    bytes response
   );
 
   event AccountCallRefunded(
@@ -132,7 +133,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
     _deployAccount(account);
 
-    _executeAccountTransaction(
+    bytes memory response = _executeAccountTransaction(
       account,
       to,
       value,
@@ -143,7 +144,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
       account,
       to,
       value,
-      data
+      data,
+      response
     );
   }
 
@@ -167,7 +169,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
         new bytes(0)
       );
     } else {
-      _executeAccountTransaction(
+      bytes memory response = _executeAccountTransaction(
         account,
         token,
         0,
@@ -177,6 +179,12 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
           value
         )
       );
+
+      if (response.length > 0) {
+        require(
+          abi.decode(response, (bool))
+        );
+      }
     }
 
     emit AccountCallRefunded(

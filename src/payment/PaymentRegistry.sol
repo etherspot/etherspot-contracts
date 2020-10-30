@@ -518,7 +518,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
         new bytes(0)
       );
     } else {
-      _executeAccountTransaction(
+      bytes memory response = _executeAccountTransaction(
         depositAccount,
         token,
         0,
@@ -528,6 +528,12 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
           value
         )
       );
+
+      if (response.length > 0) {
+        require(
+          abi.decode(response, (bool))
+        );
+      }
     }
   }
 

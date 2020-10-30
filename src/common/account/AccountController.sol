@@ -44,6 +44,7 @@ contract AccountController {
     bytes memory data
   )
     internal
+    returns (bytes memory)
   {
     require(
       to != address(0)
@@ -57,7 +58,7 @@ contract AccountController {
       to != account
     );
 
-    Account(payable(account)).executeTransaction(
+    return Account(payable(account)).executeTransaction(
       to,
       value,
       data
