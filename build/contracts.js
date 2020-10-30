@@ -44,12 +44,18 @@ module.exports = {
           }
         ],
         "name": "executeTransaction",
-        "outputs": [],
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x3445530eece80e73ae544c2e95f49140d4aee4ce681966a0a763a4906e5a8578",
+    "byteCodeHash": "0x46bf54760e2a2027195a3f53df73638c3389400b5b05c6d8536ef889a94f93d2",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {}
@@ -2510,7 +2516,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x3061ef5140766c545004961fe2374b1281518e66dd6b1cf7ed8d9f61ba758840",
+    "byteCodeHash": "0x17c1d9e825fc00f66522e2bd843fe72ea763a7f8d8d5e45cdca6e5170d867899",
     "typedDataDomainName": "Pillar Payment Network",
     "typedDataDomainVersion": "1",
     "addresses": {
@@ -2632,6 +2638,12 @@ module.exports = {
             "indexed": false,
             "internalType": "bytes",
             "name": "data",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "response",
             "type": "bytes"
           }
         ],
@@ -2868,7 +2880,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x7160a8ffeb268c774ad097fc3df031cb1cf68966142921ef5eddff39b9c20c77",
+    "byteCodeHash": "0x000a10183401e5950289b01184ab3759b8c3d10f7914c2aabadae9822353dec4",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {

@@ -32,18 +32,18 @@ contract Account is Controlled {
   )
     external
     onlyController
+    returns (bytes memory)
   {
+    bytes memory result;
+    bool succeeded;
+
     // solhint-disable-next-line avoid-call-value, avoid-low-level-calls
-    (bool succeeded, bytes memory returnData) = payable(to).call{value: value}(data);
+    (succeeded, result) = payable(to).call{value: value}(data);
 
     require(
       succeeded
     );
 
-    if (returnData.length > 0) {
-      require(
-        abi.decode(returnData, (bool))
-      );
-    }
+    return result;
   }
 }
