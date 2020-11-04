@@ -324,6 +324,141 @@ contract('Gateway', (addresses) => {
     });
   });
 
+  context('delegateBatches()', () => {
+    const from = addresses.pop();
+    const account = addresses.pop();
+    const sender = addresses.pop();
+    let nonce = 0;
+
+    before(async () => {
+      await accountOwnerRegistry.addAccountOwner(sender, {
+        from: account,
+      });
+    });
+
+    it('expect to send single batch', async () => {
+      const to = gatewayRecipientMock.address;
+      const data = gatewayRecipientMock.contract.methods.emitContext()
+        .encodeABI();
+
+      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce, [to], [data]);
+
+      const senderSignature = await signTypedData(typedData, sender);
+
+      const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+        .encodeABI();
+
+      const output = await gateway.delegateBatches([batch], false, {
+        from,
+      });
+
+      logGasUsage(output);
+
+      const { logs } = output;
+
+      expect(logs[0].args.sender)
+        .toBe(from);
+      expect(logs[0].args.batch)
+        .toBe(batch);
+      expect(logs[0].args.succeeded)
+        .toBeTruthy();
+
+      nonce += 1;
+    });
+
+    it('expect to send multiple batch', async () => {
+      const batches = [];
+      const batchesCount = 4;
+
+      for (let index = 0; index < batchesCount; index += 1) {
+        const to = gatewayRecipientMock.address;
+        const data = gatewayRecipientMock.contract.methods.emitContext()
+          .encodeABI();
+
+        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce, [to], [data]);
+
+        const senderSignature = await signTypedData(typedData, sender);
+
+        batches.push(
+          gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+            .encodeABI(),
+        );
+
+        nonce += 1;
+      }
+
+      const output = await gateway.delegateBatches(batches, false, {
+        from,
+      });
+
+      logGasUsage(output);
+
+      const { logs } = output;
+
+      for (let index = 0; index < batchesCount; index += 1) {
+        expect(logs[index].args.sender)
+          .toBe(from);
+        expect(logs[index].args.batch)
+          .toBe(batches[index]);
+        expect(logs[index].args.succeeded)
+          .toBeTruthy();
+      }
+    });
+
+    context('# revertOnFailure flag is set to true', () => {
+      it('expect to revert on batch failure', async () => {
+        const to = gatewayRecipientMock.address;
+        const data = gatewayRecipientMock.contract.methods.emitContext()
+          .encodeABI();
+
+        // invalid nonce
+        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce + 10, [to], [data]);
+
+        const senderSignature = await signTypedData(typedData, sender);
+
+        const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+          .encodeABI();
+
+        await expect(gateway.delegateBatches([batch], true, {
+          from,
+        }))
+          .rejects
+          .toThrow(/revert/);
+      });
+    });
+
+    context('# revertOnFailure flag is set to false', () => {
+      it('expect to emit event on batch failure', async () => {
+        const to = gatewayRecipientMock.address;
+        const data = gatewayRecipientMock.contract.methods.emitContext()
+          .encodeABI();
+
+        // invalid nonce
+        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce + 10, [to], [data]);
+
+        const senderSignature = await signTypedData(typedData, sender);
+
+        const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+          .encodeABI();
+
+        const output = await gateway.delegateBatches([batch], false, {
+          from,
+        });
+
+        const { logs } = output;
+
+        logGasUsage(output);
+
+        expect(logs[0].args.sender)
+          .toBe(from);
+        expect(logs[0].args.batch)
+          .toBe(batch);
+        expect(logs[0].args.succeeded)
+          .toBeFalsy();
+      });
+    });
+  });
+
   context('hashDelegatedBatch()', () => {
     it('expect to return correct hash', async () => {
       const to = gatewayRecipientMock.address;
