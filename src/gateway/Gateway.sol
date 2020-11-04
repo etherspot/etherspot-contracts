@@ -45,6 +45,7 @@ contract Gateway is Initializable, TypedDataContainer {
   // events
 
   event BatchDelegated(
+    address sender,
     bytes batch,
     bool succeeded
   );
@@ -167,15 +168,25 @@ contract Gateway is Initializable, TypedDataContainer {
   )
     public
   {
+    require(
+      batches.length > 0
+    );
+
     for (uint256 i = 0; i < batches.length; i++) {
       // solhint-disable-next-line avoid-low-level-calls
       (bool succeeded,) = address(this).call(batches[i]);
 
-      require(
-        revertOnFailure || succeeded
-      );
+      if (revertOnFailure) {
+        require(
+          succeeded
+        );
+      }
 
-      emit BatchDelegated(batches[i], succeeded);
+      emit BatchDelegated(
+        msg.sender,
+        batches[i],
+        succeeded
+      );
     }
   }
 
