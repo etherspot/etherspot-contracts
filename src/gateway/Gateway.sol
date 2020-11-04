@@ -16,7 +16,6 @@ contract Gateway is Initializable, TypedDataContainer {
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
 
-
   struct DelegatedBatch {
     uint256 nonce;
     address[] to;
@@ -42,6 +41,13 @@ contract Gateway is Initializable, TypedDataContainer {
   PersonalAccountRegistry public personalAccountRegistry;
 
   mapping(address => uint256) private accountNonce;
+
+  // events
+
+  event BatchDelegated(
+    bytes batch,
+    bool succeeded
+  );
 
   /**
    * @dev public constructor
@@ -153,6 +159,24 @@ contract Gateway is Initializable, TypedDataContainer {
       to,
       data
     );
+  }
+
+  function delegateBatches(
+    bytes[] memory batches,
+    bool revertOnFailure
+  )
+    public
+  {
+    for (uint256 i = 0; i < batches.length; i++) {
+      // solhint-disable-next-line avoid-low-level-calls
+      (bool succeeded,) = address(this).call(batches[i]);
+
+      require(
+        revertOnFailure || succeeded
+      );
+
+      emit BatchDelegated(batches[i], succeeded);
+    }
   }
 
   // public functions (views)
