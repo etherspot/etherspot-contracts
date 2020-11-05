@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.0.0-alpha.29",
+  "version": "1.0.0-alpha.30",
   "description": "ETHERspot contracts",
   "license": "MIT",
   "main": "./build/index.js",
@@ -11,7 +11,8 @@
     "lint": "npm run lint-sol",
     "compile": "truffle compile",
     "compile-all": "truffle compile --all",
-    "test": "./scripts/test.sh --network test",
+    "test": "./scripts/test.sh",
+    "test-log-gas-usage": "./scripts/test.sh --log-gas-usage",
     "migrate:mainnet": "truffle migrate --network=mainnet",
     "migrate:ropsten": "truffle migrate --network=ropsten",
     "migrate:rinkeby": "truffle migrate --network=rinkeby",

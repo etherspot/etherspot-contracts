@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
-# Exit script as soon as a command fails.
+for ARG in "$@"
+do
+  case $ARG in
+    "--log-gas-usage" )
+      export LOG_GAS_USAGE=1
+      ;;
+   esac
+done
+
+# exit script as soon as a command fails.
 set -o errexit
 
-# Executes cleanup function at script exit.
+# executes cleanup function at script exit.
 trap stop_ganache EXIT
 
 ganache_running() {
@@ -30,4 +39,4 @@ fi
 
 truffle version
 
-node_modules/.bin/truffle test "$@"
+node_modules/.bin/truffle test --network test
