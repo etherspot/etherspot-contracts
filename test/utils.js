@@ -215,6 +215,14 @@ function increaseTime(seconds = 0) {
   });
 }
 
+let currentNonce = 1;
+
+function getNextNonce() {
+  currentNonce += 1;
+
+  return currentNonce;
+}
+
 module.exports = {
   concatHex,
   logGasUsage,
@@ -229,4 +237,5 @@ module.exports = {
   signTypedData,
   computeCreate2Address,
   increaseTime,
+  getNextNonce,
 };

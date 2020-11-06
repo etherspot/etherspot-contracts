@@ -7,6 +7,7 @@ const {
   buildTypedData,
   hashTypedData,
   signTypedData,
+  getNextNonce,
 } = require('../utils');
 const {
   GAS_PRICE,
@@ -60,25 +61,20 @@ contract('Gateway', (addresses) => {
         type: 'bytes[]',
         name: 'data',
       },
-      {
-        type: 'uint256',
-        name: 'gasPrice',
-      },
     ], {
       nonce,
       to,
       data,
-      gasPrice: GAS_PRICE,
     },
   );
 
-  const buildDelegatedBatchWithoutGasPriceTypedData = (
+  const buildDelegatedBatchWithGasPriceTypedData = (
     nonce,
     to,
     data,
   ) => buildTypedData(
     gateway.address,
-    'DelegatedBatchWithoutGasPrice', [
+    'DelegatedBatchWithGasPrice', [
       {
         type: 'uint256',
         name: 'nonce',
@@ -91,10 +87,15 @@ contract('Gateway', (addresses) => {
         type: 'bytes[]',
         name: 'data',
       },
+      {
+        type: 'uint256',
+        name: 'gasPrice',
+      },
     ], {
       nonce,
       to,
       data,
+      gasPrice: GAS_PRICE,
     },
   );
 
@@ -236,7 +237,7 @@ contract('Gateway', (addresses) => {
     });
   });
 
-  context('delegateBatchFromAccount()', () => {
+  context('delegateBatch()', () => {
     const from = addresses.pop();
     const account = addresses.pop();
     const sender = addresses.pop();
@@ -248,17 +249,17 @@ contract('Gateway', (addresses) => {
     });
 
     it('expect to send single call', async () => {
+      const nonce = getNextNonce();
       const to = gatewayRecipientMock.address;
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildDelegatedBatchTypedData(0, [to], [data]);
+      const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
-      const output = await gateway.delegateBatchFromAccount(account, [to], [data], senderSignature, {
+      const output = await gateway.delegateBatch(account, nonce, [to], [data], senderSignature, {
         from,
-        gasPrice: GAS_PRICE,
       });
 
       logGasUsage(output);
@@ -272,24 +273,24 @@ contract('Gateway', (addresses) => {
     });
 
     it('expect to revert on invalid signature', async () => {
+      const nonce = 0; // invalid nonce
       const to = gatewayRecipientMock.address;
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildDelegatedBatchTypedData(1000, [to], [data]);
+      const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
-      await expect(gateway.delegateBatchFromAccount(account, [to], [data], senderSignature, {
+      await expect(gateway.delegateBatch(account, nonce, [to], [data], senderSignature, {
         from,
-        gasPrice: GAS_PRICE,
       }))
         .rejects
         .toThrow(/revert/);
     });
   });
 
-  context('delegateBatchWithoutGasPriceFromAccount()', () => {
+  context('delegateBatchWithGasPrice()', () => {
     const from = addresses.pop();
     const account = addresses.pop();
     const sender = addresses.pop();
@@ -301,16 +302,18 @@ contract('Gateway', (addresses) => {
     });
 
     it('expect to send single call', async () => {
+      const nonce = getNextNonce();
       const to = gatewayRecipientMock.address;
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(0, [to], [data]);
+      const typedData = buildDelegatedBatchWithGasPriceTypedData(nonce, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
-      const output = await gateway.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature, {
+      const output = await gateway.delegateBatchWithGasPrice(account, nonce, [to], [data], senderSignature, {
         from,
+        gasPrice: GAS_PRICE,
       });
 
       logGasUsage(output);
@@ -328,7 +331,6 @@ contract('Gateway', (addresses) => {
     const from = addresses.pop();
     const account = addresses.pop();
     const sender = addresses.pop();
-    let nonce = 0;
 
     before(async () => {
       await accountOwnerRegistry.addAccountOwner(sender, {
@@ -337,15 +339,16 @@ contract('Gateway', (addresses) => {
     });
 
     it('expect to send single batch', async () => {
+      const nonce = getNextNonce();
       const to = gatewayRecipientMock.address;
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce, [to], [data]);
+      const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
       const senderSignature = await signTypedData(typedData, sender);
 
-      const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+      const batch = gateway.contract.methods.delegateBatch(account, nonce, [to], [data], senderSignature)
         .encodeABI();
 
       const output = await gateway.delegateBatches([batch], false, {
@@ -362,8 +365,6 @@ contract('Gateway', (addresses) => {
         .toBe(batch);
       expect(logs[0].args.succeeded)
         .toBeTruthy();
-
-      nonce += 1;
     });
 
     it('expect to send multiple batch', async () => {
@@ -371,20 +372,19 @@ contract('Gateway', (addresses) => {
       const batchesCount = 4;
 
       for (let index = 0; index < batchesCount; index += 1) {
+        const nonce = getNextNonce();
         const to = gatewayRecipientMock.address;
         const data = gatewayRecipientMock.contract.methods.emitContext()
           .encodeABI();
 
-        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce, [to], [data]);
+        const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
         const senderSignature = await signTypedData(typedData, sender);
 
         batches.push(
-          gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+          gateway.contract.methods.delegateBatch(account, nonce, [to], [data], senderSignature)
             .encodeABI(),
         );
-
-        nonce += 1;
       }
 
       const output = await gateway.delegateBatches(batches, false, {
@@ -407,16 +407,16 @@ contract('Gateway', (addresses) => {
 
     context('# revertOnFailure flag is set to true', () => {
       it('expect to revert on batch failure', async () => {
+        const nonce = 0; // invalid nonce
         const to = gatewayRecipientMock.address;
         const data = gatewayRecipientMock.contract.methods.emitContext()
           .encodeABI();
 
-        // invalid nonce
-        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce + 10, [to], [data]);
+        const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
         const senderSignature = await signTypedData(typedData, sender);
 
-        const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+        const batch = gateway.contract.methods.delegateBatch(account, nonce, [to], [data], senderSignature)
           .encodeABI();
 
         await expect(gateway.delegateBatches([batch], true, {
@@ -429,16 +429,17 @@ contract('Gateway', (addresses) => {
 
     context('# revertOnFailure flag is set to false', () => {
       it('expect to emit event on batch failure', async () => {
+        const nonce = 0; // invalid nonce
         const to = gatewayRecipientMock.address;
         const data = gatewayRecipientMock.contract.methods.emitContext()
           .encodeABI();
 
         // invalid nonce
-        const typedData = buildDelegatedBatchWithoutGasPriceTypedData(nonce + 10, [to], [data]);
+        const typedData = buildDelegatedBatchTypedData(nonce, [to], [data]);
 
         const senderSignature = await signTypedData(typedData, sender);
 
-        const batch = gateway.contract.methods.delegateBatchWithoutGasPriceFromAccount(account, [to], [data], senderSignature)
+        const batch = gateway.contract.methods.delegateBatch(account, nonce, [to], [data], senderSignature)
           .encodeABI();
 
         const output = await gateway.delegateBatches([batch], false, {
@@ -473,27 +474,27 @@ contract('Gateway', (addresses) => {
         nonce: 1000,
         to: [to],
         data: [data],
-        gasPrice: GAS_PRICE,
       }))
         .resolves
         .toBe(typedDataHash);
     });
   });
 
-  context('hashDelegatedBatchWithoutGasPrice()', () => {
+  context('hashDelegatedBatchWithGasPrice()', () => {
     it('expect to return correct hash', async () => {
       const to = gatewayRecipientMock.address;
       const data = gatewayRecipientMock.contract.methods.emitContext()
         .encodeABI();
 
-      const typedData = buildDelegatedBatchWithoutGasPriceTypedData(2000, [to], [data]);
+      const typedData = buildDelegatedBatchWithGasPriceTypedData(2000, [to], [data]);
 
       const typedDataHash = hashTypedData(typedData);
 
-      await expect(gateway.hashDelegatedBatchWithoutGasPrice({
+      await expect(gateway.hashDelegatedBatchWithGasPrice({
         nonce: 2000,
         to: [to],
         data: [data],
+        gasPrice: GAS_PRICE,
       }))
         .resolves
         .toBe(typedDataHash);
