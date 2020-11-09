@@ -1261,6 +1261,31 @@ module.exports = {
       },
       {
         "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "batch",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "succeeded",
+            "type": "bool"
+          }
+        ],
+        "name": "BatchDelegated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
         "inputs": [],
         "name": "Initialized",
         "type": "event"
@@ -1403,6 +1428,11 @@ module.exports = {
             "type": "address"
           },
           {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
             "internalType": "address[]",
             "name": "to",
             "type": "address[]"
@@ -1418,7 +1448,7 @@ module.exports = {
             "type": "bytes"
           }
         ],
-        "name": "delegateBatchFromAccount",
+        "name": "delegateBatch",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1431,6 +1461,11 @@ module.exports = {
             "type": "address"
           },
           {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
             "internalType": "address[]",
             "name": "to",
             "type": "address[]"
@@ -1446,7 +1481,25 @@ module.exports = {
             "type": "bytes"
           }
         ],
-        "name": "delegateBatchWithoutGasPriceFromAccount",
+        "name": "delegateBatchWithGasPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes[]",
+            "name": "batches",
+            "type": "bytes[]"
+          },
+          {
+            "internalType": "bool",
+            "name": "revertOnFailure",
+            "type": "bool"
+          }
+        ],
+        "name": "delegateBatches",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1469,11 +1522,6 @@ module.exports = {
                 "internalType": "bytes[]",
                 "name": "data",
                 "type": "bytes[]"
-              },
-              {
-                "internalType": "uint256",
-                "name": "gasPrice",
-                "type": "uint256"
               }
             ],
             "internalType": "struct Gateway.DelegatedBatch",
@@ -1511,14 +1559,19 @@ module.exports = {
                 "internalType": "bytes[]",
                 "name": "data",
                 "type": "bytes[]"
+              },
+              {
+                "internalType": "uint256",
+                "name": "gasPrice",
+                "type": "uint256"
               }
             ],
-            "internalType": "struct Gateway.DelegatedBatchWithoutGasPrice",
+            "internalType": "struct Gateway.DelegatedBatchWithGasPrice",
             "name": "delegatedBatch",
             "type": "tuple"
           }
         ],
-        "name": "hashDelegatedBatchWithoutGasPrice",
+        "name": "hashDelegatedBatchWithGasPrice",
         "outputs": [
           {
             "internalType": "bytes32",
@@ -1551,7 +1604,7 @@ module.exports = {
         "constant": true
       }
     ],
-    "byteCodeHash": "0x47d2ba3882eb32577f973869e4cb02fb2331e1dfc7405a081d5453b5fd8c4305",
+    "byteCodeHash": "0x2a73271e1c51f75479b1071321e1d0fc93189989c1258f77bbe0a0cbe0f27d36",
     "typedDataDomainName": "Pillar Gateway",
     "typedDataDomainVersion": "1",
     "addresses": {

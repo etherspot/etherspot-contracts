@@ -20,21 +20,21 @@ contract Gateway is Initializable, TypedDataContainer {
     uint256 nonce;
     address[] to;
     bytes[] data;
-    uint256 gasPrice;
   }
 
-  struct DelegatedBatchWithoutGasPrice {
+  struct DelegatedBatchWithGasPrice {
     uint256 nonce;
     address[] to;
     bytes[] data;
+    uint256 gasPrice;
   }
 
   bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(
-    "DelegatedBatch(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
+    "DelegatedBatch(uint256 nonce,address[] to,bytes[] data)"
   );
 
-  bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITHOUT_GAS_PRICE = keccak256(
-    "DelegatedBatchWithoutGasPrice(uint256 nonce,address[] to,bytes[] data)"
+  bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE = keccak256(
+    "DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
   AccountOwnerRegistry public accountOwnerRegistry;
@@ -109,24 +109,28 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
-  function delegateBatchFromAccount(
+  function delegateBatch(
     address account,
+    uint256 nonce,
     address[] memory to,
     bytes[] memory data,
     bytes memory senderSignature
   )
     public
   {
+    require(
+      nonce > accountNonce[account]
+    );
+
     address sender = _hashPrimaryTypedData(
       _hashTypedData(
-        accountNonce[account],
+        nonce,
         to,
-        data,
-        tx.gasprice
+        data
       )
     ).recoverAddress(senderSignature);
 
-    accountNonce[account] = accountNonce[account].add(1);
+    accountNonce[account] = nonce;
 
     _sendBatch(
       account,
@@ -136,23 +140,29 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
-  function delegateBatchWithoutGasPriceFromAccount(
+  function delegateBatchWithGasPrice(
     address account,
+    uint256 nonce,
     address[] memory to,
     bytes[] memory data,
     bytes memory senderSignature
   )
     public
   {
+    require(
+      nonce > accountNonce[account]
+    );
+
     address sender = _hashPrimaryTypedData(
       _hashTypedData(
-        accountNonce[account],
+        nonce,
         to,
-        data
+        data,
+        tx.gasprice
       )
     ).recoverAddress(senderSignature);
 
-    accountNonce[account] = accountNonce[account].add(1);
+    accountNonce[account] = nonce;
 
     _sendBatch(
       account,
@@ -203,14 +213,13 @@ contract Gateway is Initializable, TypedDataContainer {
       _hashTypedData(
         delegatedBatch.nonce,
         delegatedBatch.to,
-        delegatedBatch.data,
-        delegatedBatch.gasPrice
+        delegatedBatch.data
       )
     );
   }
 
-  function hashDelegatedBatchWithoutGasPrice(
-    DelegatedBatchWithoutGasPrice memory delegatedBatch
+  function hashDelegatedBatchWithGasPrice(
+    DelegatedBatchWithGasPrice memory delegatedBatch
   )
     public
     view
@@ -220,7 +229,8 @@ contract Gateway is Initializable, TypedDataContainer {
       _hashTypedData(
         delegatedBatch.nonce,
         delegatedBatch.to,
-        delegatedBatch.data
+        delegatedBatch.data,
+        delegatedBatch.gasPrice
       )
     );
   }
@@ -299,7 +309,7 @@ contract Gateway is Initializable, TypedDataContainer {
     }
 
     return keccak256(abi.encode(
-      DELEGATED_BATCH_TYPE_HASH_WITHOUT_GAS_PRICE,
+      DELEGATED_BATCH_TYPE_HASH,
       nonce,
       keccak256(abi.encodePacked(to)),
       keccak256(abi.encodePacked(dataHashes))
@@ -323,7 +333,7 @@ contract Gateway is Initializable, TypedDataContainer {
     }
 
     return keccak256(abi.encode(
-        DELEGATED_BATCH_TYPE_HASH,
+        DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE,
         nonce,
         keccak256(abi.encodePacked(to)),
         keccak256(abi.encodePacked(dataHashes)),
