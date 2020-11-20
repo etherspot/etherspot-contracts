@@ -7,14 +7,14 @@
 | Mainnet | `MAINNET` | `mainnet` |
 | Ropsten | `ROPSTEN` | `ropsten` |
 | Rinkeby | `RINKEBY` | `rinkeby` |
-| Goerli | `GOERLI` | `goerli` |
+| Görli | `GOERLI` | `goerli` |
 | Kovan | `KOVAN` | `kovan` |
 | xDai | `XDAI` | `xdai` |
 | Sokol (xDai testnet) | `SOKOL` | `sokol` |
 | Binance Smart Chain | `BSC` | `bsc` |
 | Binance Smart Chain (testnet) | `BSC_TEST` | `bsc_test` |
-| Localnet A | `LOCAL_A` | `local_a` |
-| Localnet B | `LOCAL_B` | `local_b` |
+| Localnet (instance A) | `LOCAL_A` | `local_a` |
+| Localnet (instance B) | `LOCAL_B` | `local_b` |
 
 ## Configuration
 
