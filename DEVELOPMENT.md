@@ -1,5 +1,21 @@
 # Development
 
+## Supported networks
+
+| network | config prefix | script alias |
+| --- | --- | --- |
+| Mainnet | `MAINNET` | `mainnet` |
+| Ropsten | `ROPSTEN` | `ropsten` |
+| Rinkeby | `RINKEBY` | `rinkeby` |
+| Goerli | `GOERLI` | `goerli` |
+| Kovan | `KOVAN` | `kovan` |
+| xDai | `XDAI` | `xdai` |
+| Sokol (xDai testnet) | `SOKOL` | `sokol` |
+| Binance Smart Chain | `BSC` | `bsc` |
+| Binance Smart Chain (testnet) | `BSC_TEST` | `bsc_test` |
+| Localnet A | `LOCAL_A` | `local_a` |
+| Localnet B | `LOCAL_B` | `local_b` |
+
 ## Configuration
 
 via `env` variables:
@@ -7,28 +23,8 @@ via `env` variables:
 | name | note |
 | --- | --- |
 | `LOG_GAS_USAGE` | log gas usage in tests |
-| `MAINNET_PROVIDER_ENDPOINT` | |
-| `MAINNET_PROVIDER_PRIVATE_KEY` | |
-| `ROPSTEN_PROVIDER_ENDPOINT` | |
-| `ROPSTEN_PROVIDER_PRIVATE_KEY` | |
-| `RINKEBY_PROVIDER_ENDPOINT` | |
-| `RINKEBY_PROVIDER_PRIVATE_KEY` | |
-| `GOERLI_PROVIDER_ENDPOINT` | |
-| `GOERLI_PROVIDER_PRIVATE_KEY` | |
-| `KOVAN_PROVIDER_ENDPOINT` | |
-| `KOVAN_PROVIDER_PRIVATE_KEY` | |
-| `XDAI_PROVIDER_ENDPOINT` | |
-| `XDAI_PROVIDER_PRIVATE_KEY` | |
-| `SOKOL_PROVIDER_ENDPOINT` | |
-| `SOKOL_PROVIDER_PRIVATE_KEY` | |
-| `BSC_PROVIDER_ENDPOINT` | |
-| `BSC_PROVIDER_PRIVATE_KEY` | |
-| `BSC_TEST_PROVIDER_ENDPOINT` | |
-| `BSC_TEST_PROVIDER_PRIVATE_KEY` | |
-| `LOCAL_A_PROVIDER_ENDPOINT` | |
-| `LOCAL_A_PROVIDER_PRIVATE_KEY` | |
-| `LOCAL_B_PROVIDER_ENDPOINT` | |
-| `LOCAL_B_PROVIDER_PRIVATE_KEY` | |
+| `<network config prefix>_PROVIDER_ENDPOINT` | |
+| `<network config prefix>_PROVIDER_PRIVATE_KEY` | |
 
 ## Test
 
@@ -39,17 +35,9 @@ $ npm run test
 ## Migrate
 
 ```bash
+$ # npm run migrate:<network script alias>
+$ # example:
 $ npm run migrate:mainnet
-$ npm run migrate:ropsten
-$ npm run migrate:rinkeby
-$ npm run migrate:goerli
-$ npm run migrate:kovan
-$ npm run migrate:xdai
-$ npm run migrate:sokol
-$ npm run migrate:bsc
-$ npm run migrate:bsc_test
-$ npm run migrate:local_a
-$ npm run migrate:local_b
 ```
 
 ## Build `./dist` files
@@ -61,15 +49,7 @@ $ npm run build
 ## Initialize
 
 ```bash
+$ # npm run initialize:<network script alias>
+$ # example:
 $ npm run initialize:mainnet
-$ npm run initialize:ropsten
-$ npm run initialize:rinkeby
-$ npm run initialize:goerli
-$ npm run initialize:kovan
-$ npm run initialize:xdai
-$ npm run initialize:sokol
-$ npm run initialize:bsc
-$ npm run initialize:bsc_test
-$ npm run initialize:local_a
-$ npm run initialize:local_b
 ```
