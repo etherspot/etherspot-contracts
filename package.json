@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.0.0-alpha.31",
+  "version": "1.0.0-beta.1",
   "description": "ETHERspot contracts",
   "license": "MIT",
   "main": "./build/index.js",
@@ -19,6 +19,9 @@
     "migrate:goerli": "truffle migrate --network=goerli",
     "migrate:kovan": "truffle migrate --network=kovan",
     "migrate:xdai": "truffle migrate --network=xdai",
+    "migrate:sokol": "truffle migrate --network=sokol",
+    "migrate:bsc": "truffle migrate --network=bsc",
+    "migrate:bsc_test": "truffle migrate --network=bsc_test",
     "migrate:local_a": "truffle migrate --network=local_a",
     "migrate:local_b": "truffle migrate --network=local_b",
     "build": "node ./scripts/build",
@@ -28,6 +31,9 @@
     "initialize:goerli": "node ./scripts/initialize goerli",
     "initialize:kovan": "node ./scripts/initialize kovan",
     "initialize:xdai": "node ./scripts/initialize xdai",
+    "initialize:sokol": "node ./scripts/initialize sokol",
+    "initialize:bsc": "node ./scripts/initialize bsc",
+    "initialize:bsc_test": "node ./scripts/initialize bsc_test",
     "initialize:local_a": "node ./scripts/initialize local_a",
     "initialize:local_b": "node ./scripts/initialize local_b"
   },
