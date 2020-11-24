@@ -23,6 +23,14 @@ Creating more developer friendly [GSN](https://www.opengsn.org/) with support fo
 
 ```solidity
 interface Gateway {
+ // events
+
+  event BatchDelegated(
+    address sender,
+    bytes batch,
+    bool succeeded
+  );
+
   // public functions
 
   function sendBatch(
@@ -38,22 +46,29 @@ interface Gateway {
   )
     external;
 
-  function delegateBatchFromAccount(
+  function delegateBatch(
     address account,
+    uint256 nonce,
     address[] memory to,
     bytes[] memory data,
     bytes memory senderSignature
   )
-    external;
+    public;
 
-  // external functions (views)
-
-  function getAccountNonce(
-    address account
+  function delegateBatchWithGasPrice(
+    address account,
+    uint256 nonce,
+    address[] memory to,
+    bytes[] memory data,
+    bytes memory senderSignature
   )
-    external
-    view
-    returns (uint256);
+    public;
+
+  function delegateBatches(
+    bytes[] memory batches,
+    bool revertOnFailure
+  )
+    public;
 }
 ```
 
@@ -74,6 +89,11 @@ contract GatewayRecipient {
     internal
     view
     returns (address);
+
+  function _getContextData()
+    internal
+    view
+    returns (bytes calldata);
 }
 
 ```
@@ -82,18 +102,23 @@ There are several options for batch sending.
 
 * `sendBatch()` - send direct batch
 * `sendBatchFromAccount()` - send direct batch from account
-* `delegateBatchFromAccount()` - send a batch from account using different account (eg. relayer)
+* `delegateBatch()` - send a batch from account using different account (eg. relayer)
+* `delegateBatchWithGasPrice()` - similar to `delegateBatch` but also verifies transaction gas price
 
-`delegateBatchFromAccount` recover address from sender signature. 
+`delegateBatch` and `delegateBatchWithGasPrice()`  recovers address from sender signature. 
 
 Sender delegate batch message data structure:
 
 ```solidity
-bytes32 TYPE_HASH = keccak256("DelegatedBatch(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)");
+// for delegateBatch
+bytes32 TYPE_HASH = keccak256("DelegatedBatch(uint256 nonce,address[] to,bytes[] data)");
+
+// for delegateBatchWithGasPrice
+bytes32 TYPE_HASH = keccak256("DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)");
 ```
 *See: [signing data section](../signing-data.md)* 
 
-In both `sendBatchFromAccount` and `delegateBatchFromAccount` sender need to be an owner of the account.
+In `sendBatchFromAccount`, `delegateBatch` `delegateBatchWithGasPrice` and sender need to be an owner of the account.
 
 Account owner verification diagram: 
 
@@ -116,7 +141,8 @@ Target contract context addresses:
 | --- | --- | --- |
 | `sendBatch()` | `msg.sender` | `msg.sender` | 
 | `sendBatchFromAccount()` | `msg.sender` | `account` argument | 
-| `delegateBatchFromAccount()` | recover from `senderSignature` | `account` argument | 
+| `delegateBatch()` | recover from `senderSignature` | `account` argument | 
+| `delegateBatchWithGasPrice()` | recover from `senderSignature` | `account` argument | 
 
 
 ## Implementation
