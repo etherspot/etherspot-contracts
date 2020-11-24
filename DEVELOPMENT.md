@@ -2,19 +2,19 @@
 
 ## Supported networks
 
-| network | config prefix | script alias |
-| --- | --- | --- |
-| Mainnet | `MAINNET` | `mainnet` |
-| Ropsten | `ROPSTEN` | `ropsten` |
-| Rinkeby | `RINKEBY` | `rinkeby` |
-| Görli | `GOERLI` | `goerli` |
-| Kovan | `KOVAN` | `kovan` |
-| xDai | `XDAI` | `xdai` |
-| Sokol (xDai testnet) | `SOKOL` | `sokol` |
-| Binance Smart Chain | `BSC` | `bsc` |
-| Binance Smart Chain (testnet) | `BSC_TEST` | `bsc_test` |
-| Localnet (instance A) | `LOCAL_A` | `local_a` |
-| Localnet (instance B) | `LOCAL_B` | `local_b` |
+| env | network | config prefix | script alias |
+| --- | --- | --- | --- |
+| `mainnets` | Mainnet | `MAINNET` | `mainnet` |
+| `testnets` | Ropsten | `ROPSTEN` | `ropsten` |
+| `testnets` | Rinkeby | `RINKEBY` | `rinkeby` |
+| `testnets` | Görli | `GOERLI` | `goerli` |
+| `testnets` | Kovan | `KOVAN` | `kovan` |
+| `mainnets` | xDai | `XDAI` | `xdai` |
+| `testnets` | Sokol (xDai testnet) | `SOKOL` | `sokol` |
+| `mainnets` | Binance Smart Chain | `BSC` | `bsc` |
+| `testnets` | Binance Smart Chain (testnet) | `BSC_TEST` | `bsc_test` |
+| `localnets` | Localnet (instance A) | `LOCAL_A` | `local_a` |
+| `localnets` | Localnet (instance B) | `LOCAL_B` | `local_b` |
 
 ## Configuration
 
