@@ -193,6 +193,11 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
+      "3": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
+      "4": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
+      "5": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
+      "42": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
+      "77": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
       "97": "0xE5f0D7f0Fe53095317755328E3bdCeb3849512F0",
       "6666": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6",
       "9999": "0xE859C7e29837FA19248bffeADe14F9fE76dDBeC6"
@@ -324,6 +329,11 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
+      "3": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
+      "4": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
+      "5": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
+      "42": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
+      "77": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
       "97": "0x6e2D8ff5d50AdDac5A385487A5e7c00feA607e75",
       "6666": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46",
       "9999": "0x51AA6Dbede0DFbec34Ae2084A3A9AA14535f5b46"
@@ -361,6 +371,11 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
+      "3": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
+      "4": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
+      "5": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
+      "42": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
+      "77": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
       "97": "0xaAba2607CC9AFa2deE9790f5A40371cC2db253E7",
       "6666": "0x622a7Aeb730b30283D35e50d6B6A900d505120D7",
       "9999": "0x622a7Aeb730b30283D35e50d6B6A900d505120D7"
@@ -785,6 +800,11 @@ module.exports = {
     "typedDataDomainName": "Pillar ENS Controller",
     "typedDataDomainVersion": "1",
     "addresses": {
+      "3": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
+      "4": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
+      "5": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
+      "42": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
+      "77": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
       "97": "0x116Ad4865e586b044b4dA024fE5Ec61937B905D0",
       "6666": "0xa0CC33936b602f3459e16f343329E0aC074008f7",
       "9999": "0xa0CC33936b602f3459e16f343329E0aC074008f7"
@@ -1022,6 +1042,11 @@ module.exports = {
     "typedDataDomainVersion": null,
     "addresses": {
       "1": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+      "3": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
+      "4": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
+      "5": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
+      "42": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
+      "77": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
       "97": "0xE9C2AB4884059948F7bC895AA9999567135672fe",
       "6666": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B",
       "9999": "0xc24DfC7A2ec23Bc5b2AcAAC4940f5cdA624Ebd6B"
@@ -1613,6 +1638,11 @@ module.exports = {
     "typedDataDomainName": "Pillar Gateway",
     "typedDataDomainVersion": "1",
     "addresses": {
+      "3": "0x983321636be50128e344275d95E2546A36C27851",
+      "4": "0x983321636be50128e344275d95E2546A36C27851",
+      "5": "0x983321636be50128e344275d95E2546A36C27851",
+      "42": "0x983321636be50128e344275d95E2546A36C27851",
+      "77": "0x983321636be50128e344275d95E2546A36C27851",
       "97": "0x983321636be50128e344275d95E2546A36C27851",
       "6666": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B",
       "9999": "0x1a7cC6941d61e0638afDd82BCcab894E6250b99B"
@@ -2579,6 +2609,11 @@ module.exports = {
     "typedDataDomainName": "Pillar Payment Network",
     "typedDataDomainVersion": "1",
     "addresses": {
+      "3": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
+      "4": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
+      "5": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
+      "42": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
+      "77": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
       "97": "0x0b7180dA9Ca0498973cb2285B724F53496E5b39c",
       "6666": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845",
       "9999": "0xCBFDfa1AC83Ce6e7ab11d71F496028Ce6b895845"
@@ -2944,6 +2979,11 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
+      "3": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
+      "4": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
+      "5": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
+      "42": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
+      "77": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
       "97": "0x3feEc6DC088775B8adD9d613E431A7BbD43B5d15",
       "6666": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e",
       "9999": "0x6e1f704fdb7899caaD5bE4C8551d64c89C1C394e"
@@ -3374,6 +3414,11 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": {
+      "3": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
+      "4": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
+      "5": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
+      "42": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
+      "77": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
       "97": "0xfF5e1076E3e7694E7d45D6627575C1caF5143c9D",
       "6666": "0xA80a6FaBFF18a478deC3a833843eF9577F3553ca",
       "9999": "0xA80a6FaBFF18a478deC3a833843eF9577F3553ca"
