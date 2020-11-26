@@ -105,7 +105,7 @@ There are several options for batch sending.
 * `delegateBatch()` - send a batch from account using different account (eg. relayer)
 * `delegateBatchWithGasPrice()` - similar to `delegateBatch` but also verifies transaction gas price
 
-`delegateBatch` and `delegateBatchWithGasPrice()`  recovers address from sender signature. 
+`delegateBatch` and `delegateBatchWithGasPrice()` - recovers address from sender signature. 
 
 Sender delegate batch message data structure:
 
