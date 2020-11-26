@@ -20,6 +20,9 @@ module.exports = {
     ...createNetwork('goerli', 5),
     ...createNetwork('kovan', 42),
     ...createNetwork('xdai', 100),
+    ...createNetwork('sokol', 77),
+    ...createNetwork('bsc', 56),
+    ...createNetwork('bsc_test', 97),
     ...createNetwork('local_a', 9999),
     ...createNetwork('local_b', 6666),
     test: {

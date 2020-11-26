@@ -22,6 +22,5 @@ node_modules
 compiled
 
 # develop
-bak
 .envrc
 .test*

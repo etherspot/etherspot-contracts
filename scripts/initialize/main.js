@@ -92,13 +92,13 @@ async function main() {
         ),
       );
 
-      // add pillar.dev ens name
-      if (networkId !== 1) { // testnets only
+      // add pillar ens name
+      if (networkId !== 1) {
         processEvents(
           await executeRequest(
             ensRegistry.methods.setSubnodeOwner(
               '0x',
-              sha3String('test'),
+              sha3String('pillar'),
               sender,
             ),
           ),
@@ -106,9 +106,8 @@ async function main() {
 
         processEvents(
           await executeRequest(
-            ensRegistry.methods.setSubnodeOwner(
-              hashName('test'),
-              sha3String('pillar'),
+            ensRegistry.methods.setOwner(
+              hashName('pillar'),
               ensController.address,
             ),
           ),
@@ -116,7 +115,7 @@ async function main() {
 
         processEvents(
           await executeRequest(
-            ensController.methods.addNode(hashName('pillar.test')),
+            ensController.methods.addNode(hashName('pillar')),
           ),
         );
       }
