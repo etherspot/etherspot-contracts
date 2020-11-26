@@ -118,7 +118,7 @@ bytes32 TYPE_HASH = keccak256("DelegatedBatchWithGasPrice(uint256 nonce,address[
 ```
 *See: [signing data section](../signing-data.md)* 
 
-In `sendBatchFromAccount`, `delegateBatch` `delegateBatchWithGasPrice` and sender need to be an owner of the account.
+In `sendBatchFromAccount`, `delegateBatch`, `delegateBatchWithGasPrice` and sender need to be an owner of the account.
 
 Account owner verification diagram: 
 
