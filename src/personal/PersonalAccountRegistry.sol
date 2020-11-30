@@ -260,7 +260,11 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   {
     address sender = _getContextSender();
 
-    if (!accounts[account].owners[sender].added) {
+    if (accounts[account].owners[sender].added) {
+      require(
+        accounts[account].owners[sender].removedAtBlockNumber == 0
+      );
+    } else {
       require(
         accounts[account].salt == 0
       );

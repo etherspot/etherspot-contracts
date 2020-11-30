@@ -21,20 +21,7 @@ contract AccountController {
     internal
     returns (address)
   {
-    return _deployAccount(
-      salt,
-      0
-    );
-  }
-
-  function _deployAccount(
-    bytes32 salt,
-    uint256 value
-  )
-    internal
-    returns (address)
-  {
-    return address(new Account{salt: salt, value: value}());
+    return address(new Account{salt: salt}());
   }
 
   function _executeAccountTransaction(
