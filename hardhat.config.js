@@ -17,7 +17,7 @@ const config = {
       accounts,
       chainId: 9999,
     },
-    localhost: {
+    local_a: {
       url: 'http://localhost:8545',
       accounts,
     },

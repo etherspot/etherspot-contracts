@@ -26,10 +26,9 @@
     "build": "node ./scripts/build",
     "hardhat:compile": "hardhat compile",
     "hardhat:start:node": "hardhat node --no-deploy",
-    "hardhat:start:deployed": "hardhat node",
-    "hardhat:deploy:localhost": "hardhat deploy --reset --network localhost",
-    "hardhat:deploy:localhost:watch": "hardhat deploy --reset --watch --network localhost",
-    "hardhat:artifacts": "hardhat run scripts/artifacts --network localhost"
+    "hardhat:deploy:local_a": "hardhat deploy --reset --network local_a",
+    "hardhat:deploy:local_a:watch": "hardhat deploy --reset --watch --network local_a",
+    "hardhat:artifacts": "hardhat run scripts/artifacts --network local_a"
   },
   "dependencies": {},
   "devDependencies": {

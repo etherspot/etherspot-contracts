@@ -1,17 +1,18 @@
 const { deployments } = require('hardhat');
 const fsExtra = require('fs-extra');
-const path = require('path');
+const { resolve, join } = require('path');
 
-const artifactsPath = 'artifacts';
+const ROOT_PATH = resolve(__dirname, '../..');
+const ARTIFACTS_PATH = join(ROOT_PATH, 'artifacts');
 
 async function main() {
   const all = await deployments.all();
-  await fsExtra.remove(artifactsPath);
-  await fsExtra.ensureDir(artifactsPath);
+  await fsExtra.remove(ARTIFACTS_PATH);
+  await fsExtra.ensureDir(ARTIFACTS_PATH);
 
   for(const contractName of Object.keys(all)) {
     const artifact = await deployments.getArtifact(contractName);
-    const artifactPath = path.join(artifactsPath, `${contractName}.json`);
+    const artifactPath = join(ARTIFACTS_PATH, `${contractName}.json`);
     await fsExtra.writeJSON(artifactPath, artifact, {
       spaces: 2,
     });
