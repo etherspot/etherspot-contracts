@@ -2,7 +2,7 @@ const { readJSON } = require('fs-extra');
 const { join } = require('path');
 const { utils: { soliditySha3 } } = require('web3');
 const PrivateKeyProvider = require('truffle-privatekey-provider');
-const { CHAIN_ID_TO_NETWORK_NAME } = require('./settings/network');
+const { CHAIN_ID_TO_NETWORK_NAME } = require('./settings/networks');
 
 function getNetworkEnv(networkName, envName, defaultValue = null) {
   const name = `${networkName.toUpperCase()}_${envName}`;
