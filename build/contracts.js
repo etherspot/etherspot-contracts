@@ -1268,7 +1268,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x9d0a3b92e24cdf6d11df01eb155fd2a6c7e2cdedf66199b3b6d921dbaa66a7a6",
+    "byteCodeHash": "0x1503aff7891e47de3f602e491c1f471e83321c4ae4c4c50dd24c34734b92f112",
     "typedDataDomainName": "Pillar Gateway",
     "typedDataDomainVersion": "1",
     "addresses": [
@@ -2068,7 +2068,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0x29aa2cc868742227f4794e92db88220c8b4bb12d802a9aacaa94cc12fb04a715",
+    "byteCodeHash": "0xdd9bbfaeea01546249e8990a42f3ddbdbab505e3366b795b008149c731560014",
     "typedDataDomainName": "Pillar Payment Network",
     "typedDataDomainVersion": "1",
     "addresses": [
@@ -2427,7 +2427,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    "byteCodeHash": "0xa8464a30dd3325696842be2856cfa6ec0b565cf8bb764a33e62a2fa5652e5bdb",
+    "byteCodeHash": "0xe8b811fa834e715638044b1c2dd6eaeac7a3db78cd7ad31fb9f5b415d6fa89cb",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null,
     "addresses": [
