@@ -15,7 +15,7 @@ const Account = artifacts.require('Account');
 const PersonalAccountRegistry = artifacts.require('PersonalAccountRegistry');
 const WrappedWeiToken = artifacts.require('WrappedWeiToken');
 
-contract('PersonalAccountRegistry', (addresses) => {
+contract('PersonalAccountRegistry', ([...addresses]) => {
   const {
     eth: {
       sendTransaction,

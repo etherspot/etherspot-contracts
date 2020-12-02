@@ -1,5 +1,6 @@
 require('hardhat-deploy');
 require('hardhat-deploy-ethers');
+require('@nomiclabs/hardhat-truffle5');
 
 const mnemonic = process.env.MNEMONIC || 'test test test test test test test test test test test junk';
 const accounts = mnemonic ? { mnemonic } : undefined;
@@ -16,6 +17,7 @@ const config = {
     hardhat: {
       accounts,
       chainId: 9999,
+      gasPrice: 20000000000
     },
     local_a: {
       url: 'http://localhost:8545',

@@ -19,7 +19,7 @@ const {
 const ENSController = artifacts.require('ENSController');
 const ENSRegistry = artifacts.require('ENSRegistry');
 
-contract('ENSController', (addresses) => {
+contract('ENSController', ([...addresses]) => {
   const {
     utils: {
       soliditySha3,

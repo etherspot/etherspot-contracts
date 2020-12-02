@@ -10,7 +10,7 @@ const {
 const BalanceChecker = artifacts.require('BalanceChecker');
 const WrappedWeiToken = artifacts.require('WrappedWeiToken');
 
-contract('BalanceChecker', (addresses) => {
+contract('BalanceChecker', ([...addresses]) => {
   /**
    * @type Contract
    */

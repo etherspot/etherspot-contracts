@@ -9,7 +9,7 @@ const {
 
 const GatewayRecipientMock = artifacts.require('GatewayRecipientMock');
 
-contract('GatewayRecipient (using mock)', (addresses) => {
+contract('GatewayRecipient (using mock)', ([...addresses]) => {
   const {
     eth: {
       sendTransaction,

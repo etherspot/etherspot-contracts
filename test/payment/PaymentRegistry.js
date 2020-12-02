@@ -26,7 +26,7 @@ const Account = artifacts.require('Account');
 const PaymentRegistry = artifacts.require('PaymentRegistry');
 const WrappedWeiToken = artifacts.require('WrappedWeiToken');
 
-contract('PaymentRegistry', (addresses) => {
+contract('PaymentRegistry', ([...addresses]) => {
   const {
     eth: {
       sendTransaction,

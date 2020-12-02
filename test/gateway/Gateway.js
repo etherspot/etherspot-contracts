@@ -21,7 +21,7 @@ const Gateway = artifacts.require('Gateway');
 const GatewayRecipientMock = artifacts.require('GatewayRecipientMock');
 const PersonalAccountRegistry = artifacts.require('PersonalAccountRegistry');
 
-contract('Gateway', (addresses) => {
+contract('Gateway', ([...addresses]) => {
   /**
    * @type Contract
    */

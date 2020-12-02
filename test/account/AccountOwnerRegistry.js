@@ -9,7 +9,7 @@ const {
 
 const AccountOwnerRegistry = artifacts.require('AccountOwnerRegistry');
 
-contract('AccountOwnerRegistry', (addresses) => {
+contract('AccountOwnerRegistry', ([...addresses]) => {
   const {
     eth: {
       getBlockNumber,

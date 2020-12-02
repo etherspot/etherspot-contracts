@@ -1,7 +1,6 @@
 const { readJSON } = require('fs-extra');
 const { join } = require('path');
 const { utils: { soliditySha3 } } = require('web3');
-const PrivateKeyProvider = require('truffle-privatekey-provider');
 const { CHAIN_ID_TO_NETWORK_NAME } = require('./settings/networks');
 
 function getNetworkEnv(networkName, envName, defaultValue = null) {
@@ -19,18 +18,6 @@ function getNetworkEnvAsArray(networkName, envName) {
   return getNetworkEnv(networkName, envName, '')
     .split(',')
     .filter((value) => !!value);
-}
-
-function createProvider(networkName) {
-  const providerPrivateKey = getNetworkEnv(networkName, 'PROVIDER_PRIVATE_KEY');
-  const providerEndpoint = getNetworkEnv(networkName, 'PROVIDER_ENDPOINT');
-
-  return new PrivateKeyProvider(
-    providerPrivateKey.startsWith('0x')
-      ? providerPrivateKey.substr(2)
-      : providerPrivateKey,
-    providerEndpoint,
-  );
 }
 
 function getChainEnvAsArray(chainId, envName) {
@@ -77,7 +64,6 @@ function waitForTx(tx) {
 module.exports = {
   getNetworkEnv,
   getNetworkEnvAsArray,
-  createProvider,
   getChainEnvAsArray,
   getTypedDomainSalt,
   processEthersEvents,

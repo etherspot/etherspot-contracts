@@ -9,7 +9,7 @@ const {
 
 const AccountProofRegistry = artifacts.require('AccountProofRegistry');
 
-contract('AccountProofRegistry', (addresses) => {
+contract('AccountProofRegistry', ([...addresses]) => {
   const {
     eth: {
       getBlockNumber,
