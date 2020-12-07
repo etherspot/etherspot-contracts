@@ -10,7 +10,7 @@ const {
 
 const WrappedWeiToken = artifacts.require('WrappedWeiToken');
 
-contract('WrappedWeiToken', (addresses) => {
+contract('WrappedWeiToken', ([...addresses]) => {
   /**
    * @type Contract
    */

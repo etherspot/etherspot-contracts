@@ -2,3 +2,7 @@
 !/src
 !/build
 !/LICENSE
+!/artifacts
+!/deployments
+/deployments/localhost
+/deployments/local_a

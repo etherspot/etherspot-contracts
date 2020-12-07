@@ -24,3 +24,8 @@ compiled
 # develop
 .envrc
 .test*
+
+# hardhat
+.hardhat
+deployments/localhost
+deployments/local_a
