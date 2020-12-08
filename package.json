@@ -6,8 +6,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "format": "prettier --write \"{deploy,tests}/**/*.ts\"",
-    "lint-ts": "eslint \"{deploy,tests}/**/*.ts\"",
+    "format": "prettier --write \"{deploy,scripts,test}/**/*.ts\"",
+    "lint-ts": "eslint \"{deploy,scripts,test}/**/*.ts\"",
     "lint-ts-fix": "npm run lint -- --fix",
     "lint-sol": "solhint ./src/**/*.sol ./src/**/**/*.sol",
     "lint": "npm run lint-ts && npm run lint-sol",
@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.1",
-    "@nomiclabs/hardhat-waffle": "2.0.1",
     "@typechain/ethers-v5": "5.0.0",
     "@types/fs-extra": "8.1.0",
     "@types/mocha": "7.0.2",
@@ -41,7 +40,6 @@
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.20.2",
-    "ethereum-waffle": "3.2.1",
     "ethers": "5.0.12",
     "ethers-typed-data": "0.1.0",
     "expect": "26.6.2",
