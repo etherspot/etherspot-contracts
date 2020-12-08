@@ -43,6 +43,6 @@ $ npm run deploy:mainnet
 ## Build `./dist` files
 
 ```bash
-$ npm run prepublish
+$ npm run build
 ```
 

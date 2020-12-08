@@ -9,27 +9,30 @@ const networks = Object.entries(NETWORKS).reduce(
   (result, [networkName, { chainId, defaultProvider }]) => {
     const envPrefix = networkName.replace(/([A-Z])+/, '_$1').toUpperCase();
 
-    let providerEndpoint = process.env[`${envPrefix}_PROVIDER_ENDPOINT`];
+    let url = process.env[`${envPrefix}_PROVIDER_ENDPOINT`];
 
-    if (!providerEndpoint) {
+    if (!url) {
       switch (defaultProvider) {
         case 'infura':
-          providerEndpoint = `https://${networkName}.infura.io/v3/${process.env.INFURA_TOKEN}`;
+          url = `https://${networkName}.infura.io/v3/${process.env.INFURA_TOKEN}`;
           break;
 
         default:
-          providerEndpoint = defaultProvider;
+          url = defaultProvider;
       }
     }
-    const providerPrivateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
 
-    return providerEndpoint && providerPrivateKey
+
+    const privateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
+    const accounts = privateKey ? [privateKey] : [];
+
+    return url
       ? {
           ...result,
           [networkName]: {
             chainId,
-            url: providerEndpoint,
-            accounts: [providerPrivateKey],
+            url,
+            accounts,
           },
         }
       : result;

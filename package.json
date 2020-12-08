@@ -13,6 +13,8 @@
     "lint": "npm run lint-ts && npm run lint-sol",
     "compile": "hardhat compile",
     "artifacts": "hardhat run scripts/artifacts --network localA",
+    "prebuild": "npm run artifacts",
+    "build": "hardhat run scripts/build",
     "test": "hardhat test",
     "start-node": "hardhat node --no-deploy",
     "deploy:localA": "hardhat deploy --network localA",
@@ -25,8 +27,7 @@
     "deploy:xdai": "hardhat deploy --network xdai",
     "deploy:sokol": "hardhat deploy --network sokol",
     "deploy:bsc": "hardhat deploy --network bsc",
-    "deploy:bscTest": "hardhat deploy --network bscTest",
-    "prepublish": "npm run artifacts && hardhat run scripts/prepublish"
+    "deploy:bscTest": "hardhat deploy --network bscTest"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.1",
