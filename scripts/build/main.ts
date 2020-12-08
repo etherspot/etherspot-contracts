@@ -6,7 +6,7 @@ import {
   TYPED_DATA_DOMAINS,
   TYPED_DATA_DOMAIN_SALT,
   KNOWN_CONTRACT_ADDRESSES,
-} from '../../constants';
+} from '../../settings';
 import templates from './templates';
 
 const ROOT_PATH = resolve(__dirname, '../..');

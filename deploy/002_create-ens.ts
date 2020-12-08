@@ -1,5 +1,5 @@
 import { DeployFunction } from 'hardhat-deploy/types';
-import { KNOWN_CONTRACT_ADDRESSES } from '../constants';
+import { KNOWN_CONTRACT_ADDRESSES } from '../settings';
 
 const func: DeployFunction = async hre => {
   const {

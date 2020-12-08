@@ -3,7 +3,7 @@ import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
 import '@nomiclabs/hardhat-waffle';
 import { HardhatUserConfig } from 'hardhat/config';
-import { NETWORKS } from './constants';
+import { NETWORKS } from './settings';
 
 const networks = Object.entries(NETWORKS).reduce(
   (result, [networkName, { chainId, defaultProvider }]) => {
@@ -21,7 +21,6 @@ const networks = Object.entries(NETWORKS).reduce(
           url = defaultProvider;
       }
     }
-
 
     const privateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
     const accounts = privateKey ? [privateKey] : [];

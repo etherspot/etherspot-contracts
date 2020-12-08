@@ -1,5 +1,5 @@
 import { DeployFunction } from 'hardhat-deploy/types';
-import { TYPED_DATA_DOMAINS, TYPED_DATA_DOMAIN_SALT } from '../constants';
+import { TYPED_DATA_DOMAINS, TYPED_DATA_DOMAIN_SALT } from '../settings';
 
 const func: DeployFunction = async hre => {
   const {

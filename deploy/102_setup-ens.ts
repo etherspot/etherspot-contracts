@@ -4,7 +4,7 @@ import {
   TYPED_DATA_DOMAIN_SALT,
   KNOWN_CONTRACT_ADDRESSES,
   ENS_TLD,
-} from '../constants';
+} from '../settings';
 
 const func: DeployFunction = async hre => {
   const {
