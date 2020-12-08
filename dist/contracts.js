@@ -122,10 +122,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x0CA8EC9f23938FA9c1766BE8A2d2Ce37ea1D4918",
-      "9999": "0x4Ef3cf76Eaf6e7dFC3a7A6E6833484431E7019F7"
+      "6666": "0xf873E70f4ad2b0adf3Dc19B3f85f98215C180132",
+      "9999": "0xb3c5C32b77932BB0b5215b225F85A633e418e03d"
     },
-    "byteCodeHash": "0x9ac349a6e18e6589ec3d50fc70484270f016f451c7cdcd67eb0c28c827865343",
+    "byteCodeHash": "0x51ae9f5a6d16d1f4b530351cdd2b50783997aa0f0cb256c918fb18ddcc57a4a7",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -250,10 +250,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x11e98922Cf62ec9C690CAf68d6C0843e41F5c625",
-      "9999": "0xa3156614433284d8Ae736490B377f89475D0af2A"
+      "6666": "0x5dEEc2E23572581a2e3e81E8B98B60957644C3bc",
+      "9999": "0x66E5F42662a4826Ad4ae65A3ac04Fc8F2d5958C2"
     },
-    "byteCodeHash": "0xc90dbe30ba02e4ee4468ce36714585f51bfecf22133cc5c6071dca12321916d4",
+    "byteCodeHash": "0xf3dd24dc17639c3c8bf1c47cedd2b46c418b528edef0a8fb4fbc3caacfd1fe3e",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -285,10 +285,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xA48145f031B3f12599ac83c67221989E5fF9a6A1",
-      "9999": "0xc99B4Ff989E421efe6121C1B35C807B9bd897Cbf"
+      "6666": "0xEFbD218A48736eb04C77E2E3E21f8481561f1fD8",
+      "9999": "0xDC105575501a4a772DaFE2Cc14c3b6A9DaF9c6a2"
     },
-    "byteCodeHash": "0x3db0cafe91e0fbb20ecf7e13d62f6931bc3a760b6783313fe5464077220aba6c",
+    "byteCodeHash": "0x63415201f43892304b3406e995ce39b5807a5ebb7e0c896fa4a4e9396c76ad15",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -678,10 +678,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x5c15e9dFACd02d5D0229b611C41b37A1A393C28f",
-      "9999": "0x05e58010f892A9E522e19aE7ef89b90ca0864Ce8"
+      "6666": "0xb86b41Ed872920E2532e4f266f4049023AEc6a8f",
+      "9999": "0x2dcF821442205b7550bDBDb7DABF6c547a86e92d"
     },
-    "byteCodeHash": "0xf236334ed5d75c2515f072d4c4d6318188907620ae4dff6ea7f598e56078b082",
+    "byteCodeHash": "0x02bd66c403988da1aed40939bc8aa0e572771ec3081c3556d5cc180de8dcc5c3",
     "typedDataDomainName": "ETHERspot ENS Controller",
     "typedDataDomainVersion": "1"
   },
@@ -910,10 +910,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x859697030604Dd9E1Cc393105e35b091a72DCbC8",
-      "9999": "0x3D051FD68C291f2196750191F2a8Af2f182E4781"
+      "6666": "0xA5CbbaDe8A99F8Ae210D29039eB0b18F3E4826B7",
+      "9999": "0x29a3e75D5164b48E4963E12c5964D09ED1FEB5b2"
     },
-    "byteCodeHash": "0x95fb8c2545fbac291b5fd85f359c9795584677aedd82767364caadd813a3aa0f",
+    "byteCodeHash": "0x12c0a054fcf139f011980045a139ea3e422630bca92833c59fd4b2871fc582b3",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -1263,10 +1263,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xCCC3E9264380F0bedF91664728FE0C39A8A557D2",
-      "9999": "0x60FB9Ec3567a23ac5Af73443551bB31D71108B1f"
+      "6666": "0xB0bf4E43aBd9acb79C42e3764De97Bbf502AD915",
+      "9999": "0x6d3F4983F4aA480c53EE117ce8B0b9A42cD3E351"
     },
-    "byteCodeHash": "0x1503aff7891e47de3f602e491c1f471e83321c4ae4c4c50dd24c34734b92f112",
+    "byteCodeHash": "0x2a73271e1c51f75479b1071321e1d0fc93189989c1258f77bbe0a0cbe0f27d36",
     "typedDataDomainName": "ETHERspot Gateway",
     "typedDataDomainVersion": "1"
   },
@@ -2062,10 +2062,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xA7160C364CA24c7eb8F729f27e9770C98cbeF97c",
-      "9999": "0x980e52F47239f5875B4e1C29e4c50ED560c51c66"
+      "6666": "0xeC36ebEC6BC1Ff27777c025Bb15b1c756bFd1F83",
+      "9999": "0x5E0649FD1FdBE671A5971A7eE6a0b7D3A6ba9B68"
     },
-    "byteCodeHash": "0xdd9bbfaeea01546249e8990a42f3ddbdbab505e3366b795b008149c731560014",
+    "byteCodeHash": "0xeadaec5e19603c2f0c4303e3845d5eb0af91c9ed81556d961dd44f4f2451087e",
     "typedDataDomainName": "ETHERspot Payment Network",
     "typedDataDomainVersion": "1"
   },
@@ -2420,10 +2420,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xF220B3BDEC3f7F9CF6329E18F08EE8e7187766D7",
-      "9999": "0x9316D1C8d4B59Aa4aD0b8D9f0d13198c603fE3b6"
+      "6666": "0xddc4Bb0f2aFf80429FD87202EA37ba89B9B7C5e6",
+      "9999": "0x97f369151f8DA34cBfAf3EFd70BeE6BEBccD11d7"
     },
-    "byteCodeHash": "0xe8b811fa834e715638044b1c2dd6eaeac7a3db78cd7ad31fb9f5b415d6fa89cb",
+    "byteCodeHash": "0xc7b8822412acb322c79816b94794486e601a88e61bd7db3449e1814917a63952",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -2817,10 +2817,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x8C08c34E06eb1c6306fc136721a0703AcC1C6204",
-      "9999": "0x8a74140bB48B6C09309ea749f23033a1D7445308"
+      "6666": "0x88268Ff7ef7428928C92Db80B7BbE07C6997EdFA",
+      "9999": "0x9e698Ff3dC081b41d7a10381aC791B6D427acA10"
     },
-    "byteCodeHash": "0xb6c14b52464636434d14479e389f835d74517e517d7b1e990ab9440618eaae48",
+    "byteCodeHash": "0x6ba42ad7fbf23318dce1e278be52b3b801bde113518fff6cae3bf24e4888d858",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   }

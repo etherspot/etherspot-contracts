@@ -15,6 +15,7 @@
     "artifacts": "hardhat run scripts/artifacts --network localA",
     "prebuild": "npm run artifacts",
     "build": "hardhat run scripts/build",
+    "postbuild": "tsc --project ./tsconfig.build.json",
     "test": "hardhat test",
     "start-node": "hardhat node --no-deploy",
     "deploy:localA": "hardhat deploy --network localA",
