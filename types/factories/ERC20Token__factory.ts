@@ -5,14 +5,14 @@
 import { Contract, Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 
-import type { ERC20Token } from "../ERC20Token";
+import type { Erc20Token } from "../Erc20Token";
 
-export class ERC20Token__factory {
+export class Erc20Token__factory {
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ERC20Token {
-    return new Contract(address, _abi, signerOrProvider) as ERC20Token;
+  ): Erc20Token {
+    return new Contract(address, _abi, signerOrProvider) as Erc20Token;
   }
 }
 

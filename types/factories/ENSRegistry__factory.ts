@@ -6,30 +6,30 @@ import { Signer } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
 import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
 
-import type { ENSRegistry } from "../ENSRegistry";
+import type { EnsRegistry } from "../EnsRegistry";
 
-export class ENSRegistry__factory extends ContractFactory {
+export class EnsRegistry__factory extends ContractFactory {
   constructor(signer?: Signer) {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(overrides?: Overrides): Promise<ENSRegistry> {
-    return super.deploy(overrides || {}) as Promise<ENSRegistry>;
+  deploy(overrides?: Overrides): Promise<EnsRegistry> {
+    return super.deploy(overrides || {}) as Promise<EnsRegistry>;
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
-  attach(address: string): ENSRegistry {
-    return super.attach(address) as ENSRegistry;
+  attach(address: string): EnsRegistry {
+    return super.attach(address) as EnsRegistry;
   }
-  connect(signer: Signer): ENSRegistry__factory {
-    return super.connect(signer) as ENSRegistry__factory;
+  connect(signer: Signer): EnsRegistry__factory {
+    return super.connect(signer) as EnsRegistry__factory;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ENSRegistry {
-    return new Contract(address, _abi, signerOrProvider) as ENSRegistry;
+  ): EnsRegistry {
+    return new Contract(address, _abi, signerOrProvider) as EnsRegistry;
   }
 }
 
