@@ -18,10 +18,8 @@
 # node
 node_modules
 
-# truffle
-compiled
-
 # develop
+bak
 .envrc
 .test*
 

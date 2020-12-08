@@ -1,7 +1,4 @@
-import 'hardhat-typechain';
-import 'hardhat-deploy';
-import 'hardhat-deploy-ethers';
-import '@nomiclabs/hardhat-waffle';
+import './hardhat.env';
 import { HardhatUserConfig } from 'hardhat/config';
 import { NETWORKS } from './settings';
 
@@ -61,7 +58,11 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 2000,
+        runs: 200,
+      },
+      evmVersion: 'istanbul',
+      metadata: {
+        bytecodeHash: 'none',
       },
     },
   },
