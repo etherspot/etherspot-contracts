@@ -25,5 +25,3 @@ bak
 
 # hardhat
 .hardhat
-deployments/localA
-deployments/localB
