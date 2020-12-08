@@ -4,7 +4,6 @@ const settings_1 = require("../settings");
 const func = async (hre) => {
     const { deployments: { get, log, execute, read }, ethers: { constants, utils }, network: { name }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
-    console.log(name);
     if (await read('ENSController', 'isInitialized')) {
         log('ENSController already initialized');
         return;

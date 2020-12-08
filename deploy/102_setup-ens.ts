@@ -15,8 +15,6 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  console.log(name);
-
   if (await read('ENSController', 'isInitialized')) {
     log('ENSController already initialized');
     return;
