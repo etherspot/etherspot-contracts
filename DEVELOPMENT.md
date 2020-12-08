@@ -12,9 +12,9 @@
 | `mainnets` | xDai | `XDAI` | `xdai` |
 | `testnets` | Sokol (xDai testnet) | `SOKOL` | `sokol` |
 | `mainnets` | Binance Smart Chain | `BSC` | `bsc` |
-| `testnets` | Binance Smart Chain (testnet) | `BSC_TEST` | `bsc_test` |
-| `localnets` | Localnet (instance A) | `LOCAL_A` | `local_a` |
-| `localnets` | Localnet (instance B) | `LOCAL_B` | `local_b` |
+| `testnets` | Binance Smart Chain (testnet) | `BSC_TEST` | `bscTest` |
+| `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
+| `localnets` | Localnet (instance B) | `LOCAL_B` | `localA` |
 
 ## Configuration
 
@@ -32,24 +32,17 @@ via `env` variables:
 $ npm run test
 ```
 
-## Migrate
+## Deployment
 
 ```bash
-$ # npm run migrate:<network script alias>
+$ # npm run deploy:<network script alias>
 $ # example:
-$ npm run migrate:mainnet
+$ npm run deploy:mainnet
 ```
 
 ## Build `./dist` files
 
 ```bash
-$ npm run build
+$ npm run prepublish
 ```
 
-## Initialize
-
-```bash
-$ # npm run initialize:<network script alias>
-$ # example:
-$ npm run initialize:mainnet
-```

@@ -24,6 +24,6 @@ jobs:
       - name: linter
         run: |
           npm run lint
-      - name: tests
-        run: |
-          npm run test-log-gas-usage
+#      - name: tests
+#        run: |
+#          npm run test-log-gas-usage
