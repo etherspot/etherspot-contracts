@@ -18,14 +18,10 @@
 # node
 node_modules
 
-# truffle
-compiled
-
 # develop
+bak
 .envrc
 .test*
 
 # hardhat
 .hardhat
-deployments/localhost
-deployments/local_a

@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "es2017",
     "module": "commonjs",
-    "sourceMap": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": false,
+    "lib": [
+      "ES7"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

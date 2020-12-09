@@ -1,0 +1,225 @@
+{
+  "address": "0x66E5F42662a4826Ad4ae65A3ac04Fc8F2d5958C2",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AccountProofAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AccountProofRemoved",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "addAccountProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "removeAccountProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "verifyAccountProof",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "hash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "verifyAccountProofAtBlock",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xe3368bc8fcbd16da74d37d2f11cbf1c8aaebc76ee9900702c1cae023db2d4d66",
+  "receipt": {
+    "to": null,
+    "from": "0xae32631bdbb2474CC11594268427A2da3D6aBd6B",
+    "contractAddress": "0x66E5F42662a4826Ad4ae65A3ac04Fc8F2d5958C2",
+    "transactionIndex": 0,
+    "gasUsed": "230564",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x74bc128ae144e7d597bbbf794b027248a1d4e6c0e0b9afd3d16225494a1d371c",
+    "transactionHash": "0xe3368bc8fcbd16da74d37d2f11cbf1c8aaebc76ee9900702c1cae023db2d4d66",
+    "logs": [],
+    "blockNumber": 1029,
+    "cumulativeGasUsed": "230564",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "d3df566cd311e2cad327d1b461b99b1b",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"AccountProofAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"AccountProofRemoved\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"addAccountProof\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"removeAccountProof\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"verifyAccountProof\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"name\":\"verifyAccountProofAtBlock\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"title\":\"AccountProofRegistry\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/account/AccountProofRegistry.sol\":\"AccountProofRegistry\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"src/account/AccountProofRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../common/libs/BlockLib.sol\\\";\\n\\n\\n/**\\n * @title AccountProofRegistry\\n */\\ncontract AccountProofRegistry {\\n  using BlockLib for BlockLib.BlockRelated;\\n\\n  mapping(address => mapping(bytes32 => BlockLib.BlockRelated)) private accountProofs;\\n\\n  // events\\n\\n  event AccountProofAdded(\\n    address account,\\n    bytes32 hash\\n  );\\n\\n  event AccountProofRemoved(\\n    address account,\\n    bytes32 hash\\n  );\\n\\n  // external functions\\n\\n  function addAccountProof(\\n    bytes32 hash\\n  )\\n    external\\n  {\\n    require(\\n      !accountProofs[msg.sender][hash].verifyAtCurrentBlock()\\n    );\\n\\n    accountProofs[msg.sender][hash].added = true;\\n    accountProofs[msg.sender][hash].removedAtBlockNumber = 0;\\n\\n    emit AccountProofAdded(\\n      msg.sender,\\n      hash\\n    );\\n  }\\n\\n  function removeAccountProof(\\n    bytes32 hash\\n  )\\n    external\\n  {\\n    require(\\n      accountProofs[msg.sender][hash].verifyAtCurrentBlock()\\n    );\\n\\n    accountProofs[msg.sender][hash].removedAtBlockNumber = block.number;\\n\\n    emit AccountProofRemoved(\\n      msg.sender,\\n      hash\\n    );\\n  }\\n\\n  // external functions (views)\\n\\n  function verifyAccountProof(\\n    address account,\\n    bytes32 hash\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return accountProofs[account][hash].verifyAtCurrentBlock();\\n  }\\n\\n  function verifyAccountProofAtBlock(\\n    address account,\\n    bytes32 hash,\\n    uint256 blockNumber\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return accountProofs[account][hash].verifyAtBlock(blockNumber);\\n  }\\n}\\n\",\"keccak256\":\"0x5a5ae02d2a37eec4e017f327bd16dd842ec9478a3697b0e7921df93cedf31e80\",\"license\":\"MIT\"},\"src/common/libs/BlockLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title BlockLib\\n */\\nlibrary BlockLib {\\n  struct BlockRelated {\\n    bool added;\\n    uint256 removedAtBlockNumber;\\n  }\\n\\n  function verifyAtCurrentBlock(\\n    BlockRelated memory self\\n  )\\n    internal\\n    view\\n    returns (bool)\\n  {\\n    return verifyAtBlock(self, block.number);\\n  }\\n\\n  function verifyAtAnyBlock(\\n    BlockRelated memory self\\n  )\\n    internal\\n    pure\\n    returns (bool)\\n  {\\n    return verifyAtBlock(self, 0);\\n  }\\n\\n  function verifyAtBlock(\\n    BlockRelated memory self,\\n    uint256 blockNumber\\n  )\\n    internal\\n    pure\\n    returns (bool)\\n  {\\n    bool result = false;\\n\\n    if (self.added) {\\n      if (self.removedAtBlockNumber == 0) {\\n        result = true;\\n      } else if (blockNumber == 0) {\\n        result = true;\\n      } else {\\n        result = self.removedAtBlockNumber > blockNumber;\\n      }\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x152b840d2876cd9e0cdef42ec4faaa7ecd1562b290f35c59cad584feb129166b\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610335806100206000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c806359b52ef8146100515780638a3133781461009757806394000b02146100c3578063d543c34a146100e2575b600080fd5b6100836004803603606081101561006757600080fd5b506001600160a01b0381351690602081013590604001356100ff565b604080519115158252519081900360200190f35b610083600480360360408110156100ad57600080fd5b506001600160a01b03813516906020013561014e565b6100e0600480360360208110156100d957600080fd5b503561019b565b005b6100e0600480360360208110156100f857600080fd5b5035610238565b6001600160a01b03831660009081526020818152604080832085845282528083208151808301909252805460ff1615158252600101549181019190915261014690836102e0565b949350505050565b6001600160a01b03821660009081526020818152604080832084845282528083208151808301909252805460ff1615158252600101549181019190915261019490610316565b9392505050565b336000908152602081815260408083208484528252918290208251808401909352805460ff161515835260010154908201526101d690610316565b6101df57600080fd5b33600081815260208181526040808320858452825291829020436001909101558151928352820183905280517f87dde712783ad4895642c7a875998317a71cf424a2444eb79545ce3795431ff99281900390910190a150565b336000908152602081815260408083208484528252918290208251808401909352805460ff1615158352600101549082015261027390610316565b1561027d57600080fd5b336000818152602081815260408083208584528252808320805460ff19166001908117825501929092558151928352820183905280517f4075b367eed0513a54aa39c287c66d6ae98e5df6f73ac087b26b8f89d05d1aa89281900390910190a150565b81516000908190156101945760208401516102fd57506001610194565b8261030a57506001610194565b50506020909101511190565b600061032282436102e0565b9291505056fea164736f6c634300060c000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004c5760003560e01c806359b52ef8146100515780638a3133781461009757806394000b02146100c3578063d543c34a146100e2575b600080fd5b6100836004803603606081101561006757600080fd5b506001600160a01b0381351690602081013590604001356100ff565b604080519115158252519081900360200190f35b610083600480360360408110156100ad57600080fd5b506001600160a01b03813516906020013561014e565b6100e0600480360360208110156100d957600080fd5b503561019b565b005b6100e0600480360360208110156100f857600080fd5b5035610238565b6001600160a01b03831660009081526020818152604080832085845282528083208151808301909252805460ff1615158252600101549181019190915261014690836102e0565b949350505050565b6001600160a01b03821660009081526020818152604080832084845282528083208151808301909252805460ff1615158252600101549181019190915261019490610316565b9392505050565b336000908152602081815260408083208484528252918290208251808401909352805460ff161515835260010154908201526101d690610316565b6101df57600080fd5b33600081815260208181526040808320858452825291829020436001909101558151928352820183905280517f87dde712783ad4895642c7a875998317a71cf424a2444eb79545ce3795431ff99281900390910190a150565b336000908152602081815260408083208484528252918290208251808401909352805460ff1615158352600101549082015261027390610316565b1561027d57600080fd5b336000818152602081815260408083208584528252808320805460ff19166001908117825501929092558151928352820183905280517f4075b367eed0513a54aa39c287c66d6ae98e5df6f73ac087b26b8f89d05d1aa89281900390910190a150565b81516000908190156101945760208401516102fd57506001610194565b8261030a57506001610194565b50506020909101511190565b600061032282436102e0565b9291505056fea164736f6c634300060c000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "title": "AccountProofRegistry",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 155,
+        "contract": "src/account/AccountProofRegistry.sol:AccountProofRegistry",
+        "label": "accountProofs",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_mapping(t_bytes32,t_struct(BlockRelated)700_storage))"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_mapping(t_bytes32,t_struct(BlockRelated)700_storage))": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => mapping(bytes32 => struct BlockLib.BlockRelated))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_bytes32,t_struct(BlockRelated)700_storage)"
+      },
+      "t_mapping(t_bytes32,t_struct(BlockRelated)700_storage)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => struct BlockLib.BlockRelated)",
+        "numberOfBytes": "32",
+        "value": "t_struct(BlockRelated)700_storage"
+      },
+      "t_struct(BlockRelated)700_storage": {
+        "encoding": "inplace",
+        "label": "struct BlockLib.BlockRelated",
+        "members": [
+          {
+            "astId": 697,
+            "contract": "src/account/AccountProofRegistry.sol:AccountProofRegistry",
+            "label": "added",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool"
+          },
+          {
+            "astId": 699,
+            "contract": "src/account/AccountProofRegistry.sol:AccountProofRegistry",
+            "label": "removedAtBlockNumber",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

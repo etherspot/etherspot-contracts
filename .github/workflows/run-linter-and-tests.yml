@@ -1,29 +1,45 @@
 name: run linter and tests
 on:
   push:
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
+    branches-ignore:
+      - master
+      - develop
+    paths:
+      - '**.ts'
+      - '**.sol'
+      - '**.yml'
 jobs:
   start:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x]
     steps:
-      - uses: actions/checkout@v1
-      - name: node.js ${{ matrix.node-version }}
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: install
+          node-version: 10.x
+
+      - name: Determine npm cache directory
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: Restore npm cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
         run: |
           npm i
         env:
           CI: true
-      - name: linter
-        run: |
-          npm run lint
-      - name: tests
-        run: |
-          npm run test-log-gas-usage
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test

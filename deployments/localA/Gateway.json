@@ -1,0 +1,461 @@
+{
+  "address": "0x6d3F4983F4aA480c53EE117ce8B0b9A42cD3E351",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "batch",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "succeeded",
+          "type": "bool"
+        }
+      ],
+      "name": "BatchDelegated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "accountOwnerRegistry",
+      "outputs": [
+        {
+          "internalType": "contract AccountOwnerRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "nonce",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address[]",
+          "name": "to",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "senderSignature",
+          "type": "bytes"
+        }
+      ],
+      "name": "delegateBatch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "nonce",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address[]",
+          "name": "to",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "senderSignature",
+          "type": "bytes"
+        }
+      ],
+      "name": "delegateBatchWithGasPrice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "batches",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "revertOnFailure",
+          "type": "bool"
+        }
+      ],
+      "name": "delegateBatches",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "getAccountNonce",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "to",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "internalType": "struct Gateway.DelegatedBatch",
+          "name": "delegatedBatch",
+          "type": "tuple"
+        }
+      ],
+      "name": "hashDelegatedBatch",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "to",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasPrice",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Gateway.DelegatedBatchWithGasPrice",
+          "name": "delegatedBatch",
+          "type": "tuple"
+        }
+      ],
+      "name": "hashDelegatedBatchWithGasPrice",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract AccountOwnerRegistry",
+          "name": "accountOwnerRegistry_",
+          "type": "address"
+        },
+        {
+          "internalType": "contract PersonalAccountRegistry",
+          "name": "personalAccountRegistry_",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "typedDataDomainNameHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "typedDataDomainVersionHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "typedDataDomainSalt",
+          "type": "bytes32"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isInitialized",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "personalAccountRegistry",
+      "outputs": [
+        {
+          "internalType": "contract PersonalAccountRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "to",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "sendBatch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "to",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "sendBatchFromAccount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "typedDataDomainSeparator",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x8cc69531c3d044c7c50081fc9012a80bc2999ff2e7c8de0cf1e22aaf1dade164",
+  "receipt": {
+    "to": null,
+    "from": "0xae32631bdbb2474CC11594268427A2da3D6aBd6B",
+    "contractAddress": "0x6d3F4983F4aA480c53EE117ce8B0b9A42cD3E351",
+    "transactionIndex": 0,
+    "gasUsed": "1080015",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x6233e7a0477221c80317d578706a1af7140220a4422f1ba34ef3b40c00f4675b",
+    "transactionHash": "0x8cc69531c3d044c7c50081fc9012a80bc2999ff2e7c8de0cf1e22aaf1dade164",
+    "logs": [],
+    "blockNumber": 1032,
+    "cumulativeGasUsed": "1080015",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "d3df566cd311e2cad327d1b461b99b1b",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"batch\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"succeeded\",\"type\":\"bool\"}],\"name\":\"BatchDelegated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"Initialized\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"accountOwnerRegistry\",\"outputs\":[{\"internalType\":\"contract AccountOwnerRegistry\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"},{\"internalType\":\"bytes\",\"name\":\"senderSignature\",\"type\":\"bytes\"}],\"name\":\"delegateBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"},{\"internalType\":\"bytes\",\"name\":\"senderSignature\",\"type\":\"bytes\"}],\"name\":\"delegateBatchWithGasPrice\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes[]\",\"name\":\"batches\",\"type\":\"bytes[]\"},{\"internalType\":\"bool\",\"name\":\"revertOnFailure\",\"type\":\"bool\"}],\"name\":\"delegateBatches\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"getAccountNonce\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"}],\"internalType\":\"struct Gateway.DelegatedBatch\",\"name\":\"delegatedBatch\",\"type\":\"tuple\"}],\"name\":\"hashDelegatedBatch\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"},{\"internalType\":\"uint256\",\"name\":\"gasPrice\",\"type\":\"uint256\"}],\"internalType\":\"struct Gateway.DelegatedBatchWithGasPrice\",\"name\":\"delegatedBatch\",\"type\":\"tuple\"}],\"name\":\"hashDelegatedBatchWithGasPrice\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract AccountOwnerRegistry\",\"name\":\"accountOwnerRegistry_\",\"type\":\"address\"},{\"internalType\":\"contract PersonalAccountRegistry\",\"name\":\"personalAccountRegistry_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"typedDataDomainNameHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"typedDataDomainVersionHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"typedDataDomainSalt\",\"type\":\"bytes32\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isInitialized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"personalAccountRegistry\",\"outputs\":[{\"internalType\":\"contract PersonalAccountRegistry\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"}],\"name\":\"sendBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"to\",\"type\":\"address[]\"},{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"}],\"name\":\"sendBatchFromAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"typedDataDomainSeparator\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"constructor\":{\"details\":\"public constructor\"}},\"title\":\"Gateway\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/gateway/Gateway.sol\":\"Gateway\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"src/account/AccountOwnerRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../common/libs/BlockLib.sol\\\";\\n\\n\\n/**\\n * @title AccountOwnerRegistry\\n */\\ncontract AccountOwnerRegistry {\\n  using BlockLib for BlockLib.BlockRelated;\\n\\n  mapping(address => mapping(address => BlockLib.BlockRelated)) private accountOwners;\\n\\n  // events\\n\\n  event AccountOwnerAdded(\\n    address account,\\n    address owner\\n  );\\n\\n  event AccountOwnerRemoved(\\n    address account,\\n    address owner\\n  );\\n\\n  // external functions\\n\\n  function addAccountOwner(\\n    address owner\\n  )\\n    external\\n  {\\n    require(\\n      !accountOwners[msg.sender][owner].verifyAtCurrentBlock()\\n    );\\n\\n    accountOwners[msg.sender][owner].added = true;\\n    accountOwners[msg.sender][owner].removedAtBlockNumber = 0;\\n\\n    emit AccountOwnerAdded(\\n      msg.sender,\\n      owner\\n    );\\n  }\\n\\n  function removeAccountOwner(\\n    address owner\\n  )\\n    external\\n  {\\n    require(\\n      accountOwners[msg.sender][owner].verifyAtCurrentBlock()\\n    );\\n\\n    accountOwners[msg.sender][owner].removedAtBlockNumber = block.number;\\n\\n    emit AccountOwnerRemoved(\\n      msg.sender,\\n      owner\\n    );\\n  }\\n\\n  // external functions (views)\\n\\n  function verifyAccountOwner(\\n    address account,\\n    address owner\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return accountOwners[account][owner].verifyAtCurrentBlock();\\n  }\\n\\n  function verifyAccountOwnerAtBlock(\\n    address account,\\n    address owner,\\n    uint256 blockNumber\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return accountOwners[account][owner].verifyAtBlock(blockNumber);\\n  }\\n}\\n\",\"keccak256\":\"0x4743737568306a942c7ae516f399de98c461be9276a0a2aabc46a195b96487f4\",\"license\":\"MIT\"},\"src/common/access/Controlled.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title Controlled\\n */\\ncontract Controlled {\\n  address public controller;\\n\\n  // modifiers\\n\\n  modifier onlyController() {\\n    require(\\n      msg.sender == controller\\n    );\\n\\n    _;\\n  }\\n\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor()\\n    internal\\n  {\\n    controller = msg.sender;\\n  }\\n}\\n\",\"keccak256\":\"0x76ed9cfb2c6bb62eec77f831e65457bf3c74adfdf0dcaafe4b4dfda8ba346972\",\"license\":\"MIT\"},\"src/common/account/Account.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../access/Controlled.sol\\\";\\n\\n\\n/**\\n * @title Account\\n */\\ncontract Account is Controlled {\\n  /**\\n   * @dev public constructor\\n   */\\n  constructor() public payable Controlled() {}\\n\\n  /**\\n   * @dev receive\\n   */\\n  receive()\\n    external\\n    payable\\n  {\\n    //\\n  }\\n\\n  // external functions\\n\\n  function executeTransaction(\\n    address to,\\n    uint256 value,\\n    bytes calldata data\\n  )\\n    external\\n    onlyController\\n    returns (bytes memory)\\n  {\\n    bytes memory result;\\n    bool succeeded;\\n\\n    // solhint-disable-next-line avoid-call-value, avoid-low-level-calls\\n    (succeeded, result) = payable(to).call{value: value}(data);\\n\\n    require(\\n      succeeded\\n    );\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x0e3292e52b0370120bd249e6519fa91fff6dd77663d72ea68e9529446daaf78f\",\"license\":\"MIT\"},\"src/common/account/AccountController.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"./Account.sol\\\";\\n\\n\\n/**\\n * @title AccountController\\n */\\ncontract AccountController {\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor() internal {}\\n\\n  // internal functions\\n\\n  function _deployAccount(\\n    bytes32 salt\\n  )\\n    internal\\n    returns (address)\\n  {\\n    return address(new Account{salt: salt}());\\n  }\\n\\n  function _executeAccountTransaction(\\n    address account,\\n    address to,\\n    uint256 value,\\n    bytes memory data\\n  )\\n    internal\\n    returns (bytes memory)\\n  {\\n    require(\\n      to != address(0)\\n    );\\n\\n    require(\\n      to != address(this)\\n    );\\n\\n    require(\\n      to != account\\n    );\\n\\n    return Account(payable(account)).executeTransaction(\\n      to,\\n      value,\\n      data\\n    );\\n  }\\n\\n  // internal functions (views)\\n\\n  function _computeAccountAddress(\\n    bytes32 salt\\n  )\\n    internal\\n    view\\n    returns (address)\\n  {\\n    bytes memory creationCode = type(Account).creationCode;\\n\\n    bytes32 data = keccak256(\\n      abi.encodePacked(\\n        bytes1(0xff),\\n        address(this),\\n        salt,\\n        keccak256(creationCode)\\n      )\\n    );\\n\\n    return address(uint160(uint256(data)));\\n  }\\n}\\n\",\"keccak256\":\"0x7b8678ec86f838eff3043b19697f1cf898e8be0c69ee71e7505ada59ece5bbcb\",\"license\":\"MIT\"},\"src/common/libs/BlockLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title BlockLib\\n */\\nlibrary BlockLib {\\n  struct BlockRelated {\\n    bool added;\\n    uint256 removedAtBlockNumber;\\n  }\\n\\n  function verifyAtCurrentBlock(\\n    BlockRelated memory self\\n  )\\n    internal\\n    view\\n    returns (bool)\\n  {\\n    return verifyAtBlock(self, block.number);\\n  }\\n\\n  function verifyAtAnyBlock(\\n    BlockRelated memory self\\n  )\\n    internal\\n    pure\\n    returns (bool)\\n  {\\n    return verifyAtBlock(self, 0);\\n  }\\n\\n  function verifyAtBlock(\\n    BlockRelated memory self,\\n    uint256 blockNumber\\n  )\\n    internal\\n    pure\\n    returns (bool)\\n  {\\n    bool result = false;\\n\\n    if (self.added) {\\n      if (self.removedAtBlockNumber == 0) {\\n        result = true;\\n      } else if (blockNumber == 0) {\\n        result = true;\\n      } else {\\n        result = self.removedAtBlockNumber > blockNumber;\\n      }\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x152b840d2876cd9e0cdef42ec4faaa7ecd1562b290f35c59cad584feb129166b\",\"license\":\"MIT\"},\"src/common/libs/BytesLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title BytesLib\\n */\\nlibrary BytesLib {\\n  function toAddress(\\n    bytes memory data\\n  )\\n    internal\\n    pure\\n    returns (address)\\n  {\\n    address result;\\n\\n    require(\\n      data.length == 20\\n    );\\n\\n    // solhint-disable-next-line no-inline-assembly\\n    assembly {\\n      result := div(mload(add(data, 0x20)), 0x1000000000000000000000000)\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x3b36d35d5b97b9fec4f158fa57871ed45a7e608fa141581148085a540630f57c\",\"license\":\"MIT\"},\"src/common/libs/SafeMathLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title SafeMathLib\\n */\\nlibrary SafeMathLib {\\n  function add(\\n    uint256 a,\\n    uint256 b\\n  )\\n    internal\\n    pure\\n    returns (uint256)\\n  {\\n    uint256 result = a + b;\\n\\n    require(\\n      result >= a\\n    );\\n\\n    return result;\\n  }\\n\\n  function sub(\\n    uint256 a,\\n    uint256 b\\n  )\\n    internal\\n    pure\\n    returns (uint256)\\n  {\\n    require(\\n      b <= a\\n    );\\n\\n    return a - b;\\n  }\\n\\n  function mul(\\n    uint256 a,\\n    uint256 b\\n  )\\n    internal\\n    pure\\n    returns (uint256)\\n  {\\n    uint256 result = 0;\\n\\n    if (a != 0 && b != 0) {\\n      result = a * b;\\n\\n      require(\\n        result / a == b\\n      );\\n    }\\n\\n    return result;\\n  }\\n\\n  function div(\\n    uint256 a,\\n    uint256 b\\n  )\\n    internal\\n    pure\\n    returns (uint256)\\n  {\\n    require(\\n      b != 0\\n    );\\n\\n    return a / b;\\n  }\\n\\n  function mod(\\n    uint256 a,\\n    uint256 b\\n  )\\n    internal\\n    pure\\n    returns (uint256)\\n  {\\n    require(\\n      b != 0\\n    );\\n\\n    return a % b;\\n  }\\n}\\n\",\"keccak256\":\"0x738c0a35942134eeaa1c6f5b1ec462103d64e9177b425d1e63416f0bdb76b3c8\",\"license\":\"MIT\"},\"src/common/libs/SignatureLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title SignatureLib\\n */\\nlibrary SignatureLib {\\n  function recoverAddress(\\n    bytes32 messageHash,\\n    bytes memory signature\\n  )\\n    internal\\n    pure\\n    returns (address)\\n  {\\n    address result = address(0);\\n\\n    if (signature.length == 65) {\\n      bytes32 r;\\n      bytes32 s;\\n      uint8 v;\\n\\n      // solhint-disable-next-line no-inline-assembly\\n      assembly {\\n        r := mload(add(signature, 0x20))\\n        s := mload(add(signature, 0x40))\\n        v := byte(0, mload(add(signature, 0x60)))\\n      }\\n\\n      if (v < 27) {\\n        v += 27;\\n      }\\n\\n      if (v == 27 || v == 28) {\\n        result = ecrecover(messageHash, v, r, s);\\n      }\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x7ad3bad268bc2fa44dfbca8230262b73b27e8646d5dde6d6d10b860a29a7424b\",\"license\":\"MIT\"},\"src/common/lifecycle/Initializable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title Initializable\\n */\\ncontract Initializable {\\n  address private initializer;\\n\\n  // events\\n\\n  event Initialized();\\n\\n  // modifiers\\n\\n  modifier onlyInitializer() {\\n    require(\\n      msg.sender == initializer\\n    );\\n\\n    initializer = address(0);\\n\\n    _;\\n\\n    emit Initialized();\\n  }\\n\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor()\\n    internal\\n  {\\n    initializer = msg.sender;\\n  }\\n\\n   // external functions (views)\\n\\n  function isInitialized()\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return initializer == address(0);\\n  }\\n}\\n\",\"keccak256\":\"0xeec4c2a5753b5991d956ea10a067553a8e7303f00b49ef6a535a7b06d0dd25d4\",\"license\":\"MIT\"},\"src/common/token/ERC20Token.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../libs/SafeMathLib.sol\\\";\\n\\n\\n/**\\n * @title ERC20Token\\n */\\ncontract ERC20Token {\\n  using SafeMathLib for uint256;\\n\\n  string public name;\\n  string public symbol;\\n  uint8 public decimals;\\n  uint256 public totalSupply;\\n\\n  mapping(address => uint256) internal balances;\\n  mapping(address => mapping(address => uint256)) internal allowances;\\n\\n  // events\\n\\n  event Transfer(\\n    address indexed from,\\n    address indexed to,\\n    uint256 value\\n  );\\n\\n  event Approval(\\n    address indexed owner,\\n    address indexed spender,\\n    uint256 value\\n  );\\n\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor() internal {}\\n\\n  // external functions\\n\\n  function transfer(\\n    address to,\\n    uint256 value\\n  )\\n    external\\n    returns (bool)\\n  {\\n    _transfer(msg.sender, to, value);\\n\\n    return true;\\n  }\\n\\n  function transferFrom(\\n    address from,\\n    address to,\\n    uint256 value\\n  )\\n    virtual\\n    external\\n    returns (bool)\\n  {\\n    _transfer(from, to, value);\\n    _approve(from, msg.sender, allowances[from][msg.sender].sub(value));\\n\\n    return true;\\n  }\\n\\n  function approve(\\n    address spender,\\n    uint256 value\\n  )\\n    virtual\\n    external\\n    returns (bool)\\n  {\\n    _approve(msg.sender, spender, value);\\n\\n    return true;\\n  }\\n\\n  // external functions (views)\\n\\n  function balanceOf(\\n    address owner\\n  )\\n    virtual\\n    external\\n    view\\n    returns (uint256)\\n  {\\n    return balances[owner];\\n  }\\n\\n  function allowance(\\n    address owner,\\n    address spender\\n  )\\n    virtual\\n    external\\n    view\\n    returns (uint256)\\n  {\\n    return allowances[owner][spender];\\n  }\\n\\n  // internal functions\\n\\n  function _transfer(\\n    address from,\\n    address to,\\n    uint256 value\\n  )\\n    virtual\\n    internal\\n  {\\n    require(\\n      from != address(0)\\n    );\\n    require(\\n      to != address(0)\\n    );\\n\\n    balances[from] = balances[from].sub(value);\\n    balances[to] = balances[to].add(value);\\n\\n    emit Transfer(from, to, value);\\n  }\\n\\n  function _approve(\\n    address owner,\\n    address spender,\\n    uint256 value\\n  )\\n    virtual\\n    internal\\n  {\\n    require(\\n      owner != address(0)\\n    );\\n    require(\\n      spender != address(0)\\n    );\\n\\n    allowances[owner][spender] = value;\\n\\n    emit Approval(owner, spender, value);\\n  }\\n\\n  function _mint(\\n    address owner,\\n    uint256 value\\n  )\\n    virtual\\n    internal\\n  {\\n    require(\\n      owner != address(0)\\n    );\\n\\n    require(\\n      value > 0\\n    );\\n\\n    balances[owner] = balances[owner].add(value);\\n    totalSupply = totalSupply.add(value);\\n\\n    emit Transfer(address(0), owner, value);\\n  }\\n\\n  function _burn(\\n    address owner,\\n    uint256 value\\n  )\\n    virtual\\n    internal\\n  {\\n    require(\\n      owner != address(0)\\n    );\\n\\n    require(\\n      value > 0\\n    );\\n\\n    balances[owner] = balances[owner].sub(value);\\n    totalSupply = totalSupply.sub(value);\\n\\n    emit Transfer(owner, address(0), value);\\n  }\\n}\\n\",\"keccak256\":\"0x7c813ef482e781bc61d13437780e6f763e790f65e26b984aa58bd794ba042b09\",\"license\":\"MIT\"},\"src/common/typedData/TypedDataContainer.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title TypedDataContainer\\n */\\ncontract TypedDataContainer {\\n  string private constant TYPED_DATA_PREFIX = \\\"\\\\x19\\\\x01\\\";\\n  bytes32 private constant TYPED_DATA_DOMAIN_TYPE_HASH = keccak256(\\n    \\\"EIP712Domain(string name,string version,uint256 chainId,address verifyingContract,bytes32 salt)\\\"\\n  );\\n\\n  bytes32 public typedDataDomainSeparator;\\n\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor() internal {}\\n\\n  // internal functions\\n\\n  function _initializeTypedDataContainer(\\n    bytes32 domainNameHash,\\n    bytes32 domainVersionHash,\\n    bytes32 domainSalt\\n  )\\n    internal\\n  {\\n    uint256 chainId;\\n\\n    // solhint-disable-next-line no-inline-assembly\\n    assembly {\\n      chainId := chainid()\\n    }\\n\\n    typedDataDomainSeparator = keccak256(abi.encode(\\n        TYPED_DATA_DOMAIN_TYPE_HASH,\\n        domainNameHash,\\n        domainVersionHash,\\n        chainId,\\n        address(this),\\n        domainSalt\\n    ));\\n  }\\n\\n  // internal functions (views)\\n\\n  function _hashPrimaryTypedData(\\n    bytes32 dataHash\\n  )\\n    internal\\n    view\\n    returns (bytes32)\\n  {\\n    return keccak256(abi.encodePacked(\\n      TYPED_DATA_PREFIX,\\n      typedDataDomainSeparator,\\n      dataHash\\n    ));\\n  }\\n}\\n\",\"keccak256\":\"0x85483e6032998bb02482ca00ad153415870ac773253b4c647e8a82c4eb038924\",\"license\":\"MIT\"},\"src/gateway/Gateway.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\npragma experimental ABIEncoderV2;\\n\\nimport \\\"../account/AccountOwnerRegistry.sol\\\";\\nimport \\\"../common/libs/SafeMathLib.sol\\\";\\nimport \\\"../common/libs/SignatureLib.sol\\\";\\nimport \\\"../common/lifecycle/Initializable.sol\\\";\\nimport \\\"../common/typedData/TypedDataContainer.sol\\\";\\nimport \\\"../personal/PersonalAccountRegistry.sol\\\";\\n\\n/**\\n * @title Gateway\\n */\\ncontract Gateway is Initializable, TypedDataContainer {\\n  using SafeMathLib for uint256;\\n  using SignatureLib for bytes32;\\n\\n  struct DelegatedBatch {\\n    uint256 nonce;\\n    address[] to;\\n    bytes[] data;\\n  }\\n\\n  struct DelegatedBatchWithGasPrice {\\n    uint256 nonce;\\n    address[] to;\\n    bytes[] data;\\n    uint256 gasPrice;\\n  }\\n\\n  bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(\\n    \\\"DelegatedBatch(uint256 nonce,address[] to,bytes[] data)\\\"\\n  );\\n\\n  bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE = keccak256(\\n    \\\"DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)\\\"\\n  );\\n\\n  AccountOwnerRegistry public accountOwnerRegistry;\\n  PersonalAccountRegistry public personalAccountRegistry;\\n\\n  mapping(address => uint256) private accountNonce;\\n\\n  // events\\n\\n  event BatchDelegated(\\n    address sender,\\n    bytes batch,\\n    bool succeeded\\n  );\\n\\n  /**\\n   * @dev public constructor\\n   */\\n  constructor() public Initializable() {}\\n\\n  // external functions\\n\\n  function initialize(\\n    AccountOwnerRegistry accountOwnerRegistry_,\\n    PersonalAccountRegistry personalAccountRegistry_,\\n    bytes32 typedDataDomainNameHash,\\n    bytes32 typedDataDomainVersionHash,\\n    bytes32 typedDataDomainSalt\\n  )\\n    external\\n    onlyInitializer\\n  {\\n    accountOwnerRegistry = accountOwnerRegistry_;\\n    personalAccountRegistry = personalAccountRegistry_;\\n\\n    // TypedDataContainer\\n    _initializeTypedDataContainer(\\n      typedDataDomainNameHash,\\n      typedDataDomainVersionHash,\\n      typedDataDomainSalt\\n    );\\n  }\\n\\n  // public functions\\n\\n  function sendBatch(\\n    address[] memory to,\\n    bytes[] memory data\\n  )\\n    public\\n  {\\n    _sendBatch(\\n      msg.sender,\\n      msg.sender,\\n      to,\\n      data\\n    );\\n  }\\n\\n  function sendBatchFromAccount(\\n    address account,\\n    address[] memory to,\\n    bytes[] memory data\\n  )\\n    public\\n  {\\n    _sendBatch(\\n      account,\\n      msg.sender,\\n      to,\\n      data\\n    );\\n  }\\n\\n  function delegateBatch(\\n    address account,\\n    uint256 nonce,\\n    address[] memory to,\\n    bytes[] memory data,\\n    bytes memory senderSignature\\n  )\\n    public\\n  {\\n    require(\\n      nonce > accountNonce[account]\\n    );\\n\\n    address sender = _hashPrimaryTypedData(\\n      _hashTypedData(\\n        nonce,\\n        to,\\n        data\\n      )\\n    ).recoverAddress(senderSignature);\\n\\n    accountNonce[account] = nonce;\\n\\n    _sendBatch(\\n      account,\\n      sender,\\n      to,\\n      data\\n    );\\n  }\\n\\n  function delegateBatchWithGasPrice(\\n    address account,\\n    uint256 nonce,\\n    address[] memory to,\\n    bytes[] memory data,\\n    bytes memory senderSignature\\n  )\\n    public\\n  {\\n    require(\\n      nonce > accountNonce[account]\\n    );\\n\\n    address sender = _hashPrimaryTypedData(\\n      _hashTypedData(\\n        nonce,\\n        to,\\n        data,\\n        tx.gasprice\\n      )\\n    ).recoverAddress(senderSignature);\\n\\n    accountNonce[account] = nonce;\\n\\n    _sendBatch(\\n      account,\\n      sender,\\n      to,\\n      data\\n    );\\n  }\\n\\n  function delegateBatches(\\n    bytes[] memory batches,\\n    bool revertOnFailure\\n  )\\n    public\\n  {\\n    require(\\n      batches.length > 0\\n    );\\n\\n    for (uint256 i = 0; i < batches.length; i++) {\\n      // solhint-disable-next-line avoid-low-level-calls\\n      (bool succeeded,) = address(this).call(batches[i]);\\n\\n      if (revertOnFailure) {\\n        require(\\n          succeeded\\n        );\\n      }\\n\\n      emit BatchDelegated(\\n        msg.sender,\\n        batches[i],\\n        succeeded\\n      );\\n    }\\n  }\\n\\n  // public functions (views)\\n\\n  function hashDelegatedBatch(\\n    DelegatedBatch memory delegatedBatch\\n  )\\n    public\\n    view\\n    returns (bytes32)\\n  {\\n    return _hashPrimaryTypedData(\\n      _hashTypedData(\\n        delegatedBatch.nonce,\\n        delegatedBatch.to,\\n        delegatedBatch.data\\n      )\\n    );\\n  }\\n\\n  function hashDelegatedBatchWithGasPrice(\\n    DelegatedBatchWithGasPrice memory delegatedBatch\\n  )\\n    public\\n    view\\n    returns (bytes32)\\n  {\\n    return _hashPrimaryTypedData(\\n      _hashTypedData(\\n        delegatedBatch.nonce,\\n        delegatedBatch.to,\\n        delegatedBatch.data,\\n        delegatedBatch.gasPrice\\n      )\\n    );\\n  }\\n\\n  // external functions (views)\\n\\n  function getAccountNonce(\\n    address account\\n  )\\n    external\\n    view\\n    returns (uint256)\\n  {\\n    return accountNonce[account];\\n  }\\n\\n  // private functions\\n\\n  function _sendBatch(\\n    address account,\\n    address sender,\\n    address[] memory to,\\n    bytes[] memory data\\n  )\\n    private\\n  {\\n    require(\\n      account != address(0)\\n    );\\n\\n    require(\\n      to.length > 0\\n    );\\n    require(\\n      data.length == to.length\\n    );\\n\\n    if (account != sender) {\\n      require(\\n        personalAccountRegistry.verifyAccountOwner(account, sender) ||\\n        accountOwnerRegistry.verifyAccountOwner(account, sender)\\n      );\\n    }\\n\\n    bool succeeded;\\n\\n    for (uint256 i = 0; i < data.length; i++) {\\n      require(\\n        to[i] != address(0)\\n      );\\n\\n      // solhint-disable-next-line avoid-low-level-calls\\n      (succeeded,) = to[i].call(abi.encodePacked(data[i], account, sender));\\n\\n      require(\\n        succeeded\\n      );\\n    }\\n  }\\n\\n  // private functions (pure)\\n\\n  function _hashTypedData(\\n    uint256 nonce,\\n    address[] memory to,\\n    bytes[] memory data\\n  )\\n    private\\n    pure\\n    returns (bytes32)\\n  {\\n    bytes32[] memory dataHashes = new bytes32[](data.length);\\n\\n    for (uint256 i = 0; i < data.length; i++) {\\n      dataHashes[i] = keccak256(data[i]);\\n    }\\n\\n    return keccak256(abi.encode(\\n      DELEGATED_BATCH_TYPE_HASH,\\n      nonce,\\n      keccak256(abi.encodePacked(to)),\\n      keccak256(abi.encodePacked(dataHashes))\\n    ));\\n  }\\n\\n  function _hashTypedData(\\n    uint256 nonce,\\n    address[] memory to,\\n    bytes[] memory data,\\n    uint256 gasPrice\\n  )\\n    private\\n    pure\\n    returns (bytes32)\\n  {\\n    bytes32[] memory dataHashes = new bytes32[](data.length);\\n\\n    for (uint256 i = 0; i < data.length; i++) {\\n      dataHashes[i] = keccak256(data[i]);\\n    }\\n\\n    return keccak256(abi.encode(\\n        DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE,\\n        nonce,\\n        keccak256(abi.encodePacked(to)),\\n        keccak256(abi.encodePacked(dataHashes)),\\n        gasPrice\\n      ));\\n  }\\n}\\n\",\"keccak256\":\"0xeaaf21a2fb195d874c733765e13280982300f74aee3f4024fe39f0662114a124\",\"license\":\"MIT\"},\"src/gateway/GatewayRecipient.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../common/libs/BytesLib.sol\\\";\\n\\n\\n/**\\n * @title GatewayRecipient\\n */\\ncontract GatewayRecipient {\\n  using BytesLib for bytes;\\n\\n  address public gateway;\\n\\n  /**\\n   * @dev internal constructor\\n   */\\n  constructor() internal {}\\n\\n  // internal functions\\n\\n  function _initializeGatewayRecipient(\\n    address gateway_\\n  )\\n    internal\\n  {\\n    gateway = gateway_;\\n  }\\n\\n  // internal functions (views)\\n\\n  function _getContextAccount()\\n    internal\\n    view\\n    returns (address)\\n  {\\n    return _getContextAddress(40);\\n  }\\n\\n  function _getContextSender()\\n    internal\\n    view\\n    returns (address)\\n  {\\n    return _getContextAddress(20);\\n  }\\n\\n  function _getContextData()\\n    internal\\n    view\\n    returns (bytes calldata)\\n  {\\n    bytes calldata result;\\n\\n    if (_isGatewaySender()) {\\n      result = msg.data[:msg.data.length - 40];\\n    } else {\\n      result = msg.data;\\n    }\\n\\n    return result;\\n  }\\n\\n  // private functions (views)\\n\\n  function _getContextAddress(\\n    uint256 offset\\n  )\\n    private\\n    view\\n    returns (address)\\n  {\\n    address result = address(0);\\n\\n    if (_isGatewaySender()) {\\n      uint from = msg.data.length - offset;\\n      result = bytes(msg.data[from:from + 20]).toAddress();\\n    } else {\\n      result = msg.sender;\\n    }\\n\\n    return result;\\n  }\\n\\n  function _isGatewaySender()\\n    private\\n    view\\n    returns (bool)\\n  {\\n    bool result;\\n\\n    if (msg.sender == gateway) {\\n      require(\\n        msg.data.length >= 44\\n      );\\n\\n      result = true;\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0x56513e7384f04ac487964a92152a87d22ed38d76a26f210b9da56627af117280\",\"license\":\"MIT\"},\"src/personal/PersonalAccountRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\nimport \\\"../common/account/AccountController.sol\\\";\\nimport \\\"../common/libs/BlockLib.sol\\\";\\nimport \\\"../common/libs/SafeMathLib.sol\\\";\\nimport \\\"../common/lifecycle/Initializable.sol\\\";\\nimport \\\"../common/token/ERC20Token.sol\\\";\\nimport \\\"../gateway/GatewayRecipient.sol\\\";\\n\\n\\n/**\\n * @title PersonalAccountRegistry\\n */\\ncontract PersonalAccountRegistry is AccountController, Initializable, GatewayRecipient {\\n  using BlockLib for BlockLib.BlockRelated;\\n  using SafeMathLib for uint256;\\n\\n  struct Account {\\n    bool deployed;\\n    bytes32 salt;\\n    mapping(address => BlockLib.BlockRelated) owners;\\n  }\\n\\n  mapping(address => Account) private accounts;\\n\\n  // events\\n\\n  event AccountDeployed(\\n    address account\\n  );\\n\\n  event AccountOwnerAdded(\\n    address account,\\n    address owner\\n  );\\n\\n  event AccountOwnerRemoved(\\n    address account,\\n    address owner\\n  );\\n\\n  event AccountTransactionExecuted(\\n    address account,\\n    address to,\\n    uint256 value,\\n    bytes data,\\n    bytes response\\n  );\\n\\n  event AccountCallRefunded(\\n    address account,\\n    address beneficiary,\\n    address token,\\n    uint256 value\\n  );\\n\\n  /**\\n   * @dev public constructor\\n   */\\n  constructor() public Initializable() {}\\n\\n  // external functions\\n\\n  function initialize(\\n    address gateway_\\n  )\\n    external\\n    onlyInitializer\\n  {\\n    // GatewayRecipient\\n    _initializeGatewayRecipient(gateway_);\\n  }\\n\\n  function addAccountOwner(\\n    address account,\\n    address owner\\n  )\\n    external\\n  {\\n    _verifySender(account);\\n\\n    require(\\n      owner != address(0)\\n    );\\n\\n    require(\\n      !accounts[account].owners[owner].verifyAtCurrentBlock()\\n    );\\n\\n    accounts[account].owners[owner].added = true;\\n    accounts[account].owners[owner].removedAtBlockNumber = 0;\\n\\n    emit AccountOwnerAdded(\\n      account,\\n      owner\\n    );\\n  }\\n\\n  function removeAccountOwner(\\n    address account,\\n    address owner\\n  )\\n    external\\n  {\\n    address sender = _verifySender(account);\\n\\n    require(\\n      owner != sender\\n    );\\n\\n    require(\\n      accounts[account].owners[owner].verifyAtCurrentBlock()\\n    );\\n\\n    accounts[account].owners[owner].removedAtBlockNumber = block.number;\\n\\n    emit AccountOwnerRemoved(\\n      account,\\n      owner\\n    );\\n  }\\n\\n  function executeAccountTransaction(\\n    address account,\\n    address to,\\n    uint256 value,\\n    bytes calldata data\\n  )\\n    external\\n  {\\n    _verifySender(account);\\n\\n    _deployAccount(account);\\n\\n    bytes memory response = _executeAccountTransaction(\\n      account,\\n      to,\\n      value,\\n      data\\n    );\\n\\n    emit AccountTransactionExecuted(\\n      account,\\n      to,\\n      value,\\n      data,\\n      response\\n    );\\n  }\\n\\n  function refundAccountCall(\\n    address account,\\n    address token,\\n    uint256 value\\n  )\\n    external\\n  {\\n    _verifySender(account);\\n\\n    _deployAccount(account);\\n\\n    /* solhint-disable avoid-tx-origin */\\n    if (token == address(0)) {\\n      _executeAccountTransaction(\\n        account,\\n        tx.origin,\\n        value,\\n        new bytes(0)\\n      );\\n    } else {\\n      bytes memory response = _executeAccountTransaction(\\n        account,\\n        token,\\n        0,\\n        abi.encodeWithSelector(\\n          ERC20Token(token).transfer.selector,\\n          tx.origin,\\n          value\\n        )\\n      );\\n\\n      if (response.length > 0) {\\n        require(\\n          abi.decode(response, (bool))\\n        );\\n      }\\n    }\\n\\n    emit AccountCallRefunded(\\n      account,\\n      tx.origin,\\n      token,\\n      value\\n    );\\n\\n    /* solhint-enable avoid-tx-origin */\\n  }\\n\\n  // external functions (views)\\n\\n  function computeAccountAddress(\\n    address saltOwner\\n  )\\n    external\\n    view\\n    returns (address)\\n  {\\n    return _computeAccountAddress(saltOwner);\\n  }\\n\\n  function isAccountDeployed(\\n    address account\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return accounts[account].deployed;\\n  }\\n\\n  function verifyAccountOwner(\\n    address account,\\n    address owner\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    return _verifyAccountOwner(account, owner);\\n  }\\n\\n  function verifyAccountOwnerAtBlock(\\n    address account,\\n    address owner,\\n    uint256 blockNumber\\n  )\\n    external\\n    view\\n    returns (bool)\\n  {\\n    bool result = false;\\n\\n    if (_verifyAccountOwner(account, owner)) {\\n      result = true;\\n    } else {\\n      result = accounts[account].owners[owner].verifyAtBlock(blockNumber);\\n    }\\n\\n    return result;\\n  }\\n\\n  // private functions\\n\\n  function _verifySender(\\n    address account\\n  )\\n    private\\n    returns (address)\\n  {\\n    address sender = _getContextSender();\\n\\n    if (accounts[account].owners[sender].added) {\\n      require(\\n        accounts[account].owners[sender].removedAtBlockNumber == 0\\n      );\\n    } else {\\n      require(\\n        accounts[account].salt == 0\\n      );\\n\\n      bytes32 salt = keccak256(\\n        abi.encodePacked(sender)\\n      );\\n\\n      require(\\n        account == _computeAccountAddress(salt)\\n      );\\n\\n      accounts[account].salt = salt;\\n      accounts[account].owners[sender].added = true;\\n\\n      emit AccountOwnerAdded(\\n        account,\\n        sender\\n      );\\n    }\\n\\n    return sender;\\n  }\\n\\n  function _deployAccount(\\n    address account\\n  )\\n    internal\\n  {\\n    if (!accounts[account].deployed) {\\n      _deployAccount(\\n        accounts[account].salt\\n      );\\n\\n      accounts[account].deployed = true;\\n\\n      emit AccountDeployed(\\n        account\\n      );\\n    }\\n  }\\n\\n  // private functions (views)\\n\\n  function _computeAccountAddress(\\n    address saltOwner\\n  )\\n    private\\n    view\\n    returns (address)\\n  {\\n    bytes32 salt = keccak256(\\n      abi.encodePacked(saltOwner)\\n    );\\n\\n    return _computeAccountAddress(salt);\\n  }\\n\\n  function _verifyAccountOwner(\\n    address account,\\n    address owner\\n  )\\n    private\\n    view\\n    returns (bool)\\n  {\\n    bool result;\\n\\n    if (accounts[account].owners[owner].added) {\\n      result = accounts[account].owners[owner].removedAtBlockNumber == 0;\\n    } else if (accounts[account].salt == 0) {\\n      result = account == _computeAccountAddress(owner);\\n    }\\n\\n    return result;\\n  }\\n}\\n\",\"keccak256\":\"0xe0d416ff9f060d7b3b95e4e41cd27258298cd01b376371c887f3b1f447807265\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50600080546001600160a01b03191633179055611231806100326000396000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c806387d313131161008c578063b5021b1611610066578063b5021b161461019b578063bd106a02146101ae578063d126199f146101b6578063e372b55f146101c9576100cf565b806387d3131314610160578063984bd28f146101755780639f25562614610188576100cf565b8063231badaf146100d4578063235f8a44146100e9578063392e53cd146101125780635afaa7bb146101275780636d482cfb1461013a578063867519c61461014d575b600080fd5b6100e76100e2366004610c86565b6101d1565b005b6100fc6100f7366004610e44565b610245565b60405161010991906110dd565b60405180910390f35b61011a61026c565b60405161010991906110d2565b6100e7610135366004610d88565b61027c565b6100fc610148366004610ee9565b610375565b6100e761015b366004610c13565b610391565b61016861039d565b6040516101099190611173565b6100e7610183366004610df4565b6103ac565b6100e7610196366004610d27565b610436565b6100e76101a9366004610c86565b610446565b6100fc61047f565b6100fc6101c4366004610bf7565b610485565b6101686104a0565b6001600160a01b03851660009081526004602052604090205484116101f557600080fd5b60006102148261020e6102098888886104af565b6105e2565b90610632565b6001600160a01b0387166000908152600460205260409020869055905061023d868286866106d7565b505050505050565b6000610266610209836000015184602001518560400151866060015161092b565b92915050565b6000546001600160a01b03161590565b600082511161028a57600080fd5b60005b8251811015610370576000306001600160a01b03168483815181106102ae57fe5b60200260200101516040516102c39190610fea565b6000604051808303816000865af19150503d8060008114610300576040519150601f19603f3d011682016040523d82523d6000602084013e610305565b606091505b505090508215610319578061031957600080fd5b7f361c14722cc344132c73396113f7164232448b09c544a149f09048648b43d8723385848151811061034757fe5b60200260200101518360405161035f9392919061106e565b60405180910390a15060010161028d565b505050565b60006102666102098360000151846020015185604001516104af565b610370833384846106d7565b6003546001600160a01b031681565b6000546001600160a01b031633146103c357600080fd5b600080546001600160a01b03199081169091556002805482166001600160a01b038881169190911790915560038054909216908616179055610406838383610a61565b6040517f5daa87a0e9463431830481fd4b6e3403442dfb9a12b9c07597e9f61d50b633c890600090a15050505050565b610442333384846106d7565b5050565b6001600160a01b038516600090815260046020526040902054841161046a57600080fd5b60006102148261020e6102098888883a61092b565b60015481565b6001600160a01b031660009081526004602052604090205490565b6002546001600160a01b031681565b60006060825167ffffffffffffffff811180156104cb57600080fd5b506040519080825280602002602001820160405280156104f5578160200160208202803683370190505b50905060005b835181101561053e5783818151811061051057fe5b60200260200101518051906020012082828151811061052b57fe5b60209081029190910101526001016104fb565b507f4dc0a39234edc20669002d7daeb6a39b3af6a6a56073618b70893384c405c84985856040516020016105729190610f81565b60405160208183030381529060405280519060200120836040516020016105999190610fc0565b604051602081830303815290604052805190602001206040516020016105c29493929190611117565b604051602081830303815290604052805190602001209150509392505050565b600060405180604001604052806002815260200161190160f01b8152506001548360405160200161061593929190611047565b604051602081830303815290604052805190602001209050919050565b80516000908190604114156106d05760208301516040840151606085015160001a601b81101561066057601b015b8060ff16601b148061067557508060ff16601c145b156106cc576001878285856040516000815260200160405260405161069d9493929190611155565b6020604051602081039080840390855afa1580156106bf573d6000803e3d6000fd5b5050506020604051035193505b5050505b9392505050565b6001600160a01b0384166106ea57600080fd5b60008251116106f857600080fd5b815181511461070657600080fd5b826001600160a01b0316846001600160a01b0316146108325760035460405163bb890d3f60e01b81526001600160a01b039091169063bb890d3f9061075190879087906004016110b8565b60206040518083038186803b15801561076957600080fd5b505afa15801561077d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107a19190610dd8565b80610829575060025460405163bb890d3f60e01b81526001600160a01b039091169063bb890d3f906107d990879087906004016110b8565b60206040518083038186803b1580156107f157600080fd5b505afa158015610805573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108299190610dd8565b61083257600080fd5b6000805b825181101561023d5760006001600160a01b031684828151811061085657fe5b60200260200101516001600160a01b0316141561087257600080fd5b83818151811061087e57fe5b60200260200101516001600160a01b031683828151811061089b57fe5b602002602001015187876040516020016108b793929190611006565b60408051601f19818403018152908290526108d191610fea565b6000604051808303816000865af19150503d806000811461090e576040519150601f19603f3d011682016040523d82523d6000602084013e610913565b606091505b5050809250508161092357600080fd5b600101610836565b60006060835167ffffffffffffffff8111801561094757600080fd5b50604051908082528060200260200182016040528015610971578160200160208202803683370190505b50905060005b84518110156109ba5784818151811061098c57fe5b6020026020010151805190602001208282815181106109a757fe5b6020908102919091010152600101610977565b507f75a27a7ebaa6d94f2ad4eecbc98a424b9a0516c245c680308385c79d2ad6af2a86866040516020016109ee9190610f81565b6040516020818303038152906040528051906020012083604051602001610a159190610fc0565b6040516020818303038152906040528051906020012086604051602001610a40959493929190611132565b60405160208183030381529060405280519060200120915050949350505050565b6040514690610a9e907fd87cd6ef79d4e2b95e15ce8abf732db51ec771f1ca2edccf22a46c729ac5647290869086908590309088906020016110e6565b60408051601f19818403018152919052805160209091012060015550505050565b600082601f830112610acf578081fd5b8135610ae2610add826111ae565b611187565b818152915060208083019084810181840286018201871015610b0357600080fd5b60005b84811015610b2b578135610b19816111fe565b84529282019290820190600101610b06565b505050505092915050565b600082601f830112610b46578081fd5b8135610b54610add826111ae565b818152915060208083019084810160005b84811015610b2b57610b7c888484358a0101610b8e565b84529282019290820190600101610b65565b600082601f830112610b9e578081fd5b813567ffffffffffffffff811115610bb4578182fd5b610bc7601f8201601f1916602001611187565b9150808252836020828501011115610bde57600080fd5b8060208401602084013760009082016020015292915050565b600060208284031215610c08578081fd5b81356106d0816111fe565b600080600060608486031215610c27578182fd5b8335610c32816111fe565b9250602084013567ffffffffffffffff80821115610c4e578384fd5b610c5a87838801610abf565b93506040860135915080821115610c6f578283fd5b50610c7c86828701610b36565b9150509250925092565b600080600080600060a08688031215610c9d578081fd5b8535610ca8816111fe565b945060208601359350604086013567ffffffffffffffff80821115610ccb578283fd5b610cd789838a01610abf565b94506060880135915080821115610cec578283fd5b610cf889838a01610b36565b93506080880135915080821115610d0d578283fd5b50610d1a88828901610b8e565b9150509295509295909350565b60008060408385031215610d39578182fd5b823567ffffffffffffffff80821115610d50578384fd5b610d5c86838701610abf565b93506020850135915080821115610d71578283fd5b50610d7e85828601610b36565b9150509250929050565b60008060408385031215610d9a578182fd5b823567ffffffffffffffff811115610db0578283fd5b610dbc85828601610b36565b9250506020830135610dcd81611216565b809150509250929050565b600060208284031215610de9578081fd5b81516106d081611216565b600080600080600060a08688031215610e0b578081fd5b8535610e16816111fe565b94506020860135610e26816111fe565b94979496505050506040830135926060810135926080909101359150565b600060208284031215610e55578081fd5b813567ffffffffffffffff80821115610e6c578283fd5b9083019060808286031215610e7f578283fd5b610e896080611187565b82358152602083013582811115610e9e578485fd5b610eaa87828601610abf565b602083015250604083013582811115610ec1578485fd5b610ecd87828601610b36565b6040830152506060830135606082015280935050505092915050565b600060208284031215610efa578081fd5b813567ffffffffffffffff80821115610f11578283fd5b9083019060608286031215610f24578283fd5b610f2e6060611187565b82358152602083013582811115610f43578485fd5b610f4f87828601610abf565b602083015250604083013582811115610f66578485fd5b610f7287828601610b36565b60408301525095945050505050565b815160009082906020808601845b83811015610fb45781516001600160a01b031685529382019390820190600101610f8f565b50929695505050505050565b815160009082906020808601845b83811015610fb457815185529382019390820190600101610fce565b60008251610ffc8184602087016111ce565b9190910192915050565b600084516110188184602089016111ce565b6bffffffffffffffffffffffff19606095861b8116919093019081529290931b16601482015260280192915050565b600084516110598184602089016111ce565b91909101928352506020820152604001919050565b600060018060a01b038516825260606020830152835180606084015261109b8160808501602088016111ce565b921515604083015250601f91909101601f19160160800192915050565b6001600160a01b0392831681529116602082015260400190565b901515815260200190565b90815260200190565b9586526020860194909452604085019290925260608401526001600160a01b0316608083015260a082015260c00190565b93845260208401929092526040830152606082015260800190565b948552602085019390935260408401919091526060830152608082015260a00190565b93845260ff9290921660208401526040830152606082015260800190565b6001600160a01b0391909116815260200190565b60405181810167ffffffffffffffff811182821017156111a657600080fd5b604052919050565b600067ffffffffffffffff8211156111c4578081fd5b5060209081020190565b60005b838110156111e95781810151838201526020016111d1565b838111156111f8576000848401525b50505050565b6001600160a01b038116811461121357600080fd5b50565b801515811461121357600080fdfea164736f6c634300060c000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c806387d313131161008c578063b5021b1611610066578063b5021b161461019b578063bd106a02146101ae578063d126199f146101b6578063e372b55f146101c9576100cf565b806387d3131314610160578063984bd28f146101755780639f25562614610188576100cf565b8063231badaf146100d4578063235f8a44146100e9578063392e53cd146101125780635afaa7bb146101275780636d482cfb1461013a578063867519c61461014d575b600080fd5b6100e76100e2366004610c86565b6101d1565b005b6100fc6100f7366004610e44565b610245565b60405161010991906110dd565b60405180910390f35b61011a61026c565b60405161010991906110d2565b6100e7610135366004610d88565b61027c565b6100fc610148366004610ee9565b610375565b6100e761015b366004610c13565b610391565b61016861039d565b6040516101099190611173565b6100e7610183366004610df4565b6103ac565b6100e7610196366004610d27565b610436565b6100e76101a9366004610c86565b610446565b6100fc61047f565b6100fc6101c4366004610bf7565b610485565b6101686104a0565b6001600160a01b03851660009081526004602052604090205484116101f557600080fd5b60006102148261020e6102098888886104af565b6105e2565b90610632565b6001600160a01b0387166000908152600460205260409020869055905061023d868286866106d7565b505050505050565b6000610266610209836000015184602001518560400151866060015161092b565b92915050565b6000546001600160a01b03161590565b600082511161028a57600080fd5b60005b8251811015610370576000306001600160a01b03168483815181106102ae57fe5b60200260200101516040516102c39190610fea565b6000604051808303816000865af19150503d8060008114610300576040519150601f19603f3d011682016040523d82523d6000602084013e610305565b606091505b505090508215610319578061031957600080fd5b7f361c14722cc344132c73396113f7164232448b09c544a149f09048648b43d8723385848151811061034757fe5b60200260200101518360405161035f9392919061106e565b60405180910390a15060010161028d565b505050565b60006102666102098360000151846020015185604001516104af565b610370833384846106d7565b6003546001600160a01b031681565b6000546001600160a01b031633146103c357600080fd5b600080546001600160a01b03199081169091556002805482166001600160a01b038881169190911790915560038054909216908616179055610406838383610a61565b6040517f5daa87a0e9463431830481fd4b6e3403442dfb9a12b9c07597e9f61d50b633c890600090a15050505050565b610442333384846106d7565b5050565b6001600160a01b038516600090815260046020526040902054841161046a57600080fd5b60006102148261020e6102098888883a61092b565b60015481565b6001600160a01b031660009081526004602052604090205490565b6002546001600160a01b031681565b60006060825167ffffffffffffffff811180156104cb57600080fd5b506040519080825280602002602001820160405280156104f5578160200160208202803683370190505b50905060005b835181101561053e5783818151811061051057fe5b60200260200101518051906020012082828151811061052b57fe5b60209081029190910101526001016104fb565b507f4dc0a39234edc20669002d7daeb6a39b3af6a6a56073618b70893384c405c84985856040516020016105729190610f81565b60405160208183030381529060405280519060200120836040516020016105999190610fc0565b604051602081830303815290604052805190602001206040516020016105c29493929190611117565b604051602081830303815290604052805190602001209150509392505050565b600060405180604001604052806002815260200161190160f01b8152506001548360405160200161061593929190611047565b604051602081830303815290604052805190602001209050919050565b80516000908190604114156106d05760208301516040840151606085015160001a601b81101561066057601b015b8060ff16601b148061067557508060ff16601c145b156106cc576001878285856040516000815260200160405260405161069d9493929190611155565b6020604051602081039080840390855afa1580156106bf573d6000803e3d6000fd5b5050506020604051035193505b5050505b9392505050565b6001600160a01b0384166106ea57600080fd5b60008251116106f857600080fd5b815181511461070657600080fd5b826001600160a01b0316846001600160a01b0316146108325760035460405163bb890d3f60e01b81526001600160a01b039091169063bb890d3f9061075190879087906004016110b8565b60206040518083038186803b15801561076957600080fd5b505afa15801561077d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107a19190610dd8565b80610829575060025460405163bb890d3f60e01b81526001600160a01b039091169063bb890d3f906107d990879087906004016110b8565b60206040518083038186803b1580156107f157600080fd5b505afa158015610805573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108299190610dd8565b61083257600080fd5b6000805b825181101561023d5760006001600160a01b031684828151811061085657fe5b60200260200101516001600160a01b0316141561087257600080fd5b83818151811061087e57fe5b60200260200101516001600160a01b031683828151811061089b57fe5b602002602001015187876040516020016108b793929190611006565b60408051601f19818403018152908290526108d191610fea565b6000604051808303816000865af19150503d806000811461090e576040519150601f19603f3d011682016040523d82523d6000602084013e610913565b606091505b5050809250508161092357600080fd5b600101610836565b60006060835167ffffffffffffffff8111801561094757600080fd5b50604051908082528060200260200182016040528015610971578160200160208202803683370190505b50905060005b84518110156109ba5784818151811061098c57fe5b6020026020010151805190602001208282815181106109a757fe5b6020908102919091010152600101610977565b507f75a27a7ebaa6d94f2ad4eecbc98a424b9a0516c245c680308385c79d2ad6af2a86866040516020016109ee9190610f81565b6040516020818303038152906040528051906020012083604051602001610a159190610fc0565b6040516020818303038152906040528051906020012086604051602001610a40959493929190611132565b60405160208183030381529060405280519060200120915050949350505050565b6040514690610a9e907fd87cd6ef79d4e2b95e15ce8abf732db51ec771f1ca2edccf22a46c729ac5647290869086908590309088906020016110e6565b60408051601f19818403018152919052805160209091012060015550505050565b600082601f830112610acf578081fd5b8135610ae2610add826111ae565b611187565b818152915060208083019084810181840286018201871015610b0357600080fd5b60005b84811015610b2b578135610b19816111fe565b84529282019290820190600101610b06565b505050505092915050565b600082601f830112610b46578081fd5b8135610b54610add826111ae565b818152915060208083019084810160005b84811015610b2b57610b7c888484358a0101610b8e565b84529282019290820190600101610b65565b600082601f830112610b9e578081fd5b813567ffffffffffffffff811115610bb4578182fd5b610bc7601f8201601f1916602001611187565b9150808252836020828501011115610bde57600080fd5b8060208401602084013760009082016020015292915050565b600060208284031215610c08578081fd5b81356106d0816111fe565b600080600060608486031215610c27578182fd5b8335610c32816111fe565b9250602084013567ffffffffffffffff80821115610c4e578384fd5b610c5a87838801610abf565b93506040860135915080821115610c6f578283fd5b50610c7c86828701610b36565b9150509250925092565b600080600080600060a08688031215610c9d578081fd5b8535610ca8816111fe565b945060208601359350604086013567ffffffffffffffff80821115610ccb578283fd5b610cd789838a01610abf565b94506060880135915080821115610cec578283fd5b610cf889838a01610b36565b93506080880135915080821115610d0d578283fd5b50610d1a88828901610b8e565b9150509295509295909350565b60008060408385031215610d39578182fd5b823567ffffffffffffffff80821115610d50578384fd5b610d5c86838701610abf565b93506020850135915080821115610d71578283fd5b50610d7e85828601610b36565b9150509250929050565b60008060408385031215610d9a578182fd5b823567ffffffffffffffff811115610db0578283fd5b610dbc85828601610b36565b9250506020830135610dcd81611216565b809150509250929050565b600060208284031215610de9578081fd5b81516106d081611216565b600080600080600060a08688031215610e0b578081fd5b8535610e16816111fe565b94506020860135610e26816111fe565b94979496505050506040830135926060810135926080909101359150565b600060208284031215610e55578081fd5b813567ffffffffffffffff80821115610e6c578283fd5b9083019060808286031215610e7f578283fd5b610e896080611187565b82358152602083013582811115610e9e578485fd5b610eaa87828601610abf565b602083015250604083013582811115610ec1578485fd5b610ecd87828601610b36565b6040830152506060830135606082015280935050505092915050565b600060208284031215610efa578081fd5b813567ffffffffffffffff80821115610f11578283fd5b9083019060608286031215610f24578283fd5b610f2e6060611187565b82358152602083013582811115610f43578485fd5b610f4f87828601610abf565b602083015250604083013582811115610f66578485fd5b610f7287828601610b36565b60408301525095945050505050565b815160009082906020808601845b83811015610fb45781516001600160a01b031685529382019390820190600101610f8f565b50929695505050505050565b815160009082906020808601845b83811015610fb457815185529382019390820190600101610fce565b60008251610ffc8184602087016111ce565b9190910192915050565b600084516110188184602089016111ce565b6bffffffffffffffffffffffff19606095861b8116919093019081529290931b16601482015260280192915050565b600084516110598184602089016111ce565b91909101928352506020820152604001919050565b600060018060a01b038516825260606020830152835180606084015261109b8160808501602088016111ce565b921515604083015250601f91909101601f19160160800192915050565b6001600160a01b0392831681529116602082015260400190565b901515815260200190565b90815260200190565b9586526020860194909452604085019290925260608401526001600160a01b0316608083015260a082015260c00190565b93845260208401929092526040830152606082015260800190565b948552602085019390935260408401919091526060830152608082015260a00190565b93845260ff9290921660208401526040830152606082015260800190565b6001600160a01b0391909116815260200190565b60405181810167ffffffffffffffff811182821017156111a657600080fd5b604052919050565b600067ffffffffffffffff8211156111c4578081fd5b5060209081020190565b60005b838110156111e95781810151838201526020016111d1565b838111156111f8576000848401525b50505050565b6001600160a01b038116811461121357600080fd5b50565b801515811461121357600080fdfea164736f6c634300060c000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "details": "public constructor"
+      }
+    },
+    "title": "Gateway",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 998,
+        "contract": "src/gateway/Gateway.sol:Gateway",
+        "label": "initializer",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 1404,
+        "contract": "src/gateway/Gateway.sol:Gateway",
+        "label": "typedDataDomainSeparator",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_bytes32"
+      },
+      {
+        "astId": 2129,
+        "contract": "src/gateway/Gateway.sol:Gateway",
+        "label": "accountOwnerRegistry",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_contract(AccountOwnerRegistry)142"
+      },
+      {
+        "astId": 2131,
+        "contract": "src/gateway/Gateway.sol:Gateway",
+        "label": "personalAccountRegistry",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_contract(PersonalAccountRegistry)4481"
+      },
+      {
+        "astId": 2135,
+        "contract": "src/gateway/Gateway.sol:Gateway",
+        "label": "accountNonce",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_contract(AccountOwnerRegistry)142": {
+        "encoding": "inplace",
+        "label": "contract AccountOwnerRegistry",
+        "numberOfBytes": "20"
+      },
+      "t_contract(PersonalAccountRegistry)4481": {
+        "encoding": "inplace",
+        "label": "contract PersonalAccountRegistry",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

@@ -1,0 +1,329 @@
+{
+  "address": "0xA5CbbaDe8A99F8Ae210D29039eB0b18F3E4826B7",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "label",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "NewOwner",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "resolver",
+          "type": "address"
+        }
+      ],
+      "name": "NewResolver",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "ttl",
+          "type": "uint64"
+        }
+      ],
+      "name": "NewTTL",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        }
+      ],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        }
+      ],
+      "name": "resolver",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "setOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "resolver",
+          "type": "address"
+        }
+      ],
+      "name": "setResolver",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "label",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "setSubnodeOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint64",
+          "name": "ttl",
+          "type": "uint64"
+        }
+      ],
+      "name": "setTTL",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ttl",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xc71a45b58dc911cd9ea1a094edd456b24919f13d263e8c3630eeeaef8a90b6c8",
+  "receipt": {
+    "to": null,
+    "from": "0xae32631bdbb2474CC11594268427A2da3D6aBd6B",
+    "contractAddress": "0xA5CbbaDe8A99F8Ae210D29039eB0b18F3E4826B7",
+    "transactionIndex": 0,
+    "gasUsed": "328584",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x2530d64eaedbe58c08110854a7d7793a9f25418cdeff2eb986027d10ef2521a2",
+    "transactionHash": "0xc71a45b58dc911cd9ea1a094edd456b24919f13d263e8c3630eeeaef8a90b6c8",
+    "logs": [],
+    "blockNumber": 47,
+    "cumulativeGasUsed": "328584",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "d3df566cd311e2cad327d1b461b99b1b",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"label\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"NewOwner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"resolver\",\"type\":\"address\"}],\"name\":\"NewResolver\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ttl\",\"type\":\"uint64\"}],\"name\":\"NewTTL\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"resolver\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"setOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"resolver\",\"type\":\"address\"}],\"name\":\"setResolver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"label\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"setSubnodeOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"ttl\",\"type\":\"uint64\"}],\"name\":\"setTTL\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"ttl\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"constructor\":{\"details\":\"public constructor\"}},\"title\":\"ENSRegistry\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/ens/ENSRegistry.sol\":\"ENSRegistry\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"src/ens/ENSRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.6.0;\\n\\n/**\\n * @title ENSRegistry\\n */\\ncontract ENSRegistry {\\n  struct Record {\\n    address owner;\\n    address resolver;\\n    uint64 ttl;\\n  }\\n\\n  mapping(bytes32 => Record) private records;\\n\\n  // events\\n\\n  event NewOwner(\\n    bytes32 indexed node,\\n    bytes32 indexed label,\\n    address owner\\n  );\\n\\n  event Transfer(\\n    bytes32 indexed node,\\n    address owner\\n  );\\n\\n  event NewResolver(\\n    bytes32 indexed node,\\n    address resolver\\n  );\\n\\n  event NewTTL(\\n    bytes32 indexed node,\\n    uint64 ttl\\n  );\\n\\n  // modifiers\\n\\n  modifier onlyNodeOwner(\\n    bytes32 node\\n  ) {\\n    require(\\n      records[node].owner == msg.sender\\n    );\\n\\n    _;\\n  }\\n\\n  /**\\n   * @dev public constructor\\n   */\\n  constructor()\\n    public\\n  {\\n    records[0x0].owner = msg.sender;\\n  }\\n\\n  // external functions\\n\\n  function setOwner(\\n    bytes32 node,\\n    address owner\\n  )\\n    external\\n    onlyNodeOwner(node)\\n  {\\n    records[node].owner = owner;\\n\\n    emit Transfer(node, owner);\\n  }\\n\\n  function setSubnodeOwner(\\n    bytes32 node,\\n    bytes32 label,\\n    address owner\\n  )\\n    external\\n    onlyNodeOwner(node)\\n  {\\n    bytes32 subNode = keccak256(\\n      abi.encodePacked(\\n        node,\\n        label\\n      )\\n    );\\n\\n    records[subNode].owner = owner;\\n\\n    emit NewOwner(node, label, owner);\\n  }\\n\\n  function setResolver(\\n    bytes32 node,\\n    address resolver\\n  )\\n    external\\n    onlyNodeOwner(node)\\n  {\\n    records[node].resolver = resolver;\\n\\n    emit NewResolver(node, resolver);\\n  }\\n\\n  function setTTL(\\n    bytes32 node,\\n    uint64 ttl\\n  )\\n    external\\n    onlyNodeOwner(node)\\n  {\\n    records[node].ttl = ttl;\\n\\n    emit NewTTL(node, ttl);\\n  }\\n\\n  // external functions (views)\\n\\n  function owner(\\n    bytes32 node\\n  )\\n    external\\n    view\\n    returns (address)\\n  {\\n    return records[node].owner;\\n  }\\n\\n  function resolver(\\n    bytes32 node\\n  )\\n    external\\n    view\\n    returns (address)\\n  {\\n    return records[node].resolver;\\n  }\\n\\n  function ttl(\\n    bytes32 node\\n  )\\n    external\\n    view\\n    returns (uint64)\\n  {\\n    return records[node].ttl;\\n  }\\n}\\n\",\"keccak256\":\"0x080ffc62d0ac4417453c6fb8a26a1acc917421a01290577c7f23e80b251a73cc\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060008080526020527fad3228b676f7d3cd4284a5443f17f1962b36e491b30a40b2405849e597ba5fb580546001600160a01b03191633179055610496806100596000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c806314ab90381161005b57806314ab90381461010c57806316a25cbd146101395780631896f70a146101735780635b0fc9c31461019f5761007d565b80630178b8bf1461008257806302571be3146100bb57806306ab5923146100d8575b600080fd5b61009f6004803603602081101561009857600080fd5b50356101cb565b604080516001600160a01b039092168252519081900360200190f35b61009f600480360360208110156100d157600080fd5b50356101e9565b61010a600480360360608110156100ee57600080fd5b50803590602081013590604001356001600160a01b0316610204565b005b61010a6004803603604081101561012257600080fd5b508035906020013567ffffffffffffffff166102b7565b6101566004803603602081101561014f57600080fd5b5035610350565b6040805167ffffffffffffffff9092168252519081900360200190f35b61010a6004803603604081101561018957600080fd5b50803590602001356001600160a01b0316610376565b61010a600480360360408110156101b557600080fd5b50803590602001356001600160a01b0316610401565b6000908152602081905260409020600101546001600160a01b031690565b6000908152602081905260409020546001600160a01b031690565b60008381526020819052604090205483906001600160a01b0316331461022957600080fd5b604080516020808201879052818301869052825180830384018152606083018085528151918301919091206000818152928390529184902080546001600160a01b0388166001600160a01b0319909116811790915590529151859187917fce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e829181900360800190a35050505050565b60008281526020819052604090205482906001600160a01b031633146102dc57600080fd5b60008381526020818152604091829020600101805467ffffffffffffffff60a01b1916600160a01b67ffffffffffffffff8716908102919091179091558251908152915185927f1d4f9bbfc9cab89d66e1a1562f2233ccbf1308cb4f63de2ead5787adddb8fa6892908290030190a2505050565b600090815260208190526040902060010154600160a01b900467ffffffffffffffff1690565b60008281526020819052604090205482906001600160a01b0316331461039b57600080fd5b6000838152602081815260409182902060010180546001600160a01b0319166001600160a01b0386169081179091558251908152915185927f335721b01866dc23fbee8b6b2c7b1e14d6f05c28cd35a2c934239f94095602a092908290030190a2505050565b60008281526020819052604090205482906001600160a01b0316331461042657600080fd5b6000838152602081815260409182902080546001600160a01b0319166001600160a01b0386169081179091558251908152915185927fd4735d920b0f87494915f556dd9b54c8f309026070caea5c737245152564d26692908290030190a250505056fea164736f6c634300060c000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c806314ab90381161005b57806314ab90381461010c57806316a25cbd146101395780631896f70a146101735780635b0fc9c31461019f5761007d565b80630178b8bf1461008257806302571be3146100bb57806306ab5923146100d8575b600080fd5b61009f6004803603602081101561009857600080fd5b50356101cb565b604080516001600160a01b039092168252519081900360200190f35b61009f600480360360208110156100d157600080fd5b50356101e9565b61010a600480360360608110156100ee57600080fd5b50803590602081013590604001356001600160a01b0316610204565b005b61010a6004803603604081101561012257600080fd5b508035906020013567ffffffffffffffff166102b7565b6101566004803603602081101561014f57600080fd5b5035610350565b6040805167ffffffffffffffff9092168252519081900360200190f35b61010a6004803603604081101561018957600080fd5b50803590602001356001600160a01b0316610376565b61010a600480360360408110156101b557600080fd5b50803590602001356001600160a01b0316610401565b6000908152602081905260409020600101546001600160a01b031690565b6000908152602081905260409020546001600160a01b031690565b60008381526020819052604090205483906001600160a01b0316331461022957600080fd5b604080516020808201879052818301869052825180830384018152606083018085528151918301919091206000818152928390529184902080546001600160a01b0388166001600160a01b0319909116811790915590529151859187917fce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e829181900360800190a35050505050565b60008281526020819052604090205482906001600160a01b031633146102dc57600080fd5b60008381526020818152604091829020600101805467ffffffffffffffff60a01b1916600160a01b67ffffffffffffffff8716908102919091179091558251908152915185927f1d4f9bbfc9cab89d66e1a1562f2233ccbf1308cb4f63de2ead5787adddb8fa6892908290030190a2505050565b600090815260208190526040902060010154600160a01b900467ffffffffffffffff1690565b60008281526020819052604090205482906001600160a01b0316331461039b57600080fd5b6000838152602081815260409182902060010180546001600160a01b0319166001600160a01b0386169081179091558251908152915185927f335721b01866dc23fbee8b6b2c7b1e14d6f05c28cd35a2c934239f94095602a092908290030190a2505050565b60008281526020819052604090205482906001600160a01b0316331461042657600080fd5b6000838152602081815260409182902080546001600160a01b0319166001600160a01b0386169081179091558251908152915185927fd4735d920b0f87494915f556dd9b54c8f309026070caea5c737245152564d26692908290030190a250505056fea164736f6c634300060c000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "details": "public constructor"
+      }
+    },
+    "title": "ENSRegistry",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 1877,
+        "contract": "src/ens/ENSRegistry.sol:ENSRegistry",
+        "label": "records",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_bytes32,t_struct(Record)1873_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_bytes32,t_struct(Record)1873_storage)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => struct ENSRegistry.Record)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Record)1873_storage"
+      },
+      "t_struct(Record)1873_storage": {
+        "encoding": "inplace",
+        "label": "struct ENSRegistry.Record",
+        "members": [
+          {
+            "astId": 1868,
+            "contract": "src/ens/ENSRegistry.sol:ENSRegistry",
+            "label": "owner",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 1870,
+            "contract": "src/ens/ENSRegistry.sol:ENSRegistry",
+            "label": "resolver",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 1872,
+            "contract": "src/ens/ENSRegistry.sol:ENSRegistry",
+            "label": "ttl",
+            "offset": 20,
+            "slot": "1",
+            "type": "t_uint64"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint64": {
+        "encoding": "inplace",
+        "label": "uint64",
+        "numberOfBytes": "8"
+      }
+    }
+  }
+}
