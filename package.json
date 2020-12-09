@@ -10,7 +10,7 @@
     "lint:ts": "eslint \"{deploy,scripts,test}/**/*.ts\"",
     "lint:ts-fix": "npm run lint -- --fix",
     "lint:sol": "solhint ./src/**/*.sol ./src/**/**/*.sol",
-    "lint": "npm run lint-ts && npm run lint-sol",
+    "lint": "npm run lint:ts && npm run lint:sol",
     "compile": "hardhat compile",
     "build:artifacts": "hardhat run scripts/build-artifacts --network localA",
     "build:dist": "hardhat run scripts/build-dist",
