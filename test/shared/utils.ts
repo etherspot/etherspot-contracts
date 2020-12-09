@@ -4,6 +4,14 @@ import { ProcessedTx } from './interfaces';
 
 const { utils } = ethers;
 
+export function concatHex(...items: string[]): string {
+  return items
+    .filter(item => utils.isHexString(item))
+    .map((item, index) => (index ? item.slice(2) : item))
+    .join('')
+    .toLowerCase();
+}
+
 export function randomAddress(): string {
   let result: string;
 

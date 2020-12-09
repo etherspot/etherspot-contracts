@@ -32,18 +32,20 @@ function createBNCondition(method: keyof BigNumber, description: string) {
       };
     }
 
-    if (received[method as any](expected)) {
-      result = {
-        message: () => `expected ${received} is ${description} ${expected}`,
-        pass: true,
-      };
-    } else {
-      result = {
-        message: () => `expected ${received} is not ${description} ${expected}`,
-        pass: false,
-      };
+    if (!result) {
+      if (received[method as any](expected)) {
+        result = {
+          message: () => `expected ${received} is ${description} ${expected}`,
+          pass: true,
+        };
+      } else {
+        result = {
+          message: () =>
+            `expected ${received} is not ${description} ${expected}`,
+          pass: false,
+        };
+      }
     }
-
     return result;
   };
 }

@@ -1,5 +1,8 @@
 import { utils } from 'ethers';
 
+export const CHAIN_ID = 9999;
+export const GAS_PRICE = 20000000000;
+
 export const NETWORKS: {
   [key: string]: {
     chainId: number;

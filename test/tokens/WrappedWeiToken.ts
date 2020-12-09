@@ -5,7 +5,7 @@ import { BigNumber } from 'ethers';
 
 const { getSigners, provider } = ethers;
 
-describe.only('WrappedWeiToken', () => {
+describe('WrappedWeiToken', () => {
   let signers: SignerWithAddress[] = [];
   let wrappedWeiToken: WrappedWeiToken;
 
@@ -60,7 +60,6 @@ describe.only('WrappedWeiToken', () => {
       );
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBeZeroAddress();
       expect(event.args.to).toBe(owner);
       expect(event.args.value).toBeBN(amount);
@@ -97,7 +96,6 @@ describe.only('WrappedWeiToken', () => {
       amount -= value;
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(owner.address);
       expect(event.args.to).toBeZeroAddress();
       expect(event.args.value).toBeBN(value);
@@ -139,7 +137,6 @@ describe.only('WrappedWeiToken', () => {
       amount -= value;
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(sender.address);
       expect(event.args.to).toBeZeroAddress();
       expect(event.args.value).toBeBN(value);
@@ -176,7 +173,6 @@ describe.only('WrappedWeiToken', () => {
       } = await processTx(wrappedWeiToken.withdrawAll());
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(owner.address);
       expect(event.args.to).toBeZeroAddress();
       expect(event.args.value).toBeBN(amount);
@@ -213,7 +209,6 @@ describe.only('WrappedWeiToken', () => {
       } = await processTx(wrappedWeiToken.withdrawAllTo(owner));
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(sender.address);
       expect(event.args.to).toBeZeroAddress();
       expect(event.args.value).toBeBN(amount);
@@ -267,7 +262,6 @@ describe.only('WrappedWeiToken', () => {
       );
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(senderA.address);
       expect(event.args.to).toBe(recipient);
       expect(event.args.value).toBeBN(amount);
@@ -289,7 +283,6 @@ describe.only('WrappedWeiToken', () => {
       );
 
       expect(event.event).toBe('Transfer');
-
       expect(event.args.from).toBe(senderB.address);
       expect(event.args.to).toBeZeroAddress();
       expect(event.args.value).toBeBN(amount);
