@@ -20,7 +20,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface EnsRegistryInterface extends ethers.utils.Interface {
+interface ENSRegistryInterface extends ethers.utils.Interface {
   functions: {
     "owner(bytes32)": FunctionFragment;
     "resolver(bytes32)": FunctionFragment;
@@ -78,7 +78,7 @@ interface EnsRegistryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class EnsRegistry extends Contract {
+export class ENSRegistry extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -89,7 +89,7 @@ export class EnsRegistry extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: EnsRegistryInterface;
+  interface: ENSRegistryInterface;
 
   functions: {
     owner(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;

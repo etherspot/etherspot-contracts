@@ -1,4 +1,4 @@
-import { Signer, utils, providers } from 'ethers';
+import { Signer, utils, providers, ContractReceipt, BigNumber } from 'ethers';
 
 export interface SignerWithAddress extends Signer {
   address: string;
@@ -18,4 +18,8 @@ export interface SignerWithAddress extends Signer {
   connect(provider: providers.Provider): SignerWithAddress;
 
   toJSON(): string;
+}
+
+export interface ProcessedTx extends ContractReceipt {
+  totalCost: BigNumber;
 }

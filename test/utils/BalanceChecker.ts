@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
 import { BalanceChecker, WrappedWeiToken } from '../../types';
-import { SignerWithAddress, randomAddress } from '../shared';
+import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, constants } = ethers;
 
@@ -30,12 +30,12 @@ describe('AccountOwnerRegistry', () => {
     before(async () => {
       owner = signers.pop();
 
-      const tx = await owner.sendTransaction({
-        to: wrappedWeiToken.address,
-        value: amount,
-      });
-
-      await tx.wait();
+      await processTx(
+        owner.sendTransaction({
+          to: wrappedWeiToken.address,
+          value: amount,
+        }),
+      );
 
       balance = await owner.getBalance();
     });
@@ -49,12 +49,12 @@ describe('AccountOwnerRegistry', () => {
         [wrappedWeiToken.address, randomToken, constants.AddressZero],
       );
 
-      expect(output[0].eq(amount)).toBeTruthy();
-      expect(output[1].eq(0)).toBeTruthy();
-      expect(output[2].eq(balance)).toBeTruthy();
-      expect(output[3].eq(0)).toBeTruthy();
-      expect(output[4].eq(0)).toBeTruthy();
-      expect(output[5].eq(0)).toBeTruthy();
+      expect(output[0]).toBeBN(amount);
+      expect(output[1]).toBeBN(0);
+      expect(output[2]).toBeBN(balance);
+      expect(output[3]).toBeBN(0);
+      expect(output[4]).toBeBN(0);
+      expect(output[5]).toBeBN(0);
     });
   });
 });
