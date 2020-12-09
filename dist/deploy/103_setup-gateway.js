@@ -16,5 +16,4 @@ const func = async (hre) => {
     }, 'initialize', accountOwnerRegistry.address, personalAccountRegistry.address, utils.id(settings_1.TYPED_DATA_DOMAINS.Gateway.name), utils.id(settings_1.TYPED_DATA_DOMAINS.Gateway.version), settings_1.TYPED_DATA_DOMAIN_SALT);
 };
 func.tags = ['setup', 'gateway'];
-func.runAtTheEnd = true;
 module.exports = func;

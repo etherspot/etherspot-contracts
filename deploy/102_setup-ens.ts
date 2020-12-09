@@ -84,6 +84,5 @@ const func: DeployFunction = async hre => {
 };
 
 func.tags = ['setup', 'ens'];
-func.runAtTheEnd = true;
 
 module.exports = func;

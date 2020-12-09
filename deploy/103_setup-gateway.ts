@@ -33,6 +33,5 @@ const func: DeployFunction = async hre => {
 };
 
 func.tags = ['setup', 'gateway'];
-func.runAtTheEnd = true;
 
 module.exports = func;
