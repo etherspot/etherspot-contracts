@@ -11,11 +11,9 @@ describe('AccountProofRegistry', () => {
   before(async () => {
     signers = await getSigners();
 
-    const accountProofRegistryFactory = await ethers.getContractFactory(
-      'AccountProofRegistry',
-    );
-
-    accountProofRegistry = (await accountProofRegistryFactory.deploy()) as AccountProofRegistry;
+    accountProofRegistry = (await ethers
+      .getContractFactory('AccountProofRegistry')
+      .then(factory => factory.deploy())) as AccountProofRegistry;
   });
 
   context('addAccountProof()', () => {

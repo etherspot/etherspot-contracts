@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat';
+import { ethers, artifacts } from 'hardhat';
 import { readdir, readJSON, writeFile } from 'fs-extra';
 import { resolve, join } from 'path';
 import {
@@ -64,6 +64,8 @@ export async function main() {
               typedDataDomainName,
               typedDataDomainVersion,
             };
+
+            contractNames.push(contractName);
           }
 
           contracts[contractName].addresses[chainId] =
@@ -71,12 +73,37 @@ export async function main() {
             KNOWN_CONTRACT_ADDRESSES[contractName][networkName]
               ? KNOWN_CONTRACT_ADDRESSES[contractName][networkName]
               : address;
-
-          contractNames.push(contractName);
         }
       }
     } catch (err) {
       //
+    }
+  }
+
+  const artifactsNames = await artifacts.getAllFullyQualifiedNames();
+
+  for (const artifactsName of artifactsNames) {
+    if (!artifactsName.endsWith('Lib') && !artifactsName.endsWith('Mock')) {
+      const { contractName, abi, bytecode } = await artifacts.readArtifact(
+        artifactsName,
+      );
+
+      if (!contracts[contractName]) {
+        const byteCodeHash = ethers.utils.solidityKeccak256(
+          ['bytes'],
+          [bytecode],
+        );
+
+        contracts[contractName] = {
+          abi,
+          addresses: {},
+          byteCodeHash,
+          typedDataDomainName: null,
+          typedDataDomainVersion: null,
+        };
+
+        contractNames.push(contractName);
+      }
     }
   }
 

@@ -11,11 +11,9 @@ describe('AccountOwnerRegistry', () => {
   before(async () => {
     signers = await getSigners();
 
-    const accountOwnerRegistryFactory = await ethers.getContractFactory(
-      'AccountOwnerRegistry',
-    );
-
-    accountOwnerRegistry = (await accountOwnerRegistryFactory.deploy()) as AccountOwnerRegistry;
+    accountOwnerRegistry = (await ethers
+      .getContractFactory('AccountOwnerRegistry')
+      .then(factory => factory.deploy())) as AccountOwnerRegistry;
   });
 
   context('addAccountOwner()', () => {
