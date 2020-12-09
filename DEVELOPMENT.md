@@ -22,7 +22,6 @@ via `env` variables:
 
 | name | note |
 | --- | --- |
-| `LOG_GAS_USAGE` | log gas usage in tests |
 | `<network config prefix>_PROVIDER_ENDPOINT` | |
 | `<network config prefix>_PROVIDER_PRIVATE_KEY` | |
 
