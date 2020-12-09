@@ -4,7 +4,6 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module',
   },
-  ignorePatterns: ['apps/migrator/src/orm/**/*.ts'],
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
