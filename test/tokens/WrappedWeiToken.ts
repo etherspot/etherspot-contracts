@@ -6,7 +6,7 @@ import { BigNumber } from 'ethers';
 const { getSigners, provider } = ethers;
 
 describe('WrappedWeiToken', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {

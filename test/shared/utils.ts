@@ -1,8 +1,20 @@
 import { ethers } from 'hardhat';
-import { providers } from 'ethers';
-import { ProcessedTx } from './interfaces';
+import { utils, providers, Contract } from 'ethers';
+import {
+  buildTypedData,
+  hashTypedData,
+  TypedData,
+  TypeProperty,
+} from 'ethers-typed-data';
+import {
+  CHAIN_ID,
+  TYPED_DATA_DOMAIN_NAME,
+  TYPED_DATA_DOMAIN_VERSION,
+  TYPED_DATA_DOMAIN_SALT,
+} from './constants';
+import { SignerWithAddress, ProcessedTx, TypedDataFactory } from './interfaces';
 
-const { utils } = ethers;
+const { provider } = ethers;
 
 export function concatHex(...items: string[]): string {
   return items
@@ -31,6 +43,38 @@ export function randomHex32(): string {
   return utils.hexlify(utils.randomBytes(32));
 }
 
+export function createTypedDataFactory<M = any>(
+  contract: Contract,
+  primaryType: string,
+  types: TypeProperty[],
+): TypedDataFactory<M> {
+  return {
+    createTypedData(message: M): TypedData<M> {
+      return buildTypedData(
+        {
+          verifyingContract: contract.address,
+          chainId: CHAIN_ID,
+          name: TYPED_DATA_DOMAIN_NAME,
+          version: TYPED_DATA_DOMAIN_VERSION,
+          salt: TYPED_DATA_DOMAIN_SALT,
+        },
+        primaryType,
+        types,
+        message,
+      );
+    },
+    hashTypedData(message: M): string {
+      return hashTypedData(this.createTypedData(message));
+    },
+    signTypeData(signer: SignerWithAddress, message: M): Promise<string> {
+      return provider.send('eth_signTypedData', [
+        signer.address,
+        this.createTypedData(message),
+      ]);
+    },
+  };
+}
+
 export async function processTx(
   txPromise: Promise<providers.TransactionResponse>,
 ): Promise<ProcessedTx> {
@@ -43,4 +87,10 @@ export async function processTx(
     ...receipt,
     totalCost: gasPrice.mul(gasUsed),
   };
+}
+
+let currentNonce = 0;
+
+export function getNextNonce(): number {
+  return ++currentNonce;
 }

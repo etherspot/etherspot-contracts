@@ -10,7 +10,7 @@ import {
 const { getSigners } = ethers;
 
 describe('GatewayRecipient (using mock)', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let gateway: SignerWithAddress;
   let sender: SignerWithAddress;
   let gatewayRecipientMock: GatewayRecipientMock;

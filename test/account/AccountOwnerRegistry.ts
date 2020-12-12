@@ -5,7 +5,7 @@ import { SignerWithAddress, randomAddress, processTx } from '../shared';
 const { getSigners, provider } = ethers;
 
 describe('AccountOwnerRegistry', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let accountOwnerRegistry: AccountOwnerRegistry;
 
   before(async () => {

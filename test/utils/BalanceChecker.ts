@@ -6,7 +6,7 @@ import { SignerWithAddress, randomAddress, processTx } from '../shared';
 const { getSigners, constants } = ethers;
 
 describe('AccountOwnerRegistry', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let balanceChecker: BalanceChecker;
   let wrappedWeiToken: WrappedWeiToken;
 

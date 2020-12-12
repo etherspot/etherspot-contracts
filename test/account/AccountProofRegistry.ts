@@ -5,7 +5,7 @@ import { SignerWithAddress, randomHex32, processTx } from '../shared';
 const { getSigners, provider } = ethers;
 
 describe('AccountProofRegistry', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let accountProofRegistry: AccountProofRegistry;
 
   before(async () => {
