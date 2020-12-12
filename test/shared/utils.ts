@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { utils, providers, Contract } from 'ethers';
+import { utils, providers, Contract, BigNumberish, BigNumber } from 'ethers';
 import {
   buildTypedData,
   hashTypedData,
@@ -106,4 +106,14 @@ export async function computeAccountAddress(
     utils.solidityKeccak256(['bytes'], [salt.toLowerCase()]),
     utils.solidityKeccak256(['bytes'], [bytecode]),
   );
+}
+
+export async function increaseTime(seconds: BigNumberish = 0): Promise<void> {
+  const value = BigNumber.from(seconds);
+
+  await provider.send('evm_increaseTime', [value.toNumber()]);
+}
+
+export function getNow(additionalSeconds: BigNumberish = 0) {
+  return BigNumber.from(additionalSeconds).add(Math.ceil(Date.now() / 1000));
 }
