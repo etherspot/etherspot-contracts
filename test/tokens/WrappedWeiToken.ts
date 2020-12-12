@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
+import { BigNumber } from 'ethers';
 import { WrappedWeiToken } from '../../types';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
-import { BigNumber } from 'ethers';
 
 const { getSigners, provider } = ethers;
 

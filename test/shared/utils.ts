@@ -16,6 +16,12 @@ import { SignerWithAddress, ProcessedTx, TypedDataFactory } from './interfaces';
 
 const { provider } = ethers;
 
+let currentNonce = 0;
+
+export function getNextNonce(): number {
+  return ++currentNonce;
+}
+
 export function concatHex(...items: string[]): string {
   return items
     .filter(item => utils.isHexString(item))
@@ -89,8 +95,15 @@ export async function processTx(
   };
 }
 
-let currentNonce = 0;
+export async function computeAccountAddress(
+  deployer: Contract,
+  salt: string,
+): Promise<string> {
+  const { bytecode } = await ethers.getContractFactory('Account');
 
-export function getNextNonce(): number {
-  return ++currentNonce;
+  return utils.getCreate2Address(
+    deployer.address,
+    utils.solidityKeccak256(['bytes'], [salt.toLowerCase()]),
+    utils.solidityKeccak256(['bytes'], [bytecode]),
+  );
 }
