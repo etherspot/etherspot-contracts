@@ -1,6 +1,6 @@
 import './hardhat.env';
 import { HardhatUserConfig } from 'hardhat/config';
-import { NETWORKS } from './settings';
+import { CHAIN_ID, GAS_PRICE, NETWORKS } from './settings';
 
 const networks = Object.entries(NETWORKS).reduce(
   (result, [networkName, { chainId, defaultProvider }]) => {
@@ -48,8 +48,8 @@ const config: HardhatUserConfig = {
           'test test test test test test test test test test test junk',
         count: 256,
       },
-      chainId: NETWORKS.localA.chainId,
-      gasPrice: 20000000000,
+      chainId: CHAIN_ID,
+      gasPrice: GAS_PRICE,
     },
     ...networks,
   },

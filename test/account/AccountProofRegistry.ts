@@ -1,11 +1,11 @@
 import { ethers } from 'hardhat';
 import { AccountProofRegistry } from '../../types';
-import { SignerWithAddress, randomHex32 } from '../shared';
+import { SignerWithAddress, randomHex32, processTx } from '../shared';
 
 const { getSigners, provider } = ethers;
 
 describe('AccountProofRegistry', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let accountProofRegistry: AccountProofRegistry;
 
   before(async () => {
@@ -26,11 +26,9 @@ describe('AccountProofRegistry', () => {
     });
 
     it('expect to add account proof', async () => {
-      const tx = await accountProofRegistry.addAccountProof(hash);
-
       const {
         events: [event],
-      } = await tx.wait();
+      } = await processTx(accountProofRegistry.addAccountProof(hash));
 
       expect(event.event).toBe('AccountProofAdded');
       expect(event.args.account).toBe(account.address);
@@ -52,9 +50,7 @@ describe('AccountProofRegistry', () => {
       account = signers.pop();
       accountProofRegistry = accountProofRegistry.connect(account);
 
-      const tx = await accountProofRegistry.addAccountProof(hash);
-
-      await tx.wait();
+      await processTx(accountProofRegistry.addAccountProof(hash));
     });
 
     it("expect to revert when account proof doesn't exist", async () => {
@@ -64,11 +60,9 @@ describe('AccountProofRegistry', () => {
     });
 
     it('expect to remove account proof', async () => {
-      const tx = await accountProofRegistry.removeAccountProof(hash);
-
       const {
         events: [event],
-      } = await tx.wait();
+      } = await processTx(accountProofRegistry.removeAccountProof(hash));
 
       expect(event.event).toBe('AccountProofRemoved');
       expect(event.args.account).toBe(account.address);
@@ -85,17 +79,9 @@ describe('AccountProofRegistry', () => {
       account = signers.pop();
       accountProofRegistry = accountProofRegistry.connect(account);
 
-      let tx = await accountProofRegistry.addAccountProof(hashAdded);
-
-      await tx.wait();
-
-      tx = await accountProofRegistry.addAccountProof(hashRemoved);
-
-      await tx.wait();
-
-      tx = await accountProofRegistry.removeAccountProof(hashRemoved);
-
-      await tx.wait();
+      await processTx(accountProofRegistry.addAccountProof(hashAdded));
+      await processTx(accountProofRegistry.addAccountProof(hashRemoved));
+      await processTx(accountProofRegistry.removeAccountProof(hashRemoved));
     });
 
     it('expect to return true when account proof exists', async () => {
@@ -131,17 +117,12 @@ describe('AccountProofRegistry', () => {
 
       blockNumber = await provider.getBlockNumber();
 
-      let tx = await accountProofRegistry.addAccountProof(hashAdded);
+      await processTx(accountProofRegistry.addAccountProof(hashAdded));
+      await processTx(accountProofRegistry.addAccountProof(hashRemoved));
 
-      await tx.wait();
-
-      tx = await accountProofRegistry.addAccountProof(hashRemoved);
-
-      await tx.wait();
-
-      tx = await accountProofRegistry.removeAccountProof(hashRemoved);
-
-      ({ blockNumber: hashRemovedAt } = await tx.wait());
+      ({ blockNumber: hashRemovedAt } = await processTx(
+        accountProofRegistry.removeAccountProof(hashRemoved),
+      ));
     });
 
     it('expect to return true when account proof exists', async () => {

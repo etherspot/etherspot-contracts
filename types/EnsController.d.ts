@@ -20,7 +20,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface EnsControllerInterface extends ethers.utils.Interface {
+interface ENSControllerInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
     "addNode(bytes32)": FunctionFragment;
@@ -145,7 +145,7 @@ interface EnsControllerInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RegistryChanged"): EventFragment;
 }
 
-export class EnsController extends Contract {
+export class ENSController extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -156,7 +156,7 @@ export class EnsController extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: EnsControllerInterface;
+  interface: ENSControllerInterface;
 
   functions: {
     addGuardian(

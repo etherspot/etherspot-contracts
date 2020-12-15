@@ -10,6 +10,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": false,
+    "esModuleInterop": true,
     "lib": [
       "ES7"
     ]

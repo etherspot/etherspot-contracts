@@ -1,11 +1,11 @@
 import { ethers } from 'hardhat';
 import { AccountOwnerRegistry } from '../../types';
-import { SignerWithAddress, randomAddress } from '../shared';
+import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, provider } = ethers;
 
 describe('AccountOwnerRegistry', () => {
-  let signers: SignerWithAddress[] = [];
+  let signers: SignerWithAddress[];
   let accountOwnerRegistry: AccountOwnerRegistry;
 
   before(async () => {
@@ -26,11 +26,9 @@ describe('AccountOwnerRegistry', () => {
     });
 
     it('expect to add account owner', async () => {
-      const tx = await accountOwnerRegistry.addAccountOwner(owner);
-
       const {
         events: [event],
-      } = await tx.wait();
+      } = await processTx(accountOwnerRegistry.addAccountOwner(owner));
 
       expect(event.event).toBe('AccountOwnerAdded');
       expect(event.args.account).toBe(account.address);
@@ -52,9 +50,7 @@ describe('AccountOwnerRegistry', () => {
       account = signers.pop();
       accountOwnerRegistry = accountOwnerRegistry.connect(account);
 
-      const tx = await accountOwnerRegistry.addAccountOwner(owner);
-
-      await tx.wait();
+      await processTx(accountOwnerRegistry.addAccountOwner(owner));
     });
 
     it("expect to revert when account owner doesn't exist", async () => {
@@ -64,11 +60,9 @@ describe('AccountOwnerRegistry', () => {
     });
 
     it('expect to remove account owner', async () => {
-      const tx = await accountOwnerRegistry.removeAccountOwner(owner);
-
       const {
         events: [event],
-      } = await tx.wait();
+      } = await processTx(accountOwnerRegistry.removeAccountOwner(owner));
 
       expect(event.event).toBe('AccountOwnerRemoved');
       expect(event.args.account).toBe(account.address);
@@ -85,17 +79,9 @@ describe('AccountOwnerRegistry', () => {
       account = signers.pop();
       accountOwnerRegistry = accountOwnerRegistry.connect(account);
 
-      let tx = await accountOwnerRegistry.addAccountOwner(ownerAdded);
-
-      await tx.wait();
-
-      tx = await accountOwnerRegistry.addAccountOwner(ownerRemoved);
-
-      await tx.wait();
-
-      tx = await accountOwnerRegistry.removeAccountOwner(ownerRemoved);
-
-      await tx.wait();
+      await processTx(accountOwnerRegistry.addAccountOwner(ownerAdded));
+      await processTx(accountOwnerRegistry.addAccountOwner(ownerRemoved));
+      await processTx(accountOwnerRegistry.removeAccountOwner(ownerRemoved));
     });
 
     it('expect to return true when account owner exists', async () => {
@@ -133,17 +119,12 @@ describe('AccountOwnerRegistry', () => {
 
       blockNumber = await provider.getBlockNumber();
 
-      let tx = await accountOwnerRegistry.addAccountOwner(ownerAdded);
+      await processTx(accountOwnerRegistry.addAccountOwner(ownerAdded));
+      await processTx(accountOwnerRegistry.addAccountOwner(ownerRemoved));
 
-      await tx.wait();
-
-      tx = await accountOwnerRegistry.addAccountOwner(ownerRemoved);
-
-      await tx.wait();
-
-      tx = await accountOwnerRegistry.removeAccountOwner(ownerRemoved);
-
-      ({ blockNumber: ownerRemovedAt } = await tx.wait());
+      ({ blockNumber: ownerRemovedAt } = await processTx(
+        accountOwnerRegistry.removeAccountOwner(ownerRemoved),
+      ));
     });
 
     it('expect to return true when account owner exists', async () => {
