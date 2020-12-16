@@ -9,29 +9,35 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  if (await read('Gateway', 'isInitialized')) {
-    log('Gateway already initialized');
+  if (await read('PaymentRegistry', 'isInitialized')) {
+    log('PaymentRegistry already initialized');
     return;
   }
 
   const accountOwnerRegistry = await get('AccountOwnerRegistry');
+  const accountProofRegistry = await get('AccountProofRegistry');
   const personalAccountRegistry = await get('PersonalAccountRegistry');
+  const gateway = await get('Gateway');
 
   await execute(
-    'Gateway',
+    'PaymentRegistry',
     {
       from,
       log: true,
     },
     'initialize',
     accountOwnerRegistry.address,
+    accountProofRegistry.address,
     personalAccountRegistry.address,
-    utils.id(typedData.domains.Gateway.name),
-    utils.id(typedData.domains.Gateway.version),
+    0,
+    [],
+    gateway.address,
+    utils.id(typedData.domains.PaymentRegistry.name),
+    utils.id(typedData.domains.PaymentRegistry.version),
     typedData.domainSalt,
   );
 };
 
-func.tags = ['setup', 'gateway'];
+func.tags = ['setup', 'payment'];
 
 module.exports = func;

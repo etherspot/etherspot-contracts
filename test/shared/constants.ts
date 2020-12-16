@@ -1,7 +1,11 @@
+import { config } from 'hardhat';
 import { utils } from 'ethers';
 import { randomHex32 } from './utils';
 
-export { CHAIN_ID, GAS_PRICE } from '../../settings';
+export const {
+  chainId: CHAIN_ID,
+  gasPrice: GAS_PRICE,
+} = config.networks.hardhat;
 
 export const TYPED_DATA_DOMAIN_NAME = 'test';
 export const TYPED_DATA_DOMAIN_NAME_HASH = utils.id(TYPED_DATA_DOMAIN_NAME);

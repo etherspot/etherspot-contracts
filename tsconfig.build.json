@@ -3,13 +3,12 @@
   "compilerOptions": {
     "outDir": "./dist",
     "baseUrl": "./",
-    "declaration": false
+    "declaration": true
   },
   "exclude": [
     "dist",
     "node_modules",
-    "scripts",
-    "test",
-    "types"
+    "typings",
+    "test"
   ]
 }

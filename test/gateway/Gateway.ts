@@ -5,7 +5,7 @@ import {
   Gateway,
   GatewayRecipientMock,
   PersonalAccountRegistry,
-} from '../../types';
+} from '../../typings';
 import {
   GAS_PRICE,
   SignerWithAddress,

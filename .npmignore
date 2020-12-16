@@ -3,4 +3,6 @@
 !/dist
 !/LICENSE
 !/artifacts
+!/deploy
 !/deployments
+!/extensions

@@ -1,40 +1,8 @@
-import './hardhat.env';
+import 'hardhat-deploy';
+import 'hardhat-deploy-ethers';
 import { HardhatUserConfig } from 'hardhat/config';
-import { CHAIN_ID, GAS_PRICE, NETWORKS } from './settings';
-
-const networks = Object.entries(NETWORKS).reduce(
-  (result, [networkName, { chainId, defaultProvider }]) => {
-    const envPrefix = networkName.replace(/([A-Z])+/, '_$1').toUpperCase();
-
-    let url = process.env[`${envPrefix}_PROVIDER_ENDPOINT`];
-
-    if (!url) {
-      switch (defaultProvider) {
-        case 'infura':
-          url = `https://${networkName}.infura.io/v3/${process.env.INFURA_TOKEN}`;
-          break;
-
-        default:
-          url = defaultProvider;
-      }
-    }
-
-    const privateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
-    const accounts = privateKey ? [privateKey] : [];
-
-    return url
-      ? {
-          ...result,
-          [networkName]: {
-            chainId,
-            url,
-            accounts,
-          },
-        }
-      : result;
-  },
-  {},
-);
+import { utils } from 'ethers';
+import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
 
 const config: HardhatUserConfig = {
   namedAccounts: {
@@ -48,10 +16,28 @@ const config: HardhatUserConfig = {
           'test test test test test test test test test test test junk',
         count: 256,
       },
-      chainId: CHAIN_ID,
-      gasPrice: GAS_PRICE,
+      chainId: 192,
+      gasPrice: 20000000000,
     },
-    ...networks,
+    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura'),
+    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura'),
+    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura'),
+    ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura'),
+    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura'),
+    ...createConfigNetwork(NetworkNames.Xdai, 100, 'https://dai.poa.network'),
+    ...createConfigNetwork(NetworkNames.Sokol, 77, 'https://sokol.poa.network'),
+    ...createConfigNetwork(
+      NetworkNames.Bsc,
+      56,
+      'https://bsc-dataseed1.binance.org',
+    ),
+    ...createConfigNetwork(
+      NetworkNames.BscTest,
+      97,
+      'https://data-seed-prebsc-1-s1.binance.org:8545',
+    ),
+    ...createConfigNetwork(NetworkNames.LocalA, 9999, 'http://localhost:8545'),
+    ...createConfigNetwork(NetworkNames.LocalB, 6666, 'http://localhost:9545'),
   },
   solidity: {
     version: '0.6.12',
@@ -73,9 +59,35 @@ const config: HardhatUserConfig = {
     deploy: 'deploy',
     deployments: 'deployments',
   },
-  typechain: {
-    outDir: 'types',
-    target: 'ethers-v5',
+  buildPaths: {
+    artifacts: 'artifacts',
+    dist: 'dist',
+    typings: 'typings',
+  },
+  ens: {
+    internalTopLevelDomains: ['pillar', 'etherspot'],
+  },
+  knownContracts: {
+    [NetworkNames.Mainnet]: {
+      [ContractNames.ENSRegistry]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+    },
+  },
+  typedData: {
+    domains: {
+      Gateway: {
+        name: 'ETHERspot Gateway',
+        version: '1',
+      },
+      ENSController: {
+        name: 'ETHERspot ENS Controller',
+        version: '1',
+      },
+      PaymentRegistry: {
+        name: 'ETHERspot Payment Network',
+        version: '1',
+      },
+    },
+    domainSalt: utils.id('ETHERspot'),
   },
 };
 

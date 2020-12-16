@@ -1,16 +1,11 @@
 import { DeployFunction, Deployment } from 'hardhat-deploy/types';
-import {
-  TYPED_DATA_DOMAINS,
-  TYPED_DATA_DOMAIN_SALT,
-  KNOWN_CONTRACT_ADDRESSES,
-  ENS_TLD,
-} from '../settings';
 
 const func: DeployFunction = async hre => {
   const {
     deployments: { get, log, execute, read },
     ethers: { constants, utils },
     network: { name },
+    config: { knownContracts, typedData, ens },
     getNamedAccounts,
   } = hre;
   const { from } = await getNamedAccounts();
@@ -23,7 +18,7 @@ const func: DeployFunction = async hre => {
   const gateway = await get('Gateway');
 
   let ensRegistry: Deployment;
-  let ensAddress = KNOWN_CONTRACT_ADDRESSES.ENSRegistry[name];
+  let ensAddress = knownContracts[name].ENSRegistry;
 
   if (!ensAddress) {
     ensRegistry = await get('ENSRegistry');
@@ -40,13 +35,13 @@ const func: DeployFunction = async hre => {
     ensAddress,
     [],
     gateway.address,
-    utils.id(TYPED_DATA_DOMAINS.ENSController.name),
-    utils.id(TYPED_DATA_DOMAINS.ENSController.version),
-    TYPED_DATA_DOMAIN_SALT,
+    utils.id(typedData.domains.ENSController.name),
+    utils.id(typedData.domains.ENSController.version),
+    typedData.domainSalt,
   );
 
   if (ensRegistry) {
-    for (const name of ENS_TLD) {
+    for (const name of ens.internalTopLevelDomains) {
       await execute(
         'ENSRegistry',
         {

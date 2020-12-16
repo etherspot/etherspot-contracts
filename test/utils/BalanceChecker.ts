@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
-import { BalanceChecker, WrappedWeiToken } from '../../types';
+import { BalanceChecker, WrappedWeiToken } from '../../typings';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, constants } = ethers;
