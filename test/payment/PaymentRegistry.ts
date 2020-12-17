@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat';
 import { BigNumber, BigNumberish, constants } from 'ethers';
-import { PaymentRegistry, WrappedWeiToken } from '../../types';
+import { PaymentRegistry, WrappedWeiToken } from '../../typings';
 import {
   SignerWithAddress,
   TYPED_DATA_DOMAIN_NAME_HASH,

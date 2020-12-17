@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const settings_1 = require("../settings");
 const func = async (hre) => {
-    const { deployments: { get, log, execute, read }, ethers: { constants, utils }, network: { name }, getNamedAccounts, } = hre;
+    const { deployments: { get, log, execute, read }, ethers: { constants, utils }, network: { name }, config: { knownContracts, typedData, ens }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
     if (await read('ENSController', 'isInitialized')) {
         log('ENSController already initialized');
@@ -11,7 +10,7 @@ const func = async (hre) => {
     const ensController = await get('ENSController');
     const gateway = await get('Gateway');
     let ensRegistry;
-    let ensAddress = settings_1.KNOWN_CONTRACT_ADDRESSES.ENSRegistry[name];
+    let ensAddress = knownContracts[name].ENSRegistry;
     if (!ensAddress) {
         ensRegistry = await get('ENSRegistry');
         ({ address: ensAddress } = ensRegistry);
@@ -19,9 +18,9 @@ const func = async (hre) => {
     await execute('ENSController', {
         from,
         log: true,
-    }, 'initialize', ensAddress, [], gateway.address, utils.id(settings_1.TYPED_DATA_DOMAINS.ENSController.name), utils.id(settings_1.TYPED_DATA_DOMAINS.ENSController.version), settings_1.TYPED_DATA_DOMAIN_SALT);
+    }, 'initialize', ensAddress, [], gateway.address, utils.id(typedData.domains.ENSController.name), utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
     if (ensRegistry) {
-        for (const name of settings_1.ENS_TLD) {
+        for (const name of ens.internalTopLevelDomains) {
             await execute('ENSRegistry', {
                 from,
                 log: true,

@@ -1,10 +1,10 @@
 import { DeployFunction } from 'hardhat-deploy/types';
-import { KNOWN_CONTRACT_ADDRESSES } from '../settings';
 
 const func: DeployFunction = async hre => {
   const {
     deployments: { deploy },
     network: { name },
+    config: { knownContracts },
     getNamedAccounts,
   } = hre;
   const { from } = await getNamedAccounts();
@@ -14,7 +14,7 @@ const func: DeployFunction = async hre => {
     log: true,
   });
 
-  if (!KNOWN_CONTRACT_ADDRESSES.ENSRegistry[name]) {
+  if (!knownContracts[name].ENSController) {
     await deploy('ENSRegistry', {
       from,
       log: true,

@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat';
 import { utils, constants } from 'ethers';
-import { ENSController, ENSRegistry } from '../../types';
+import { ENSController, ENSRegistry } from '../../typings';
 import {
   SignerWithAddress,
   TYPED_DATA_DOMAIN_NAME_HASH,

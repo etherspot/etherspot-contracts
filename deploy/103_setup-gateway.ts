@@ -1,10 +1,10 @@
 import { DeployFunction } from 'hardhat-deploy/types';
-import { TYPED_DATA_DOMAINS, TYPED_DATA_DOMAIN_SALT } from '../settings';
 
 const func: DeployFunction = async hre => {
   const {
     deployments: { get, log, execute, read },
     ethers: { utils },
+    config: { typedData },
     getNamedAccounts,
   } = hre;
   const { from } = await getNamedAccounts();
@@ -26,9 +26,9 @@ const func: DeployFunction = async hre => {
     'initialize',
     accountOwnerRegistry.address,
     personalAccountRegistry.address,
-    utils.id(TYPED_DATA_DOMAINS.Gateway.name),
-    utils.id(TYPED_DATA_DOMAINS.Gateway.version),
-    TYPED_DATA_DOMAIN_SALT,
+    utils.id(typedData.domains.Gateway.name),
+    utils.id(typedData.domains.Gateway.version),
+    typedData.domainSalt,
   );
 };
 

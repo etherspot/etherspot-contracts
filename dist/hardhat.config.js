@@ -1,41 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require("./hardhat.env");
-const settings_1 = require("./settings");
-const networks = Object.entries(settings_1.NETWORKS).reduce((result, [networkName, { chainId, defaultProvider }]) => {
-    const envPrefix = networkName.replace(/([A-Z])+/, '_$1').toUpperCase();
-    let url = process.env[`${envPrefix}_PROVIDER_ENDPOINT`];
-    if (!url) {
-        switch (defaultProvider) {
-            case 'infura':
-                url = `https://${networkName}.infura.io/v3/${process.env.INFURA_TOKEN}`;
-                break;
-            default:
-                url = defaultProvider;
-        }
-    }
-    const privateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
-    const accounts = privateKey ? [privateKey] : [];
-    return url
-        ? Object.assign(Object.assign({}, result), { [networkName]: {
-                chainId,
-                url,
-                accounts,
-            } }) : result;
-}, {});
+require("hardhat-deploy");
+require("hardhat-deploy-ethers");
+const ethers_1 = require("ethers");
+const extensions_1 = require("./extensions");
 const config = {
     namedAccounts: {
         from: 0,
     },
-    networks: Object.assign({ hardhat: {
+    networks: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ hardhat: {
             accounts: {
                 mnemonic: process.env.HARDHAT_MNEMONIC ||
                     'test test test test test test test test test test test junk',
                 count: 256,
             },
-            chainId: settings_1.NETWORKS.localA.chainId,
+            chainId: 192,
             gasPrice: 20000000000,
-        } }, networks),
+        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://dai.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s1.binance.org:8545')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545')),
     solidity: {
         version: '0.6.12',
         settings: {
@@ -56,9 +37,35 @@ const config = {
         deploy: 'deploy',
         deployments: 'deployments',
     },
-    typechain: {
-        outDir: 'types',
-        target: 'ethers-v5',
+    buildPaths: {
+        artifacts: 'artifacts',
+        dist: 'dist',
+        typings: 'typings',
+    },
+    ens: {
+        internalTopLevelDomains: ['pillar', 'etherspot'],
+    },
+    knownContracts: {
+        [extensions_1.NetworkNames.Mainnet]: {
+            [extensions_1.ContractNames.ENSRegistry]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+        },
+    },
+    typedData: {
+        domains: {
+            Gateway: {
+                name: 'ETHERspot Gateway',
+                version: '1',
+            },
+            ENSController: {
+                name: 'ETHERspot ENS Controller',
+                version: '1',
+            },
+            PaymentRegistry: {
+                name: 'ETHERspot Payment Network',
+                version: '1',
+            },
+        },
+        domainSalt: ethers_1.utils.id('ETHERspot'),
     },
 };
 module.exports = config;

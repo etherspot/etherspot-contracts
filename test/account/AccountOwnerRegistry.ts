@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { AccountOwnerRegistry } from '../../types';
+import { AccountOwnerRegistry } from '../../typings';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, provider } = ethers;

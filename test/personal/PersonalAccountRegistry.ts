@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat';
 import { constants } from 'ethers';
-import { PersonalAccountRegistry, WrappedWeiToken } from '../../types';
+import { PersonalAccountRegistry, WrappedWeiToken } from '../../typings';
 import {
   SignerWithAddress,
   randomAddress,

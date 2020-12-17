@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
-import { WrappedWeiToken } from '../../types';
+import { WrappedWeiToken } from '../../typings';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, provider } = ethers;

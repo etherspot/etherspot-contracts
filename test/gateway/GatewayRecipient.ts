@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { GatewayRecipientMock } from '../../types';
+import { GatewayRecipientMock } from '../../typings';
 import {
   SignerWithAddress,
   randomAddress,
