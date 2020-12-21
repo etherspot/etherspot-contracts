@@ -1,11 +1,11 @@
 import { DeployFunction, Deployment } from 'hardhat-deploy/types';
+import { constants, utils } from 'ethers';
 
 const func: DeployFunction = async hre => {
   const {
     deployments: { get, log, execute, read },
-    ethers: { constants, utils },
     network: { name },
-    config: { knownContracts, typedData, ens },
+    config: { typedData, ens, knownContracts },
     getNamedAccounts,
   } = hre;
   const { from } = await getNamedAccounts();
@@ -14,15 +14,16 @@ const func: DeployFunction = async hre => {
     log('ENSController already initialized');
     return;
   }
+
   const ensController = await get('ENSController');
   const gateway = await get('Gateway');
 
+  let ensRegistryAddress = knownContracts?.[name]?.ENSRegistry;
   let ensRegistry: Deployment;
-  let ensAddress = knownContracts[name].ENSRegistry;
 
-  if (!ensAddress) {
+  if (!ensRegistryAddress) {
     ensRegistry = await get('ENSRegistry');
-    ({ address: ensAddress } = ensRegistry);
+    ({ address: ensRegistryAddress } = ensRegistry);
   }
 
   await execute(
@@ -32,7 +33,7 @@ const func: DeployFunction = async hre => {
       log: true,
     },
     'initialize',
-    ensAddress,
+    ensRegistryAddress,
     [],
     gateway.address,
     utils.id(typedData.domains.ENSController.name),
@@ -40,7 +41,7 @@ const func: DeployFunction = async hre => {
     typedData.domainSalt,
   );
 
-  if (ensRegistry) {
+  if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
     for (const name of ens.internalTopLevelDomains) {
       await execute(
         'ENSRegistry',

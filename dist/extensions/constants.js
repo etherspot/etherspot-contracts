@@ -17,8 +17,11 @@ var NetworkNames;
 })(NetworkNames = exports.NetworkNames || (exports.NetworkNames = {}));
 var ContractNames;
 (function (ContractNames) {
-    ContractNames["Gateway"] = "Gateway";
+    ContractNames["AccountOwnerRegistry"] = "AccountOwnerRegistry";
+    ContractNames["AccountProofRegistry"] = "AccountProofRegistry";
     ContractNames["ENSController"] = "ENSController";
     ContractNames["ENSRegistry"] = "ENSRegistry";
+    ContractNames["Gateway"] = "Gateway";
     ContractNames["PaymentRegistry"] = "PaymentRegistry";
+    ContractNames["PersonalAccountRegistry"] = "PersonalAccountRegistry";
 })(ContractNames = exports.ContractNames || (exports.ContractNames = {}));

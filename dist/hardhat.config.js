@@ -2,15 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("hardhat-deploy");
 require("hardhat-deploy-ethers");
+require("hardhat-gas-reporter");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
+const { HARDHAT_MNEMONIC } = process.env;
 const config = {
     namedAccounts: {
         from: 0,
     },
     networks: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ hardhat: {
             accounts: {
-                mnemonic: process.env.HARDHAT_MNEMONIC ||
+                mnemonic: HARDHAT_MNEMONIC ||
                     'test test test test test test test test test test test junk',
                 count: 256,
             },
@@ -66,6 +68,9 @@ const config = {
             },
         },
         domainSalt: ethers_1.utils.id('ETHERspot'),
+    },
+    gasReporter: {
+        enabled: false,
     },
 };
 module.exports = config;

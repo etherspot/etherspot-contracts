@@ -12,6 +12,11 @@ interface CustomMatchers<T> extends Matchers<T> {
     resolves: CustomMatchers<Promise<T>>;
     rejects: CustomMatchers<Promise<T>>;
 }
+declare global {
+    export const expect: {
+        <T = unknown>(actual: T): CustomMatchers<T>;
+    };
+}
 declare module 'hardhat/types/runtime' {
     interface HardhatRuntimeEnvironment {
         expect?: {
@@ -26,7 +31,7 @@ declare module 'hardhat/types/config' {
         typings?: string;
     }
     interface ENSConfig {
-        internalTopLevelDomains: string[];
+        internalTopLevelDomains?: string[];
     }
     interface TypedDataConfig {
         domains: {
@@ -54,10 +59,5 @@ declare module 'hardhat/types/config' {
         knownContracts: KnownContractsConfig;
         typedData: TypedDataConfig;
     }
-}
-declare global {
-    export const expect: {
-        <T = unknown>(actual: T): CustomMatchers<T>;
-    };
 }
 export {};

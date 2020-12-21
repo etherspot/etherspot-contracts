@@ -1,9 +1,9 @@
 import { DeployFunction } from 'hardhat-deploy/types';
+import { utils } from 'ethers';
 
 const func: DeployFunction = async hre => {
   const {
     deployments: { get, log, execute, read },
-    ethers: { utils },
     config: { typedData },
     getNamedAccounts,
   } = hre;

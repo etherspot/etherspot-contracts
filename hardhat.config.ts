@@ -1,8 +1,11 @@
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
+import 'hardhat-gas-reporter';
 import { HardhatUserConfig } from 'hardhat/config';
 import { utils } from 'ethers';
 import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
+
+const { HARDHAT_MNEMONIC } = process.env;
 
 const config: HardhatUserConfig = {
   namedAccounts: {
@@ -12,7 +15,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: {
         mnemonic:
-          process.env.HARDHAT_MNEMONIC ||
+          HARDHAT_MNEMONIC ||
           'test test test test test test test test test test test junk',
         count: 256,
       },
@@ -88,6 +91,9 @@ const config: HardhatUserConfig = {
       },
     },
     domainSalt: utils.id('ETHERspot'),
+  },
+  gasReporter: {
+    enabled: false,
   },
 };
 

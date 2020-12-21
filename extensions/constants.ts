@@ -13,8 +13,11 @@ export enum NetworkNames {
 }
 
 export enum ContractNames {
-  Gateway = 'Gateway',
+  AccountOwnerRegistry = 'AccountOwnerRegistry',
+  AccountProofRegistry = 'AccountProofRegistry',
   ENSController = 'ENSController',
   ENSRegistry = 'ENSRegistry',
+  Gateway = 'Gateway',
   PaymentRegistry = 'PaymentRegistry',
+  PersonalAccountRegistry = 'PersonalAccountRegistry',
 }

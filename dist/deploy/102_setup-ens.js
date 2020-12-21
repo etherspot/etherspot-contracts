@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ethers_1 = require("ethers");
 const func = async (hre) => {
-    const { deployments: { get, log, execute, read }, ethers: { constants, utils }, network: { name }, config: { knownContracts, typedData, ens }, getNamedAccounts, } = hre;
+    var _a;
+    const { deployments: { get, log, execute, read }, network: { name }, config: { typedData, ens, knownContracts }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
     if (await read('ENSController', 'isInitialized')) {
         log('ENSController already initialized');
@@ -9,30 +11,30 @@ const func = async (hre) => {
     }
     const ensController = await get('ENSController');
     const gateway = await get('Gateway');
+    let ensRegistryAddress = (_a = knownContracts === null || knownContracts === void 0 ? void 0 : knownContracts[name]) === null || _a === void 0 ? void 0 : _a.ENSRegistry;
     let ensRegistry;
-    let ensAddress = knownContracts[name].ENSRegistry;
-    if (!ensAddress) {
+    if (!ensRegistryAddress) {
         ensRegistry = await get('ENSRegistry');
-        ({ address: ensAddress } = ensRegistry);
+        ({ address: ensRegistryAddress } = ensRegistry);
     }
     await execute('ENSController', {
         from,
         log: true,
-    }, 'initialize', ensAddress, [], gateway.address, utils.id(typedData.domains.ENSController.name), utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
-    if (ensRegistry) {
+    }, 'initialize', ensRegistryAddress, [], gateway.address, ethers_1.utils.id(typedData.domains.ENSController.name), ethers_1.utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
+    if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
         for (const name of ens.internalTopLevelDomains) {
             await execute('ENSRegistry', {
                 from,
                 log: true,
-            }, 'setSubnodeOwner', constants.HashZero, utils.id(name), from);
+            }, 'setSubnodeOwner', ethers_1.constants.HashZero, ethers_1.utils.id(name), from);
             await execute('ENSRegistry', {
                 from,
                 log: true,
-            }, 'setOwner', utils.namehash(name), ensController.address);
+            }, 'setOwner', ethers_1.utils.namehash(name), ensController.address);
             await execute('ENSController', {
                 from,
                 log: true,
-            }, 'addNode', utils.namehash(name));
+            }, 'addNode', ethers_1.utils.namehash(name));
         }
     }
 };

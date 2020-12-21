@@ -9,12 +9,14 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
+  const ensRegistryAddress = knownContracts?.[name]?.ENSRegistry;
+
   await deploy('ENSController', {
     from,
     log: true,
   });
 
-  if (!knownContracts[name].ENSController) {
+  if (!ensRegistryAddress) {
     await deploy('ENSRegistry', {
       from,
       log: true,
