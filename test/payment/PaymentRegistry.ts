@@ -19,7 +19,7 @@ import { computeChannelHash } from './utils';
 
 const { getSigners, provider } = ethers;
 
-describe.only('PaymentRegistry', () => {
+describe('PaymentRegistry', () => {
   const depositExitLockPeriod = BigNumber.from(3); // 3 sec.
   let signers: SignerWithAddress[];
   let guardian: SignerWithAddress;
@@ -849,6 +849,61 @@ describe.only('PaymentRegistry', () => {
     });
   });
 
+  context('getDepositWithdrawnAmount()', () => {
+    const amount = 200;
+    let owner: SignerWithAddress;
+
+    before(async () => {
+      owner = signers.pop();
+      const ownerDeposit = await paymentRegistry.computeDepositAccountAddress(
+        owner.address,
+      );
+      paymentRegistry = paymentRegistry.connect(owner);
+
+      await processTx(
+        owner.sendTransaction({
+          to: ownerDeposit,
+          value: amount,
+        }),
+      );
+
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount,
+        },
+      );
+
+      await processTx(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          amount,
+          guardianSignature,
+        ),
+      );
+    });
+
+    it('expect to return correct amount', async () => {
+      await expect(
+        paymentRegistry.getDepositWithdrawnAmount(
+          owner.address,
+          constants.AddressZero,
+        ),
+      ).resolves.toBeBN(amount);
+    });
+
+    it('expect to return 0 for random account', async () => {
+      await expect(
+        paymentRegistry.getDepositWithdrawnAmount(
+          randomAddress(),
+          constants.AddressZero,
+        ),
+      ).resolves.toBeBN(0);
+    });
+  });
+
   context('getPaymentChannelCommittedAmount()', () => {
     const amount = 1000;
     const uid = randomHex32();
@@ -944,6 +999,24 @@ describe.only('PaymentRegistry', () => {
           uid,
         ),
       ).resolves.toBe(computeChannelHash(sender, recipient, token, uid));
+    });
+  });
+
+  context('hashDepositWithdrawal()', () => {
+    it('expect to return correct hash', async () => {
+      const message = {
+        owner: randomAddress(),
+        token: randomAddress(),
+        amount: 200,
+      };
+
+      const typedDataHash = depositWithdrawalTypedDataFactory.hashTypedData(
+        message,
+      );
+
+      await expect(
+        paymentRegistry.hashDepositWithdrawal(message),
+      ).resolves.toBe(typedDataHash);
     });
   });
 
