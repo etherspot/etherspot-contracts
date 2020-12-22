@@ -49,7 +49,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
   uint256 private constant DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD = 28 days;
   bytes32 private constant DEPOSIT_WITHDRAWAL_TYPE_HASH = keccak256(
-    "DepositWithdrawal(address owner,address owner,uint256 amount)"
+    "DepositWithdrawal(address owner,address token,uint256 amount)"
   );
   bytes32 private constant PAYMENT_CHANNEL_COMMIT_TYPE_HASH = keccak256(
     "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
@@ -287,6 +287,13 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       token,
       value
     );
+
+    emit DepositWithdrawn(
+      deposits[owner].account,
+      owner,
+      token,
+      amount
+    );
   }
 
   function commitPaymentChannelAndWithdraw(
@@ -434,6 +441,17 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     returns (uint256)
   {
     return paymentChannels[hash].committedAmount;
+  }
+
+  function getDepositWithdrawnAmount(
+    address owner,
+    address token
+  )
+    external
+    view
+    returns (uint256)
+  {
+    return deposits[owner].withdrawnAmount[token];
   }
 
   // external functions (pure)
