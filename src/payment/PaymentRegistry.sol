@@ -249,6 +249,46 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  function withdrawDeposit(
+    address token,
+    uint256 amount,
+    bytes calldata guardianSignature
+  )
+    external
+  {
+    address owner = _getContextAccount();
+    uint256 value = amount.sub(deposits[owner].withdrawnAmount[token]);
+
+    require(
+      value > 0,
+      "PaymentRegistry: invalid amount"
+    );
+
+    bytes32 messageHash = _hashPrimaryTypedData(
+      _hashTypedData(
+        owner,
+        token,
+        amount
+      )
+    );
+
+    require(
+      _verifyGuardianSignature(messageHash, guardianSignature),
+      "PaymentRegistry: invalid guardian signature"
+    );
+
+    deposits[owner].withdrawnAmount[token] = amount;
+
+    _verifyDepositExitOrDeployAccount(owner, token);
+
+    _transferFromDeposit(
+      deposits[owner].account,
+      owner,
+      token,
+      value
+    );
+  }
+
   function commitPaymentChannelAndWithdraw(
     address sender,
     address token,
@@ -473,6 +513,25 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     }
   }
 
+  function _verifyDepositExitOrDeployAccount(
+    address owner,
+    address token
+  )
+    private
+  {
+    if (deposits[owner].exitLockedUntil[token] > 0) {
+      deposits[owner].exitLockedUntil[token] = 0;
+
+      emit DepositExitRejected(
+        deposits[owner].account,
+        owner,
+        token
+      );
+    } else {
+      _deployDepositAccount(owner);
+    }
+  }
+
   function _commitPaymentChannel(
     address sender,
     address recipient,
@@ -536,17 +595,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     paymentChannels[hash].committedAmount = amount;
 
-    if (deposits[sender].exitLockedUntil[token] > 0) {
-      deposits[sender].exitLockedUntil[token] = 0;
-
-      emit DepositExitRejected(
-        deposits[sender].account,
-        sender,
-        token
-      );
-    } else {
-      _deployDepositAccount(sender);
-    }
+    _verifyDepositExitOrDeployAccount(sender, token);
 
     depositAccount = deposits[sender].account;
 
