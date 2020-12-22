@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.6.12;
 
 library SafeMathLib {
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
