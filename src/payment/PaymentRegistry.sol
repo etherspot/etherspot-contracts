@@ -24,11 +24,18 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
   struct Deposit {
     address account;
-    mapping(address => uint256) withdrawalLockedUntil;
+    mapping(address => uint256) withdrawnAmount;
+    mapping(address => uint256) exitLockedUntil;
   }
 
   struct PaymentChannel {
     uint256 committedAmount;
+  }
+
+  struct DepositWithdrawal {
+    address owner;
+    address token;
+    uint256 amount;
   }
 
   struct PaymentChannelCommit {
@@ -40,15 +47,20 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 amount;
   }
 
+  uint256 private constant DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD = 30 days;
+  bytes32 private constant DEPOSIT_WITHDRAWAL_TYPE_HASH = keccak256(
+    "DepositWithdrawal(address owner,address owner,uint256 amount)"
+  );
   bytes32 private constant PAYMENT_CHANNEL_COMMIT_TYPE_HASH = keccak256(
     "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
   );
-  uint256 private constant DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD = 30 days;
 
   AccountOwnerRegistry public accountOwnerRegistry;
   AccountProofRegistry public accountProofRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
-  uint256 public depositWithdrawalLockPeriod;
+
+  uint256 public depositExitLockPeriod;
+
   mapping(address => Deposit) private deposits;
   mapping(bytes32 => PaymentChannel) private paymentChannels;
 
@@ -59,14 +71,21 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     address owner
   );
 
-  event DepositWithdrawalRequested(
+  event DepositExitRequested(
     address depositAccount,
     address owner,
     address token,
     uint256 lockedUntil
   );
 
-  event DepositWithdrawalRejected(
+  event DepositExitCompleted(
+    address depositAccount,
+    address owner,
+    address token,
+    uint256 amount
+  );
+
+  event DepositExitRejected(
     address depositAccount,
     address owner,
     address token
@@ -115,7 +134,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     AccountOwnerRegistry accountOwnerRegistry_,
     AccountProofRegistry accountProofRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
-    uint256 depositWithdrawalLockPeriod_,
+    uint256 depositExitLockPeriod_,
     address[] calldata guardians_,
     address gateway_,
     bytes32 typedDataDomainNameHash,
@@ -129,10 +148,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     accountProofRegistry = accountProofRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
-    if (depositWithdrawalLockPeriod_ == 0) {
-      depositWithdrawalLockPeriod = DEFAULT_DEPOSIT_WITHDRAWAL_LOCK_PERIOD;
+    if (depositExitLockPeriod_ == 0) {
+      depositExitLockPeriod = DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD;
     } else {
-      depositWithdrawalLockPeriod = depositWithdrawalLockPeriod_;
+      depositExitLockPeriod = depositExitLockPeriod_;
     }
 
     // Guarded
@@ -157,56 +176,76 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     _deployDepositAccount(owner);
   }
 
-  function withdrawDeposit(
+  function requestDepositExit(
     address token
   )
     external
   {
     address owner = _getContextAccount();
-    uint256 lockedUntil = deposits[owner].withdrawalLockedUntil[token];
+    uint256 lockedUntil = deposits[owner].exitLockedUntil[token];
 
-    /* solhint-disable not-rely-on-time */
+    require(
+      lockedUntil == 0,
+      "PaymentRegistry: deposit exit already requested"
+    );
 
-    if (lockedUntil != 0 && lockedUntil <= now) {
-      deposits[owner].withdrawalLockedUntil[token] = 0;
+    _deployDepositAccount(owner);
 
-      address depositAccount = deposits[owner].account;
-      uint256 depositValue;
+    lockedUntil = now.add(depositExitLockPeriod);
 
-      if (token == address(0)) {
-        depositValue = depositAccount.balance;
-      } else {
-        depositValue = ERC20Token(token).balanceOf(depositAccount);
-      }
+    deposits[owner].exitLockedUntil[token] = lockedUntil;
 
-      _transferFromDeposit(
-        depositAccount,
-        owner,
-        token,
-        depositValue
-      );
+    emit DepositExitRequested(
+      deposits[owner].account,
+      owner,
+      token,
+      lockedUntil
+    );
+  }
 
-      emit DepositWithdrawn(
-        depositAccount,
-        owner,
-        token,
-        depositValue
-      );
+  function processDepositExit(
+    address token
+  )
+    external
+  {
+    address owner = _getContextAccount();
+    uint256 lockedUntil = deposits[owner].exitLockedUntil[token];
+
+    require(
+      lockedUntil != 0,
+      "PaymentRegistry: deposit exit not requested"
+    );
+
+    require(
+      // solhint-disable-next-line not-rely-on-time
+      lockedUntil <= now,
+      "PaymentRegistry: deposit exit locked"
+    );
+
+    deposits[owner].exitLockedUntil[token] = 0;
+
+    address depositAccount = deposits[owner].account;
+    uint256 depositValue;
+
+    if (token == address(0)) {
+      depositValue = depositAccount.balance;
     } else {
-      _deployDepositAccount(owner);
-
-      lockedUntil = now.add(depositWithdrawalLockPeriod);
-
-      deposits[owner].withdrawalLockedUntil[token] = lockedUntil;
-
-      emit DepositWithdrawalRequested(
-        deposits[owner].account,
-        owner,
-        token,
-        lockedUntil
-      );
+      depositValue = ERC20Token(token).balanceOf(depositAccount);
     }
-    /* solhint-enable not-rely-on-time */
+
+    _transferFromDeposit(
+      depositAccount,
+      owner,
+      token,
+      depositValue
+    );
+
+    emit DepositExitCompleted(
+      depositAccount,
+      owner,
+      token,
+      depositValue
+    );
   }
 
   function commitPaymentChannelAndWithdraw(
@@ -335,7 +374,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     return deposits[owner].account != address(0);
   }
 
-  function getDepositWithdrawalLockedUntil(
+  function getDepositExitLockedUntil(
     address owner,
     address token
   )
@@ -343,7 +382,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     view
     returns (uint256)
   {
-    return deposits[owner].withdrawalLockedUntil[token];
+    return deposits[owner].exitLockedUntil[token];
   }
 
   function getPaymentChannelCommittedAmount(
@@ -480,10 +519,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     paymentChannels[hash].committedAmount = amount;
 
-    if (deposits[sender].withdrawalLockedUntil[token] > 0) {
-      deposits[sender].withdrawalLockedUntil[token] = 0;
+    if (deposits[sender].exitLockedUntil[token] > 0) {
+      deposits[sender].exitLockedUntil[token] = 0;
 
-      emit DepositWithdrawalRejected(
+      emit DepositExitRejected(
         deposits[sender].account,
         sender,
         token
