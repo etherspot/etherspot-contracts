@@ -47,7 +47,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 amount;
   }
 
-  uint256 private constant DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD = 30 days;
+  uint256 private constant DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD = 28 days;
   bytes32 private constant DEPOSIT_WITHDRAWAL_TYPE_HASH = keccak256(
     "DepositWithdrawal(address owner,address owner,uint256 amount)"
   );
@@ -191,6 +191,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     _deployDepositAccount(owner);
 
+    // solhint-disable-next-line not-rely-on-time
     lockedUntil = now.add(depositExitLockPeriod);
 
     deposits[owner].exitLockedUntil[token] = lockedUntil;
@@ -416,6 +417,22 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   // public functions (views)
+
+  function hashDepositWithdrawal(
+    DepositWithdrawal memory depositWithdrawal
+  )
+    public
+    view
+    returns (bytes32)
+  {
+    return _hashPrimaryTypedData(
+      _hashTypedData(
+        depositWithdrawal.owner,
+        depositWithdrawal.token,
+        depositWithdrawal.amount
+      )
+    );
+  }
 
   function hashPaymentChannelCommit(
     PaymentChannelCommit memory paymentChannelCommit
@@ -658,6 +675,23 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   function _hashTypedData(
+    address owner,
+    address token,
+    uint256 amount
+  )
+    private
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encode(
+      DEPOSIT_WITHDRAWAL_TYPE_HASH,
+      owner,
+      token,
+      amount
+    ));
+  }
+
+  function _hashTypedData(
     address sender,
     address recipient,
     address token,
@@ -670,13 +704,13 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     returns (bytes32)
   {
     return keccak256(abi.encode(
-      PAYMENT_CHANNEL_COMMIT_TYPE_HASH,
-      sender,
-      recipient,
-      token,
-      uid,
-      blockNumber,
-      amount
-    ));
+        PAYMENT_CHANNEL_COMMIT_TYPE_HASH,
+        sender,
+        recipient,
+        token,
+        uid,
+        blockNumber,
+        amount
+      ));
   }
 }

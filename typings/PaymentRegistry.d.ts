@@ -35,6 +35,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "gateway()": FunctionFragment;
     "getDepositExitLockedUntil(address,address)": FunctionFragment;
     "getPaymentChannelCommittedAmount(bytes32)": FunctionFragment;
+    "hashDepositWithdrawal(tuple)": FunctionFragment;
     "hashPaymentChannelCommit(tuple)": FunctionFragment;
     "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
     "isDepositAccountDeployed(address)": FunctionFragment;
@@ -118,6 +119,10 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "getPaymentChannelCommittedAmount",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hashDepositWithdrawal",
+    values: [{ owner: string; token: string; amount: BigNumberish }]
   ): string;
   encodeFunctionData(
     functionFragment: "hashPaymentChannelCommit",
@@ -227,6 +232,10 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getPaymentChannelCommittedAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hashDepositWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -462,6 +471,16 @@ export class PaymentRegistry extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     hashPaymentChannelCommit(
       paymentChannelCommit: {
@@ -737,6 +756,16 @@ export class PaymentRegistry extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  hashDepositWithdrawal(
+    depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "hashDepositWithdrawal(tuple)"(
+    depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   hashPaymentChannelCommit(
     paymentChannelCommit: {
       sender: string;
@@ -1007,6 +1036,16 @@ export class PaymentRegistry extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     hashPaymentChannelCommit(
       paymentChannelCommit: {
@@ -1327,6 +1366,16 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     hashPaymentChannelCommit(
       paymentChannelCommit: {
         sender: string;
@@ -1608,6 +1657,16 @@ export class PaymentRegistry extends Contract {
 
     "getPaymentChannelCommittedAmount(bytes32)"(
       hash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
