@@ -74,7 +74,8 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     external
   {
     require(
-      consumers[msg.sender]
+      consumers[msg.sender],
+      "WrappedWeiToken: consumer doesn't exist"
     );
 
     consumers[msg.sender] = false;
@@ -159,7 +160,8 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     private
   {
     require(
-      !consumers[consumer]
+      !consumers[consumer],
+      "WrappedWeiToken: consumer already exists"
     );
 
     consumers[consumer] = true;
@@ -178,7 +180,8 @@ contract WrappedWeiToken is Initializable, ERC20Token {
 
     require(
       // solhint-disable-next-line check-send-result
-      payable(to).send(value)
+      payable(to).send(value),
+      "WrappedWeiToken: transaction reverted"
     );
   }
 }

@@ -119,7 +119,8 @@ contract Gateway is Initializable, TypedDataContainer {
     public
   {
     require(
-      nonce > accountNonce[account]
+      nonce > accountNonce[account],
+      "Gateway: nonce is lower than current account nonce"
     );
 
     address sender = _hashPrimaryTypedData(
@@ -150,7 +151,8 @@ contract Gateway is Initializable, TypedDataContainer {
     public
   {
     require(
-      nonce > accountNonce[account]
+      nonce > accountNonce[account],
+      "Gateway: nonce is lower than current account nonce"
     );
 
     address sender = _hashPrimaryTypedData(
@@ -179,7 +181,8 @@ contract Gateway is Initializable, TypedDataContainer {
     public
   {
     require(
-      batches.length > 0
+      batches.length > 0,
+      "Gateway: cannot delegate empty batches"
     );
 
     for (uint256 i = 0; i < batches.length; i++) {
@@ -188,7 +191,8 @@ contract Gateway is Initializable, TypedDataContainer {
 
       if (revertOnFailure) {
         require(
-          succeeded
+          succeeded,
+          "Gateway: batch transaction reverted"
         );
       }
 
@@ -258,20 +262,23 @@ contract Gateway is Initializable, TypedDataContainer {
     private
   {
     require(
-      account != address(0)
-    );
-
-    require(
-      to.length > 0
+      account != address(0),
+      "Gateway: cannot send from 0x0 account"
     );
     require(
-      data.length == to.length
+      to.length > 0,
+      "Gateway: cannot send empty batch"
+    );
+    require(
+      data.length == to.length,
+      "Gateway: invalid batch"
     );
 
     if (account != sender) {
       require(
         personalAccountRegistry.verifyAccountOwner(account, sender) ||
-        accountOwnerRegistry.verifyAccountOwner(account, sender)
+        accountOwnerRegistry.verifyAccountOwner(account, sender),
+        "Gateway: sender is not the account owner"
       );
     }
 
@@ -279,14 +286,16 @@ contract Gateway is Initializable, TypedDataContainer {
 
     for (uint256 i = 0; i < data.length; i++) {
       require(
-        to[i] != address(0)
+        to[i] != address(0),
+        "Gateway: cannot send to 0x0"
       );
 
       // solhint-disable-next-line avoid-low-level-calls
       (succeeded,) = to[i].call(abi.encodePacked(data[i], account, sender));
 
       require(
-        succeeded
+        succeeded,
+        "Gateway: batch transaction reverted"
       );
     }
   }

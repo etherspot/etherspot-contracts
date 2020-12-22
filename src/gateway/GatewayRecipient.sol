@@ -91,7 +91,8 @@ contract GatewayRecipient {
 
     if (msg.sender == gateway) {
       require(
-        msg.data.length >= 44
+        msg.data.length >= 44,
+        "GatewayRecipient: invalid msg.data"
       );
 
       result = true;

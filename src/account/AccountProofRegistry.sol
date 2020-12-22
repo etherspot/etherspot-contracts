@@ -32,7 +32,8 @@ contract AccountProofRegistry {
     external
   {
     require(
-      !accountProofs[msg.sender][hash].verifyAtCurrentBlock()
+      !accountProofs[msg.sender][hash].verifyAtCurrentBlock(),
+      "AccountProofRegistry: proof already exists"
     );
 
     accountProofs[msg.sender][hash].added = true;
@@ -50,7 +51,8 @@ contract AccountProofRegistry {
     external
   {
     require(
-      accountProofs[msg.sender][hash].verifyAtCurrentBlock()
+      accountProofs[msg.sender][hash].verifyAtCurrentBlock(),
+      "AccountProofRegistry: proof doesn't exist"
     );
 
     accountProofs[msg.sender][hash].removedAtBlockNumber = block.number;

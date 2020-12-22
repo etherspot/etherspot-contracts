@@ -11,7 +11,8 @@ contract Controlled {
 
   modifier onlyController() {
     require(
-      msg.sender == controller
+      msg.sender == controller,
+      "Controlled: msg.sender is not the controller"
     );
 
     _;

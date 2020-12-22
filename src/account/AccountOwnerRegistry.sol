@@ -32,7 +32,13 @@ contract AccountOwnerRegistry {
     external
   {
     require(
-      !accountOwners[msg.sender][owner].verifyAtCurrentBlock()
+      owner != address(0),
+      "AccountOwnerRegistry: cannot add 0x0 owner"
+    );
+
+    require(
+      !accountOwners[msg.sender][owner].verifyAtCurrentBlock(),
+      "AccountOwnerRegistry: owner already exists"
     );
 
     accountOwners[msg.sender][owner].added = true;
@@ -50,7 +56,8 @@ contract AccountOwnerRegistry {
     external
   {
     require(
-      accountOwners[msg.sender][owner].verifyAtCurrentBlock()
+      accountOwners[msg.sender][owner].verifyAtCurrentBlock(),
+      "AccountOwnerRegistry: owner doesn't exist"
     );
 
     accountOwners[msg.sender][owner].removedAtBlockNumber = block.number;
