@@ -81,11 +81,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     _verifySender(account);
 
     require(
-      owner != address(0)
+      owner != address(0),
+      "PersonalAccountRegistry: cannot add 0x0 owner"
     );
 
     require(
-      !accounts[account].owners[owner].verifyAtCurrentBlock()
+      !accounts[account].owners[owner].verifyAtCurrentBlock(),
+      "PersonalAccountRegistry: owner already exists"
     );
 
     accounts[account].owners[owner].added = true;
@@ -106,11 +108,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     address sender = _verifySender(account);
 
     require(
-      owner != sender
+      owner != sender,
+      "PersonalAccountRegistry: cannot remove self"
     );
 
     require(
-      accounts[account].owners[owner].verifyAtCurrentBlock()
+      accounts[account].owners[owner].verifyAtCurrentBlock(),
+      "PersonalAccountRegistry: owner doesn't exist"
     );
 
     accounts[account].owners[owner].removedAtBlockNumber = block.number;
@@ -161,6 +165,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     _deployAccount(account);
 
     /* solhint-disable avoid-tx-origin */
+
     if (token == address(0)) {
       _executeAccountTransaction(
         account,
@@ -182,7 +187,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
       if (response.length > 0) {
         require(
-          abi.decode(response, (bool))
+          abi.decode(response, (bool)),
+          "PersonalAccountRegistry: ERC20Token transfer reverted"
         );
       }
     }
@@ -262,11 +268,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
     if (accounts[account].owners[sender].added) {
       require(
-        accounts[account].owners[sender].removedAtBlockNumber == 0
+        accounts[account].owners[sender].removedAtBlockNumber == 0,
+        "PersonalAccountRegistry: sender is not the account owner"
       );
     } else {
       require(
-        accounts[account].salt == 0
+        accounts[account].salt == 0,
+        "PersonalAccountRegistry: sender is not the account owner"
       );
 
       bytes32 salt = keccak256(
@@ -274,7 +282,8 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
       );
 
       require(
-        account == _computeAccountAddress(salt)
+        account == _computeAccountAddress(salt),
+        "PersonalAccountRegistry: sender is not the account owner"
       );
 
       accounts[account].salt = salt;

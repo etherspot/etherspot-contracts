@@ -15,7 +15,8 @@ library BytesLib {
     address result;
 
     require(
-      data.length == 20
+      data.length == 20,
+      "BytesLib: invalid data length"
     );
 
     // solhint-disable-next-line no-inline-assembly

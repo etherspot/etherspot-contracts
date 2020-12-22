@@ -34,15 +34,18 @@ contract AccountController {
     returns (bytes memory)
   {
     require(
-      to != address(0)
+      to != address(0),
+      "AccountController: cannot send to 0x0"
     );
 
     require(
-      to != address(this)
+      to != address(this),
+      "AccountController: cannot send to controller"
     );
 
     require(
-      to != account
+      to != account,
+      "AccountController: cannot send to self"
     );
 
     return Account(payable(account)).executeTransaction(

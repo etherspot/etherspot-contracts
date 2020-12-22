@@ -67,7 +67,8 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     onlyInitializer
   {
     require(
-      address(registry_) != address(0)
+      address(registry_) != address(0),
+      "ENSController: cannot set 0x0 registry"
     );
 
     registry = registry_;
@@ -93,11 +94,13 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     onlyGuardian
   {
     require(
-      address(registry_) != address(0)
+      address(registry_) != address(0),
+      "ENSController: cannot set 0x0 registry"
     );
 
     require(
-      registry_ != registry
+      registry_ != registry,
+      "ENSController: registry already set"
     );
 
     registry = registry_;
@@ -113,11 +116,13 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     external
   {
     require(
-      nodes[node].addr == address(0)
+      nodes[node].addr == address(0),
+      "ENSController: node already exists"
     );
 
     require(
-      registry.owner(node) == address(this)
+      registry.owner(node) == address(this),
+      "ENSController: invalid node owner"
     );
 
     nodes[node].addr = address(this);
@@ -132,7 +137,8 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     external
   {
     require(
-      nodes[node].addr == _getContextAccount()
+      nodes[node].addr == _getContextAccount(),
+      "ENSController: caller is not the node owner"
     );
 
     nodes[node].addr = addr;
@@ -158,7 +164,8 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      _verifyGuardianSignature(messageHash, guardianSignature)
+      _verifyGuardianSignature(messageHash, guardianSignature),
+      "ENSController: invalid guardian signature"
     );
 
     bytes32 subNode = keccak256(
@@ -169,11 +176,13 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      nodes[node].addr == address(this)
+      nodes[node].addr == address(this),
+      "ENSController: invalid node"
     );
 
     require(
-      nodes[subNode].addr == address(0)
+      nodes[subNode].addr == address(0),
+      "ENSController: label already taken"
     );
 
     nodes[subNode].addr = account;

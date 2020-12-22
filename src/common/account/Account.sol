@@ -41,7 +41,8 @@ contract Account is Controlled {
     (succeeded, result) = payable(to).call{value: value}(data);
 
     require(
-      succeeded
+      succeeded,
+      "Account: transaction reverted"
     );
 
     return result;

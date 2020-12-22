@@ -443,7 +443,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     if (senderSignature.length == 0) {
       require(
-        accountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber)
+        accountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber),
+        "PaymentRegistry: invalid guardian signature"
       );
     } else {
       address signer = messageHash.recoverAddress(senderSignature);
@@ -451,13 +452,15 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       if (sender != signer) {
         require(
           personalAccountRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber) ||
-          accountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber)
+          accountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber),
+          "PaymentRegistry: invalid sender signature"
         );
       }
     }
 
     require(
-      _verifyGuardianSignature(messageHash, guardianSignature)
+      _verifyGuardianSignature(messageHash, guardianSignature),
+      "PaymentRegistry: invalid guardian signature"
     );
 
     hash = _computePaymentChannelHash(
@@ -471,7 +474,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     paymentValue = amount.sub(paymentChannels[hash].committedAmount);
 
     require(
-      paymentValue != 0
+      paymentValue != 0,
+      "PaymentRegistry: invalid payment value"
     );
 
     paymentChannels[hash].committedAmount = amount;
@@ -531,7 +535,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
       if (response.length > 0) {
         require(
-          abi.decode(response, (bool))
+          abi.decode(response, (bool)),
+          "PaymentRegistry: ERC20Token transfer reverted"
         );
       }
     }
@@ -547,13 +552,15 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     private
   {
     require(
-      depositValue > 0
+      depositValue > 0,
+      "PaymentRegistry: invalid deposit value"
     );
 
     uint256 withdrawValue = paymentValue.sub(depositValue);
 
     require(
-      withdrawValue > 0
+      withdrawValue > 0,
+      "PaymentRegistry: invalid withdraw value"
     );
 
     _transferFromDeposit(

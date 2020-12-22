@@ -115,10 +115,12 @@ contract ERC20Token {
     internal
   {
     require(
-      from != address(0)
+      from != address(0),
+      "ERC20Token: cannot transfer from 0x0 address"
     );
     require(
-      to != address(0)
+      to != address(0),
+      "ERC20Token: cannot transfer to 0x0 address"
     );
 
     balances[from] = balances[from].sub(value);
@@ -136,10 +138,12 @@ contract ERC20Token {
     internal
   {
     require(
-      owner != address(0)
+      owner != address(0),
+      "ERC20Token: cannot approve from 0x0 address"
     );
     require(
-      spender != address(0)
+      spender != address(0),
+      "ERC20Token: cannot approve to 0x0 address"
     );
 
     allowances[owner][spender] = value;
@@ -155,11 +159,12 @@ contract ERC20Token {
     internal
   {
     require(
-      owner != address(0)
+      owner != address(0),
+      "ERC20Token: cannot mint to 0x0 address"
     );
-
     require(
-      value > 0
+      value > 0,
+      "ERC20Token: cannot mint 0 value"
     );
 
     balances[owner] = balances[owner].add(value);
@@ -176,14 +181,15 @@ contract ERC20Token {
     internal
   {
     require(
-      owner != address(0)
+      owner != address(0),
+      "ERC20Token: cannot burn from 0x0 address"
     );
 
-    require(
-      value > 0
+    balances[owner] = balances[owner].sub(
+      value,
+      "ERC20Token: burn value exceeds balance"
     );
 
-    balances[owner] = balances[owner].sub(value);
     totalSupply = totalSupply.sub(value);
 
     emit Transfer(owner, address(0), value);

@@ -15,7 +15,9 @@ contract Initializable {
 
   modifier onlyInitializer() {
     require(
-      msg.sender == initializer
+      // solhint-disable-next-line avoid-tx-origin
+      tx.origin == initializer,
+      "Initializable: tx.origin is not the initializer"
     );
 
     initializer = address(0);
@@ -31,7 +33,8 @@ contract Initializable {
   constructor()
     internal
   {
-    initializer = msg.sender;
+    // solhint-disable-next-line avoid-tx-origin
+    initializer = tx.origin;
   }
 
    // external functions (views)

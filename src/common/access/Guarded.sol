@@ -26,7 +26,9 @@ contract Guarded {
 
   modifier onlyGuardian() {
     require(
-      guardians[msg.sender]
+      // solhint-disable-next-line avoid-tx-origin
+      guardians[tx.origin],
+      "Guarded: tx.origin is not the guardian"
     );
 
     _;
@@ -50,11 +52,14 @@ contract Guarded {
     onlyGuardian
   {
     require(
-      msg.sender != guardian
+      // solhint-disable-next-line avoid-tx-origin
+      tx.origin != guardian,
+      "Guarded: cannot remove self"
     );
 
     require(
-      guardians[guardian]
+      guardians[guardian],
+      "Guarded: guardian doesn't exist"
     );
 
     guardians[guardian] = false;
@@ -98,7 +103,8 @@ contract Guarded {
     internal
   {
     if (guardians_.length == 0) {
-      guardians[msg.sender] = true;
+      // solhint-disable-next-line avoid-tx-origin
+      _addGuardian(tx.origin);
     } else {
       uint guardiansLen = guardians_.length;
       for (uint i = 0; i < guardiansLen; i++) {
@@ -131,11 +137,13 @@ contract Guarded {
     private
   {
     require(
-      guardian != address(0)
+      guardian != address(0),
+      "Guarded: cannot add 0x0 guardian"
     );
 
     require(
-      !guardians[guardian]
+      !guardians[guardian],
+      "Guarded: guardian already exists"
     );
 
     guardians[guardian] = true;

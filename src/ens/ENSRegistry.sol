@@ -42,7 +42,8 @@ contract ENSRegistry {
     bytes32 node
   ) {
     require(
-      records[node].owner == msg.sender
+      records[node].owner == msg.sender,
+      "ENSRegistry: msg.sender is not the node owner"
     );
 
     _;
