@@ -20,11 +20,17 @@ import { computeChannelHash } from './utils';
 const { getSigners, provider } = ethers;
 
 describe('PaymentRegistry', () => {
-  const depositWithdrawalLockPeriod = BigNumber.from(3); // 3 sec.
+  const depositExitLockPeriod = BigNumber.from(3); // 3 sec.
   let signers: SignerWithAddress[];
   let guardian: SignerWithAddress;
   let paymentRegistry: PaymentRegistry;
   let wrappedWeiToken: WrappedWeiToken;
+
+  let depositWithdrawalTypedDataFactory: TypedDataFactory<{
+    owner: string;
+    token: string;
+    amount: BigNumberish;
+  }>;
 
   let paymentChannelCommitTypedDataFactory: TypedDataFactory<{
     sender: string;
@@ -52,13 +58,32 @@ describe('PaymentRegistry', () => {
         constants.AddressZero,
         constants.AddressZero,
         constants.AddressZero,
-        depositWithdrawalLockPeriod,
+        depositExitLockPeriod,
         [guardian.address],
         randomAddress(),
         TYPED_DATA_DOMAIN_NAME_HASH,
         TYPED_DATA_DOMAIN_VERSION_HASH,
         TYPED_DATA_DOMAIN_SALT,
       ),
+    );
+
+    depositWithdrawalTypedDataFactory = createTypedDataFactory(
+      paymentRegistry,
+      'DepositWithdrawal',
+      [
+        {
+          name: 'owner',
+          type: 'address',
+        },
+        {
+          name: 'token',
+          type: 'address',
+        },
+        {
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
     );
 
     paymentChannelCommitTypedDataFactory = createTypedDataFactory(
@@ -113,7 +138,7 @@ describe('PaymentRegistry', () => {
     });
   });
 
-  context('withdrawDeposit()', () => {
+  context('deposit exit', () => {
     const amount = 100;
     let owner: SignerWithAddress;
     let ownerDeposit: string;
@@ -133,54 +158,51 @@ describe('PaymentRegistry', () => {
       );
     });
 
-    it('expect to request deposit withdrawal', async () => {
-      const now = getNow();
-      const { events } = await processTx(
-        paymentRegistry.withdrawDeposit(constants.AddressZero),
-      );
-
-      expect(events[0].event).toBe('DepositAccountDeployed');
-      expect(events[0].args.depositAccount).toBe(ownerDeposit);
-      expect(events[0].args.owner).toBe(owner.address);
-
-      expect(events[1].event).toBe('DepositWithdrawalRequested');
-      expect(events[1].args.depositAccount).toBe(ownerDeposit);
-      expect(events[1].args.owner).toBe(owner.address);
-      expect(events[1].args.token).toBeZeroAddress();
-      expect(events[1].args.lockedUntil).toBeGreaterThanOrEqualBN(now);
-    });
-
-    context('# before lockedUntil time', () => {
-      it('expect to re-request deposit withdrawal', async () => {
+    context('requestDepositExit()', () => {
+      it('expect to request deposit exit', async () => {
         const now = getNow();
         const { events } = await processTx(
-          paymentRegistry.withdrawDeposit(constants.AddressZero),
+          paymentRegistry.requestDepositExit(constants.AddressZero),
         );
 
-        expect(events[0].event).toBe('DepositWithdrawalRequested');
+        expect(events[0].event).toBe('DepositAccountDeployed');
         expect(events[0].args.depositAccount).toBe(ownerDeposit);
         expect(events[0].args.owner).toBe(owner.address);
-        expect(events[0].args.token).toBeZeroAddress();
-        expect(events[0].args.lockedUntil).toBeGreaterThanOrEqualBN(now);
+
+        expect(events[1].event).toBe('DepositExitRequested');
+        expect(events[1].args.depositAccount).toBe(ownerDeposit);
+        expect(events[1].args.owner).toBe(owner.address);
+        expect(events[1].args.token).toBeZeroAddress();
+        expect(events[1].args.lockedUntil).toBeGreaterThanOrEqualBN(now);
+      });
+
+      it('expect to revert when exit was requested', async () => {
+        await expect(
+          paymentRegistry.requestDepositExit(constants.AddressZero),
+        ).rejects.toThrow(/revert/);
       });
     });
 
-    context('# after lockedUntil time', () => {
-      before(async () => {
-        await increaseTime(depositWithdrawalLockPeriod);
+    context('processDepositExit()', () => {
+      it('expect to revert before lockedUntil time', async () => {
+        await expect(
+          paymentRegistry.processDepositExit(constants.AddressZero),
+        ).rejects.toThrow(/revert/);
       });
 
-      it('expect withdraw deposit after lockedUntil time', async () => {
+      it('expect to exit after lockedUntil time', async () => {
+        await increaseTime(depositExitLockPeriod);
+
         const ownerBalance = await owner.getBalance();
 
         const {
           events: [event],
           totalCost,
         } = await processTx(
-          paymentRegistry.withdrawDeposit(constants.AddressZero),
+          paymentRegistry.processDepositExit(constants.AddressZero),
         );
 
-        expect(event.event).toBe('DepositWithdrawn');
+        expect(event.event).toBe('DepositExitCompleted');
         expect(event.args.depositAccount).toBe(ownerDeposit);
         expect(event.args.owner).toBe(owner.address);
         expect(event.args.token).toBeZeroAddress();
@@ -190,6 +212,141 @@ describe('PaymentRegistry', () => {
           ownerBalance.sub(totalCost).add(amount),
         );
       });
+    });
+  });
+
+  context('withdrawDeposit()', () => {
+    const totalAmount = 200;
+    let owner: SignerWithAddress;
+    let ownerDeposit: string;
+    let amount = 0;
+
+    before(async () => {
+      owner = signers.pop();
+      ownerDeposit = await paymentRegistry.computeDepositAccountAddress(
+        owner.address,
+      );
+      paymentRegistry = paymentRegistry.connect(owner);
+
+      await processTx(
+        owner.sendTransaction({
+          to: ownerDeposit,
+          value: totalAmount,
+        }),
+      );
+    });
+
+    it('expect to withdraw - #1 call', async () => {
+      const value = 75;
+      const ownerBalance = await owner.getBalance();
+
+      amount += value;
+
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount,
+        },
+      );
+
+      const { events, totalCost } = await processTx(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          amount,
+          guardianSignature,
+        ),
+      );
+
+      expect(events[0].event).toBe('DepositAccountDeployed');
+      expect(events[0].args.depositAccount).toBe(ownerDeposit);
+      expect(events[0].args.owner).toBe(owner.address);
+
+      expect(events[1].event).toBe('DepositWithdrawn');
+      expect(events[1].args.depositAccount).toBe(ownerDeposit);
+      expect(events[1].args.owner).toBe(owner.address);
+      expect(events[1].args.token).toBeZeroAddress();
+      expect(events[1].args.amount).toBeBN(amount);
+
+      await expect(owner.getBalance()).resolves.toBeBN(
+        ownerBalance.sub(totalCost).add(value),
+      );
+    });
+
+    it('expect to withdraw - #2 call', async () => {
+      const value = 55;
+      const ownerBalance = await owner.getBalance();
+
+      amount += value;
+
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount,
+        },
+      );
+
+      const {
+        events: [event],
+        totalCost,
+      } = await processTx(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          amount,
+          guardianSignature,
+        ),
+      );
+
+      expect(event.event).toBe('DepositWithdrawn');
+      expect(event.args.depositAccount).toBe(ownerDeposit);
+      expect(event.args.owner).toBe(owner.address);
+      expect(event.args.token).toBeZeroAddress();
+      expect(event.args.amount).toBeBN(amount);
+
+      await expect(owner.getBalance()).resolves.toBeBN(
+        ownerBalance.sub(totalCost).add(value),
+      );
+    });
+
+    it('expect to revert on invalid guardian signature', async () => {
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount: 1,
+        },
+      );
+
+      await expect(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          totalAmount,
+          guardianSignature,
+        ),
+      ).rejects.toThrow(/revert/);
+    });
+
+    it('expect to revert on invalid amount', async () => {
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount: totalAmount + 1,
+        },
+      );
+
+      await expect(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          totalAmount,
+          guardianSignature,
+        ),
+      ).rejects.toThrow(/revert/);
     });
   });
 
@@ -662,7 +819,7 @@ describe('PaymentRegistry', () => {
     });
   });
 
-  context('getDepositWithdrawalLockedUntil()', () => {
+  context('getDepositExitLockedUntil()', () => {
     let owner: SignerWithAddress;
 
     before(async () => {
@@ -670,12 +827,12 @@ describe('PaymentRegistry', () => {
 
       await paymentRegistry
         .connect(owner)
-        .withdrawDeposit(constants.AddressZero);
+        .requestDepositExit(constants.AddressZero);
     });
 
     it('expect to return positive lockedUntil time when withdraw was requested', async () => {
       await expect(
-        paymentRegistry.getDepositWithdrawalLockedUntil(
+        paymentRegistry.getDepositExitLockedUntil(
           owner.address,
           constants.AddressZero,
         ),
@@ -684,7 +841,62 @@ describe('PaymentRegistry', () => {
 
     it("expect to return zero lockedUntil time when withdraw wasn't requested", async () => {
       await expect(
-        paymentRegistry.getDepositWithdrawalLockedUntil(
+        paymentRegistry.getDepositExitLockedUntil(
+          randomAddress(),
+          constants.AddressZero,
+        ),
+      ).resolves.toBeBN(0);
+    });
+  });
+
+  context('getDepositWithdrawnAmount()', () => {
+    const amount = 200;
+    let owner: SignerWithAddress;
+
+    before(async () => {
+      owner = signers.pop();
+      const ownerDeposit = await paymentRegistry.computeDepositAccountAddress(
+        owner.address,
+      );
+      paymentRegistry = paymentRegistry.connect(owner);
+
+      await processTx(
+        owner.sendTransaction({
+          to: ownerDeposit,
+          value: amount,
+        }),
+      );
+
+      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+        guardian,
+        {
+          owner: owner.address,
+          token: constants.AddressZero,
+          amount,
+        },
+      );
+
+      await processTx(
+        paymentRegistry.withdrawDeposit(
+          constants.AddressZero,
+          amount,
+          guardianSignature,
+        ),
+      );
+    });
+
+    it('expect to return correct amount', async () => {
+      await expect(
+        paymentRegistry.getDepositWithdrawnAmount(
+          owner.address,
+          constants.AddressZero,
+        ),
+      ).resolves.toBeBN(amount);
+    });
+
+    it('expect to return 0 for random account', async () => {
+      await expect(
+        paymentRegistry.getDepositWithdrawnAmount(
           randomAddress(),
           constants.AddressZero,
         ),
@@ -787,6 +999,24 @@ describe('PaymentRegistry', () => {
           uid,
         ),
       ).resolves.toBe(computeChannelHash(sender, recipient, token, uid));
+    });
+  });
+
+  context('hashDepositWithdrawal()', () => {
+    it('expect to return correct hash', async () => {
+      const message = {
+        owner: randomAddress(),
+        token: randomAddress(),
+        amount: 200,
+      };
+
+      const typedDataHash = depositWithdrawalTypedDataFactory.hashTypedData(
+        message,
+      );
+
+      await expect(
+        paymentRegistry.hashDepositWithdrawal(message),
+      ).resolves.toBe(typedDataHash);
     });
   });
 

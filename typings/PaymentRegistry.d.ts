@@ -31,20 +31,24 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "computeDepositAccountAddress(address)": FunctionFragment;
     "computePaymentChannelHash(address,address,address,bytes32)": FunctionFragment;
     "deployDepositAccount(address)": FunctionFragment;
-    "depositWithdrawalLockPeriod()": FunctionFragment;
+    "depositExitLockPeriod()": FunctionFragment;
     "gateway()": FunctionFragment;
-    "getDepositWithdrawalLockedUntil(address,address)": FunctionFragment;
+    "getDepositExitLockedUntil(address,address)": FunctionFragment;
+    "getDepositWithdrawnAmount(address,address)": FunctionFragment;
     "getPaymentChannelCommittedAmount(bytes32)": FunctionFragment;
+    "hashDepositWithdrawal(tuple)": FunctionFragment;
     "hashPaymentChannelCommit(tuple)": FunctionFragment;
     "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
     "isDepositAccountDeployed(address)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "personalAccountRegistry()": FunctionFragment;
+    "processDepositExit(address)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
+    "requestDepositExit(address)": FunctionFragment;
     "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
-    "withdrawDeposit(address)": FunctionFragment;
+    "withdrawDeposit(address,uint256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -106,17 +110,25 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositWithdrawalLockPeriod",
+    functionFragment: "depositExitLockPeriod",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getDepositWithdrawalLockedUntil",
+    functionFragment: "getDepositExitLockedUntil",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDepositWithdrawnAmount",
     values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "getPaymentChannelCommittedAmount",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hashDepositWithdrawal",
+    values: [{ owner: string; token: string; amount: BigNumberish }]
   ): string;
   encodeFunctionData(
     functionFragment: "hashPaymentChannelCommit",
@@ -159,7 +171,15 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "processDepositExit",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeGuardian",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "requestDepositExit",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -172,7 +192,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawDeposit",
-    values: [string]
+    values: [string, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -212,16 +232,24 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositWithdrawalLockPeriod",
+    functionFragment: "depositExitLockPeriod",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getDepositWithdrawalLockedUntil",
+    functionFragment: "getDepositExitLockedUntil",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDepositWithdrawnAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getPaymentChannelCommittedAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hashDepositWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -243,7 +271,15 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "processDepositExit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "removeGuardian",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "requestDepositExit",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -261,8 +297,9 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
 
   events: {
     "DepositAccountDeployed(address,address)": EventFragment;
-    "DepositWithdrawalRejected(address,address,address)": EventFragment;
-    "DepositWithdrawalRequested(address,address,address,uint256)": EventFragment;
+    "DepositExitCompleted(address,address,address,uint256)": EventFragment;
+    "DepositExitRejected(address,address,address)": EventFragment;
+    "DepositExitRequested(address,address,address,uint256)": EventFragment;
     "DepositWithdrawn(address,address,address,uint256)": EventFragment;
     "GuardianAdded(address)": EventFragment;
     "GuardianRemoved(address)": EventFragment;
@@ -274,8 +311,9 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "DepositAccountDeployed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DepositWithdrawalRejected"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DepositWithdrawalRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositExitCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositExitRejected"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositExitRequested"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DepositWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianRemoved"): EventFragment;
@@ -422,25 +460,33 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    depositWithdrawalLockPeriod(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    depositExitLockPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "depositWithdrawalLockPeriod()"(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
 
-    getDepositWithdrawalLockedUntil(
+    getDepositExitLockedUntil(
       owner: string,
       token: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    "getDepositWithdrawalLockedUntil(address,address)"(
+    "getDepositExitLockedUntil(address,address)"(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getDepositWithdrawnAmount(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "getDepositWithdrawnAmount(address,address)"(
       owner: string,
       token: string,
       overrides?: CallOverrides
@@ -455,6 +501,16 @@ export class PaymentRegistry extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     hashPaymentChannelCommit(
       paymentChannelCommit: {
@@ -484,7 +540,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -497,7 +553,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -531,6 +587,16 @@ export class PaymentRegistry extends Contract {
 
     "personalAccountRegistry()"(overrides?: CallOverrides): Promise<[string]>;
 
+    processDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "processDepositExit(address)"(
+      token: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     removeGuardian(
       guardian: string,
       overrides?: Overrides
@@ -538,6 +604,16 @@ export class PaymentRegistry extends Contract {
 
     "removeGuardian(address)"(
       guardian: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    requestDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "requestDepositExit(address)"(
+      token: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -559,11 +635,15 @@ export class PaymentRegistry extends Contract {
 
     withdrawDeposit(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "withdrawDeposit(address)"(
+    "withdrawDeposit(address,uint256,bytes)"(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
@@ -690,23 +770,33 @@ export class PaymentRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  depositWithdrawalLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
+  depositExitLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "depositWithdrawalLockPeriod()"(
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
 
-  getDepositWithdrawalLockedUntil(
+  getDepositExitLockedUntil(
     owner: string,
     token: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  "getDepositWithdrawalLockedUntil(address,address)"(
+  "getDepositExitLockedUntil(address,address)"(
+    owner: string,
+    token: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getDepositWithdrawnAmount(
+    owner: string,
+    token: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "getDepositWithdrawnAmount(address,address)"(
     owner: string,
     token: string,
     overrides?: CallOverrides
@@ -721,6 +811,16 @@ export class PaymentRegistry extends Contract {
     hash: BytesLike,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  hashDepositWithdrawal(
+    depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "hashDepositWithdrawal(tuple)"(
+    depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   hashPaymentChannelCommit(
     paymentChannelCommit: {
@@ -750,7 +850,7 @@ export class PaymentRegistry extends Contract {
     accountOwnerRegistry_: string,
     accountProofRegistry_: string,
     personalAccountRegistry_: string,
-    depositWithdrawalLockPeriod_: BigNumberish,
+    depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
     gateway_: string,
     typedDataDomainNameHash: BytesLike,
@@ -763,7 +863,7 @@ export class PaymentRegistry extends Contract {
     accountOwnerRegistry_: string,
     accountProofRegistry_: string,
     personalAccountRegistry_: string,
-    depositWithdrawalLockPeriod_: BigNumberish,
+    depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
     gateway_: string,
     typedDataDomainNameHash: BytesLike,
@@ -797,6 +897,16 @@ export class PaymentRegistry extends Contract {
 
   "personalAccountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
+  processDepositExit(
+    token: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "processDepositExit(address)"(
+    token: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   removeGuardian(
     guardian: string,
     overrides?: Overrides
@@ -804,6 +914,16 @@ export class PaymentRegistry extends Contract {
 
   "removeGuardian(address)"(
     guardian: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  requestDepositExit(
+    token: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "requestDepositExit(address)"(
+    token: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -825,11 +945,15 @@ export class PaymentRegistry extends Contract {
 
   withdrawDeposit(
     token: string,
+    amount: BigNumberish,
+    guardianSignature: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "withdrawDeposit(address)"(
+  "withdrawDeposit(address,uint256,bytes)"(
     token: string,
+    amount: BigNumberish,
+    guardianSignature: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -953,23 +1077,33 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    depositWithdrawalLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
+    depositExitLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "depositWithdrawalLockPeriod()"(
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     gateway(overrides?: CallOverrides): Promise<string>;
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
 
-    getDepositWithdrawalLockedUntil(
+    getDepositExitLockedUntil(
       owner: string,
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "getDepositWithdrawalLockedUntil(address,address)"(
+    "getDepositExitLockedUntil(address,address)"(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDepositWithdrawnAmount(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getDepositWithdrawnAmount(address,address)"(
       owner: string,
       token: string,
       overrides?: CallOverrides
@@ -984,6 +1118,16 @@ export class PaymentRegistry extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     hashPaymentChannelCommit(
       paymentChannelCommit: {
@@ -1013,7 +1157,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1026,7 +1170,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1060,10 +1204,24 @@ export class PaymentRegistry extends Contract {
 
     "personalAccountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
+    processDepositExit(token: string, overrides?: CallOverrides): Promise<void>;
+
+    "processDepositExit(address)"(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     removeGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
 
     "removeGuardian(address)"(
       guardian: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    requestDepositExit(token: string, overrides?: CallOverrides): Promise<void>;
+
+    "requestDepositExit(address)"(
+      token: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1083,10 +1241,17 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    withdrawDeposit(token: string, overrides?: CallOverrides): Promise<void>;
-
-    "withdrawDeposit(address)"(
+    withdrawDeposit(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "withdrawDeposit(address,uint256,bytes)"(
+      token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1094,13 +1259,20 @@ export class PaymentRegistry extends Contract {
   filters: {
     DepositAccountDeployed(depositAccount: null, owner: null): EventFilter;
 
-    DepositWithdrawalRejected(
+    DepositExitCompleted(
+      depositAccount: null,
+      owner: null,
+      token: null,
+      amount: null
+    ): EventFilter;
+
+    DepositExitRejected(
       depositAccount: null,
       owner: null,
       token: null
     ): EventFilter;
 
-    DepositWithdrawalRequested(
+    DepositExitRequested(
       depositAccount: null,
       owner: null,
       token: null,
@@ -1260,23 +1432,33 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    depositWithdrawalLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
+    depositExitLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "depositWithdrawalLockPeriod()"(
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getDepositWithdrawalLockedUntil(
+    getDepositExitLockedUntil(
       owner: string,
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "getDepositWithdrawalLockedUntil(address,address)"(
+    "getDepositExitLockedUntil(address,address)"(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDepositWithdrawnAmount(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getDepositWithdrawnAmount(address,address)"(
       owner: string,
       token: string,
       overrides?: CallOverrides
@@ -1289,6 +1471,16 @@ export class PaymentRegistry extends Contract {
 
     "getPaymentChannelCommittedAmount(bytes32)"(
       hash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1320,7 +1512,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1333,7 +1525,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1367,10 +1559,30 @@ export class PaymentRegistry extends Contract {
 
     "personalAccountRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    processDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "processDepositExit(address)"(
+      token: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     removeGuardian(guardian: string, overrides?: Overrides): Promise<BigNumber>;
 
     "removeGuardian(address)"(
       guardian: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    requestDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "requestDepositExit(address)"(
+      token: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1390,10 +1602,17 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    withdrawDeposit(token: string, overrides?: Overrides): Promise<BigNumber>;
-
-    "withdrawDeposit(address)"(
+    withdrawDeposit(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "withdrawDeposit(address,uint256,bytes)"(
+      token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
@@ -1529,11 +1748,11 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    depositWithdrawalLockPeriod(
+    depositExitLockPeriod(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "depositWithdrawalLockPeriod()"(
+    "depositExitLockPeriod()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1541,13 +1760,25 @@ export class PaymentRegistry extends Contract {
 
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getDepositWithdrawalLockedUntil(
+    getDepositExitLockedUntil(
       owner: string,
       token: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "getDepositWithdrawalLockedUntil(address,address)"(
+    "getDepositExitLockedUntil(address,address)"(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDepositWithdrawnAmount(
+      owner: string,
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getDepositWithdrawnAmount(address,address)"(
       owner: string,
       token: string,
       overrides?: CallOverrides
@@ -1560,6 +1791,16 @@ export class PaymentRegistry extends Contract {
 
     "getPaymentChannelCommittedAmount(bytes32)"(
       hash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    hashDepositWithdrawal(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "hashDepositWithdrawal(tuple)"(
+      depositWithdrawal: { owner: string; token: string; amount: BigNumberish },
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1591,7 +1832,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1604,7 +1845,7 @@ export class PaymentRegistry extends Contract {
       accountOwnerRegistry_: string,
       accountProofRegistry_: string,
       personalAccountRegistry_: string,
-      depositWithdrawalLockPeriod_: BigNumberish,
+      depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
       typedDataDomainNameHash: BytesLike,
@@ -1645,6 +1886,16 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    processDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "processDepositExit(address)"(
+      token: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     removeGuardian(
       guardian: string,
       overrides?: Overrides
@@ -1652,6 +1903,16 @@ export class PaymentRegistry extends Contract {
 
     "removeGuardian(address)"(
       guardian: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    requestDepositExit(
+      token: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "requestDepositExit(address)"(
+      token: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1677,11 +1938,15 @@ export class PaymentRegistry extends Contract {
 
     withdrawDeposit(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "withdrawDeposit(address)"(
+    "withdrawDeposit(address,uint256,bytes)"(
       token: string,
+      amount: BigNumberish,
+      guardianSignature: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
