@@ -65,7 +65,7 @@ console.log(
 
 ```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.6.12;
 
 import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 
