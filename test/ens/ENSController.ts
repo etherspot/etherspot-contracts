@@ -217,6 +217,10 @@ describe('ENSController', () => {
 
       expect(event.event).toBe('NodeVerified');
       expect(event.args.node).toBe(node);
+
+      await expect(ensRegistry.resolver(node)).resolves.toBe(
+        ensController.address,
+      );
     });
 
     it('expect to revert when node exists', async () => {
@@ -248,6 +252,8 @@ describe('ENSController', () => {
       expect(events[1].event).toBe('NodeReleased');
       expect(events[1].args.node).toBe(node);
       expect(events[1].args.owner).toBe(owner.address);
+
+      await expect(ensRegistry.owner(node)).resolves.toBe(owner.address);
     });
 
     it('expect to revert when node exists', async () => {
