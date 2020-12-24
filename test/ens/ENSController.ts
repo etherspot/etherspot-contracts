@@ -31,7 +31,9 @@ describe('ENSController', () => {
     label: string;
   }>;
 
-  const createNodeFactory: () => Promise<NodeFactory> = async () => {
+  const createNodeFactory: (addNode?: boolean) => Promise<NodeFactory> = async (
+    addNode = true,
+  ) => {
     nameCounter += 1;
 
     const name = `test${nameCounter}`;
@@ -44,11 +46,18 @@ describe('ENSController', () => {
       ensRegistry.setSubnodeOwner(constants.HashZero, labelHash, owner.address),
     );
 
-    await processTx(
-      ensRegistry.connect(owner).setOwner(node, ensController.address),
-    );
+    if (addNode) {
+      await processTx(ensController.connect(owner).submitNode(node));
+
+      await processTx(
+        ensRegistry.connect(owner).setOwner(node, ensController.address),
+      );
+
+      await processTx(ensController.connect(owner).verifyNode(node));
+    }
 
     return {
+      owner,
       name,
       labelHash,
       node,
@@ -151,31 +160,103 @@ describe('ENSController', () => {
     });
   });
 
-  context('addNode()', () => {
+  context('submitNode()', () => {
+    let nodeFactory: NodeFactory;
+
+    before(async () => {
+      nodeFactory = await createNodeFactory(false);
+    });
+
+    it('expect to submit node', async () => {
+      const { owner, node } = nodeFactory;
+
+      const {
+        events: [event],
+      } = await processTx(ensController.connect(owner).submitNode(node));
+
+      expect(event.event).toBe('NodeSubmitted');
+      expect(event.args.node).toBe(node);
+      expect(event.args.owner).toBe(owner.address);
+    });
+
+    it('expect to revert when node exists', async () => {
+      const { node } = nodeFactory;
+      await expect(ensController.submitNode(node)).rejects.toThrow(/revert/);
+    });
+
+    it('expect to revert on invalid node', async () => {
+      await expect(ensController.submitNode(randomHex32())).rejects.toThrow(
+        /revert/,
+      );
+    });
+  });
+
+  context('verifyNode()', () => {
+    let nodeFactory: NodeFactory;
+
+    before(async () => {
+      nodeFactory = await createNodeFactory(false);
+
+      const { owner, node } = nodeFactory;
+
+      await processTx(ensController.connect(owner).submitNode(node));
+
+      await processTx(
+        ensRegistry.connect(owner).setOwner(node, ensController.address),
+      );
+    });
+
+    it('expect to verify node', async () => {
+      const { owner, node } = nodeFactory;
+
+      const { events } = await processTx(
+        ensController.connect(owner).verifyNode(node),
+      );
+
+      const event = events.find(({ event }) => event === 'NodeVerified');
+
+      expect(event.event).toBe('NodeVerified');
+      expect(event.args.node).toBe(node);
+    });
+
+    it('expect to revert when node exists', async () => {
+      const { node } = nodeFactory;
+      await expect(ensController.verifyNode(node)).rejects.toThrow(/revert/);
+    });
+
+    it('expect to revert on invalid node', async () => {
+      await expect(ensController.verifyNode(randomHex32())).rejects.toThrow(
+        /revert/,
+      );
+    });
+  });
+
+  context('releaseNode()', () => {
     let nodeFactory: NodeFactory;
 
     before(async () => {
       nodeFactory = await createNodeFactory();
     });
 
-    it('expect to add node', async () => {
-      const { node } = nodeFactory;
+    it('expect to release node', async () => {
+      const { owner, node } = nodeFactory;
 
-      const {
-        events: [event],
-      } = await processTx(ensController.addNode(node));
+      const { events } = await processTx(
+        ensController.connect(owner).releaseNode(node),
+      );
 
-      expect(event.event).toBe('NodeAdded');
-      expect(event.args.node).toBe(node);
+      expect(events[1].event).toBe('NodeReleased');
+      expect(events[1].args.node).toBe(node);
+      expect(events[1].args.owner).toBe(owner.address);
     });
 
     it('expect to revert when node exists', async () => {
       const { node } = nodeFactory;
-      await expect(ensController.addNode(node)).rejects.toThrow(/revert/);
+      await expect(ensController.releaseNode(node)).rejects.toThrow(/revert/);
     });
 
     it('expect to revert on invalid node', async () => {
-      await expect(ensController.addNode(randomHex32())).rejects.toThrow(
+      await expect(ensController.releaseNode(randomHex32())).rejects.toThrow(
         /revert/,
       );
     });
@@ -196,8 +277,6 @@ describe('ENSController', () => {
       subNode = nodeFactory.createSubNode();
 
       const { node } = nodeFactory;
-
-      await processTx(ensController.addNode(node));
 
       const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
         guardian,
@@ -257,8 +336,6 @@ describe('ENSController', () => {
     before(async () => {
       nodeFactory = await createNodeFactory();
 
-      const { node } = nodeFactory;
-      await ensController.addNode(node);
       subNode = nodeFactory.createSubNode();
     });
 
@@ -340,8 +417,6 @@ describe('ENSController', () => {
       subNode = nodeFactory.createSubNode();
 
       const { node } = nodeFactory;
-
-      await processTx(ensController.addNode(node));
 
       const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
         guardian,
