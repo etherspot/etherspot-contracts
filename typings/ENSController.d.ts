@@ -23,7 +23,6 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface ENSControllerInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
-    "addNode(bytes32)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
     "gateway()": FunctionFragment;
     "hashSubNodeRegistration(tuple)": FunctionFragment;
@@ -32,16 +31,18 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "isInitialized()": FunctionFragment;
     "registerSubNode(bytes32,bytes32,bytes)": FunctionFragment;
     "registry()": FunctionFragment;
+    "releaseNode(bytes32)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
     "setAddr(bytes32,address)": FunctionFragment;
     "setRegistry(address)": FunctionFragment;
+    "submitNode(bytes32)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
+    "verifyNode(bytes32)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
-  encodeFunctionData(functionFragment: "addNode", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
@@ -63,6 +64,10 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "releaseNode",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeGuardian",
     values: [string]
   ): string;
@@ -71,6 +76,10 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(functionFragment: "setRegistry", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "submitNode",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
@@ -83,12 +92,15 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "verifyGuardianSignature",
     values: [BytesLike, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "verifyNode",
+    values: [BytesLike]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "addGuardian",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addNode", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
@@ -107,6 +119,10 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "releaseNode",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "removeGuardian",
     data: BytesLike
   ): Result;
@@ -115,6 +131,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "setRegistry",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "submitNode", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -127,13 +144,16 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "verifyGuardianSignature",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "verifyNode", data: BytesLike): Result;
 
   events: {
     "AddrChanged(bytes32,address)": EventFragment;
     "GuardianAdded(address)": EventFragment;
     "GuardianRemoved(address)": EventFragment;
     "Initialized()": EventFragment;
-    "NodeAdded(bytes32)": EventFragment;
+    "NodeReleased(bytes32,address)": EventFragment;
+    "NodeSubmitted(bytes32,address)": EventFragment;
+    "NodeVerified(bytes32)": EventFragment;
     "RegistryChanged(address)": EventFragment;
   };
 
@@ -141,7 +161,9 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "GuardianAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NodeAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NodeReleased"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NodeSubmitted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NodeVerified"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RegistryChanged"): EventFragment;
 }
 
@@ -166,16 +188,6 @@ export class ENSController extends Contract {
 
     "addGuardian(address)"(
       guardian: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    addNode(
-      node: BytesLike,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "addNode(bytes32)"(
-      node: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -257,6 +269,16 @@ export class ENSController extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<[string]>;
 
+    releaseNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "releaseNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     removeGuardian(
       guardian: string,
       overrides?: Overrides
@@ -289,6 +311,16 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    submitNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "submitNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceID: BytesLike,
       overrides?: CallOverrides
@@ -314,6 +346,16 @@ export class ENSController extends Contract {
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    verifyNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "verifyNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
   addGuardian(
@@ -323,13 +365,6 @@ export class ENSController extends Contract {
 
   "addGuardian(address)"(
     guardian: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  addNode(node: BytesLike, overrides?: Overrides): Promise<ContractTransaction>;
-
-  "addNode(bytes32)"(
-    node: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -400,6 +435,16 @@ export class ENSController extends Contract {
 
   "registry()"(overrides?: CallOverrides): Promise<string>;
 
+  releaseNode(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "releaseNode(bytes32)"(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   removeGuardian(
     guardian: string,
     overrides?: Overrides
@@ -432,6 +477,16 @@ export class ENSController extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  submitNode(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "submitNode(bytes32)"(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceID: BytesLike,
     overrides?: CallOverrides
@@ -458,18 +513,21 @@ export class ENSController extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  verifyNode(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "verifyNode(bytes32)"(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
 
     "addGuardian(address)"(
       guardian: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    addNode(node: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-    "addNode(bytes32)"(
-      node: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -551,6 +609,13 @@ export class ENSController extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<string>;
 
+    releaseNode(node: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    "releaseNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     removeGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
 
     "removeGuardian(address)"(
@@ -574,6 +639,13 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    submitNode(node: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    "submitNode(bytes32)"(
+      node: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -602,6 +674,13 @@ export class ENSController extends Contract {
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    verifyNode(node: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    "verifyNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -613,7 +692,11 @@ export class ENSController extends Contract {
 
     Initialized(): EventFilter;
 
-    NodeAdded(node: null): EventFilter;
+    NodeReleased(node: null, owner: null): EventFilter;
+
+    NodeSubmitted(node: null, owner: null): EventFilter;
+
+    NodeVerified(node: null): EventFilter;
 
     RegistryChanged(registry: null): EventFilter;
   };
@@ -623,13 +706,6 @@ export class ENSController extends Contract {
 
     "addGuardian(address)"(
       guardian: string,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    addNode(node: BytesLike, overrides?: Overrides): Promise<BigNumber>;
-
-    "addNode(bytes32)"(
-      node: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -711,6 +787,13 @@ export class ENSController extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    releaseNode(node: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+
+    "releaseNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     removeGuardian(guardian: string, overrides?: Overrides): Promise<BigNumber>;
 
     "removeGuardian(address)"(
@@ -734,6 +817,13 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    submitNode(node: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+
+    "submitNode(bytes32)"(
+      node: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -762,6 +852,13 @@ export class ENSController extends Contract {
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    verifyNode(node: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+
+    "verifyNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -772,16 +869,6 @@ export class ENSController extends Contract {
 
     "addGuardian(address)"(
       guardian: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    addNode(
-      node: BytesLike,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "addNode(bytes32)"(
-      node: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -869,6 +956,16 @@ export class ENSController extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    releaseNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "releaseNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     removeGuardian(
       guardian: string,
       overrides?: Overrides
@@ -901,6 +998,16 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    submitNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "submitNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceID: BytesLike,
       overrides?: CallOverrides
@@ -929,6 +1036,16 @@ export class ENSController extends Contract {
       messageHash: BytesLike,
       signature: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    verifyNode(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "verifyNode(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }

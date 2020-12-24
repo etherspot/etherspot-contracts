@@ -14,6 +14,7 @@ import "./ENSRegistry.sol";
 contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
   struct Node {
     address addr;
+    address owner;
   }
 
   struct SubNodeRegistration {
@@ -40,8 +41,18 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     address addr
   );
 
-  event NodeAdded(
+  event NodeSubmitted(
+    bytes32 node,
+    address owner
+  );
+
+  event NodeVerified(
     bytes32 node
+  );
+
+  event NodeReleased(
+    bytes32 node,
+    address owner
   );
 
   event RegistryChanged(
@@ -110,24 +121,85 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
   }
 
-  function addNode(
+  function submitNode(
     bytes32 node
   )
     external
   {
+    address owner = _getContextAccount();
+
     require(
       nodes[node].addr == address(0),
       "ENSController: node already exists"
     );
 
     require(
-      registry.owner(node) == address(this),
+      nodes[node].owner == address(0),
+      "ENSController: node already submitted"
+    );
+
+    require(
+      registry.owner(node) == owner,
+      "ENSController: invalid ens node owner"
+    );
+
+    nodes[node].owner = owner;
+
+    emit NodeSubmitted(node, owner);
+  }
+
+  function verifyNode(
+    bytes32 node
+  )
+    external
+  {
+    address owner = _getContextAccount();
+
+    require(
+      nodes[node].addr == address(0),
+      "ENSController: node already exists"
+    );
+
+    require(
+      nodes[node].owner == owner,
       "ENSController: invalid node owner"
+    );
+
+    require(
+      registry.owner(node) == address(this),
+      "ENSController: invalid ens node owner"
     );
 
     nodes[node].addr = address(this);
 
-    emit NodeAdded(node);
+    registry.setResolver(node, address(this));
+
+    emit NodeVerified(node);
+  }
+
+  function releaseNode(
+    bytes32 node
+  )
+    external
+  {
+    address owner = _getContextAccount();
+
+    require(
+      nodes[node].addr == address(this),
+      "ENSController: node doesn't exist"
+    );
+
+    require(
+      nodes[node].owner == owner,
+      "ENSController: invalid node owner"
+    );
+
+    registry.setOwner(node, owner);
+
+    delete nodes[node].addr;
+    delete nodes[node].owner;
+
+    emit NodeReleased(node, owner);
   }
 
   function setAddr(
