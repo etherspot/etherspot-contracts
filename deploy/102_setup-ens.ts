@@ -43,6 +43,8 @@ const func: DeployFunction = async hre => {
 
   if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
     for (const name of ens.internalTopLevelDomains) {
+      const nameHash = utils.id(name);
+
       await execute(
         'ENSRegistry',
         {
@@ -51,8 +53,18 @@ const func: DeployFunction = async hre => {
         },
         'setSubnodeOwner',
         constants.HashZero,
-        utils.id(name),
+        nameHash,
         from,
+      );
+
+      await execute(
+        'ENSController',
+        {
+          from,
+          log: true,
+        },
+        'submitNode',
+        nameHash,
       );
 
       await execute(
@@ -62,7 +74,7 @@ const func: DeployFunction = async hre => {
           log: true,
         },
         'setOwner',
-        utils.namehash(name),
+        nameHash,
         ensController.address,
       );
 
@@ -72,8 +84,8 @@ const func: DeployFunction = async hre => {
           from,
           log: true,
         },
-        'addNode',
-        utils.namehash(name),
+        'verifyNode',
+        nameHash,
       );
     }
   }

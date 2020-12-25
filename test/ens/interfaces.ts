@@ -1,3 +1,5 @@
+import { SignerWithAddress } from '../shared';
+
 export interface Node {
   name: string;
   labelHash: string;
@@ -5,5 +7,6 @@ export interface Node {
 }
 
 export interface NodeFactory extends Node {
+  owner: SignerWithAddress;
   createSubNode(): Node;
 }
