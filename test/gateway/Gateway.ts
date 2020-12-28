@@ -513,4 +513,51 @@ describe('Gateway', () => {
       ).resolves.toBe(typedDataHash);
     });
   });
+
+  context('getAccountNextNonce()', () => {
+    let account: SignerWithAddress;
+    let nonce: number;
+
+    before(async () => {
+      const sender = signers.pop();
+      account = signers.pop();
+      gateway = gateway.connect(signers.pop());
+
+      await processTx(
+        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+      );
+      nonce = getNextNonce();
+
+      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+        sender,
+        {
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      await processTx(
+        gateway.delegateBatch(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+        ),
+      );
+    });
+
+    it('expect to return correct nonce', async () => {
+      await expect(
+        gateway.getAccountNextNonce(account.address),
+      ).resolves.toBeBN(nonce + 1);
+    });
+
+    it('expect to return 1 for new account', async () => {
+      await expect(
+        gateway.getAccountNextNonce(randomAddress()),
+      ).resolves.toBeBN(1);
+    });
+  });
 });
