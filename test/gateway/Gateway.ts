@@ -21,7 +21,7 @@ import {
 
 const { getSigners } = ethers;
 
-describe.only('Gateway', () => {
+describe('Gateway', () => {
   let signers: SignerWithAddress[];
   let accountOwnerRegistry: AccountOwnerRegistry;
   let gateway: Gateway;

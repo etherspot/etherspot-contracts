@@ -40,7 +40,7 @@ contract Gateway is Initializable, TypedDataContainer {
   AccountOwnerRegistry public accountOwnerRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
-  mapping(address => uint256) private accountNonceInUse;
+  mapping(address => uint256) private accountNonce;
 
   // events
 
@@ -119,7 +119,7 @@ contract Gateway is Initializable, TypedDataContainer {
     public
   {
     require(
-      nonce > accountNonceInUse[account],
+      nonce > accountNonce[account],
       "Gateway: nonce is lower than current account nonce"
     );
 
@@ -131,7 +131,7 @@ contract Gateway is Initializable, TypedDataContainer {
       )
     ).recoverAddress(senderSignature);
 
-    accountNonceInUse[account] = nonce;
+    accountNonce[account] = nonce;
 
     _sendBatch(
       account,
@@ -151,7 +151,7 @@ contract Gateway is Initializable, TypedDataContainer {
     public
   {
     require(
-      nonce > accountNonceInUse[account],
+      nonce > accountNonce[account],
       "Gateway: nonce is lower than current account nonce"
     );
 
@@ -164,7 +164,7 @@ contract Gateway is Initializable, TypedDataContainer {
       )
     ).recoverAddress(senderSignature);
 
-    accountNonceInUse[account] = nonce;
+    accountNonce[account] = nonce;
 
     _sendBatch(
       account,
@@ -256,7 +256,7 @@ contract Gateway is Initializable, TypedDataContainer {
     view
     returns (uint256)
   {
-    return accountNonceInUse[account].add(1);
+    return accountNonce[account].add(1);
   }
 
   // private functions
