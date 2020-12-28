@@ -26,7 +26,7 @@ interface GatewayInterface extends ethers.utils.Interface {
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatches(bytes[],bool)": FunctionFragment;
-    "getAccountNonce(address)": FunctionFragment;
+    "getAccountNextNonce(address)": FunctionFragment;
     "hashDelegatedBatch(tuple)": FunctionFragment;
     "hashDelegatedBatchWithGasPrice(tuple)": FunctionFragment;
     "initialize(address,address,bytes32,bytes32,bytes32)": FunctionFragment;
@@ -54,7 +54,7 @@ interface GatewayInterface extends ethers.utils.Interface {
     values: [BytesLike[], boolean]
   ): string;
   encodeFunctionData(
-    functionFragment: "getAccountNonce",
+    functionFragment: "getAccountNextNonce",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -114,7 +114,7 @@ interface GatewayInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAccountNonce",
+    functionFragment: "getAccountNextNonce",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -219,12 +219,12 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    getAccountNonce(
+    getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    "getAccountNonce(address)"(
+    "getAccountNextNonce(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -368,12 +368,12 @@ export class Gateway extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  getAccountNonce(
+  getAccountNextNonce(
     account: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  "getAccountNonce(address)"(
+  "getAccountNextNonce(address)"(
     account: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -517,12 +517,12 @@ export class Gateway extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getAccountNonce(
+    getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "getAccountNonce(address)"(
+    "getAccountNextNonce(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -673,12 +673,12 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    getAccountNonce(
+    getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "getAccountNonce(address)"(
+    "getAccountNextNonce(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -827,12 +827,12 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    getAccountNonce(
+    getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "getAccountNonce(address)"(
+    "getAccountNextNonce(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

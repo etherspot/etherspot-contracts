@@ -418,9 +418,12 @@ describe('Gateway', () => {
       }
     });
 
-    context('# revertOnFailure flag is set to true', () => {
-      it('expect to revert on batch failure', async () => {
-        const nonce = 0; // invalid nonce
+    it('expect to revert when all batches fails', async () => {
+      const batches = [];
+      const batchesCount = 4;
+
+      for (let index = 0; index < batchesCount; index += 1) {
+        const nonce = 0;
         const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
           sender,
           {
@@ -430,49 +433,96 @@ describe('Gateway', () => {
           },
         );
 
-        const batch = gateway.interface.encodeFunctionData('delegateBatch', [
-          account.address,
-          nonce,
-          [to],
-          [data],
-          senderSignature,
-        ]);
+        batches.push(
+          gateway.interface.encodeFunctionData('delegateBatch', [
+            account.address,
+            nonce,
+            [to],
+            [data],
+            senderSignature,
+          ]),
+        );
+      }
 
-        await expect(gateway.delegateBatches([batch], true)).rejects.toThrow(
+      await expect(gateway.delegateBatches(batches, false)).rejects.toThrow(
+        /revert/,
+      );
+    });
+
+    context('# revertOnFailure flag', () => {
+      const createBatches = async () => {
+        const result: string[] = [];
+
+        const nonce = getNextNonce();
+
+        const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+          sender,
+          {
+            nonce,
+            to: [to],
+            data: [data],
+          },
+        );
+
+        result.push(
+          gateway.interface.encodeFunctionData('delegateBatch', [
+            account.address,
+            nonce,
+            [to],
+            [data],
+            senderSignature,
+          ]),
+        );
+
+        {
+          const nonce = 0; // invalid nonce
+          const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+            sender,
+            {
+              nonce,
+              to: [to],
+              data: [data],
+            },
+          );
+
+          result.push(
+            gateway.interface.encodeFunctionData('delegateBatch', [
+              account.address,
+              nonce,
+              [to],
+              [data],
+              senderSignature,
+            ]),
+          );
+        }
+
+        return result;
+      };
+
+      it('expect to revert on batch failure when revertOnFailure is set to true', async () => {
+        const batches = await createBatches();
+
+        await expect(gateway.delegateBatches(batches, true)).rejects.toThrow(
           /revert/,
         );
       });
-    });
 
-    context('# revertOnFailure flag is set to false', () => {
-      it('expect to emit event on batch failure', async () => {
-        const nonce = 0; // invalid nonce
-        const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
-          sender,
-          {
-            nonce,
-            to: [to],
-            data: [data],
-          },
+      it('expect to emit event when revertOnFailure is set to false', async () => {
+        const batches = await createBatches();
+
+        let { events } = await processTx(
+          gateway.delegateBatches(batches, false),
         );
 
-        const batch = gateway.interface.encodeFunctionData('delegateBatch', [
-          account.address,
-          nonce,
-          [to],
-          [data],
-          senderSignature,
-        ]);
+        events = events.filter(({ event }) => event === 'BatchDelegated');
 
-        const { events } = await processTx(
-          gateway.delegateBatches([batch], false),
-        );
+        expect(events[0].args.sender).toBe(from.address);
+        expect(events[0].args.batch).toBe(batches[0]);
+        expect(events[0].args.succeeded).toBeTruthy();
 
-        const event = events.find(({ event }) => event === 'BatchDelegated');
-
-        expect(event.args.sender).toBe(from.address);
-        expect(event.args.batch).toBe(batch);
-        expect(event.args.succeeded).toBeFalsy();
+        expect(events[1].args.sender).toBe(from.address);
+        expect(events[1].args.batch).toBe(batches[1]);
+        expect(events[1].args.succeeded).toBeFalsy();
       });
     });
   });
@@ -511,6 +561,53 @@ describe('Gateway', () => {
       await expect(
         gateway.hashDelegatedBatchWithGasPrice(message),
       ).resolves.toBe(typedDataHash);
+    });
+  });
+
+  context('getAccountNextNonce()', () => {
+    let account: SignerWithAddress;
+    let nonce: number;
+
+    before(async () => {
+      const sender = signers.pop();
+      account = signers.pop();
+      gateway = gateway.connect(signers.pop());
+
+      await processTx(
+        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+      );
+      nonce = getNextNonce();
+
+      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+        sender,
+        {
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      await processTx(
+        gateway.delegateBatch(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+        ),
+      );
+    });
+
+    it('expect to return correct nonce', async () => {
+      await expect(
+        gateway.getAccountNextNonce(account.address),
+      ).resolves.toBeBN(nonce + 1);
+    });
+
+    it('expect to return 1 for new account', async () => {
+      await expect(
+        gateway.getAccountNextNonce(randomAddress()),
+      ).resolves.toBeBN(1);
     });
   });
 });

@@ -185,6 +185,8 @@ contract Gateway is Initializable, TypedDataContainer {
       "Gateway: cannot delegate empty batches"
     );
 
+    bool anySucceeded;
+
     for (uint256 i = 0; i < batches.length; i++) {
       // solhint-disable-next-line avoid-low-level-calls
       (bool succeeded,) = address(this).call(batches[i]);
@@ -192,8 +194,10 @@ contract Gateway is Initializable, TypedDataContainer {
       if (revertOnFailure) {
         require(
           succeeded,
-          "Gateway: batch transaction reverted"
+          "Gateway: batch reverted"
         );
+      } else if (succeeded && !anySucceeded) {
+        anySucceeded = true;
       }
 
       emit BatchDelegated(
@@ -201,6 +205,10 @@ contract Gateway is Initializable, TypedDataContainer {
         batches[i],
         succeeded
       );
+    }
+
+    if (!anySucceeded) {
+      revert("Gateway: all batches reverted");
     }
   }
 
@@ -241,14 +249,14 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // external functions (views)
 
-  function getAccountNonce(
+  function getAccountNextNonce(
     address account
   )
     external
     view
     returns (uint256)
   {
-    return accountNonce[account];
+    return accountNonce[account].add(1);
   }
 
   // private functions
