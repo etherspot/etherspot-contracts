@@ -21,6 +21,8 @@ node_modules
 # develop
 .envrc
 .test*
+coverage
+coverage.json
 
 # hardhat
 .hardhat
