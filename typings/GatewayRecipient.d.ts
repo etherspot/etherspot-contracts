@@ -21,20 +21,11 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface GatewayRecipientInterface extends ethers.utils.Interface {
   functions: {
-    "c_0x562241af(bytes32)": FunctionFragment;
     "gateway()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_0x562241af",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "c_0x562241af",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
 
   events: {};
@@ -54,46 +45,16 @@ export class GatewayRecipient extends Contract {
   interface: GatewayRecipientInterface;
 
   functions: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
   };
-
-  c_0x562241af(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x562241af(bytes32)"(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     gateway(overrides?: CallOverrides): Promise<string>;
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
@@ -102,32 +63,12 @@ export class GatewayRecipient extends Contract {
   filters: {};
 
   estimateGas: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;

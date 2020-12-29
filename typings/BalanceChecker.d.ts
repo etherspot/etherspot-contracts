@@ -21,23 +21,14 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface BalanceCheckerInterface extends ethers.utils.Interface {
   functions: {
-    "c_0xff09c856(bytes32)": FunctionFragment;
     "getBalances(address[],address[])": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_0xff09c856",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "getBalances",
     values: [string[], string[]]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "c_0xff09c856",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getBalances",
     data: BytesLike
@@ -60,16 +51,6 @@ export class BalanceChecker extends Contract {
   interface: BalanceCheckerInterface;
 
   functions: {
-    c_0xff09c856(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xff09c856(bytes32)"(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     getBalances(
       accounts: string[],
       tokens: string[],
@@ -82,16 +63,6 @@ export class BalanceChecker extends Contract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[]]>;
   };
-
-  c_0xff09c856(
-    c__0xff09c856: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xff09c856(bytes32)"(
-    c__0xff09c856: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   getBalances(
     accounts: string[],
@@ -106,16 +77,6 @@ export class BalanceChecker extends Contract {
   ): Promise<BigNumber[]>;
 
   callStatic: {
-    c_0xff09c856(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xff09c856(bytes32)"(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     getBalances(
       accounts: string[],
       tokens: string[],
@@ -132,16 +93,6 @@ export class BalanceChecker extends Contract {
   filters: {};
 
   estimateGas: {
-    c_0xff09c856(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xff09c856(bytes32)"(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getBalances(
       accounts: string[],
       tokens: string[],
@@ -156,16 +107,6 @@ export class BalanceChecker extends Contract {
   };
 
   populateTransaction: {
-    c_0xff09c856(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xff09c856(bytes32)"(
-      c__0xff09c856: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getBalances(
       accounts: string[],
       tokens: string[],

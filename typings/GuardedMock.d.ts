@@ -23,22 +23,12 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface GuardedMockInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
-    "c_0xb04fbba5(bytes32)": FunctionFragment;
-    "c_0xfb82e1e2(bytes32)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "c_0xb04fbba5",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xfb82e1e2",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "isGuardian", values: [string]): string;
   encodeFunctionData(
     functionFragment: "removeGuardian",
@@ -51,14 +41,6 @@ interface GuardedMockInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addGuardian",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xb04fbba5",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xfb82e1e2",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "isGuardian", data: BytesLike): Result;
@@ -104,26 +86,6 @@ export class GuardedMock extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xfb82e1e2(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xfb82e1e2(bytes32)"(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     isGuardian(guardian: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     "isGuardian(address)"(
@@ -164,26 +126,6 @@ export class GuardedMock extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  c_0xb04fbba5(
-    c__0xb04fbba5: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xb04fbba5(bytes32)"(
-    c__0xb04fbba5: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xfb82e1e2(
-    c__0xfb82e1e2: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xfb82e1e2(bytes32)"(
-    c__0xfb82e1e2: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   isGuardian(guardian: string, overrides?: CallOverrides): Promise<boolean>;
 
   "isGuardian(address)"(
@@ -218,26 +160,6 @@ export class GuardedMock extends Contract {
 
     "addGuardian(address)"(
       guardian: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xfb82e1e2(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xfb82e1e2(bytes32)"(
-      c__0xfb82e1e2: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -282,26 +204,6 @@ export class GuardedMock extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xfb82e1e2(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xfb82e1e2(bytes32)"(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     isGuardian(guardian: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "isGuardian(address)"(
@@ -338,26 +240,6 @@ export class GuardedMock extends Contract {
     "addGuardian(address)"(
       guardian: string,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xfb82e1e2(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xfb82e1e2(bytes32)"(
-      c__0xfb82e1e2: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isGuardian(

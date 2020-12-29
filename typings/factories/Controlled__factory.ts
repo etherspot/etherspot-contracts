@@ -18,19 +18,6 @@ export class Controlled__factory {
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "c__0x596a049b",
-        type: "bytes32",
-      },
-    ],
-    name: "c_0x596a049b",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "controller",
     outputs: [

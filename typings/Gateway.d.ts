@@ -23,9 +23,6 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface GatewayInterface extends ethers.utils.Interface {
   functions: {
     "accountOwnerRegistry()": FunctionFragment;
-    "c_0x86a0e209(bytes32)": FunctionFragment;
-    "c_0xa174d9c3(bytes32)": FunctionFragment;
-    "c_0xc1f7f618(bytes32)": FunctionFragment;
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatches(bytes[],bool)": FunctionFragment;
@@ -43,18 +40,6 @@ interface GatewayInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "accountOwnerRegistry",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x86a0e209",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xa174d9c3",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xc1f7f618",
-    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "delegateBatch",
@@ -114,18 +99,6 @@ interface GatewayInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "accountOwnerRegistry",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x86a0e209",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xa174d9c3",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xc1f7f618",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -197,36 +170,6 @@ export class Gateway extends Contract {
     accountOwnerRegistry(overrides?: CallOverrides): Promise<[string]>;
 
     "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<[string]>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xa174d9c3(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xa174d9c3(bytes32)"(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
 
     delegateBatch(
       account: string,
@@ -377,36 +320,6 @@ export class Gateway extends Contract {
 
   "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
 
-  c_0x86a0e209(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x86a0e209(bytes32)"(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xa174d9c3(
-    c__0xa174d9c3: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xa174d9c3(bytes32)"(
-    c__0xa174d9c3: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xc1f7f618(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xc1f7f618(bytes32)"(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   delegateBatch(
     account: string,
     nonce: BigNumberish,
@@ -555,36 +468,6 @@ export class Gateway extends Contract {
     accountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
 
     "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xa174d9c3(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xa174d9c3(bytes32)"(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     delegateBatch(
       account: string,
@@ -742,36 +625,6 @@ export class Gateway extends Contract {
 
     "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xa174d9c3(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xa174d9c3(bytes32)"(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -923,36 +776,6 @@ export class Gateway extends Contract {
     ): Promise<PopulatedTransaction>;
 
     "accountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xa174d9c3(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xa174d9c3(bytes32)"(
-      c__0xa174d9c3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

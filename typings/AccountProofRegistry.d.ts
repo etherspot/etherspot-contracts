@@ -23,7 +23,6 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface AccountProofRegistryInterface extends ethers.utils.Interface {
   functions: {
     "addAccountProof(bytes32)": FunctionFragment;
-    "c_0x3ddece46(bytes32)": FunctionFragment;
     "removeAccountProof(bytes32)": FunctionFragment;
     "verifyAccountProof(address,bytes32)": FunctionFragment;
     "verifyAccountProofAtBlock(address,bytes32,uint256)": FunctionFragment;
@@ -31,10 +30,6 @@ interface AccountProofRegistryInterface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "addAccountProof",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x3ddece46",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
@@ -52,10 +47,6 @@ interface AccountProofRegistryInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addAccountProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x3ddece46",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -104,16 +95,6 @@ export class AccountProofRegistry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    c_0x3ddece46(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x3ddece46(bytes32)"(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     removeAccountProof(
       hash: BytesLike,
       overrides?: Overrides
@@ -161,16 +142,6 @@ export class AccountProofRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  c_0x3ddece46(
-    c__0x3ddece46: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x3ddece46(bytes32)"(
-    c__0x3ddece46: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   removeAccountProof(
     hash: BytesLike,
     overrides?: Overrides
@@ -212,16 +183,6 @@ export class AccountProofRegistry extends Contract {
 
     "addAccountProof(bytes32)"(
       hash: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x3ddece46(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x3ddece46(bytes32)"(
-      c__0x3ddece46: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -276,16 +237,6 @@ export class AccountProofRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    c_0x3ddece46(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x3ddece46(bytes32)"(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     removeAccountProof(
       hash: BytesLike,
       overrides?: Overrides
@@ -332,16 +283,6 @@ export class AccountProofRegistry extends Contract {
     "addAccountProof(bytes32)"(
       hash: BytesLike,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x3ddece46(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x3ddece46(bytes32)"(
-      c__0x3ddece46: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     removeAccountProof(

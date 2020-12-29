@@ -21,23 +21,14 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface TypedDataContainerInterface extends ethers.utils.Interface {
   functions: {
-    "c_0x86a0e209(bytes32)": FunctionFragment;
     "typedDataDomainSeparator()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_0x86a0e209",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "typedDataDomainSeparator",
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "c_0x86a0e209",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "typedDataDomainSeparator",
     data: BytesLike
@@ -60,46 +51,16 @@ export class TypedDataContainer extends Contract {
   interface: TypedDataContainerInterface;
 
   functions: {
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
   };
-
-  c_0x86a0e209(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x86a0e209(bytes32)"(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
   "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
@@ -108,32 +69,12 @@ export class TypedDataContainer extends Contract {
   filters: {};
 
   estimateGas: {
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     typedDataDomainSeparator(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

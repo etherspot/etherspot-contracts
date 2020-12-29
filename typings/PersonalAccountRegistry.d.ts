@@ -23,10 +23,6 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   functions: {
     "addAccountOwner(address,address)": FunctionFragment;
-    "c_0x2b6c4d67(bytes32)": FunctionFragment;
-    "c_0x562241af(bytes32)": FunctionFragment;
-    "c_0xc1f7f618(bytes32)": FunctionFragment;
-    "c_0xc7c62690(bytes32)": FunctionFragment;
     "computeAccountAddress(address)": FunctionFragment;
     "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
     "gateway()": FunctionFragment;
@@ -42,22 +38,6 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "addAccountOwner",
     values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x2b6c4d67",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x562241af",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xc1f7f618",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xc7c62690",
-    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "computeAccountAddress",
@@ -96,22 +76,6 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addAccountOwner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x2b6c4d67",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x562241af",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xc1f7f618",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xc7c62690",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -191,46 +155,6 @@ export class PersonalAccountRegistry extends Contract {
       owner: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
-
-    c_0x2b6c4d67(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x2b6c4d67(bytes32)"(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xc7c62690(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xc7c62690(bytes32)"(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
 
     computeAccountAddress(
       saltOwner: string,
@@ -351,46 +275,6 @@ export class PersonalAccountRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  c_0x2b6c4d67(
-    c__0x2b6c4d67: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x2b6c4d67(bytes32)"(
-    c__0x2b6c4d67: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x562241af(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x562241af(bytes32)"(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xc1f7f618(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xc1f7f618(bytes32)"(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xc7c62690(
-    c__0xc7c62690: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xc7c62690(bytes32)"(
-    c__0xc7c62690: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   computeAccountAddress(
     saltOwner: string,
     overrides?: CallOverrides
@@ -507,46 +391,6 @@ export class PersonalAccountRegistry extends Contract {
     "addAccountOwner(address,address)"(
       account: string,
       owner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x2b6c4d67(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x2b6c4d67(bytes32)"(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xc7c62690(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xc7c62690(bytes32)"(
-      c__0xc7c62690: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -692,46 +536,6 @@ export class PersonalAccountRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    c_0x2b6c4d67(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x2b6c4d67(bytes32)"(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xc7c62690(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xc7c62690(bytes32)"(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     computeAccountAddress(
       saltOwner: string,
       overrides?: CallOverrides
@@ -847,46 +651,6 @@ export class PersonalAccountRegistry extends Contract {
       account: string,
       owner: string,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x2b6c4d67(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x2b6c4d67(bytes32)"(
-      c__0x2b6c4d67: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xc7c62690(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xc7c62690(bytes32)"(
-      c__0xc7c62690: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     computeAccountAddress(

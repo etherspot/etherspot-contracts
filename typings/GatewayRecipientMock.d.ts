@@ -22,34 +22,16 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface GatewayRecipientMockInterface extends ethers.utils.Interface {
   functions: {
-    "c_0x562241af(bytes32)": FunctionFragment;
-    "c_0x89b7780c(bytes32)": FunctionFragment;
     "emitContext()": FunctionFragment;
     "gateway()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_0x562241af",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x89b7780c",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "emitContext",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "c_0x562241af",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x89b7780c",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "emitContext",
     data: BytesLike
@@ -77,26 +59,6 @@ export class GatewayRecipientMock extends Contract {
   interface: GatewayRecipientMockInterface;
 
   functions: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x89b7780c(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x89b7780c(bytes32)"(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     emitContext(overrides?: Overrides): Promise<ContractTransaction>;
 
     "emitContext()"(overrides?: Overrides): Promise<ContractTransaction>;
@@ -105,26 +67,6 @@ export class GatewayRecipientMock extends Contract {
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
   };
-
-  c_0x562241af(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x562241af(bytes32)"(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x89b7780c(
-    c__0x89b7780c: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x89b7780c(bytes32)"(
-    c__0x89b7780c: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   emitContext(overrides?: Overrides): Promise<ContractTransaction>;
 
@@ -135,26 +77,6 @@ export class GatewayRecipientMock extends Contract {
   "gateway()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x89b7780c(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x89b7780c(bytes32)"(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     emitContext(overrides?: CallOverrides): Promise<void>;
 
     "emitContext()"(overrides?: CallOverrides): Promise<void>;
@@ -169,26 +91,6 @@ export class GatewayRecipientMock extends Contract {
   };
 
   estimateGas: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x89b7780c(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x89b7780c(bytes32)"(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     emitContext(overrides?: Overrides): Promise<BigNumber>;
 
     "emitContext()"(overrides?: Overrides): Promise<BigNumber>;
@@ -199,26 +101,6 @@ export class GatewayRecipientMock extends Contract {
   };
 
   populateTransaction: {
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x89b7780c(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x89b7780c(bytes32)"(
-      c__0x89b7780c: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     emitContext(overrides?: Overrides): Promise<PopulatedTransaction>;
 
     "emitContext()"(overrides?: Overrides): Promise<PopulatedTransaction>;

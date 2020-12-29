@@ -23,7 +23,6 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface AccountOwnerRegistryInterface extends ethers.utils.Interface {
   functions: {
     "addAccountOwner(address)": FunctionFragment;
-    "c_0x8fa56b90(bytes32)": FunctionFragment;
     "removeAccountOwner(address)": FunctionFragment;
     "verifyAccountOwner(address,address)": FunctionFragment;
     "verifyAccountOwnerAtBlock(address,address,uint256)": FunctionFragment;
@@ -32,10 +31,6 @@ interface AccountOwnerRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "addAccountOwner",
     values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x8fa56b90",
-    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "removeAccountOwner",
@@ -52,10 +47,6 @@ interface AccountOwnerRegistryInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addAccountOwner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x8fa56b90",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -104,16 +95,6 @@ export class AccountOwnerRegistry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    c_0x8fa56b90(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x8fa56b90(bytes32)"(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     removeAccountOwner(
       owner: string,
       overrides?: Overrides
@@ -161,16 +142,6 @@ export class AccountOwnerRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  c_0x8fa56b90(
-    c__0x8fa56b90: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x8fa56b90(bytes32)"(
-    c__0x8fa56b90: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   removeAccountOwner(
     owner: string,
     overrides?: Overrides
@@ -212,16 +183,6 @@ export class AccountOwnerRegistry extends Contract {
 
     "addAccountOwner(address)"(
       owner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x8fa56b90(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x8fa56b90(bytes32)"(
-      c__0x8fa56b90: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -273,16 +234,6 @@ export class AccountOwnerRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    c_0x8fa56b90(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x8fa56b90(bytes32)"(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     removeAccountOwner(
       owner: string,
       overrides?: Overrides
@@ -329,16 +280,6 @@ export class AccountOwnerRegistry extends Contract {
     "addAccountOwner(address)"(
       owner: string,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x8fa56b90(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x8fa56b90(bytes32)"(
-      c__0x8fa56b90: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     removeAccountOwner(

@@ -21,23 +21,14 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface InitializableInterface extends ethers.utils.Interface {
   functions: {
-    "c_0xc1f7f618(bytes32)": FunctionFragment;
     "isInitialized()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_0xc1f7f618",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "c_0xc1f7f618",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
     data: BytesLike
@@ -64,46 +55,16 @@ export class Initializable extends Contract {
   interface: InitializableInterface;
 
   functions: {
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     isInitialized(overrides?: CallOverrides): Promise<[boolean]>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<[boolean]>;
   };
-
-  c_0xc1f7f618(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xc1f7f618(bytes32)"(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
   "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
@@ -114,32 +75,12 @@ export class Initializable extends Contract {
   };
 
   estimateGas: {
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     isInitialized(overrides?: CallOverrides): Promise<BigNumber>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     isInitialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;

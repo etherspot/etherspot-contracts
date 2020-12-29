@@ -24,11 +24,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
-    "c_0x13335edb(bytes32)": FunctionFragment;
-    "c_0x562241af(bytes32)": FunctionFragment;
-    "c_0x86a0e209(bytes32)": FunctionFragment;
-    "c_0xb04fbba5(bytes32)": FunctionFragment;
-    "c_0xc1f7f618(bytes32)": FunctionFragment;
     "gateway()": FunctionFragment;
     "hashSubNodeRegistration(tuple)": FunctionFragment;
     "initialize(address,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
@@ -49,26 +44,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
-  encodeFunctionData(
-    functionFragment: "c_0x13335edb",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x562241af",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x86a0e209",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xb04fbba5",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0xc1f7f618",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "hashSubNodeRegistration",
@@ -127,26 +102,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x13335edb",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x562241af",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x86a0e209",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xb04fbba5",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0xc1f7f618",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "hashSubNodeRegistration",
@@ -242,56 +197,6 @@ export class ENSController extends Contract {
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    c_0x13335edb(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x13335edb(bytes32)"(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
 
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
@@ -467,56 +372,6 @@ export class ENSController extends Contract {
 
   "addr(bytes32)"(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
-  c_0x13335edb(
-    c__0x13335edb: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x13335edb(bytes32)"(
-    c__0x13335edb: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x562241af(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x562241af(bytes32)"(
-    c__0x562241af: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x86a0e209(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x86a0e209(bytes32)"(
-    c__0x86a0e209: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xb04fbba5(
-    c__0xb04fbba5: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xb04fbba5(bytes32)"(
-    c__0xb04fbba5: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0xc1f7f618(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0xc1f7f618(bytes32)"(
-    c__0xc1f7f618: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   gateway(overrides?: CallOverrides): Promise<string>;
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
@@ -682,56 +537,6 @@ export class ENSController extends Contract {
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    c_0x13335edb(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x13335edb(bytes32)"(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     gateway(overrides?: CallOverrides): Promise<string>;
 
@@ -911,56 +716,6 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_0x13335edb(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x13335edb(bytes32)"(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1124,56 +879,6 @@ export class ENSController extends Contract {
 
     "addr(bytes32)"(
       node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x13335edb(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x13335edb(bytes32)"(
-      c__0x13335edb: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x562241af(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x562241af(bytes32)"(
-      c__0x562241af: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x86a0e209(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x86a0e209(bytes32)"(
-      c__0x86a0e209: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xb04fbba5(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xb04fbba5(bytes32)"(
-      c__0xb04fbba5: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0xc1f7f618(
-      c__0xc1f7f618: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0xc1f7f618(bytes32)"(
-      c__0xc1f7f618: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
