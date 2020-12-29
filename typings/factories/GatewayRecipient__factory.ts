@@ -18,6 +18,19 @@ export class GatewayRecipient__factory {
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "c__0x562241af",
+        type: "bytes32",
+      },
+    ],
+    name: "c_0x562241af",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "gateway",
     outputs: [

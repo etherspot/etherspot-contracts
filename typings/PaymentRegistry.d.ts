@@ -25,6 +25,12 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "accountOwnerRegistry()": FunctionFragment;
     "accountProofRegistry()": FunctionFragment;
     "addGuardian(address)": FunctionFragment;
+    "c_0x2c1650f9(bytes32)": FunctionFragment;
+    "c_0x562241af(bytes32)": FunctionFragment;
+    "c_0x86a0e209(bytes32)": FunctionFragment;
+    "c_0xb04fbba5(bytes32)": FunctionFragment;
+    "c_0xc1f7f618(bytes32)": FunctionFragment;
+    "c_0xc7c62690(bytes32)": FunctionFragment;
     "commitPaymentChannelAndDeposit(address,address,bytes32,uint256,uint256,bytes,bytes)": FunctionFragment;
     "commitPaymentChannelAndSplit(address,address,bytes32,uint256,uint256,uint256,bytes,bytes)": FunctionFragment;
     "commitPaymentChannelAndWithdraw(address,address,bytes32,uint256,uint256,bytes,bytes)": FunctionFragment;
@@ -60,6 +66,30 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_0x2c1650f9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0x562241af",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0x86a0e209",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0xb04fbba5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0xc1f7f618",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0xc7c62690",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "commitPaymentChannelAndDeposit",
     values: [
@@ -208,6 +238,30 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "c_0x2c1650f9",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x562241af",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x86a0e209",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0xb04fbba5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0xc1f7f618",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0xc7c62690",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "commitPaymentChannelAndDeposit",
     data: BytesLike
   ): Result;
@@ -301,8 +355,8 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "DepositExitRejected(address,address,address)": EventFragment;
     "DepositExitRequested(address,address,address,uint256)": EventFragment;
     "DepositWithdrawn(address,address,address,uint256)": EventFragment;
-    "GuardianAdded(address)": EventFragment;
-    "GuardianRemoved(address)": EventFragment;
+    "GuardianAdded(address,address)": EventFragment;
+    "GuardianRemoved(address,address)": EventFragment;
     "Initialized()": EventFragment;
     "PaymentChannelCommitted(bytes32,address,address,address,bytes32,uint256)": EventFragment;
     "PaymentDeposited(bytes32,uint256)": EventFragment;
@@ -355,6 +409,66 @@ export class PaymentRegistry extends Contract {
       guardian: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    c_0x2c1650f9(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x2c1650f9(bytes32)"(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0x562241af(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x562241af(bytes32)"(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0x86a0e209(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x86a0e209(bytes32)"(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0xb04fbba5(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0xb04fbba5(bytes32)"(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0xc7c62690(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0xc7c62690(bytes32)"(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
     commitPaymentChannelAndDeposit(
       sender: string,
@@ -666,6 +780,66 @@ export class PaymentRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  c_0x2c1650f9(
+    c__0x2c1650f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x2c1650f9(bytes32)"(
+    c__0x2c1650f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0x562241af(
+    c__0x562241af: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x562241af(bytes32)"(
+    c__0x562241af: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0x86a0e209(
+    c__0x86a0e209: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x86a0e209(bytes32)"(
+    c__0x86a0e209: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0xb04fbba5(
+    c__0xb04fbba5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0xb04fbba5(bytes32)"(
+    c__0xb04fbba5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0xc1f7f618(
+    c__0xc1f7f618: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0xc1f7f618(bytes32)"(
+    c__0xc1f7f618: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0xc7c62690(
+    c__0xc7c62690: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0xc7c62690(bytes32)"(
+    c__0xc7c62690: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   commitPaymentChannelAndDeposit(
     sender: string,
     token: string,
@@ -970,6 +1144,66 @@ export class PaymentRegistry extends Contract {
 
     "addGuardian(address)"(
       guardian: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x2c1650f9(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x2c1650f9(bytes32)"(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x562241af(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x562241af(bytes32)"(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x86a0e209(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x86a0e209(bytes32)"(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0xb04fbba5(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0xb04fbba5(bytes32)"(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0xc7c62690(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0xc7c62690(bytes32)"(
+      c__0xc7c62690: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1286,9 +1520,9 @@ export class PaymentRegistry extends Contract {
       amount: null
     ): EventFilter;
 
-    GuardianAdded(guardian: null): EventFilter;
+    GuardianAdded(sender: null, guardian: null): EventFilter;
 
-    GuardianRemoved(guardian: null): EventFilter;
+    GuardianRemoved(sender: null, guardian: null): EventFilter;
 
     Initialized(): EventFilter;
 
@@ -1326,6 +1560,66 @@ export class PaymentRegistry extends Contract {
     "addGuardian(address)"(
       guardian: string,
       overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    c_0x2c1650f9(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x2c1650f9(bytes32)"(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x562241af(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x562241af(bytes32)"(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x86a0e209(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x86a0e209(bytes32)"(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0xb04fbba5(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0xb04fbba5(bytes32)"(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0xc7c62690(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0xc7c62690(bytes32)"(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     commitPaymentChannelAndDeposit(
@@ -1642,6 +1936,66 @@ export class PaymentRegistry extends Contract {
     "addGuardian(address)"(
       guardian: string,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x2c1650f9(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x2c1650f9(bytes32)"(
+      c__0x2c1650f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x562241af(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x562241af(bytes32)"(
+      c__0x562241af: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x86a0e209(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x86a0e209(bytes32)"(
+      c__0x86a0e209: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0xb04fbba5(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0xb04fbba5(bytes32)"(
+      c__0xb04fbba5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0xc7c62690(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0xc7c62690(bytes32)"(
+      c__0xc7c62690: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     commitPaymentChannelAndDeposit(

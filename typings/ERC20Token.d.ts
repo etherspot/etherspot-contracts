@@ -25,6 +25,7 @@ interface ERC20TokenInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "c_0x370e5bc4(bytes32)": FunctionFragment;
     "decimals()": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -42,6 +43,10 @@ interface ERC20TokenInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_0x370e5bc4",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
@@ -61,6 +66,10 @@ interface ERC20TokenInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x370e5bc4",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -127,6 +136,16 @@ export class ERC20Token extends Contract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
@@ -202,6 +221,16 @@ export class ERC20Token extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  c_0x370e5bc4(
+    c__0x370e5bc4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x370e5bc4(bytes32)"(
+    c__0x370e5bc4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   "decimals()"(overrides?: CallOverrides): Promise<number>;
@@ -275,6 +304,16 @@ export class ERC20Token extends Contract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -361,6 +400,16 @@ export class ERC20Token extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -436,6 +485,16 @@ export class ERC20Token extends Contract {
 
     "balanceOf(address)"(
       owner: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

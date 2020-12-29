@@ -46,9 +46,6 @@ const config: HardhatUserConfig = {
   solidity: {
     version: '0.6.12',
     settings: {
-      optimizer: {
-        enabled: true,
-      },
       evmVersion: 'istanbul',
       metadata: {
         bytecodeHash: 'none',

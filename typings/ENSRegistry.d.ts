@@ -22,6 +22,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface ENSRegistryInterface extends ethers.utils.Interface {
   functions: {
+    "c_0x754dbf5d(bytes32)": FunctionFragment;
     "owner(bytes32)": FunctionFragment;
     "resolver(bytes32)": FunctionFragment;
     "setOwner(bytes32,address)": FunctionFragment;
@@ -31,6 +32,10 @@ interface ENSRegistryInterface extends ethers.utils.Interface {
     "ttl(bytes32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_0x754dbf5d",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "resolver", values: [BytesLike]): string;
   encodeFunctionData(
@@ -51,6 +56,10 @@ interface ENSRegistryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "ttl", values: [BytesLike]): string;
 
+  decodeFunctionResult(
+    functionFragment: "c_0x754dbf5d",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "resolver", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setOwner", data: BytesLike): Result;
@@ -92,6 +101,16 @@ export class ENSRegistry extends Contract {
   interface: ENSRegistryInterface;
 
   functions: {
+    c_0x754dbf5d(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x754dbf5d(bytes32)"(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
     "owner(bytes32)"(
@@ -164,6 +183,16 @@ export class ENSRegistry extends Contract {
     ): Promise<[BigNumber]>;
   };
 
+  c_0x754dbf5d(
+    c__0x754dbf5d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x754dbf5d(bytes32)"(
+    c__0x754dbf5d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
   "owner(bytes32)"(node: BytesLike, overrides?: CallOverrides): Promise<string>;
@@ -233,6 +262,16 @@ export class ENSRegistry extends Contract {
   ): Promise<BigNumber>;
 
   callStatic: {
+    c_0x754dbf5d(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x754dbf5d(bytes32)"(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
     "owner(bytes32)"(
@@ -320,6 +359,16 @@ export class ENSRegistry extends Contract {
   };
 
   estimateGas: {
+    c_0x754dbf5d(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x754dbf5d(bytes32)"(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     "owner(bytes32)"(
@@ -393,6 +442,16 @@ export class ENSRegistry extends Contract {
   };
 
   populateTransaction: {
+    c_0x754dbf5d(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x754dbf5d(bytes32)"(
+      c__0x754dbf5d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(
       node: BytesLike,
       overrides?: CallOverrides

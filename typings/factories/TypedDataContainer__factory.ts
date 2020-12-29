@@ -18,6 +18,19 @@ export class TypedDataContainer__factory {
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "c__0x86a0e209",
+        type: "bytes32",
+      },
+    ],
+    name: "c_0x86a0e209",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "typedDataDomainSeparator",
     outputs: [

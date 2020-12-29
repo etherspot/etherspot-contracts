@@ -21,14 +21,23 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface ControlledInterface extends ethers.utils.Interface {
   functions: {
+    "c_0x596a049b(bytes32)": FunctionFragment;
     "controller()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_0x596a049b",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "controller",
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "c_0x596a049b",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "controller", data: BytesLike): Result;
 
   events: {};
@@ -48,16 +57,46 @@ export class Controlled extends Contract {
   interface: ControlledInterface;
 
   functions: {
+    c_0x596a049b(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x596a049b(bytes32)"(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     controller(overrides?: CallOverrides): Promise<[string]>;
 
     "controller()"(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  c_0x596a049b(
+    c__0x596a049b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x596a049b(bytes32)"(
+    c__0x596a049b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
 
   controller(overrides?: CallOverrides): Promise<string>;
 
   "controller()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    c_0x596a049b(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x596a049b(bytes32)"(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     controller(overrides?: CallOverrides): Promise<string>;
 
     "controller()"(overrides?: CallOverrides): Promise<string>;
@@ -66,12 +105,32 @@ export class Controlled extends Contract {
   filters: {};
 
   estimateGas: {
+    c_0x596a049b(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x596a049b(bytes32)"(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     controller(overrides?: CallOverrides): Promise<BigNumber>;
 
     "controller()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    c_0x596a049b(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x596a049b(bytes32)"(
+      c__0x596a049b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     controller(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "controller()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;

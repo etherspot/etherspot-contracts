@@ -135,6 +135,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "c__0x370e5bc4",
+        type: "bytes32",
+      },
+    ],
+    name: "c_0x370e5bc4",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "decimals",
     outputs: [

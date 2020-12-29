@@ -26,6 +26,9 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "c_0x370e5bc4(bytes32)": FunctionFragment;
+    "c_0x8ff95a29(bytes32)": FunctionFragment;
+    "c_0xc1f7f618(bytes32)": FunctionFragment;
     "decimals()": FunctionFragment;
     "depositTo(address)": FunctionFragment;
     "initialize(address[])": FunctionFragment;
@@ -53,6 +56,18 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_0x370e5bc4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0x8ff95a29",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0xc1f7f618",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "depositTo", values: [string]): string;
   encodeFunctionData(
@@ -106,6 +121,18 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x370e5bc4",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x8ff95a29",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0xc1f7f618",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "depositTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
@@ -203,6 +230,36 @@ export class WrappedWeiToken extends Contract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0x8ff95a29(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x8ff95a29(bytes32)"(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
@@ -353,6 +410,36 @@ export class WrappedWeiToken extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  c_0x370e5bc4(
+    c__0x370e5bc4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x370e5bc4(bytes32)"(
+    c__0x370e5bc4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0x8ff95a29(
+    c__0x8ff95a29: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x8ff95a29(bytes32)"(
+    c__0x8ff95a29: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0xc1f7f618(
+    c__0xc1f7f618: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0xc1f7f618(bytes32)"(
+    c__0xc1f7f618: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   "decimals()"(overrides?: CallOverrides): Promise<number>;
@@ -501,6 +588,36 @@ export class WrappedWeiToken extends Contract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x8ff95a29(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x8ff95a29(bytes32)"(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -653,6 +770,36 @@ export class WrappedWeiToken extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x8ff95a29(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x8ff95a29(bytes32)"(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -791,6 +938,36 @@ export class WrappedWeiToken extends Contract {
 
     "balanceOf(address)"(
       owner: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x370e5bc4(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x370e5bc4(bytes32)"(
+      c__0x370e5bc4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x8ff95a29(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x8ff95a29(bytes32)"(
+      c__0x8ff95a29: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0xc1f7f618(
+      c__0xc1f7f618: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0xc1f7f618(bytes32)"(
+      c__0xc1f7f618: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

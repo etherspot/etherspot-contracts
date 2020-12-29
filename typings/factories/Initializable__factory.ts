@@ -24,6 +24,19 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "c__0xc1f7f618",
+        type: "bytes32",
+      },
+    ],
+    name: "c_0xc1f7f618",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "isInitialized",
     outputs: [
