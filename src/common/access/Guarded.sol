@@ -72,6 +72,7 @@ contract Guarded {
     guardians[guardian] = false;
 
     emit GuardianRemoved(
+      // solhint-disable-next-line avoid-tx-origin
       tx.origin,
       guardian
     );
@@ -157,6 +158,7 @@ contract Guarded {
     guardians[guardian] = true;
 
     emit GuardianAdded(
+      // solhint-disable-next-line avoid-tx-origin
       tx.origin,
       guardian
     );
