@@ -6,18 +6,18 @@ import "../common/libs/SafeMathLib.sol";
 
 
 /**
- * @title Balance checker
+ * @title Utils
  *
  * @author Jegor Sidorenko <jegor@pillarproject.io>
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract BalanceChecker {
+contract Utils {
   using SafeMathLib for uint256;
 
   // external functions
 
   /**
-   * @notice Check the token balances of a wallet for multiple tokens.
+   * @notice checks the token balances of accounts for multiple tokens.
    * @dev Pass 0x0 as a "token" address to get ETH balance.
    *
    * Possible error throws:
@@ -26,7 +26,7 @@ contract BalanceChecker {
    * @param accounts array of accounts addresses
    * @param tokens array of tokens addresses
    * @return a one-dimensional that's user.length * tokens.length long. The
-   * array is ordered by all of the 0th users token balances, then the 1th
+   * array is ordered by all of the 0th accounts token balances, then the 1th
    * user, and so on.
    */
   function getBalances(

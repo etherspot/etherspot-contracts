@@ -1,21 +1,21 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
-import { BalanceChecker, WrappedWeiToken } from '../../typings';
+import { Utils, WrappedWeiToken } from '../../typings';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, constants } = ethers;
 
-describe('AccountOwnerRegistry', () => {
+describe('Utils', () => {
   let signers: SignerWithAddress[];
-  let balanceChecker: BalanceChecker;
+  let utils: Utils;
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {
     signers = await getSigners();
 
-    balanceChecker = (await ethers
-      .getContractFactory('BalanceChecker')
-      .then(factory => factory.deploy())) as BalanceChecker;
+    utils = (await ethers
+      .getContractFactory('Utils')
+      .then(factory => factory.deploy())) as Utils;
 
     wrappedWeiToken = (await ethers
       .getContractFactory('WrappedWeiToken')
@@ -44,7 +44,7 @@ describe('AccountOwnerRegistry', () => {
       const randomOwner = randomAddress();
       const randomToken = randomAddress();
 
-      const output: BigNumber[] = await balanceChecker.getBalances(
+      const output: BigNumber[] = await utils.getBalances(
         [owner.address, randomOwner],
         [wrappedWeiToken.address, randomToken, constants.AddressZero],
       );

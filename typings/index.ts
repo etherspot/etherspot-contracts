@@ -18,7 +18,7 @@ export type { GatewayRecipientMock } from "./GatewayRecipientMock";
 export type { PaymentRegistry } from "./PaymentRegistry";
 export type { PersonalAccountRegistry } from "./PersonalAccountRegistry";
 export type { WrappedWeiToken } from "./WrappedWeiToken";
-export type { BalanceChecker } from "./BalanceChecker";
+export type { Utils } from "./Utils";
 
 export { AccountOwnerRegistry__factory } from "./factories/AccountOwnerRegistry__factory";
 export { AccountProofRegistry__factory } from "./factories/AccountProofRegistry__factory";
@@ -37,4 +37,4 @@ export { GatewayRecipientMock__factory } from "./factories/GatewayRecipientMock_
 export { PaymentRegistry__factory } from "./factories/PaymentRegistry__factory";
 export { PersonalAccountRegistry__factory } from "./factories/PersonalAccountRegistry__factory";
 export { WrappedWeiToken__factory } from "./factories/WrappedWeiToken__factory";
-export { BalanceChecker__factory } from "./factories/BalanceChecker__factory";
+export { Utils__factory } from "./factories/Utils__factory";

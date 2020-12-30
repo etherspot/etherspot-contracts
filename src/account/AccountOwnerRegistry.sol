@@ -5,7 +5,15 @@ import "../common/libs/BlockLib.sol";
 
 
 /**
- * @title AccountOwnerRegistry
+ * @title Account owner registry
+ *
+ * @notice Global owners registry for key and external (outside of the platform) contract based wallets.
+ *
+ * @dev An account can call the registry to add (`addAccountOwner`) or remove (`removeAccountOwner`) its own owners.
+ * When the owner has been added, information about that fact will live in the registry forever.
+ * Removing an owner only affects the future blocks (until the owner is re-added).
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract AccountOwnerRegistry {
   using BlockLib for BlockLib.BlockRelated;
@@ -14,11 +22,21 @@ contract AccountOwnerRegistry {
 
   // events
 
+  /**
+   * @dev emitted when the new owner is added
+   * @param account account address
+   * @param owner new owner address
+   */
   event AccountOwnerAdded(
     address account,
     address owner
   );
 
+  /**
+   * @dev emitted when the new owner is removed
+   * @param account account address
+   * @param owner removed owner address
+   */
   event AccountOwnerRemoved(
     address account,
     address owner
@@ -26,6 +44,10 @@ contract AccountOwnerRegistry {
 
   // external functions
 
+  /**
+   * @notice adds new account owner
+   * @param owner new owner address
+   */
   function addAccountOwner(
     address owner
   )
@@ -50,6 +72,10 @@ contract AccountOwnerRegistry {
     );
   }
 
+  /**
+   * @notice removes exiting account owner
+   * @param owner removed owner address
+   */
   function removeAccountOwner(
     address owner
   )
@@ -70,6 +96,12 @@ contract AccountOwnerRegistry {
 
   // external functions (views)
 
+  /**
+   * @notice verifies account owner at current block
+   * @param account account address
+   * @param owner owner address
+   * @return true on correct account owner
+   */
   function verifyAccountOwner(
     address account,
     address owner
@@ -81,6 +113,13 @@ contract AccountOwnerRegistry {
     return accountOwners[account][owner].verifyAtCurrentBlock();
   }
 
+  /**
+   * @notice verifies account owner at specific block
+   * @param account account address
+   * @param owner owner address
+   * @param blockNumber block number to verify
+   * @return true on correct account owner
+   */
   function verifyAccountOwnerAtBlock(
     address account,
     address owner,

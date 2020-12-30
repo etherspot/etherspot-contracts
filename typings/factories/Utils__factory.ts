@@ -6,30 +6,27 @@ import { Signer } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
 import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
 
-import type { BalanceChecker } from "../BalanceChecker";
+import type { Utils } from "../Utils";
 
-export class BalanceChecker__factory extends ContractFactory {
+export class Utils__factory extends ContractFactory {
   constructor(signer?: Signer) {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(overrides?: Overrides): Promise<BalanceChecker> {
-    return super.deploy(overrides || {}) as Promise<BalanceChecker>;
+  deploy(overrides?: Overrides): Promise<Utils> {
+    return super.deploy(overrides || {}) as Promise<Utils>;
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
-  attach(address: string): BalanceChecker {
-    return super.attach(address) as BalanceChecker;
+  attach(address: string): Utils {
+    return super.attach(address) as Utils;
   }
-  connect(signer: Signer): BalanceChecker__factory {
-    return super.connect(signer) as BalanceChecker__factory;
+  connect(signer: Signer): Utils__factory {
+    return super.connect(signer) as Utils__factory;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): BalanceChecker {
-    return new Contract(address, _abi, signerOrProvider) as BalanceChecker;
+  static connect(address: string, signerOrProvider: Signer | Provider): Utils {
+    return new Contract(address, _abi, signerOrProvider) as Utils;
   }
 }
 
