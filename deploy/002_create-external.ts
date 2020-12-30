@@ -7,17 +7,17 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  await deploy('AccountOwnerRegistry', {
+  await deploy('ExternalAccountOwnerRegistry', {
     from,
     log: true,
   });
 
-  await deploy('AccountProofRegistry', {
+  await deploy('ExternalAccountProofRegistry', {
     from,
     log: true,
   });
 };
 
-func.tags = ['create', 'account'];
+func.tags = ['create', 'external'];
 
 module.exports = func;
