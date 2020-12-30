@@ -67,12 +67,12 @@ contract BalanceChecker {
     uint256 result = 0;
     uint256 tokenCode;
 
-    // check if token is actually a contract
+    /// @dev check if token is actually a contract
     // solhint-disable-next-line no-inline-assembly
     assembly { tokenCode := extcodesize(token) } // contract code size
 
     if (tokenCode > 0) {
-      // is it a contract and does it implement balanceOf
+      /// @dev is it a contract and does it implement balanceOf
       // solhint-disable-next-line avoid-low-level-calls
       (bool methodExists,) = token.staticcall(abi.encodeWithSelector(
         ERC20Token(token).balanceOf.selector,
