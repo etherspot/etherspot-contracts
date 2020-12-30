@@ -2,7 +2,9 @@
 pragma solidity ^0.6.12;
 
 /**
- * @title BlockLib
+ * @title Block library
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 library BlockLib {
   struct BlockRelated {
@@ -10,6 +12,11 @@ library BlockLib {
     uint256 removedAtBlockNumber;
   }
 
+  /**
+   * @notice Verifies self struct at current block
+   * @param self self struct
+   * @return true on correct self struct
+   */
   function verifyAtCurrentBlock(
     BlockRelated memory self
   )
@@ -20,6 +27,11 @@ library BlockLib {
     return verifyAtBlock(self, block.number);
   }
 
+  /**
+   * @notice Verifies self struct at any block
+   * @param self self struct
+   * @return true on correct self struct
+   */
   function verifyAtAnyBlock(
     BlockRelated memory self
   )
@@ -30,6 +42,12 @@ library BlockLib {
     return verifyAtBlock(self, 0);
   }
 
+  /**
+   * @notice Verifies self struct at specific block
+   * @param self self struct
+   * @param blockNumber block number to verify
+   * @return true on correct self struct
+   */
   function verifyAtBlock(
     BlockRelated memory self,
     uint256 blockNumber

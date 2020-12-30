@@ -5,16 +5,25 @@ import "./Account.sol";
 
 
 /**
- * @title AccountController
+ * @title Account controller
+ *
+ * @dev Contract module which provides Account deployment mechanism
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract AccountController {
   /**
-   * @dev internal constructor
+   * @dev Internal constructor
    */
   constructor() internal {}
 
   // internal functions
 
+  /**
+   * @notice Deploys account
+   * @param salt CREATE2 salt
+   * @return account address
+   */
   function _deployAccount(
     bytes32 salt
   )
@@ -24,6 +33,14 @@ contract AccountController {
     return address(new Account{salt: salt}());
   }
 
+  /**
+   * @notice Executes transaction from the account
+   * @param account account address
+   * @param to to address
+   * @param value value
+   * @param data data
+   * @return transaction result
+   */
   function _executeAccountTransaction(
     address account,
     address to,
@@ -57,6 +74,11 @@ contract AccountController {
 
   // internal functions (views)
 
+  /**
+   * @notice Computes account CREATE2 address
+   * @param salt CREATE2 salt
+   * @return account address
+   */
   function _computeAccountAddress(
     bytes32 salt
   )

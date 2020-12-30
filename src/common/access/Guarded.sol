@@ -24,11 +24,21 @@ contract Guarded {
 
   // events
 
+  /**
+   * @dev Emitted when the new guardian is added
+   * @param sender sender address
+   * @param guardian guardian address
+   */
   event GuardianAdded(
     address sender,
     address guardian
   );
 
+  /**
+   * @dev Emitted when the existing guardian is removed
+   * @param sender sender address
+   * @param guardian guardian address
+   */
   event GuardianRemoved(
     address sender,
     address guardian
@@ -56,6 +66,10 @@ contract Guarded {
 
   // external functions
 
+  /**
+   * @notice Adds a new guardian
+   * @param guardian guardian address
+   */
   function addGuardian(
     address guardian
   )
@@ -65,6 +79,10 @@ contract Guarded {
     _addGuardian(guardian);
   }
 
+  /**
+   * @notice Removes existing guardian
+   * @param guardian guardian address
+   */
   function removeGuardian(
     address guardian
   )
@@ -93,6 +111,11 @@ contract Guarded {
 
   // external functions (views)
 
+  /**
+   * @notice Check if guardian exists
+   * @param guardian guardian address
+   * @return true when guardian exists
+   */
   function isGuardian(
     address guardian
   )
@@ -103,6 +126,12 @@ contract Guarded {
     return guardians[guardian];
   }
 
+  /**
+   * @notice Verifies guardian signature
+   * @param messageHash message hash
+   * @param signature signature
+   * @return true on correct guardian signature
+   */
   function verifyGuardianSignature(
     bytes32 messageHash,
     bytes calldata signature
@@ -119,6 +148,11 @@ contract Guarded {
 
   // internal functions
 
+  /**
+   * @notice Initializes Guarded contract
+   * @dev If `guardians_` array is empty `tx.origin` is added as guardian account
+   * @param guardians_ array of guardians addresses
+   */
   function _initializeGuarded(
     address[] memory guardians_
   )

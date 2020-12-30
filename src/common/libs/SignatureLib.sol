@@ -2,7 +2,9 @@
 pragma solidity ^0.6.12;
 
 /**
- * @title SignatureLib
+ * @title Signature library
+ *
+ * @dev Based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contracts/cryptography/ECDSA.sol#L26
  */
 library SignatureLib {
   function recoverAddress(

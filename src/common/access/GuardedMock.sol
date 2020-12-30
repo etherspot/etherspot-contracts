@@ -3,6 +3,7 @@ pragma solidity ^0.6.12;
 
 import "./Guarded.sol";
 
+
 /**
  * @title Guarded mock
  *

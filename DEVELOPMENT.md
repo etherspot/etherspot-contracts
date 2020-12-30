@@ -28,7 +28,8 @@ via `env` variables:
 ## Test
 
 ```bash
-$ npm run test
+$ npm run test     # run unit tests
+$ npm run coverage # run coverage
 ```
 
 ## Deployment

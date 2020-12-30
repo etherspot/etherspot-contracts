@@ -2,9 +2,16 @@
 pragma solidity ^0.6.12;
 
 /**
- * @title BytesLib
+ * @title Bytes library
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 library BytesLib {
+  /**
+   * @notice Converts bytes to address
+   * @param data data
+   * @return address
+   */
   function toAddress(
     bytes memory data
   )

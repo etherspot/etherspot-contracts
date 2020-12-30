@@ -6,15 +6,19 @@ import "../access/Controlled.sol";
 
 /**
  * @title Account
+ *
+ * @dev Simple account contract with only one method executeTransaction
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Account is Controlled {
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public payable Controlled() {}
 
   /**
-   * @dev receive
+   * @notice Allow receives
    */
   receive()
     external
@@ -25,6 +29,13 @@ contract Account is Controlled {
 
   // external functions
 
+  /**
+   * @notice Executes transaction
+   * @param to to address
+   * @param value value
+   * @param data data
+   * @return transaction result
+   */
   function executeTransaction(
     address to,
     uint256 value,
