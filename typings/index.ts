@@ -5,6 +5,7 @@ export type { AccountOwnerRegistry } from "./AccountOwnerRegistry";
 export type { AccountProofRegistry } from "./AccountProofRegistry";
 export type { Controlled } from "./Controlled";
 export type { Guarded } from "./Guarded";
+export type { GuardedMock } from "./GuardedMock";
 export type { Account } from "./Account";
 export type { Initializable } from "./Initializable";
 export type { ERC20Token } from "./ERC20Token";
@@ -23,6 +24,7 @@ export { AccountOwnerRegistry__factory } from "./factories/AccountOwnerRegistry_
 export { AccountProofRegistry__factory } from "./factories/AccountProofRegistry__factory";
 export { Controlled__factory } from "./factories/Controlled__factory";
 export { Guarded__factory } from "./factories/Guarded__factory";
+export { GuardedMock__factory } from "./factories/GuardedMock__factory";
 export { Account__factory } from "./factories/Account__factory";
 export { Initializable__factory } from "./factories/Initializable__factory";
 export { ERC20Token__factory } from "./factories/ERC20Token__factory";

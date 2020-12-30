@@ -15,10 +15,12 @@ contract Guarded {
   // events
 
   event GuardianAdded(
+    address sender,
     address guardian
   );
 
   event GuardianRemoved(
+    address sender,
     address guardian
   );
 
@@ -33,6 +35,11 @@ contract Guarded {
 
     _;
   }
+
+  /**
+   * @dev internal constructor
+   */
+  constructor() internal {}
 
   // external functions
 
@@ -65,6 +72,8 @@ contract Guarded {
     guardians[guardian] = false;
 
     emit GuardianRemoved(
+      // solhint-disable-next-line avoid-tx-origin
+      tx.origin,
       guardian
     );
   }
@@ -148,6 +157,10 @@ contract Guarded {
 
     guardians[guardian] = true;
 
-    emit GuardianAdded(guardian);
+    emit GuardianAdded(
+      // solhint-disable-next-line avoid-tx-origin
+      tx.origin,
+      guardian
+    );
   }
 }

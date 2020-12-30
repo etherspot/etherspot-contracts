@@ -20,7 +20,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface GuardedInterface extends ethers.utils.Interface {
+interface GuardedMockInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
@@ -62,7 +62,7 @@ interface GuardedInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "GuardianRemoved"): EventFragment;
 }
 
-export class Guarded extends Contract {
+export class GuardedMock extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -73,7 +73,7 @@ export class Guarded extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: GuardedInterface;
+  interface: GuardedMockInterface;
 
   functions: {
     addGuardian(

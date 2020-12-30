@@ -301,8 +301,8 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "DepositExitRejected(address,address,address)": EventFragment;
     "DepositExitRequested(address,address,address,uint256)": EventFragment;
     "DepositWithdrawn(address,address,address,uint256)": EventFragment;
-    "GuardianAdded(address)": EventFragment;
-    "GuardianRemoved(address)": EventFragment;
+    "GuardianAdded(address,address)": EventFragment;
+    "GuardianRemoved(address,address)": EventFragment;
     "Initialized()": EventFragment;
     "PaymentChannelCommitted(bytes32,address,address,address,bytes32,uint256)": EventFragment;
     "PaymentDeposited(bytes32,uint256)": EventFragment;
@@ -1286,9 +1286,9 @@ export class PaymentRegistry extends Contract {
       amount: null
     ): EventFilter;
 
-    GuardianAdded(guardian: null): EventFilter;
+    GuardianAdded(sender: null, guardian: null): EventFilter;
 
-    GuardianRemoved(guardian: null): EventFilter;
+    GuardianRemoved(sender: null, guardian: null): EventFilter;
 
     Initialized(): EventFilter;
 

@@ -1,6 +1,7 @@
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
 import 'hardhat-gas-reporter';
+import 'solidity-coverage';
 import { HardhatUserConfig } from 'hardhat/config';
 import { utils } from 'ethers';
 import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
@@ -45,10 +46,6 @@ const config: HardhatUserConfig = {
   solidity: {
     version: '0.6.12',
     settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
-      },
       evmVersion: 'istanbul',
       metadata: {
         bytecodeHash: 'none',

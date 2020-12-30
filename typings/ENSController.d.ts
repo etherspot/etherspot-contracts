@@ -148,8 +148,8 @@ interface ENSControllerInterface extends ethers.utils.Interface {
 
   events: {
     "AddrChanged(bytes32,address)": EventFragment;
-    "GuardianAdded(address)": EventFragment;
-    "GuardianRemoved(address)": EventFragment;
+    "GuardianAdded(address,address)": EventFragment;
+    "GuardianRemoved(address,address)": EventFragment;
     "Initialized()": EventFragment;
     "NodeReleased(bytes32,address)": EventFragment;
     "NodeSubmitted(bytes32,address)": EventFragment;
@@ -686,9 +686,9 @@ export class ENSController extends Contract {
   filters: {
     AddrChanged(node: BytesLike | null, addr: null): EventFilter;
 
-    GuardianAdded(guardian: null): EventFilter;
+    GuardianAdded(sender: null, guardian: null): EventFilter;
 
-    GuardianRemoved(guardian: null): EventFilter;
+    GuardianRemoved(sender: null, guardian: null): EventFilter;
 
     Initialized(): EventFilter;
 
