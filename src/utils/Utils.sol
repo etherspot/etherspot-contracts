@@ -17,7 +17,7 @@ contract Utils {
   // external functions
 
   /**
-   * @notice checks the token balances of accounts for multiple tokens.
+   * @notice Checks the token balances of accounts for multiple tokens.
    * @dev Pass 0x0 as a "token" address to get ETH balance.
    *
    * Possible error throws:

@@ -5,7 +5,7 @@ import "../common/libs/BlockLib.sol";
 
 
 /**
- * @title Account owner registry
+ * @title External account owner registry
  *
  * @notice Global owners registry for key and external (outside of the platform) contract based wallets.
  *
@@ -15,7 +15,7 @@ import "../common/libs/BlockLib.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract AccountOwnerRegistry {
+contract ExternalAccountOwnerRegistry {
   using BlockLib for BlockLib.BlockRelated;
 
   mapping(address => mapping(address => BlockLib.BlockRelated)) private accountOwners;
@@ -23,9 +23,9 @@ contract AccountOwnerRegistry {
   // events
 
   /**
-   * @dev emitted when the new owner is added
+   * @dev Emitted when the new owner is added
    * @param account account address
-   * @param owner new owner address
+   * @param owner owner address
    */
   event AccountOwnerAdded(
     address account,
@@ -33,9 +33,9 @@ contract AccountOwnerRegistry {
   );
 
   /**
-   * @dev emitted when the new owner is removed
+   * @dev Emitted when the existing owner is removed
    * @param account account address
-   * @param owner removed owner address
+   * @param owner owner address
    */
   event AccountOwnerRemoved(
     address account,
@@ -45,8 +45,8 @@ contract AccountOwnerRegistry {
   // external functions
 
   /**
-   * @notice adds new account owner
-   * @param owner new owner address
+   * @notice Adds a new account owner
+   * @param owner owner address
    */
   function addAccountOwner(
     address owner
@@ -73,8 +73,8 @@ contract AccountOwnerRegistry {
   }
 
   /**
-   * @notice removes exiting account owner
-   * @param owner removed owner address
+   * @notice Removes existing account owner
+   * @param owner owner address
    */
   function removeAccountOwner(
     address owner
@@ -97,7 +97,7 @@ contract AccountOwnerRegistry {
   // external functions (views)
 
   /**
-   * @notice verifies account owner at current block
+   * @notice Verifies the owner of the account at current block
    * @param account account address
    * @param owner owner address
    * @return true on correct account owner
@@ -114,7 +114,7 @@ contract AccountOwnerRegistry {
   }
 
   /**
-   * @notice verifies account owner at specific block
+   * @notice Verifies the owner of the account at specific block
    * @param account account address
    * @param owner owner address
    * @param blockNumber block number to verify

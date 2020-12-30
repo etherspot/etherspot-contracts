@@ -1,19 +1,19 @@
 import { ethers } from 'hardhat';
-import { AccountOwnerRegistry } from '../../typings';
+import { ExternalAccountOwnerRegistry } from '../../typings';
 import { SignerWithAddress, randomAddress, processTx } from '../shared';
 
 const { getSigners, provider } = ethers;
 
-describe('AccountOwnerRegistry', () => {
+describe('ExternalAccountOwnerRegistry', () => {
   let signers: SignerWithAddress[];
-  let accountOwnerRegistry: AccountOwnerRegistry;
+  let externalAccountOwnerRegistry: ExternalAccountOwnerRegistry;
 
   before(async () => {
     signers = await getSigners();
 
-    accountOwnerRegistry = (await ethers
-      .getContractFactory('AccountOwnerRegistry')
-      .then(factory => factory.deploy())) as AccountOwnerRegistry;
+    externalAccountOwnerRegistry = (await ethers
+      .getContractFactory('ExternalAccountOwnerRegistry')
+      .then(factory => factory.deploy())) as ExternalAccountOwnerRegistry;
   });
 
   context('addAccountOwner()', () => {
@@ -22,13 +22,15 @@ describe('AccountOwnerRegistry', () => {
 
     before(async () => {
       account = signers.pop();
-      accountOwnerRegistry = accountOwnerRegistry.connect(account);
+      externalAccountOwnerRegistry = externalAccountOwnerRegistry.connect(
+        account,
+      );
     });
 
     it('expect to add account owner', async () => {
       const {
         events: [event],
-      } = await processTx(accountOwnerRegistry.addAccountOwner(owner));
+      } = await processTx(externalAccountOwnerRegistry.addAccountOwner(owner));
 
       expect(event.event).toBe('AccountOwnerAdded');
       expect(event.args.account).toBe(account.address);
@@ -36,9 +38,9 @@ describe('AccountOwnerRegistry', () => {
     });
 
     it('expect to revert when account owner exists', async () => {
-      await expect(accountOwnerRegistry.addAccountOwner(owner)).rejects.toThrow(
-        /revert/,
-      );
+      await expect(
+        externalAccountOwnerRegistry.addAccountOwner(owner),
+      ).rejects.toThrow(/revert/);
     });
   });
 
@@ -48,21 +50,25 @@ describe('AccountOwnerRegistry', () => {
 
     before(async () => {
       account = signers.pop();
-      accountOwnerRegistry = accountOwnerRegistry.connect(account);
+      externalAccountOwnerRegistry = externalAccountOwnerRegistry.connect(
+        account,
+      );
 
-      await processTx(accountOwnerRegistry.addAccountOwner(owner));
+      await processTx(externalAccountOwnerRegistry.addAccountOwner(owner));
     });
 
     it("expect to revert when account owner doesn't exist", async () => {
       await expect(
-        accountOwnerRegistry.removeAccountOwner(randomAddress()),
+        externalAccountOwnerRegistry.removeAccountOwner(randomAddress()),
       ).rejects.toThrow(/revert/);
     });
 
     it('expect to remove account owner', async () => {
       const {
         events: [event],
-      } = await processTx(accountOwnerRegistry.removeAccountOwner(owner));
+      } = await processTx(
+        externalAccountOwnerRegistry.removeAccountOwner(owner),
+      );
 
       expect(event.event).toBe('AccountOwnerRemoved');
       expect(event.args.account).toBe(account.address);
@@ -77,22 +83,31 @@ describe('AccountOwnerRegistry', () => {
 
     before(async () => {
       account = signers.pop();
-      accountOwnerRegistry = accountOwnerRegistry.connect(account);
+      externalAccountOwnerRegistry = externalAccountOwnerRegistry.connect(
+        account,
+      );
 
-      await processTx(accountOwnerRegistry.addAccountOwner(ownerAdded));
-      await processTx(accountOwnerRegistry.addAccountOwner(ownerRemoved));
-      await processTx(accountOwnerRegistry.removeAccountOwner(ownerRemoved));
+      await processTx(externalAccountOwnerRegistry.addAccountOwner(ownerAdded));
+      await processTx(
+        externalAccountOwnerRegistry.addAccountOwner(ownerRemoved),
+      );
+      await processTx(
+        externalAccountOwnerRegistry.removeAccountOwner(ownerRemoved),
+      );
     });
 
     it('expect to return true when account owner exists', async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwner(account.address, ownerAdded),
+        externalAccountOwnerRegistry.verifyAccountOwner(
+          account.address,
+          ownerAdded,
+        ),
       ).resolves.toBeTruthy();
     });
 
     it("expect to return false when account owner doesn't exist", async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwner(
+        externalAccountOwnerRegistry.verifyAccountOwner(
           account.address,
           randomAddress(),
         ),
@@ -101,7 +116,10 @@ describe('AccountOwnerRegistry', () => {
 
     it('expect to return false when account owner was removed', async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwner(account.address, ownerRemoved),
+        externalAccountOwnerRegistry.verifyAccountOwner(
+          account.address,
+          ownerRemoved,
+        ),
       ).resolves.toBeFalsy();
     });
   });
@@ -115,21 +133,25 @@ describe('AccountOwnerRegistry', () => {
 
     before(async () => {
       account = signers.pop();
-      accountOwnerRegistry = accountOwnerRegistry.connect(account);
+      externalAccountOwnerRegistry = externalAccountOwnerRegistry.connect(
+        account,
+      );
 
       blockNumber = await provider.getBlockNumber();
 
-      await processTx(accountOwnerRegistry.addAccountOwner(ownerAdded));
-      await processTx(accountOwnerRegistry.addAccountOwner(ownerRemoved));
+      await processTx(externalAccountOwnerRegistry.addAccountOwner(ownerAdded));
+      await processTx(
+        externalAccountOwnerRegistry.addAccountOwner(ownerRemoved),
+      );
 
       ({ blockNumber: ownerRemovedAt } = await processTx(
-        accountOwnerRegistry.removeAccountOwner(ownerRemoved),
+        externalAccountOwnerRegistry.removeAccountOwner(ownerRemoved),
       ));
     });
 
     it('expect to return true when account owner exists', async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwnerAtBlock(
+        externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(
           account.address,
           ownerAdded,
           blockNumber,
@@ -139,7 +161,7 @@ describe('AccountOwnerRegistry', () => {
 
     it('expect to return true when account owner exists at block', async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwnerAtBlock(
+        externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(
           account.address,
           ownerRemoved,
           ownerRemovedAt - 1,
@@ -149,7 +171,7 @@ describe('AccountOwnerRegistry', () => {
 
     it("expect to return false when account owner doesn't exist", async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwnerAtBlock(
+        externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(
           account.address,
           randomAddress(),
           blockNumber,
@@ -159,7 +181,7 @@ describe('AccountOwnerRegistry', () => {
 
     it("expect to return false when account owner doesn't exist at block", async () => {
       await expect(
-        accountOwnerRegistry.verifyAccountOwnerAtBlock(
+        externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(
           account.address,
           ownerRemoved,
           ownerRemovedAt + 1,

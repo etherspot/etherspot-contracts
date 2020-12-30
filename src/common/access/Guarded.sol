@@ -6,6 +6,16 @@ import "../libs/SignatureLib.sol";
 
 /**
  * @title Guarded
+ *
+ * @dev Contract module which provides access control mechanism, where
+ * there is guardians key accounts that can be granted exclusive access to
+ * specific functions.
+ *
+ * Each guardian account can remove other guardians
+ *
+ * Use `_initializeGuarded` to initialize guardians accounts
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Guarded {
   using SignatureLib for bytes32;
@@ -26,6 +36,9 @@ contract Guarded {
 
   // modifiers
 
+  /**
+   * @dev Throws if tx.origin is not the guardian account
+   */
   modifier onlyGuardian() {
     require(
       // solhint-disable-next-line avoid-tx-origin
@@ -37,7 +50,7 @@ contract Guarded {
   }
 
   /**
-   * @dev internal constructor
+   * @dev Internal constructor
    */
   constructor() internal {}
 

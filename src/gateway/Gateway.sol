@@ -2,11 +2,11 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
-import "../account/AccountOwnerRegistry.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/typedData/TypedDataContainer.sol";
+import "../external/ExternalAccountOwnerRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
 /**
@@ -37,7 +37,7 @@ contract Gateway is Initializable, TypedDataContainer {
     "DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
-  AccountOwnerRegistry public accountOwnerRegistry;
+  ExternalAccountOwnerRegistry public externalAccountOwnerRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
   mapping(address => uint256) private accountNonce;
@@ -58,7 +58,7 @@ contract Gateway is Initializable, TypedDataContainer {
   // external functions
 
   function initialize(
-    AccountOwnerRegistry accountOwnerRegistry_,
+    ExternalAccountOwnerRegistry externalAccountOwnerRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     bytes32 typedDataDomainNameHash,
     bytes32 typedDataDomainVersionHash,
@@ -67,7 +67,7 @@ contract Gateway is Initializable, TypedDataContainer {
     external
     onlyInitializer
   {
-    accountOwnerRegistry = accountOwnerRegistry_;
+    externalAccountOwnerRegistry = externalAccountOwnerRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
     // TypedDataContainer
@@ -285,7 +285,7 @@ contract Gateway is Initializable, TypedDataContainer {
     if (account != sender) {
       require(
         personalAccountRegistry.verifyAccountOwner(account, sender) ||
-        accountOwnerRegistry.verifyAccountOwner(account, sender),
+        externalAccountOwnerRegistry.verifyAccountOwner(account, sender),
         "Gateway: sender is not the account owner"
       );
     }

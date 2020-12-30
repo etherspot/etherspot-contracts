@@ -2,8 +2,6 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
-import "../account/AccountOwnerRegistry.sol";
-import "../account/AccountProofRegistry.sol";
 import "../common/access/Guarded.sol";
 import "../common/account/AccountController.sol";
 import "../common/libs/SafeMathLib.sol";
@@ -11,6 +9,8 @@ import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
 import "../common/typedData/TypedDataContainer.sol";
+import "../external/ExternalAccountOwnerRegistry.sol";
+import "../external/ExternalAccountProofRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 import "../gateway/GatewayRecipient.sol";
 
@@ -55,8 +55,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
   );
 
-  AccountOwnerRegistry public accountOwnerRegistry;
-  AccountProofRegistry public accountProofRegistry;
+  ExternalAccountOwnerRegistry public externalAccountOwnerRegistry;
+  ExternalAccountProofRegistry public externalAccountProofRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
   uint256 public depositExitLockPeriod;
@@ -131,8 +131,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   // external functions
 
   function initialize(
-    AccountOwnerRegistry accountOwnerRegistry_,
-    AccountProofRegistry accountProofRegistry_,
+    ExternalAccountOwnerRegistry externalAccountOwnerRegistry_,
+    ExternalAccountProofRegistry externalAccountProofRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     uint256 depositExitLockPeriod_,
     address[] calldata guardians_,
@@ -144,8 +144,8 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     external
     onlyInitializer
   {
-    accountOwnerRegistry = accountOwnerRegistry_;
-    accountProofRegistry = accountProofRegistry_;
+    externalAccountOwnerRegistry = externalAccountOwnerRegistry_;
+    externalAccountProofRegistry = externalAccountProofRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
     if (depositExitLockPeriod_ == 0) {
@@ -576,7 +576,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     if (senderSignature.length == 0) {
       require(
-        accountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber),
+        externalAccountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber),
         "PaymentRegistry: invalid guardian signature"
       );
     } else {
@@ -585,7 +585,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       if (sender != signer) {
         require(
           personalAccountRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber) ||
-          accountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber),
+          externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber),
           "PaymentRegistry: invalid sender signature"
         );
       }

@@ -20,58 +20,58 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface AccountOwnerRegistryInterface extends ethers.utils.Interface {
+interface ExternalAccountProofRegistryInterface extends ethers.utils.Interface {
   functions: {
-    "addAccountOwner(address)": FunctionFragment;
-    "removeAccountOwner(address)": FunctionFragment;
-    "verifyAccountOwner(address,address)": FunctionFragment;
-    "verifyAccountOwnerAtBlock(address,address,uint256)": FunctionFragment;
+    "addAccountProof(bytes32)": FunctionFragment;
+    "removeAccountProof(bytes32)": FunctionFragment;
+    "verifyAccountProof(address,bytes32)": FunctionFragment;
+    "verifyAccountProofAtBlock(address,bytes32,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "addAccountOwner",
-    values: [string]
+    functionFragment: "addAccountProof",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeAccountOwner",
-    values: [string]
+    functionFragment: "removeAccountProof",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "verifyAccountOwner",
-    values: [string, string]
+    functionFragment: "verifyAccountProof",
+    values: [string, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "verifyAccountOwnerAtBlock",
-    values: [string, string, BigNumberish]
+    functionFragment: "verifyAccountProofAtBlock",
+    values: [string, BytesLike, BigNumberish]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "addAccountOwner",
+    functionFragment: "addAccountProof",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeAccountOwner",
+    functionFragment: "removeAccountProof",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "verifyAccountOwner",
+    functionFragment: "verifyAccountProof",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "verifyAccountOwnerAtBlock",
+    functionFragment: "verifyAccountProofAtBlock",
     data: BytesLike
   ): Result;
 
   events: {
-    "AccountOwnerAdded(address,address)": EventFragment;
-    "AccountOwnerRemoved(address,address)": EventFragment;
+    "AccountProofAdded(address,bytes32)": EventFragment;
+    "AccountProofRemoved(address,bytes32)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AccountOwnerAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AccountOwnerRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountProofAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountProofRemoved"): EventFragment;
 }
 
-export class AccountOwnerRegistry extends Contract {
+export class ExternalAccountProofRegistry extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -82,238 +82,241 @@ export class AccountOwnerRegistry extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: AccountOwnerRegistryInterface;
+  interface: ExternalAccountProofRegistryInterface;
 
   functions: {
-    addAccountOwner(
-      owner: string,
+    addAccountProof(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addAccountOwner(address)"(
-      owner: string,
+    "addAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    removeAccountOwner(
-      owner: string,
+    removeAccountProof(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "removeAccountOwner(address)"(
-      owner: string,
+    "removeAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    verifyAccountOwner(
+    verifyAccountProof(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "verifyAccountOwner(address,address)"(
+    "verifyAccountProof(address,bytes32)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    verifyAccountOwnerAtBlock(
+    verifyAccountProofAtBlock(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "verifyAccountOwnerAtBlock(address,address,uint256)"(
+    "verifyAccountProofAtBlock(address,bytes32,uint256)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  addAccountOwner(
-    owner: string,
+  addAccountProof(
+    hash: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addAccountOwner(address)"(
-    owner: string,
+  "addAccountProof(bytes32)"(
+    hash: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  removeAccountOwner(
-    owner: string,
+  removeAccountProof(
+    hash: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "removeAccountOwner(address)"(
-    owner: string,
+  "removeAccountProof(bytes32)"(
+    hash: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  verifyAccountOwner(
+  verifyAccountProof(
     account: string,
-    owner: string,
+    hash: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "verifyAccountOwner(address,address)"(
+  "verifyAccountProof(address,bytes32)"(
     account: string,
-    owner: string,
+    hash: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  verifyAccountOwnerAtBlock(
+  verifyAccountProofAtBlock(
     account: string,
-    owner: string,
+    hash: BytesLike,
     blockNumber: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "verifyAccountOwnerAtBlock(address,address,uint256)"(
+  "verifyAccountProofAtBlock(address,bytes32,uint256)"(
     account: string,
-    owner: string,
+    hash: BytesLike,
     blockNumber: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    addAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
+    addAccountProof(hash: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-    "addAccountOwner(address)"(
-      owner: string,
+    "addAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    removeAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
-
-    "removeAccountOwner(address)"(
-      owner: string,
+    removeAccountProof(
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    verifyAccountOwner(
+    "removeAccountProof(bytes32)"(
+      hash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    verifyAccountProof(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "verifyAccountOwner(address,address)"(
+    "verifyAccountProof(address,bytes32)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    verifyAccountOwnerAtBlock(
+    verifyAccountProofAtBlock(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "verifyAccountOwnerAtBlock(address,address,uint256)"(
+    "verifyAccountProofAtBlock(address,bytes32,uint256)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
 
   filters: {
-    AccountOwnerAdded(account: null, owner: null): EventFilter;
+    AccountProofAdded(account: null, hash: null): EventFilter;
 
-    AccountOwnerRemoved(account: null, owner: null): EventFilter;
+    AccountProofRemoved(account: null, hash: null): EventFilter;
   };
 
   estimateGas: {
-    addAccountOwner(owner: string, overrides?: Overrides): Promise<BigNumber>;
+    addAccountProof(hash: BytesLike, overrides?: Overrides): Promise<BigNumber>;
 
-    "addAccountOwner(address)"(
-      owner: string,
+    "addAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    removeAccountOwner(
-      owner: string,
+    removeAccountProof(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "removeAccountOwner(address)"(
-      owner: string,
+    "removeAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    verifyAccountOwner(
+    verifyAccountProof(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "verifyAccountOwner(address,address)"(
+    "verifyAccountProof(address,bytes32)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    verifyAccountOwnerAtBlock(
+    verifyAccountProofAtBlock(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "verifyAccountOwnerAtBlock(address,address,uint256)"(
+    "verifyAccountProofAtBlock(address,bytes32,uint256)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    addAccountOwner(
-      owner: string,
+    addAccountProof(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addAccountOwner(address)"(
-      owner: string,
+    "addAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    removeAccountOwner(
-      owner: string,
+    removeAccountProof(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "removeAccountOwner(address)"(
-      owner: string,
+    "removeAccountProof(bytes32)"(
+      hash: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    verifyAccountOwner(
+    verifyAccountProof(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "verifyAccountOwner(address,address)"(
+    "verifyAccountProof(address,bytes32)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    verifyAccountOwnerAtBlock(
+    verifyAccountProofAtBlock(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "verifyAccountOwnerAtBlock(address,address,uint256)"(
+    "verifyAccountProofAtBlock(address,bytes32,uint256)"(
       account: string,
-      owner: string,
+      hash: BytesLike,
       blockNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

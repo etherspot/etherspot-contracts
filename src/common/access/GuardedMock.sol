@@ -3,13 +3,17 @@ pragma solidity ^0.6.12;
 
 import "./Guarded.sol";
 
-
 /**
- * @title GuardedMock
+ * @title Guarded mock
+ *
+ * @dev Used in Guarded contract tests
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract GuardedMock is Guarded {
   /**
-   * @dev public constructor
+   * @dev Public constructor
+   * @param guardians_ array of guardians addresses
    */
   constructor(
     address[] memory guardians_

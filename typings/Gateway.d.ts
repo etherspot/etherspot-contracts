@@ -22,10 +22,10 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface GatewayInterface extends ethers.utils.Interface {
   functions: {
-    "accountOwnerRegistry()": FunctionFragment;
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatches(bytes[],bool)": FunctionFragment;
+    "externalAccountOwnerRegistry()": FunctionFragment;
     "getAccountNextNonce(address)": FunctionFragment;
     "hashDelegatedBatch(tuple)": FunctionFragment;
     "hashDelegatedBatchWithGasPrice(tuple)": FunctionFragment;
@@ -38,10 +38,6 @@ interface GatewayInterface extends ethers.utils.Interface {
   };
 
   encodeFunctionData(
-    functionFragment: "accountOwnerRegistry",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "delegateBatch",
     values: [string, BigNumberish, string[], BytesLike[], BytesLike]
   ): string;
@@ -52,6 +48,10 @@ interface GatewayInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "delegateBatches",
     values: [BytesLike[], boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "externalAccountOwnerRegistry",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getAccountNextNonce",
@@ -98,10 +98,6 @@ interface GatewayInterface extends ethers.utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "accountOwnerRegistry",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "delegateBatch",
     data: BytesLike
   ): Result;
@@ -111,6 +107,10 @@ interface GatewayInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "delegateBatches",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "externalAccountOwnerRegistry",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -167,10 +167,6 @@ export class Gateway extends Contract {
   interface: GatewayInterface;
 
   functions: {
-    accountOwnerRegistry(overrides?: CallOverrides): Promise<[string]>;
-
-    "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<[string]>;
-
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -219,6 +215,12 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<[string]>;
+
+    "externalAccountOwnerRegistry()"(
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
@@ -260,7 +262,7 @@ export class Gateway extends Contract {
     ): Promise<[string]>;
 
     initialize(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -269,7 +271,7 @@ export class Gateway extends Contract {
     ): Promise<ContractTransaction>;
 
     "initialize(address,address,bytes32,bytes32,bytes32)"(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -315,10 +317,6 @@ export class Gateway extends Contract {
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
   };
-
-  accountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
-
-  "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
 
   delegateBatch(
     account: string,
@@ -368,6 +366,10 @@ export class Gateway extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
+
+  "externalAccountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
+
   getAccountNextNonce(
     account: string,
     overrides?: CallOverrides
@@ -409,7 +411,7 @@ export class Gateway extends Contract {
   ): Promise<string>;
 
   initialize(
-    accountOwnerRegistry_: string,
+    externalAccountOwnerRegistry_: string,
     personalAccountRegistry_: string,
     typedDataDomainNameHash: BytesLike,
     typedDataDomainVersionHash: BytesLike,
@@ -418,7 +420,7 @@ export class Gateway extends Contract {
   ): Promise<ContractTransaction>;
 
   "initialize(address,address,bytes32,bytes32,bytes32)"(
-    accountOwnerRegistry_: string,
+    externalAccountOwnerRegistry_: string,
     personalAccountRegistry_: string,
     typedDataDomainNameHash: BytesLike,
     typedDataDomainVersionHash: BytesLike,
@@ -465,10 +467,6 @@ export class Gateway extends Contract {
   "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    accountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
-
-    "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
-
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -517,6 +515,12 @@ export class Gateway extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
+
+    "externalAccountOwnerRegistry()"(
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
@@ -558,7 +562,7 @@ export class Gateway extends Contract {
     ): Promise<string>;
 
     initialize(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -567,7 +571,7 @@ export class Gateway extends Contract {
     ): Promise<void>;
 
     "initialize(address,address,bytes32,bytes32,bytes32)"(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -621,10 +625,6 @@ export class Gateway extends Contract {
   };
 
   estimateGas: {
-    accountOwnerRegistry(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "accountOwnerRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -673,6 +673,12 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "externalAccountOwnerRegistry()"(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
@@ -714,7 +720,7 @@ export class Gateway extends Contract {
     ): Promise<BigNumber>;
 
     initialize(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -723,7 +729,7 @@ export class Gateway extends Contract {
     ): Promise<BigNumber>;
 
     "initialize(address,address,bytes32,bytes32,bytes32)"(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -771,14 +777,6 @@ export class Gateway extends Contract {
   };
 
   populateTransaction: {
-    accountOwnerRegistry(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "accountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -827,6 +825,14 @@ export class Gateway extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    externalAccountOwnerRegistry(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "externalAccountOwnerRegistry()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getAccountNextNonce(
       account: string,
       overrides?: CallOverrides
@@ -868,7 +874,7 @@ export class Gateway extends Contract {
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
@@ -877,7 +883,7 @@ export class Gateway extends Contract {
     ): Promise<PopulatedTransaction>;
 
     "initialize(address,address,bytes32,bytes32,bytes32)"(
-      accountOwnerRegistry_: string,
+      externalAccountOwnerRegistry_: string,
       personalAccountRegistry_: string,
       typedDataDomainNameHash: BytesLike,
       typedDataDomainVersionHash: BytesLike,
