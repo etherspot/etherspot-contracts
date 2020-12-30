@@ -19,7 +19,14 @@ export class Initializable__factory {
 const _abi = [
   {
     anonymous: false,
-    inputs: [],
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "initializer",
+        type: "address",
+      },
+    ],
     name: "Initialized",
     type: "event",
   },

@@ -16,7 +16,9 @@ import "../gateway/GatewayRecipient.sol";
 
 
 /**
- * @title PaymentRegistry
+ * @title Payment registry
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
   using SafeMathLib for uint256;

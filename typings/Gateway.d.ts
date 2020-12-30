@@ -146,7 +146,7 @@ interface GatewayInterface extends ethers.utils.Interface {
 
   events: {
     "BatchDelegated(address,bytes,bool)": EventFragment;
-    "Initialized()": EventFragment;
+    "Initialized(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BatchDelegated"): EventFragment;
@@ -621,7 +621,7 @@ export class Gateway extends Contract {
   filters: {
     BatchDelegated(sender: null, batch: null, succeeded: null): EventFilter;
 
-    Initialized(): EventFilter;
+    Initialized(initializer: null): EventFilter;
   };
 
   estimateGas: {

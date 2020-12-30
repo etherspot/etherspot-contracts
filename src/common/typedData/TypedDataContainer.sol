@@ -2,7 +2,9 @@
 pragma solidity ^0.6.12;
 
 /**
- * @title TypedDataContainer
+ * @title Typed data container
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract TypedDataContainer {
   string private constant TYPED_DATA_PREFIX = "\x19\x01";

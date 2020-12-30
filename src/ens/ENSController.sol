@@ -9,7 +9,9 @@ import "../gateway/GatewayRecipient.sol";
 import "./ENSRegistry.sol";
 
 /**
- * @title ENSController
+ * @title ENS controller
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
   struct Node {

@@ -10,7 +10,9 @@ import "../gateway/GatewayRecipient.sol";
 
 
 /**
- * @title PersonalAccountRegistry
+ * @title Personal account registry
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract PersonalAccountRegistry is AccountController, Initializable, GatewayRecipient {
   using BlockLib for BlockLib.BlockRelated;

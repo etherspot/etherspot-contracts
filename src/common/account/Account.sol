@@ -7,7 +7,7 @@ import "../access/Controlled.sol";
 /**
  * @title Account
  *
- * @dev Simple account contract with only one method executeTransaction
+ * @dev Simple account contract with only one method - `executeTransaction`
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */

@@ -148,7 +148,7 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "ConsumerAdded(address)": EventFragment;
     "ConsumerRemoved(address)": EventFragment;
-    "Initialized()": EventFragment;
+    "Initialized(address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
@@ -616,7 +616,7 @@ export class WrappedWeiToken extends Contract {
 
     ConsumerRemoved(consumer: null): EventFilter;
 
-    Initialized(): EventFilter;
+    Initialized(initializer: null): EventFilter;
 
     Transfer(from: string | null, to: string | null, value: null): EventFilter;
   };

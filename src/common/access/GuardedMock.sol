@@ -7,7 +7,7 @@ import "./Guarded.sol";
 /**
  * @title Guarded mock
  *
- * @dev Used in Guarded contract tests
+ * @dev Used in guarded contract tests
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */

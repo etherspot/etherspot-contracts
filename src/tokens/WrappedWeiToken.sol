@@ -5,7 +5,9 @@ import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
 
 /**
- * @title WrappedWeiToken
+ * @title Wrapped wei token
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract WrappedWeiToken is Initializable, ERC20Token {
   mapping(address => bool) private consumers;

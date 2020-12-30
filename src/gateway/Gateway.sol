@@ -11,6 +11,8 @@ import "../personal/PersonalAccountRegistry.sol";
 
 /**
  * @title Gateway
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Gateway is Initializable, TypedDataContainer {
   using SafeMathLib for uint256;

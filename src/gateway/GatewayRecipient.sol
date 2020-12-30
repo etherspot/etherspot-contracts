@@ -5,7 +5,9 @@ import "../common/libs/BytesLib.sol";
 
 
 /**
- * @title GatewayRecipient
+ * @title Gateway recipient
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract GatewayRecipient {
   using BytesLib for bytes;
