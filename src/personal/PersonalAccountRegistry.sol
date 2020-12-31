@@ -12,6 +12,8 @@ import "../gateway/GatewayRecipient.sol";
 /**
  * @title Personal account registry
  *
+ * @notice A registry for personal (controlled by owners) account management.
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract PersonalAccountRegistry is AccountController, Initializable, GatewayRecipient {

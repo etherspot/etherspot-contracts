@@ -18,6 +18,8 @@ import "../gateway/GatewayRecipient.sol";
 /**
  * @title Payment registry
  *
+ * @notice A registry for payment and payment channels.
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {

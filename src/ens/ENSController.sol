@@ -11,6 +11,18 @@ import "./ENSRegistry.sol";
 /**
  * @title ENS controller
  *
+ * @notice ENS subnode registrar
+ *
+ * @dev The process of adding root node consists of 3 steps:
+ * 1. `submitNode` - should be called from ENS node owner,
+ * 2. Change ENS node owner to ENS controller,
+ * 3. `verifyNode` - should be called from previous ENS node owner,
+ *
+ * To register sub node, `msg.sender` need to send valid signature from one of guardian key.
+ * Once registration is complete `msg.sender` becoming both node owner and `addr` record value.
+ *
+ * After registration sub node cannot be replaced.
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
@@ -38,31 +50,54 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
   // events
 
+  /**
+   * @dev Emitted when the address field in node resolver is changed
+   * @param node node name hash
+   * @param addr new address
+   */
   event AddrChanged(
     bytes32 indexed node,
     address addr
   );
 
+  /**
+   * @dev Emitted when new node is submitted
+   * @param node node name hash
+   * @param owner owner address
+   */
   event NodeSubmitted(
     bytes32 node,
     address owner
   );
 
+  /**
+   * @dev Emitted when the existing owner is verified
+   * @param node node name hash
+   */
   event NodeVerified(
     bytes32 node
   );
 
+  /**
+   * @dev Emitted when new node is released
+   * @param node node name hash
+   * @param owner owner address
+   */
   event NodeReleased(
     bytes32 node,
     address owner
   );
 
+  /**
+   * @dev Emitted when ENS registry address is changed
+   * @param registry registry address
+   */
   event RegistryChanged(
     address registry
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public Guarded() Initializable() {}
 
