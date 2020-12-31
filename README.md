@@ -73,16 +73,18 @@ import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 
 ```
 
-### Contracts
+### Deployed Contracts
 
-| file | notice |
-| --- | --- |
-| [ens/ENSController.sol](./src/ens/ENSController.sol) | ENS subnode registrar |
-| [external/ExternalAccountOwnerRegistry.sol](./src/external/ExternalAccountOwnerRegistry.sol) | Global owners registry for key and external (outside of the platform) contract based wallets |
-| [external/ExternalAccountProofRegistry.sol](./src/external/ExternalAccountProofRegistry.sol) | Global proofs registry for key and external (outside of the platform) contract based wallets |
-| [gateway/Gateway.sol](./src/gateway/Gateway.sol) | GSN replacement |
-| [payment/PaymentRegistry.sol](./src/payment/PaymentRegistry.sol) | A registry for payment and payment channels |
-| [personal/PersonalAccountRegistry.sol](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) account management |
+| namespace | file | notice |
+| --- | --- | --- |
+| `ens` | [ENSController](./src/ens/ENSController.sol) | ENS subnode registrar |
+| `external` | [ExternalAccountOwnerRegistry](./src/external/ExternalAccountOwnerRegistry.sol) | Global owners registry for key and external (outside of the platform) contract based wallets |
+| `external` | [ExternalAccountProofRegistry](./src/external/ExternalAccountProofRegistry.sol) | Global proofs registry for key and external (outside of the platform) contract based wallets |
+| `gateway` | [Gateway](./src/gateway/Gateway.sol) | GSN replacement |
+| `payment` | [PaymentRegistry](./src/payment/PaymentRegistry.sol) | A registry for payment and payment channels |
+| `personal` | [PersonalAccountRegistry](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) account management |
+| `tokens` | [WrappedWeiToken](./src/tokens/WrappedWeiToken.sol) | One to one wei ERC20 token |
+| `utils` | [Utils](./src/utils/Utils.sol) | Utilities |
 
 
 ## License

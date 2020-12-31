@@ -8,6 +8,8 @@ import "../common/token/ERC20Token.sol";
 /**
  * @title Wrapped wei token
  *
+ * @notice One to one wei ERC20 token
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract WrappedWeiToken is Initializable, ERC20Token {
