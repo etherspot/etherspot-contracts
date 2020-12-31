@@ -73,7 +73,7 @@ import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 
 ```
 
-### Deployed Contracts
+## Deployed Contracts
 
 | namespace | file | notice |
 | --- | --- | --- |
