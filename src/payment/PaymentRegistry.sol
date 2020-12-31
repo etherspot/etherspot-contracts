@@ -9,8 +9,7 @@ import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
 import "../common/typedData/TypedDataContainer.sol";
-import "../external/ExternalAccountOwnerRegistry.sol";
-import "../external/ExternalAccountProofRegistry.sol";
+import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 import "../gateway/GatewayRecipient.sol";
 
@@ -59,8 +58,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
   );
 
-  ExternalAccountOwnerRegistry public externalAccountOwnerRegistry;
-  ExternalAccountProofRegistry public externalAccountProofRegistry;
+  ExternalAccountRegistry public externalAccountRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
   uint256 public depositExitLockPeriod;
@@ -135,8 +133,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   // external functions
 
   function initialize(
-    ExternalAccountOwnerRegistry externalAccountOwnerRegistry_,
-    ExternalAccountProofRegistry externalAccountProofRegistry_,
+    ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     uint256 depositExitLockPeriod_,
     address[] calldata guardians_,
@@ -148,8 +145,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     external
     onlyInitializer
   {
-    externalAccountOwnerRegistry = externalAccountOwnerRegistry_;
-    externalAccountProofRegistry = externalAccountProofRegistry_;
+    externalAccountRegistry = externalAccountRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
     if (depositExitLockPeriod_ == 0) {
@@ -580,7 +576,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
     if (senderSignature.length == 0) {
       require(
-        externalAccountProofRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber),
+        externalAccountRegistry.verifyAccountProofAtBlock(sender, messageHash, blockNumber),
         "PaymentRegistry: invalid guardian signature"
       );
     } else {
@@ -589,7 +585,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       if (sender != signer) {
         require(
           personalAccountRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber) ||
-          externalAccountOwnerRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber),
+          externalAccountRegistry.verifyAccountOwnerAtBlock(sender, signer, blockNumber),
           "PaymentRegistry: invalid sender signature"
         );
       }

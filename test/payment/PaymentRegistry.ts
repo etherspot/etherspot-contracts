@@ -57,7 +57,6 @@ describe('PaymentRegistry', () => {
       paymentRegistry.initialize(
         constants.AddressZero,
         constants.AddressZero,
-        constants.AddressZero,
         depositExitLockPeriod,
         [guardian.address],
         randomAddress(),

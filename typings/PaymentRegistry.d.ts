@@ -30,15 +30,14 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "computePaymentChannelHash(address,address,address,bytes32)": FunctionFragment;
     "deployDepositAccount(address)": FunctionFragment;
     "depositExitLockPeriod()": FunctionFragment;
-    "externalAccountOwnerRegistry()": FunctionFragment;
-    "externalAccountProofRegistry()": FunctionFragment;
+    "externalAccountRegistry()": FunctionFragment;
     "gateway()": FunctionFragment;
     "getDepositExitLockedUntil(address,address)": FunctionFragment;
     "getDepositWithdrawnAmount(address,address)": FunctionFragment;
     "getPaymentChannelCommittedAmount(bytes32)": FunctionFragment;
     "hashDepositWithdrawal(tuple)": FunctionFragment;
     "hashPaymentChannelCommit(tuple)": FunctionFragment;
-    "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
+    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
     "isDepositAccountDeployed(address)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
@@ -106,11 +105,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "externalAccountOwnerRegistry",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "externalAccountProofRegistry",
+    functionFragment: "externalAccountRegistry",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
@@ -146,7 +141,6 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "initialize",
     values: [
-      string,
       string,
       string,
       BigNumberish,
@@ -228,11 +222,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "externalAccountOwnerRegistry",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "externalAccountProofRegistry",
+    functionFragment: "externalAccountRegistry",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
@@ -456,17 +446,9 @@ export class PaymentRegistry extends Contract {
 
     "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<[string]>;
+    externalAccountRegistry(overrides?: CallOverrides): Promise<[string]>;
 
-    "externalAccountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    externalAccountProofRegistry(overrides?: CallOverrides): Promise<[string]>;
-
-    "externalAccountProofRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    "externalAccountRegistry()"(overrides?: CallOverrides): Promise<[string]>;
 
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
@@ -541,8 +523,7 @@ export class PaymentRegistry extends Contract {
     ): Promise<[string]>;
 
     initialize(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -553,9 +534,8 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -770,13 +750,9 @@ export class PaymentRegistry extends Contract {
 
   "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
+  externalAccountRegistry(overrides?: CallOverrides): Promise<string>;
 
-  "externalAccountOwnerRegistry()"(overrides?: CallOverrides): Promise<string>;
-
-  externalAccountProofRegistry(overrides?: CallOverrides): Promise<string>;
-
-  "externalAccountProofRegistry()"(overrides?: CallOverrides): Promise<string>;
+  "externalAccountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
@@ -851,8 +827,7 @@ export class PaymentRegistry extends Contract {
   ): Promise<string>;
 
   initialize(
-    externalAccountOwnerRegistry_: string,
-    externalAccountProofRegistry_: string,
+    externalAccountRegistry_: string,
     personalAccountRegistry_: string,
     depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
@@ -863,9 +838,8 @@ export class PaymentRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
-    externalAccountOwnerRegistry_: string,
-    externalAccountProofRegistry_: string,
+  "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+    externalAccountRegistry_: string,
     personalAccountRegistry_: string,
     depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
@@ -1077,17 +1051,9 @@ export class PaymentRegistry extends Contract {
 
     "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<string>;
+    externalAccountRegistry(overrides?: CallOverrides): Promise<string>;
 
-    "externalAccountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    externalAccountProofRegistry(overrides?: CallOverrides): Promise<string>;
-
-    "externalAccountProofRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<string>;
+    "externalAccountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
     gateway(overrides?: CallOverrides): Promise<string>;
 
@@ -1162,8 +1128,7 @@ export class PaymentRegistry extends Contract {
     ): Promise<string>;
 
     initialize(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -1174,9 +1139,8 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -1436,17 +1400,9 @@ export class PaymentRegistry extends Contract {
 
     "depositExitLockPeriod()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    externalAccountOwnerRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+    externalAccountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "externalAccountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    externalAccountProofRegistry(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "externalAccountProofRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "externalAccountRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1521,8 +1477,7 @@ export class PaymentRegistry extends Contract {
     ): Promise<BigNumber>;
 
     initialize(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -1533,9 +1488,8 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -1752,19 +1706,11 @@ export class PaymentRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    externalAccountOwnerRegistry(
+    externalAccountRegistry(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "externalAccountOwnerRegistry()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    externalAccountProofRegistry(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "externalAccountProofRegistry()"(
+    "externalAccountRegistry()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1841,8 +1787,7 @@ export class PaymentRegistry extends Contract {
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
@@ -1853,9 +1798,8 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
-      externalAccountOwnerRegistry_: string,
-      externalAccountProofRegistry_: string,
+    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+      externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],

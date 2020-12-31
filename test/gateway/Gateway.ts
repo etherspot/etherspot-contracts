@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
 import { BigNumberish, BytesLike } from 'ethers';
 import {
-  ExternalAccountOwnerRegistry,
+  ExternalAccountRegistry,
   Gateway,
   GatewayRecipientMock,
   PersonalAccountRegistry,
@@ -23,7 +23,7 @@ const { getSigners } = ethers;
 
 describe('Gateway', () => {
   let signers: SignerWithAddress[];
-  let externalAccountOwnerRegistry: ExternalAccountOwnerRegistry;
+  let externalAccountRegistry: ExternalAccountRegistry;
   let gateway: Gateway;
   let gatewayRecipientMock: GatewayRecipientMock;
   let personalAccountRegistry: PersonalAccountRegistry;
@@ -46,9 +46,9 @@ describe('Gateway', () => {
   before(async () => {
     signers = await getSigners();
 
-    externalAccountOwnerRegistry = (await ethers
-      .getContractFactory('ExternalAccountOwnerRegistry')
-      .then(factory => factory.deploy())) as ExternalAccountOwnerRegistry;
+    externalAccountRegistry = (await ethers
+      .getContractFactory('ExternalAccountRegistry')
+      .then(factory => factory.deploy())) as ExternalAccountRegistry;
 
     gateway = (await ethers
       .getContractFactory('Gateway')
@@ -66,7 +66,7 @@ describe('Gateway', () => {
 
     await processTx(
       gateway.initialize(
-        externalAccountOwnerRegistry.address,
+        externalAccountRegistry.address,
         personalAccountRegistry.address,
         TYPED_DATA_DOMAIN_NAME_HASH,
         TYPED_DATA_DOMAIN_VERSION_HASH,
@@ -168,7 +168,7 @@ describe('Gateway', () => {
         gateway = gateway.connect(sender);
 
         await processTx(
-          externalAccountOwnerRegistry
+          externalAccountRegistry
             .connect(account)
             .addAccountOwner(sender.address),
         );
@@ -233,7 +233,7 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        externalAccountOwnerRegistry
+        externalAccountRegistry
           .connect(account)
           .addAccountOwner(sender.address),
       );
@@ -301,7 +301,7 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        externalAccountOwnerRegistry
+        externalAccountRegistry
           .connect(account)
           .addAccountOwner(sender.address),
       );
@@ -353,7 +353,7 @@ describe('Gateway', () => {
       gateway = gateway.connect(from);
 
       await processTx(
-        externalAccountOwnerRegistry
+        externalAccountRegistry
           .connect(account)
           .addAccountOwner(sender.address),
       );
@@ -582,7 +582,7 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        externalAccountOwnerRegistry
+        externalAccountRegistry
           .connect(account)
           .addAccountOwner(sender.address),
       );

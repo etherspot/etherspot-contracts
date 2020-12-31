@@ -14,9 +14,7 @@ const func: DeployFunction = async hre => {
     return;
   }
 
-  const externalAccountOwnerRegistry = await get(
-    'ExternalAccountOwnerRegistry',
-  );
+  const externalAccountRegistry = await get('ExternalAccountRegistry');
   const personalAccountRegistry = await get('PersonalAccountRegistry');
 
   await execute(
@@ -26,7 +24,7 @@ const func: DeployFunction = async hre => {
       log: true,
     },
     'initialize',
-    externalAccountOwnerRegistry.address,
+    externalAccountRegistry.address,
     personalAccountRegistry.address,
     utils.id(typedData.domains.Gateway.name),
     utils.id(typedData.domains.Gateway.version),

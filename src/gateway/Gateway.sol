@@ -6,7 +6,7 @@ import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/typedData/TypedDataContainer.sol";
-import "../external/ExternalAccountOwnerRegistry.sol";
+import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
 
@@ -42,7 +42,7 @@ contract Gateway is Initializable, TypedDataContainer {
     "DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
-  ExternalAccountOwnerRegistry public externalAccountOwnerRegistry;
+  ExternalAccountRegistry public externalAccountRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
   mapping(address => uint256) private accountNonce;
@@ -63,7 +63,7 @@ contract Gateway is Initializable, TypedDataContainer {
   // external functions
 
   function initialize(
-    ExternalAccountOwnerRegistry externalAccountOwnerRegistry_,
+    ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     bytes32 typedDataDomainNameHash,
     bytes32 typedDataDomainVersionHash,
@@ -72,7 +72,7 @@ contract Gateway is Initializable, TypedDataContainer {
     external
     onlyInitializer
   {
-    externalAccountOwnerRegistry = externalAccountOwnerRegistry_;
+    externalAccountRegistry = externalAccountRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
     // TypedDataContainer
@@ -290,7 +290,7 @@ contract Gateway is Initializable, TypedDataContainer {
     if (account != sender) {
       require(
         personalAccountRegistry.verifyAccountOwner(account, sender) ||
-        externalAccountOwnerRegistry.verifyAccountOwner(account, sender),
+        externalAccountRegistry.verifyAccountOwner(account, sender),
         "Gateway: sender is not the account owner"
       );
     }

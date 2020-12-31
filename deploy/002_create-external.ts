@@ -7,12 +7,7 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  await deploy('ExternalAccountOwnerRegistry', {
-    from,
-    log: true,
-  });
-
-  await deploy('ExternalAccountProofRegistry', {
+  await deploy('ExternalAccountRegistry', {
     from,
     log: true,
   });
