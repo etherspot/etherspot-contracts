@@ -13,7 +13,7 @@ import "../libs/SignatureLib.sol";
  *
  * Each guardian account can remove other guardians
  *
- * Use `_initializeGuarded` to initialize guardians accounts
+ * Use `_initializeGuarded` to initialize the contract
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
@@ -149,7 +149,7 @@ contract Guarded {
   // internal functions
 
   /**
-   * @notice Initializes Guarded contract
+   * @notice Initializes `Guarded` contract
    * @dev If `guardians_` array is empty `tx.origin` is added as guardian account
    * @param guardians_ array of guardians addresses
    */

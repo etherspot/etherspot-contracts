@@ -4,6 +4,10 @@ pragma solidity ^0.6.12;
 /**
  * @title Typed data container
  *
+ * @dev EIP-712 is used across whole repository.
+ *
+ * Use `_initializeTypedDataContainer` to initialize the contract
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract TypedDataContainer {
@@ -21,6 +25,12 @@ contract TypedDataContainer {
 
   // internal functions
 
+  /**
+   * @notice Initializes `TypedDataContainer` contract
+   * @param domainNameHash hash of a domain name
+   * @param domainVersionHash hash of a domain version
+   * @param domainSalt domain salt
+   */
   function _initializeTypedDataContainer(
     bytes32 domainNameHash,
     bytes32 domainVersionHash,
@@ -47,6 +57,10 @@ contract TypedDataContainer {
 
   // internal functions (views)
 
+  /**
+   * @notice Hashes primary typed data
+   * @param dataHash hash of the data
+   */
   function _hashPrimaryTypedData(
     bytes32 dataHash
   )
