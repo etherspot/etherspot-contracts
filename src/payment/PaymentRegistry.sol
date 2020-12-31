@@ -18,7 +18,7 @@ import "../gateway/GatewayRecipient.sol";
 /**
  * @title Payment registry
  *
- * @notice A registry for payment and payment channels.
+ * @notice A registry for payment and payment channels
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */

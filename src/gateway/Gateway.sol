@@ -9,8 +9,11 @@ import "../common/typedData/TypedDataContainer.sol";
 import "../external/ExternalAccountOwnerRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
+
 /**
  * @title Gateway
+ *
+ * @notice GSN replacement
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */

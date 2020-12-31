@@ -7,7 +7,7 @@ import "../common/libs/BlockLib.sol";
 /**
  * @title External account proof registry
  *
- * @notice Global proofs registry for key and external (outside of the platform) contract based wallets.
+ * @notice Global proofs registry for key and external (outside of the platform) contract based wallets
  *
  * @dev Given the fact, there is no way to sign the data using a contract based wallet,
  * we created a registry to store signed by the key wallet proofs.

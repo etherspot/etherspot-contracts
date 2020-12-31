@@ -8,6 +8,7 @@ import "../common/typedData/TypedDataContainer.sol";
 import "../gateway/GatewayRecipient.sol";
 import "./ENSRegistry.sol";
 
+
 /**
  * @title ENS controller
  *

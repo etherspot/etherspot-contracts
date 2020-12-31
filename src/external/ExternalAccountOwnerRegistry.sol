@@ -7,7 +7,7 @@ import "../common/libs/BlockLib.sol";
 /**
  * @title External account owner registry
  *
- * @notice Global owners registry for key and external (outside of the platform) contract based wallets.
+ * @notice Global owners registry for key and external (outside of the platform) contract based wallets
  *
  * @dev An account can call the registry to add (`addAccountOwner`) or remove (`removeAccountOwner`) its own owners.
  * When the owner has been added, information about that fact will live in the registry forever.
