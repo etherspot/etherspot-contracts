@@ -78,12 +78,11 @@ import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 | namespace | file | notice |
 | --- | --- | --- |
 | `ens` | [ENSController](./src/ens/ENSController.sol) | ENS subnode registrar |
-| `external` | [ExternalAccountOwnerRegistry](./src/external/ExternalAccountOwnerRegistry.sol) | Global owners registry for key and external (outside of the platform) contract based wallets |
-| `external` | [ExternalAccountProofRegistry](./src/external/ExternalAccountProofRegistry.sol) | Global proofs registry for key and external (outside of the platform) contract based wallets |
+| `external` | [ExternalAccountRegistry](./src/external/ExternalAccountRegistry.sol) | Global registry for keys and external (outside of the platform) contract based wallets |
 | `gateway` | [Gateway](./src/gateway/Gateway.sol) | GSN replacement |
 | `payment` | [PaymentRegistry](./src/payment/PaymentRegistry.sol) | A registry for payment and payment channels |
 | `personal` | [PersonalAccountRegistry](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) account management |
-| `tokens` | [WrappedWeiToken](./src/tokens/WrappedWeiToken.sol) | One to one wei ERC20 token |
+| `tokens` | [WrappedWeiToken](./src/tokens/WrappedWeiToken.sol) | One to one wei consumable ERC20 token |
 | `utils` | [Utils](./src/utils/Utils.sol) | Utilities |
 
 
