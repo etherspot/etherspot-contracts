@@ -68,6 +68,14 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // external functions
 
+  /**
+   * @notice Initializes `Gateway` contract
+   * @param externalAccountRegistry_ `ExternalAccountRegistry` contract address
+   * @param personalAccountRegistry_ `PersonalAccountRegistry` contract address
+   * @param typedDataDomainNameHash hash of a typed data domain name
+   * @param typedDataDomainVersionHash hash of a typed data domain version
+   * @param typedDataDomainSalt typed data salt
+   */
   function initialize(
     ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
@@ -91,6 +99,15 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // public functions
 
+  /**
+   * @notice Sends batch
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `msg.sender`
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
   function sendBatch(
     address[] memory to,
     bytes[] memory data
@@ -105,6 +122,16 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Sends batch from the account
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param account account address
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
   function sendBatchFromAccount(
     address account,
     address[] memory to,
@@ -120,6 +147,20 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates batch from the account
+   * @dev Use `hashDelegatedBatch` to create sender message payload.
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
   function delegateBatch(
     address account,
     uint256 nonce,
@@ -152,6 +193,21 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates batch from the account (with gas price)
+   *
+   * @dev Use `hashDelegatedBatchWithGasPrice` to create sender message payload (tx.gasprice as gasPrice)
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
   function delegateBatchWithGasPrice(
     address account,
     uint256 nonce,
@@ -185,6 +241,12 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates multiple batches
+   * @dev It will revert when all batches fail
+   * @param batches array of batches
+   * @param revertOnFailure reverts on any error
+   */
   function delegateBatches(
     bytes[] memory batches,
     bool revertOnFailure
@@ -225,6 +287,11 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // public functions (views)
 
+  /**
+   * @notice Hashes `DelegatedBatch` typed data
+   * @param delegatedBatch struct
+   * @return hash
+   */
   function hashDelegatedBatch(
     DelegatedBatch memory delegatedBatch
   )
@@ -241,6 +308,11 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Hashes `DelegatedBatchWithGasPrice` typed data
+   * @param delegatedBatch struct
+   * @return hash
+   */
   function hashDelegatedBatchWithGasPrice(
     DelegatedBatchWithGasPrice memory delegatedBatch
   )
@@ -260,6 +332,11 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // external functions (views)
 
+  /**
+   * @notice Gets next account nonce
+   * @param account account address
+   * @return next nonce
+   */
   function getAccountNextNonce(
     address account
   )

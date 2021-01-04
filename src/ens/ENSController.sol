@@ -105,9 +105,9 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
    * @notice Initializes `ENSController` contract
    * @param registry_ ENS registry address
    * @param gateway_ gateway address
-   * @param typedDataDomainNameHash hash of a domain name
-   * @param typedDataDomainVersionHash hash of a domain version
-   * @param typedDataDomainSalt domain salt
+   * @param typedDataDomainNameHash hash of a typed data domain name
+   * @param typedDataDomainVersionHash hash of a typed data domain version
+   * @param typedDataDomainSalt typed data salt
    */
   function initialize(
     ENSRegistry registry_,
