@@ -689,7 +689,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
       deposits[owner].account = _deployAccount(salt);
 
-      emit DepositAccountDeployed(deposits[owner].account, owner);
+      emit DepositAccountDeployed(
+        deposits[owner].account,
+        owner
+      );
     }
   }
 

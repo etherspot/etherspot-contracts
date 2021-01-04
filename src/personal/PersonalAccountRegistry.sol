@@ -30,20 +30,42 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
   // events
 
+  /**
+   * @dev Emitted when the account is deployed
+   * @param account account address
+   */
   event AccountDeployed(
     address account
   );
 
+  /**
+   * @dev Emitted when the new owner is added
+   * @param account account address
+   * @param owner owner address
+   */
   event AccountOwnerAdded(
     address account,
     address owner
   );
 
+  /**
+   * @dev Emitted when the existing owner is removed
+   * @param account account address
+   * @param owner owner address
+   */
   event AccountOwnerRemoved(
     address account,
     address owner
   );
 
+  /**
+   * @dev Emitted when the transaction is executed
+   * @param account account address
+   * @param to to address
+   * @param value value
+   * @param data data
+   * @param response response
+   */
   event AccountTransactionExecuted(
     address account,
     address to,
@@ -52,6 +74,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     bytes response
   );
 
+  /**
+   * @dev Emitted when the call is refunded
+   * @param account account address
+   * @param beneficiary beneficiary address
+   * @param token token address
+   * @param value value
+   */
   event AccountCallRefunded(
     address account,
     address beneficiary,
@@ -60,12 +89,16 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public Initializable() {}
 
   // external functions
 
+  /**
+   * @notice Initialize `PersonalAccountRegistry` contract
+   * @param gateway_ `Gateway` contract address
+   */
   function initialize(
     address gateway_
   )
@@ -76,6 +109,11 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     _initializeGatewayRecipient(gateway_);
   }
 
+  /**
+   * @notice Adds a new account owner
+   * @param account account address
+   * @param owner owner address
+   */
   function addAccountOwner(
     address account,
     address owner
@@ -103,6 +141,11 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     );
   }
 
+  /**
+   * @notice Removes existing account owner
+   * @param account account address
+   * @param owner owner address
+   */
   function removeAccountOwner(
     address account,
     address owner
@@ -129,6 +172,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     );
   }
 
+  /**
+   * @notice Executes account transaction
+   * @param account account address
+   * @param to to address
+   * @param value value
+   * @param data data
+   */
   function executeAccountTransaction(
     address account,
     address to,
@@ -157,6 +207,12 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     );
   }
 
+  /**
+   * @notice Refunds account call
+   * @param account account address
+   * @param token token address
+   * @param value value
+   */
   function refundAccountCall(
     address account,
     address token,
@@ -209,6 +265,11 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
   // external functions (views)
 
+  /**
+   * @notice Computes account address
+   * @param saltOwner salt owner address
+   * @return account address
+   */
   function computeAccountAddress(
     address saltOwner
   )
@@ -219,6 +280,11 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     return _computeAccountAddress(saltOwner);
   }
 
+  /**
+   * @notice Checks if account is deployed
+   * @param account account address
+   * @return true when account is deployed
+   */
   function isAccountDeployed(
     address account
   )
@@ -229,6 +295,12 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     return accounts[account].deployed;
   }
 
+  /**
+   * @notice Verifies the owner of the account at current block
+   * @param account account address
+   * @param owner owner address
+   * @return true on correct account owner
+   */
   function verifyAccountOwner(
     address account,
     address owner
@@ -240,6 +312,13 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     return _verifyAccountOwner(account, owner);
   }
 
+  /**
+   * @notice Verifies the owner of the account at specific block
+   * @param account account address
+   * @param owner owner address
+   * @param blockNumber block number to verify
+   * @return true on correct account owner
+   */
   function verifyAccountOwnerAtBlock(
     address account,
     address owner,
