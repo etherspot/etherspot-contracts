@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const func = async (hre) => {
     const { deployments: { deploy }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
-    await deploy('BalanceChecker', {
+    await deploy('Utils', {
         from,
         log: true,
     });

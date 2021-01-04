@@ -23,18 +23,24 @@ const func = async (hre) => {
     }, 'initialize', ensRegistryAddress, [], gateway.address, ethers_1.utils.id(typedData.domains.ENSController.name), ethers_1.utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
     if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
         for (const name of ens.internalTopLevelDomains) {
+            const nameHash = ethers_1.utils.namehash(name);
+            const labelHash = ethers_1.utils.id(name);
             await execute('ENSRegistry', {
                 from,
                 log: true,
-            }, 'setSubnodeOwner', ethers_1.constants.HashZero, ethers_1.utils.id(name), from);
-            await execute('ENSRegistry', {
-                from,
-                log: true,
-            }, 'setOwner', ethers_1.utils.namehash(name), ensController.address);
+            }, 'setSubnodeOwner', ethers_1.constants.HashZero, labelHash, from);
             await execute('ENSController', {
                 from,
                 log: true,
-            }, 'addNode', ethers_1.utils.namehash(name));
+            }, 'submitNode', nameHash);
+            await execute('ENSRegistry', {
+                from,
+                log: true,
+            }, 'setOwner', nameHash, ensController.address);
+            await execute('ENSController', {
+                from,
+                log: true,
+            }, 'verifyNode', nameHash);
         }
     }
 };

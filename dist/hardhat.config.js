@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 require("hardhat-gas-reporter");
+require("solidity-coverage");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
 const { HARDHAT_MNEMONIC } = process.env;
@@ -22,10 +23,6 @@ const config = {
     solidity: {
         version: '0.6.12',
         settings: {
-            optimizer: {
-                enabled: true,
-                runs: 200,
-            },
             evmVersion: 'istanbul',
             metadata: {
                 bytecodeHash: 'none',

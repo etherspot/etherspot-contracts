@@ -5,13 +5,14 @@ const func = async (hre) => {
     const { from } = await getNamedAccounts();
     if (await read('PersonalAccountRegistry', 'isInitialized')) {
         log('PersonalAccountRegistry already initialized');
-        return;
     }
-    const gateway = await get('Gateway');
-    await execute('PersonalAccountRegistry', {
-        from,
-        log: true,
-    }, 'initialize', gateway.address);
+    else {
+        const gateway = await get('Gateway');
+        await execute('PersonalAccountRegistry', {
+            from,
+            log: true,
+        }, 'initialize', gateway.address);
+    }
 };
 func.tags = ['setup', 'personal'];
 module.exports = func;

@@ -5,13 +5,11 @@ module.exports = {
   ContractNames: {
     Account: 'Account',
     AccountController: 'AccountController',
-    AccountOwnerRegistry: 'AccountOwnerRegistry',
-    AccountProofRegistry: 'AccountProofRegistry',
-    BalanceChecker: 'BalanceChecker',
     Controlled: 'Controlled',
     ENSController: 'ENSController',
     ENSRegistry: 'ENSRegistry',
     ERC20Token: 'ERC20Token',
+    ExternalAccountRegistry: 'ExternalAccountRegistry',
     Gateway: 'Gateway',
     GatewayRecipient: 'GatewayRecipient',
     Guarded: 'Guarded',
@@ -19,6 +17,7 @@ module.exports = {
     PaymentRegistry: 'PaymentRegistry',
     PersonalAccountRegistry: 'PersonalAccountRegistry',
     TypedDataContainer: 'TypedDataContainer',
+    Utils: 'Utils',
     WrappedWeiToken: 'WrappedWeiToken',
   },
 };

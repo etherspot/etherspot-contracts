@@ -6,14 +6,15 @@ const func = async (hre) => {
     const { from } = await getNamedAccounts();
     if (await read('Gateway', 'isInitialized')) {
         log('Gateway already initialized');
-        return;
     }
-    const accountOwnerRegistry = await get('AccountOwnerRegistry');
-    const personalAccountRegistry = await get('PersonalAccountRegistry');
-    await execute('Gateway', {
-        from,
-        log: true,
-    }, 'initialize', accountOwnerRegistry.address, personalAccountRegistry.address, ethers_1.utils.id(typedData.domains.Gateway.name), ethers_1.utils.id(typedData.domains.Gateway.version), typedData.domainSalt);
+    else {
+        const externalAccountRegistry = await get('ExternalAccountRegistry');
+        const personalAccountRegistry = await get('PersonalAccountRegistry');
+        await execute('Gateway', {
+            from,
+            log: true,
+        }, 'initialize', externalAccountRegistry.address, personalAccountRegistry.address, ethers_1.utils.id(typedData.domains.Gateway.name), ethers_1.utils.id(typedData.domains.Gateway.version), typedData.domainSalt);
+    }
 };
 func.tags = ['setup', 'gateway'];
 module.exports = func;
