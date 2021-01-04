@@ -49,6 +49,12 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // events
 
+  /**
+   * @dev Emitted when the single batch is delegated
+   * @param sender sender address
+   * @param batch batch
+   * @param succeeded if succeeded
+   */
   event BatchDelegated(
     address sender,
     bytes batch,
@@ -56,7 +62,7 @@ contract Gateway is Initializable, TypedDataContainer {
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public Initializable() {}
 
