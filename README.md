@@ -81,7 +81,7 @@ import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 | `external` | [ExternalAccountRegistry](./src/external/ExternalAccountRegistry.sol) | Global registry for keys and external (outside of the platform) contract based wallets |
 | `gateway` | [Gateway](./src/gateway/Gateway.sol) | GSN replacement |
 | `payment` | [PaymentRegistry](./src/payment/PaymentRegistry.sol) | A registry for payment and payment channels |
-| `personal` | [PersonalAccountRegistry](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) account management |
+| `personal` | [PersonalAccountRegistry](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) accounts |
 | `tokens` | [WrappedWeiToken](./src/tokens/WrappedWeiToken.sol) | One to one wei consumable ERC20 token |
 | `utils` | [Utils](./src/utils/Utils.sol) | Utilities |
 

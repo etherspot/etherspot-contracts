@@ -12,7 +12,7 @@ import "../gateway/GatewayRecipient.sol";
 /**
  * @title Personal account registry
  *
- * @notice A registry for personal (controlled by owners) account management
+ * @notice A registry for personal (controlled by owners) accounts
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
@@ -174,6 +174,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
   /**
    * @notice Executes account transaction
+   * @dev Deploys an account if not deployed yet
    * @param account account address
    * @param to to address
    * @param value value
@@ -209,6 +210,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
 
   /**
    * @notice Refunds account call
+   * @dev Deploys an account if not deployed yet
    * @param account account address
    * @param token token address
    * @param value value
