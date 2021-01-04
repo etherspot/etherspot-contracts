@@ -68,11 +68,23 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
   // events
 
+  /**
+   * @dev Emitted when the deposit account is deployed
+   * @param depositAccount deposit account address
+   * @param owner owner address
+   */
   event DepositAccountDeployed(
     address depositAccount,
     address owner
   );
 
+  /**
+   * @dev Emitted when the deposit exist is requested
+   * @param depositAccount deposit account address
+   * @param owner owner address
+   * @param token token address
+   * @param lockedUntil deposit exist locked util time
+   */
   event DepositExitRequested(
     address depositAccount,
     address owner,
@@ -80,6 +92,13 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 lockedUntil
   );
 
+  /**
+   * @dev Emitted when the deposit exist is completed
+   * @param depositAccount deposit account address
+   * @param owner owner address
+   * @param token token address
+   * @param amount deposit exist amount
+   */
   event DepositExitCompleted(
     address depositAccount,
     address owner,
@@ -87,12 +106,25 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 amount
   );
 
+  /**
+   * @dev Emitted when the deposit exist is rejected
+   * @param depositAccount deposit account address
+   * @param owner owner address
+   * @param token token address
+   */
   event DepositExitRejected(
     address depositAccount,
     address owner,
     address token
   );
 
+  /**
+   * @dev Emitted when the deposit has been withdrawn
+   * @param depositAccount deposit account address
+   * @param owner owner address
+   * @param token token address
+   * @param amount withdrawn amount
+   */
   event DepositWithdrawn(
     address depositAccount,
     address owner,
@@ -100,6 +132,15 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 amount
   );
 
+  /**
+   * @dev Emitted when the payment channel has been committed
+   * @param hash channel hash
+   * @param sender sender address
+   * @param recipient recipient address
+   * @param token token address
+   * @param uid unique channel id
+   * @param amount committed amount
+   */
   event PaymentChannelCommitted(
     bytes32 hash,
     address sender,
@@ -109,16 +150,32 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     uint256 amount
   );
 
+  /**
+   * @dev Emitted when the payment has been withdrawn
+   * @param channelHash channel hash
+   * @param value payment value
+   */
   event PaymentWithdrawn(
     bytes32 channelHash,
     uint256 value
   );
 
+  /**
+   * @dev Emitted when the payment has been deposited
+   * @param channelHash channel hash
+   * @param value payment value
+   */
   event PaymentDeposited(
     bytes32 channelHash,
     uint256 value
   );
 
+  /**
+   * @dev Emitted when the payment has been withdrawn and deposited (split)
+   * @param channelHash channel hash
+   * @param totalValue payment total value
+   * @param depositValue payment deposited value
+   */
   event PaymentSplit(
     bytes32 channelHash,
     uint256 totalValue,
@@ -126,12 +183,23 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public Guarded() Initializable() {}
 
   // external functions
 
+  /**
+   * @notice Initialize `PaymentRegistry` contract
+   * @param externalAccountRegistry_ `ExternalAccountRegistry` contract address
+   * @param personalAccountRegistry_ `PersonalAccountRegistry` contract address
+   * @param depositExitLockPeriod_ deposit exit lock period
+   * @param guardians_ array of guardians addresses
+   * @param gateway_ `Gateway` contract address
+   * @param typedDataDomainNameHash hash of a typed data domain name
+   * @param typedDataDomainVersionHash hash of a typed data domain version
+   * @param typedDataDomainSalt typed data salt
+   */
   function initialize(
     ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
@@ -168,6 +236,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  /**
+   * @notice Deploys deposit account
+   * @param owner owner address
+   */
   function deployDepositAccount(
     address owner
   )
@@ -176,6 +248,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     _deployDepositAccount(owner);
   }
 
+  /**
+   * @notice Requests deposit exit
+   * @param token token address
+   */
   function requestDepositExit(
     address token
   )
@@ -204,6 +280,10 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  /**
+   * @notice Processes deposit exit
+   * @param token token address
+   */
   function processDepositExit(
     address token
   )
@@ -249,6 +329,12 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  /**
+   * @notice Withdraws deposit
+   * @param token token address
+   * @param amount amount to withdraw
+   * @param guardianSignature guardian signature
+   */
   function withdrawDeposit(
     address token,
     uint256 amount,
@@ -296,6 +382,16 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  /**
+   * @notice Commits payment channel and withdraw
+   * @param sender sender address
+   * @param token token address
+   * @param uid unique channel id
+   * @param blockNumber block number
+   * @param amount amount to commit
+   * @param senderSignature sender signature
+   * @param guardianSignature guardian signature
+   */
   function commitPaymentChannelAndWithdraw(
     address sender,
     address token,
@@ -330,6 +426,16 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     emit PaymentWithdrawn(hash, paymentValue);
   }
 
+  /**
+   * @notice Commits payment channel and deposit
+   * @param sender sender address
+   * @param token token address
+   * @param uid unique channel id
+   * @param blockNumber block number
+   * @param amount amount to commit
+   * @param senderSignature sender signature
+   * @param guardianSignature guardian signature
+   */
   function commitPaymentChannelAndDeposit(
     address sender,
     address token,
@@ -364,6 +470,17 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     emit PaymentDeposited(hash, paymentValue);
   }
 
+  /**
+   * @notice Commits payment channel, withdraw and deposit (split)
+   * @param sender sender address
+   * @param token token address
+   * @param uid unique channel id
+   * @param blockNumber block number
+   * @param amount amount to commit
+   * @param depositPaymentValue amount to deposit
+   * @param senderSignature sender signature
+   * @param guardianSignature guardian signature
+   */
   function commitPaymentChannelAndSplit(
     address sender,
     address token,
@@ -402,6 +519,11 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
   // external functions (views)
 
+  /**
+   * @notice Computes deposit account address
+   * @param owner owner address
+   * @return deposit account address
+   */
   function computeDepositAccountAddress(
     address owner
   )
@@ -412,6 +534,11 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     return _computeDepositAccountAddress(owner);
   }
 
+  /**
+   * @notice Checks if deposit account is deployed
+   * @param owner owner address
+   * @return true when deposit account is deployed
+   */
   function isDepositAccountDeployed(
     address owner
   )
@@ -422,6 +549,12 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     return deposits[owner].account != address(0);
   }
 
+  /**
+   * @notice Gets deposit exit locked until time
+   * @param owner owner address
+   * @param token token address
+   * @return locked until time
+   */
   function getDepositExitLockedUntil(
     address owner,
     address token
@@ -433,16 +566,12 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     return deposits[owner].exitLockedUntil[token];
   }
 
-  function getPaymentChannelCommittedAmount(
-    bytes32 hash
-  )
-    external
-    view
-    returns (uint256)
-  {
-    return paymentChannels[hash].committedAmount;
-  }
-
+  /**
+   * @notice Gets deposit withdrawn amount
+   * @param owner owner address
+   * @param token token address
+   * @return withdrawn amount
+   */
   function getDepositWithdrawnAmount(
     address owner,
     address token
@@ -454,8 +583,31 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     return deposits[owner].withdrawnAmount[token];
   }
 
+  /**
+   * @notice Gets payment channel committed amount
+   * @param hash payment channel hash
+   * @return committed amount
+   */
+  function getPaymentChannelCommittedAmount(
+    bytes32 hash
+  )
+    external
+    view
+    returns (uint256)
+  {
+    return paymentChannels[hash].committedAmount;
+  }
+
   // external functions (pure)
 
+  /**
+   * @notice Computes payment channel hash
+   * @param sender sender address
+   * @param recipient recipient address
+   * @param token token address
+   * @param uid unique channel id
+   * @return hash
+   */
   function computePaymentChannelHash(
     address sender,
     address recipient,
@@ -476,6 +628,11 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
 
   // public functions (views)
 
+  /**
+   * @notice Hashes `DepositWithdrawal` typed data
+   * @param depositWithdrawal struct
+   * @return hash
+   */
   function hashDepositWithdrawal(
     DepositWithdrawal memory depositWithdrawal
   )
@@ -492,6 +649,11 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     );
   }
 
+  /**
+   * @notice Hashes `PaymentChannelCommit` typed data
+   * @param paymentChannelCommit struct
+   * @return hash
+   */
   function hashPaymentChannelCommit(
     PaymentChannelCommit memory paymentChannelCommit
   )

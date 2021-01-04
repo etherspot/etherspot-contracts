@@ -8,7 +8,11 @@ import "../common/token/ERC20Token.sol";
 /**
  * @title Wrapped wei token
  *
- * @notice One to one wei ERC20 token
+ * @notice One to one wei consumable ERC20 token
+ *
+ * @dev After transfer to consumer account token will be automatically withdrawn.
+ *
+ * Use `startConsuming` to become a consumer.
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
@@ -17,16 +21,24 @@ contract WrappedWeiToken is Initializable, ERC20Token {
 
   // events
 
+  /**
+   * @dev Emitted when the new consumer is added
+   * @param consumer consumer address
+   */
   event ConsumerAdded(
     address consumer
   );
 
+  /**
+   * @dev Emitted when the existing consumer is removed
+   * @param consumer consumer address
+   */
   event ConsumerRemoved(
     address consumer
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor()
     public
@@ -42,7 +54,7 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   }
 
   /**
-   * @dev receive
+   * @notice Receive fallback
    */
   receive()
     external
@@ -53,6 +65,10 @@ contract WrappedWeiToken is Initializable, ERC20Token {
 
   // external functions
 
+  /**
+   * @notice Initialize `WrappedWeiToken` contract
+   * @param consumers_ array of consumers addresses
+   */
   function initialize(
     address[] calldata consumers_
   )
@@ -69,12 +85,20 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     }
   }
 
+  /**
+   * @notice Starts consuming
+   * @dev Add `msg.sender` as a consumer
+   */
   function startConsuming()
     external
   {
     _addConsumer(msg.sender);
   }
 
+  /**
+   * @notice Stops consuming
+   * @dev Remove `msg.sender` from consumers
+   */
   function stopConsuming()
     external
   {
@@ -88,6 +112,10 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     emit ConsumerRemoved(msg.sender);
   }
 
+  /**
+   * @notice Deposits `msg.value` to address
+   * @param to to address
+   */
   function depositTo(
     address to
   )
@@ -97,6 +125,10 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     _mint(to, msg.value);
   }
 
+  /**
+   * @notice Withdraws
+   * @param value value to withdraw
+   */
   function withdraw(
     uint256 value
   )
@@ -105,6 +137,11 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     _withdraw(msg.sender, msg.sender, value);
   }
 
+  /**
+   * @notice Withdraws to address
+   * @param to to address
+   * @param value value to withdraw
+   */
   function withdrawTo(
     address to,
     uint256 value
@@ -114,12 +151,19 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     _withdraw(msg.sender, to, value);
   }
 
+  /**
+   * @notice Withdraws all
+   */
   function withdrawAll()
     external
   {
     _withdraw(msg.sender, msg.sender, balances[msg.sender]);
   }
 
+  /**
+   * @notice Withdraws all to address
+   * @param to to address
+   */
   function withdrawAllTo(
     address to
   )
@@ -130,6 +174,11 @@ contract WrappedWeiToken is Initializable, ERC20Token {
 
   // external functions (views)
 
+  /**
+   * @notice Checks if consumer exists
+   * @param consumer consumer address
+   * @return true if consumer exists
+   */
   function isConsumer(
     address consumer
   )
