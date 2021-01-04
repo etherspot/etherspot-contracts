@@ -43,15 +43,10 @@ contract WrappedWeiToken is Initializable, ERC20Token, GatewayRecipient {
    */
   constructor()
     public
-    payable
     Initializable()
   {
     name = "Wrapped Wei";
     symbol = "WWEI";
-
-    if (msg.value > 0) {
-      _mint(_getSender(), msg.value);
-    }
   }
 
   /**
@@ -78,9 +73,7 @@ contract WrappedWeiToken is Initializable, ERC20Token, GatewayRecipient {
     external
     onlyInitializer
   {
-    if (consumers_.length == 0) {
-      consumers[_getSender()] = true;
-    } else {
+    if (consumers_.length != 0) {
       uint consumersLen = consumers_.length;
       for (uint i = 0; i < consumersLen; i++) {
         _addConsumer(consumers_[i]);
