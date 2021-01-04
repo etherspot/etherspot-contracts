@@ -5,6 +5,7 @@ import {
   randomAddress,
   processTx,
   randomHex32,
+  deployContract,
 } from '../shared';
 
 const { getSigners, provider } = ethers;
@@ -16,9 +17,7 @@ describe('ExternalAccountRegistry', () => {
   before(async () => {
     signers = await getSigners();
 
-    externalAccountRegistry = (await ethers
-      .getContractFactory('ExternalAccountRegistry')
-      .then(factory => factory.deploy())) as ExternalAccountRegistry;
+    externalAccountRegistry = await deployContract('ExternalAccountRegistry');
   });
 
   context('addAccountOwner()', () => {

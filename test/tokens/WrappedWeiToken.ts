@@ -1,7 +1,12 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
 import { WrappedWeiToken } from '../../typings';
-import { SignerWithAddress, randomAddress, processTx } from '../shared';
+import {
+  SignerWithAddress,
+  randomAddress,
+  processTx,
+  deployContract,
+} from '../shared';
 
 const { getSigners, provider } = ethers;
 
@@ -12,9 +17,7 @@ describe('WrappedWeiToken', () => {
   before(async () => {
     signers = await getSigners();
 
-    wrappedWeiToken = (await ethers
-      .getContractFactory('WrappedWeiToken')
-      .then(factory => factory.deploy())) as WrappedWeiToken;
+    wrappedWeiToken = await deployContract('WrappedWeiToken');
   });
 
   context('fallback()', () => {

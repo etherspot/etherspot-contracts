@@ -11,6 +11,7 @@ import {
   randomAddress,
   TypedDataFactory,
   randomHex32,
+  deployContract,
 } from '../shared';
 import { NodeFactory, Node } from './interfaces';
 
@@ -78,13 +79,8 @@ describe('ENSController', () => {
     sender = signers.pop();
     guardian = signers.pop();
 
-    ensController = (await ethers
-      .getContractFactory('ENSController')
-      .then(factory => factory.deploy())) as ENSController;
-
-    ensRegistry = (await ethers
-      .getContractFactory('ENSRegistry')
-      .then(factory => factory.connect(sender).deploy())) as ENSRegistry;
+    ensController = await deployContract('ENSController');
+    ensRegistry = await deployContract('ENSRegistry', [], sender);
 
     await processTx(
       ensController.initialize(

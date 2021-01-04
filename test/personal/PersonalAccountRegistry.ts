@@ -6,6 +6,7 @@ import {
   randomAddress,
   processTx,
   computeAccountAddress,
+  deployContract,
 } from '../shared';
 
 const { getSigners, provider } = ethers;
@@ -18,13 +19,8 @@ describe('PersonalAccountRegistry', () => {
   before(async () => {
     signers = await getSigners();
 
-    personalAccountRegistry = (await ethers
-      .getContractFactory('PersonalAccountRegistry')
-      .then(factory => factory.deploy())) as PersonalAccountRegistry;
-
-    wrappedWeiToken = (await ethers
-      .getContractFactory('WrappedWeiToken')
-      .then(factory => factory.deploy())) as WrappedWeiToken;
+    personalAccountRegistry = await deployContract('PersonalAccountRegistry');
+    wrappedWeiToken = await deployContract('WrappedWeiToken');
 
     await processTx(personalAccountRegistry.initialize(randomAddress()));
   });

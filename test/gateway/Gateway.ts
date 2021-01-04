@@ -17,6 +17,7 @@ import {
   randomAddress,
   getNextNonce,
   TypedDataFactory,
+  deployContract,
 } from '../shared';
 
 const { getSigners } = ethers;
@@ -46,23 +47,12 @@ describe('Gateway', () => {
   before(async () => {
     signers = await getSigners();
 
-    externalAccountRegistry = (await ethers
-      .getContractFactory('ExternalAccountRegistry')
-      .then(factory => factory.deploy())) as ExternalAccountRegistry;
-
-    gateway = (await ethers
-      .getContractFactory('Gateway')
-      .then(factory => factory.deploy())) as Gateway;
-
-    gatewayRecipientMock = (await ethers
-      .getContractFactory('GatewayRecipientMock')
-      .then(factory =>
-        factory.deploy(gateway.address),
-      )) as GatewayRecipientMock;
-
-    personalAccountRegistry = (await ethers
-      .getContractFactory('PersonalAccountRegistry')
-      .then(factory => factory.deploy())) as PersonalAccountRegistry;
+    externalAccountRegistry = await deployContract('ExternalAccountRegistry');
+    gateway = await deployContract('Gateway');
+    gatewayRecipientMock = await deployContract('GatewayRecipientMock', [
+      gateway.address,
+    ]);
+    personalAccountRegistry = await deployContract('PersonalAccountRegistry');
 
     await processTx(
       gateway.initialize(

@@ -14,6 +14,7 @@ import {
   increaseTime,
   randomHex32,
   computeAccountAddress,
+  deployContract,
 } from '../shared';
 import { computeChannelHash } from './utils';
 
@@ -45,13 +46,8 @@ describe('PaymentRegistry', () => {
     signers = await getSigners();
     guardian = signers.pop();
 
-    paymentRegistry = (await ethers
-      .getContractFactory('PaymentRegistry')
-      .then(factory => factory.deploy())) as PaymentRegistry;
-
-    wrappedWeiToken = (await ethers
-      .getContractFactory('WrappedWeiToken')
-      .then(factory => factory.deploy())) as WrappedWeiToken;
+    paymentRegistry = await deployContract('PaymentRegistry');
+    wrappedWeiToken = await deployContract('WrappedWeiToken');
 
     await processTx(
       paymentRegistry.initialize(

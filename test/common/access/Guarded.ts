@@ -6,6 +6,7 @@ import {
   processTx,
   randomAddress,
   randomHex32,
+  deployContract,
 } from '../../shared';
 
 const { getSigners } = ethers;
@@ -22,11 +23,9 @@ describe('Guarded (using mock)', () => {
       guardians.push(signers.pop());
     }
 
-    guardedMock = (await ethers
-      .getContractFactory('GuardedMock')
-      .then(factory =>
-        factory.deploy(guardians.map(({ address }) => address)),
-      )) as GuardedMock;
+    guardedMock = await deployContract('GuardedMock', [
+      guardians.map(({ address }) => address),
+    ]);
   });
 
   context('addGuardian()', () => {
