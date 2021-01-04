@@ -48,7 +48,7 @@ contract ERC20Token {
     external
     returns (bool)
   {
-    _transfer(msg.sender, to, value);
+    _transfer(_getSender(), to, value);
 
     return true;
   }
@@ -62,8 +62,10 @@ contract ERC20Token {
     external
     returns (bool)
   {
+    address sender = _getSender();
+
     _transfer(from, to, value);
-    _approve(from, msg.sender, allowances[from][msg.sender].sub(value));
+    _approve(from, sender, allowances[from][sender].sub(value));
 
     return true;
   }
@@ -76,7 +78,7 @@ contract ERC20Token {
     external
     returns (bool)
   {
-    _approve(msg.sender, spender, value);
+    _approve(_getSender(), spender, value);
 
     return true;
   }
@@ -195,5 +197,16 @@ contract ERC20Token {
     totalSupply = totalSupply.sub(value);
 
     emit Transfer(owner, address(0), value);
+  }
+
+  // internal functions (views)
+
+  function _getSender()
+    virtual
+    internal
+    view
+    returns (address)
+  {
+    return msg.sender;
   }
 }

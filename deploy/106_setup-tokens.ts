@@ -7,23 +7,24 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  if (await read('PersonalAccountRegistry', 'isInitialized')) {
-    log('PersonalAccountRegistry already initialized');
+  if (await read('WrappedWeiToken', 'isInitialized')) {
+    log('WrappedWeiToken already initialized');
   } else {
     const gateway = await get('Gateway');
 
     await execute(
-      'PersonalAccountRegistry',
+      'WrappedWeiToken',
       {
         from,
         log: true,
       },
       'initialize',
+      [],
       gateway.address,
     );
   }
 };
 
-func.tags = ['setup', 'personal'];
+func.tags = ['setup', 'tokens'];
 
 module.exports = func;

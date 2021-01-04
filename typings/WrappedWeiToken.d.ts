@@ -28,7 +28,8 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "depositTo(address)": FunctionFragment;
-    "initialize(address[])": FunctionFragment;
+    "gateway()": FunctionFragment;
+    "initialize(address[],address)": FunctionFragment;
     "isConsumer(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "name()": FunctionFragment;
@@ -55,9 +56,10 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "depositTo", values: [string]): string;
+  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string[]]
+    values: [string[], string]
   ): string;
   encodeFunctionData(functionFragment: "isConsumer", values: [string]): string;
   encodeFunctionData(
@@ -108,6 +110,7 @@ interface WrappedWeiTokenInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "depositTo", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isConsumer", data: BytesLike): Result;
   decodeFunctionResult(
@@ -218,13 +221,19 @@ export class WrappedWeiToken extends Contract {
       overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
+    gateway(overrides?: CallOverrides): Promise<[string]>;
+
+    "gateway()"(overrides?: CallOverrides): Promise<[string]>;
+
     initialize(
       consumers_: string[],
+      gateway_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address[])"(
+    "initialize(address[],address)"(
       consumers_: string[],
+      gateway_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -367,13 +376,19 @@ export class WrappedWeiToken extends Contract {
     overrides?: PayableOverrides
   ): Promise<ContractTransaction>;
 
+  gateway(overrides?: CallOverrides): Promise<string>;
+
+  "gateway()"(overrides?: CallOverrides): Promise<string>;
+
   initialize(
     consumers_: string[],
+    gateway_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address[])"(
+  "initialize(address[],address)"(
     consumers_: string[],
+    gateway_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -510,10 +525,19 @@ export class WrappedWeiToken extends Contract {
 
     "depositTo(address)"(to: string, overrides?: CallOverrides): Promise<void>;
 
-    initialize(consumers_: string[], overrides?: CallOverrides): Promise<void>;
+    gateway(overrides?: CallOverrides): Promise<string>;
 
-    "initialize(address[])"(
+    "gateway()"(overrides?: CallOverrides): Promise<string>;
+
+    initialize(
       consumers_: string[],
+      gateway_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "initialize(address[],address)"(
+      consumers_: string[],
+      gateway_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -664,10 +688,19 @@ export class WrappedWeiToken extends Contract {
       overrides?: PayableOverrides
     ): Promise<BigNumber>;
 
-    initialize(consumers_: string[], overrides?: Overrides): Promise<BigNumber>;
+    gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "initialize(address[])"(
+    "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initialize(
       consumers_: string[],
+      gateway_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "initialize(address[],address)"(
+      consumers_: string[],
+      gateway_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -808,13 +841,19 @@ export class WrappedWeiToken extends Contract {
       overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
+    gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     initialize(
       consumers_: string[],
+      gateway_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address[])"(
+    "initialize(address[],address)"(
       consumers_: string[],
+      gateway_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

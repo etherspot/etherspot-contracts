@@ -11,25 +11,24 @@ const func: DeployFunction = async hre => {
 
   if (await read('Gateway', 'isInitialized')) {
     log('Gateway already initialized');
-    return;
+  } else {
+    const externalAccountRegistry = await get('ExternalAccountRegistry');
+    const personalAccountRegistry = await get('PersonalAccountRegistry');
+
+    await execute(
+      'Gateway',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      externalAccountRegistry.address,
+      personalAccountRegistry.address,
+      utils.id(typedData.domains.Gateway.name),
+      utils.id(typedData.domains.Gateway.version),
+      typedData.domainSalt,
+    );
   }
-
-  const externalAccountRegistry = await get('ExternalAccountRegistry');
-  const personalAccountRegistry = await get('PersonalAccountRegistry');
-
-  await execute(
-    'Gateway',
-    {
-      from,
-      log: true,
-    },
-    'initialize',
-    externalAccountRegistry.address,
-    personalAccountRegistry.address,
-    utils.id(typedData.domains.Gateway.name),
-    utils.id(typedData.domains.Gateway.version),
-    typedData.domainSalt,
-  );
 };
 
 func.tags = ['setup', 'gateway'];

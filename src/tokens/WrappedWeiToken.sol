@@ -3,6 +3,7 @@ pragma solidity ^0.6.12;
 
 import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
+import "../gateway/GatewayRecipient.sol";
 
 
 /**
@@ -10,13 +11,13 @@ import "../common/token/ERC20Token.sol";
  *
  * @notice One to one wei consumable ERC20 token
  *
- * @dev After transfer to consumer account token will be automatically withdrawn.
+ * @dev After transfer to consumer account token will be automatically burn and withdraw.
  *
  * Use `startConsuming` to become a consumer.
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract WrappedWeiToken is Initializable, ERC20Token {
+contract WrappedWeiToken is Initializable, ERC20Token, GatewayRecipient {
   mapping(address => bool) private consumers;
 
   // events
@@ -49,7 +50,7 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     symbol = "WWEI";
 
     if (msg.value > 0) {
-      _mint(msg.sender, msg.value);
+      _mint(_getSender(), msg.value);
     }
   }
 
@@ -60,7 +61,7 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     external
     payable
   {
-    _mint(msg.sender, msg.value);
+    _mint(_getSender(), msg.value);
   }
 
   // external functions
@@ -68,48 +69,54 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   /**
    * @notice Initialize `WrappedWeiToken` contract
    * @param consumers_ array of consumers addresses
+   * @param gateway_ `Gateway` contract address
    */
   function initialize(
-    address[] calldata consumers_
+    address[] calldata consumers_,
+    address gateway_
   )
     external
     onlyInitializer
   {
     if (consumers_.length == 0) {
-      consumers[msg.sender] = true;
+      consumers[_getSender()] = true;
     } else {
       uint consumersLen = consumers_.length;
       for (uint i = 0; i < consumersLen; i++) {
         _addConsumer(consumers_[i]);
       }
     }
+
+    _initializeGatewayRecipient(gateway_);
   }
 
   /**
    * @notice Starts consuming
-   * @dev Add `msg.sender` as a consumer
+   * @dev Add caller as a consumer
    */
   function startConsuming()
     external
   {
-    _addConsumer(msg.sender);
+    _addConsumer(_getSender());
   }
 
   /**
    * @notice Stops consuming
-   * @dev Remove `msg.sender` from consumers
+   * @dev Remove caller from consumers
    */
   function stopConsuming()
     external
   {
+    address consumer = _getSender();
+
     require(
-      consumers[msg.sender],
+      consumers[consumer],
       "WrappedWeiToken: consumer doesn't exist"
     );
 
-    consumers[msg.sender] = false;
+    consumers[consumer] = false;
 
-    emit ConsumerRemoved(msg.sender);
+    emit ConsumerRemoved(consumer);
   }
 
   /**
@@ -134,7 +141,7 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   )
     external
   {
-    _withdraw(msg.sender, msg.sender, value);
+    _withdraw(_getSender(), _getSender(), value);
   }
 
   /**
@@ -148,7 +155,7 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   )
     external
   {
-    _withdraw(msg.sender, to, value);
+    _withdraw(_getSender(), to, value);
   }
 
   /**
@@ -157,7 +164,9 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   function withdrawAll()
     external
   {
-    _withdraw(msg.sender, msg.sender, balances[msg.sender]);
+    address sender = _getSender();
+
+    _withdraw(sender, sender, balances[sender]);
   }
 
   /**
@@ -169,7 +178,9 @@ contract WrappedWeiToken is Initializable, ERC20Token {
   )
     external
   {
-    _withdraw(msg.sender, to, balances[msg.sender]);
+    address sender = _getSender();
+
+    _withdraw(sender, to, balances[sender]);
   }
 
   // external functions (views)
@@ -204,6 +215,17 @@ contract WrappedWeiToken is Initializable, ERC20Token {
     } else {
       super._transfer(from, to, value);
     }
+  }
+
+  // internal functions (views)
+
+  function _getSender()
+    override
+    internal
+    view
+    returns (address)
+  {
+    return _getContextAccount();
   }
 
   // private functions

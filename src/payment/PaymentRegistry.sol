@@ -765,7 +765,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       uid
     );
 
-    // calc payment value
+    /// @dev calc payment value
     paymentValue = amount.sub(paymentChannels[hash].committedAmount);
 
     require(
