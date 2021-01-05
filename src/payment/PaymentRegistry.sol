@@ -19,6 +19,9 @@ import "../gateway/GatewayRecipient.sol";
  *
  * @notice A registry for payment and payment channels
  *
+ * @dev the `DepositExit` process can be used in a case operator (guardian) couldn't sign commit / withdrawal message.
+ * Process will be rejected when any of senders channels will be committed.
+ *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
@@ -383,7 +386,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   /**
-   * @notice Commits payment channel and withdraw
+   * @notice Commits payment channel and withdraw payment
    * @param sender sender address
    * @param token token address
    * @param uid unique channel id
@@ -427,7 +430,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   /**
-   * @notice Commits payment channel and deposit
+   * @notice Commits payment channel and deposit payment
    * @param sender sender address
    * @param token token address
    * @param uid unique channel id
@@ -471,7 +474,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   /**
-   * @notice Commits payment channel, withdraw and deposit (split)
+   * @notice Commits payment channel, withdraw and deposit (split) payment
    * @param sender sender address
    * @param token token address
    * @param uid unique channel id
