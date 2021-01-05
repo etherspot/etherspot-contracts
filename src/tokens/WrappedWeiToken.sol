@@ -62,7 +62,7 @@ contract WrappedWeiToken is Initializable, ERC20Token, GatewayRecipient {
   // external functions
 
   /**
-   * @notice Initialize `WrappedWeiToken` contract
+   * @notice Initializes `WrappedWeiToken` contract
    * @param consumers_ array of consumers addresses
    * @param gateway_ `Gateway` contract address
    */

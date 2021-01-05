@@ -75,16 +75,15 @@ import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 
 ## Deployed contracts
 
-| namespace | file | notice |
-| --- | --- | --- |
-| `ens` | [ENSController](./src/ens/ENSController.sol) | ENS subnode registrar |
-| `external` | [ExternalAccountRegistry](./src/external/ExternalAccountRegistry.sol) | Global registry for keys and external (outside of the platform) contract based wallets |
-| `gateway` | [Gateway](./src/gateway/Gateway.sol) | GSN replacement |
-| `payment` | [PaymentRegistry](./src/payment/PaymentRegistry.sol) | A registry for payment and payment channels |
-| `personal` | [PersonalAccountRegistry](./src/personal/PersonalAccountRegistry.sol) | A registry for personal (controlled by owners) accounts |
-| `tokens` | [WrappedWeiToken](./src/tokens/WrappedWeiToken.sol) | One to one wei consumable ERC20 token |
-| `utils` | [Utils](./src/utils/Utils.sol) | Utilities |
-
+| Source code |
+| --- |
+| [./src/ens/ENSController.sol](./src/ens/ENSController.sol) |
+| [./src/external/ExternalAccountRegistry.sol](./src/external/ExternalAccountRegistry.sol) |
+| [./src/gateway/Gateway.sol](./src/gateway/Gateway.sol) |
+| [./src/payment/PaymentRegistry.sol](./src/payment/PaymentRegistry.sol) |
+| [./src/personal/PersonalAccountRegistry.sol](./src/personal/PersonalAccountRegistry.sol) |
+| [./src/tokens/WrappedWeiToken.sol](./src/tokens/WrappedWeiToken.sol) |
+| [./src/utils/Utils.sol](./src/utils/Utils.sol) |
 
 ## License
 
