@@ -331,6 +331,35 @@ describe('ENSController', () => {
     });
   });
 
+  context('syncAddr()', () => {
+    let owner: SignerWithAddress;
+    let node: string;
+
+    before(async () => {
+      ({ node, owner } = await createNodeFactory(false));
+
+      await processTx(
+        ensRegistry.connect(owner).setResolver(node, ensController.address),
+      );
+    });
+
+    it('expect to sync addr', async () => {
+      const {
+        events: [event],
+      } = await processTx(ensController.connect(owner).syncAddr(node));
+
+      expect(event.event).toBe('AddrChanged');
+      expect(event.args.node).toBe(node);
+      expect(event.args.addr).toBe(owner.address);
+    });
+
+    it('expect to reject when already in sync', async () => {
+      await expect(ensController.connect(owner).syncAddr(node)).rejects.toThrow(
+        /rever/,
+      );
+    });
+  });
+
   context('registerSubNode()', () => {
     let nodeFactory: NodeFactory;
     let subNode: Node;

@@ -287,6 +287,37 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   }
 
   /**
+   * @notice Sync address
+   * @param node node name hash
+   */
+  function syncAddr(
+    bytes32 node
+  )
+    external
+  {
+    address account = _getContextAccount();
+
+    require(
+      account == registry.owner(node),
+      "ENSController: caller is not the node owner"
+    );
+
+    require(
+      registry.resolver(node) == address(this),
+      "ENSController: invalid node resolver"
+    );
+
+    require(
+      nodes[node].addr == address(0),
+      "ENSController: node already in sync"
+    );
+
+    nodes[node].addr = account;
+
+    emit AddrChanged(node, account);
+  }
+
+  /**
    * @notice Registers sub node
    * @param node node name hash
    * @param label label hash
