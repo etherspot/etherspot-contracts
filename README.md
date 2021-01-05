@@ -70,20 +70,7 @@ pragma solidity ^0.6.12;
 import "@etherspot/contracts/src/gateway/GatewayRecipient.sol";
 
 // ...
-
 ```
-
-## Deployed contracts
-
-| Source code |
-| --- |
-| [./src/ens/ENSController.sol](./src/ens/ENSController.sol) |
-| [./src/external/ExternalAccountRegistry.sol](./src/external/ExternalAccountRegistry.sol) |
-| [./src/gateway/Gateway.sol](./src/gateway/Gateway.sol) |
-| [./src/payment/PaymentRegistry.sol](./src/payment/PaymentRegistry.sol) |
-| [./src/personal/PersonalAccountRegistry.sol](./src/personal/PersonalAccountRegistry.sol) |
-| [./src/tokens/WrappedWeiToken.sol](./src/tokens/WrappedWeiToken.sol) |
-| [./src/utils/Utils.sol](./src/utils/Utils.sol) |
 
 ## License
 
