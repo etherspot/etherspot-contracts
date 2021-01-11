@@ -46,7 +46,7 @@ contract Guarded {
   // modifiers
 
   /**
-   * @dev Throws if tx.origin is not the guardian account
+   * @dev Throws if tx.origin is not a guardian account
    */
   modifier onlyGuardian() {
     require(
