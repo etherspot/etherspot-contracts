@@ -7,9 +7,8 @@ import "../libs/SignatureLib.sol";
 /**
  * @title Guarded
  *
- * @dev Contract module which provides access control mechanism, where
- * there is guardians key accounts that can be granted exclusive access to
- * specific functions.
+ * @dev Contract module which provides a guardian-type control mechanism.
+ * It allows key accounts to have guardians and restricts specific methods to be accessible by guardians only.
  *
  * Each guardian account can remove other guardians
  *
