@@ -24,7 +24,7 @@ contract Guarded {
   // events
 
   /**
-   * @dev Emitted when the new guardian is added
+   * @dev Emitted when a new guardian is added
    * @param sender sender address
    * @param guardian guardian address
    */
