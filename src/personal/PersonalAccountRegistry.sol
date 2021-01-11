@@ -142,7 +142,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   }
 
   /**
-   * @notice Removes existing account owner
+   * @notice Removes the existing account owner
    * @param account account address
    * @param owner owner address
    */
