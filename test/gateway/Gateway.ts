@@ -33,11 +33,13 @@ describe('Gateway', () => {
   let data: string;
 
   let delegatedBatchTypedDataFactory: TypedDataFactory<{
+    account: string;
     nonce: BigNumberish;
     to: string[];
     data: BytesLike[];
   }>;
   let delegatedBatchWithGasPriceTypedDataFactory: TypedDataFactory<{
+    account: string;
     nonce: BigNumberish;
     to: string[];
     data: BytesLike[];
@@ -74,6 +76,10 @@ describe('Gateway', () => {
       'DelegatedBatch',
       [
         {
+          type: 'address',
+          name: 'account',
+        },
+        {
           type: 'uint256',
           name: 'nonce',
         },
@@ -92,6 +98,10 @@ describe('Gateway', () => {
       gateway,
       'DelegatedBatchWithGasPrice',
       [
+        {
+          type: 'address',
+          name: 'account',
+        },
         {
           type: 'uint256',
           name: 'nonce',
@@ -234,6 +244,7 @@ describe('Gateway', () => {
       const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
         sender,
         {
+          account: account.address,
           nonce,
           to: [to],
           data: [data],
@@ -263,6 +274,7 @@ describe('Gateway', () => {
       const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
         sender,
         {
+          account: account.address,
           nonce,
           to: [to],
           data: [data],
@@ -302,6 +314,7 @@ describe('Gateway', () => {
       const senderSignature = await delegatedBatchWithGasPriceTypedDataFactory.signTypeData(
         sender,
         {
+          account: account.address,
           nonce,
           to: [to],
           data: [data],
@@ -354,6 +367,7 @@ describe('Gateway', () => {
       const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
         sender,
         {
+          account: account.address,
           nonce,
           to: [to],
           data: [data],
@@ -388,6 +402,7 @@ describe('Gateway', () => {
         const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
           sender,
           {
+            account: account.address,
             nonce,
             to: [to],
             data: [data],
@@ -425,6 +440,7 @@ describe('Gateway', () => {
         const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
           sender,
           {
+            account: account.address,
             nonce,
             to: [to],
             data: [data],
@@ -456,6 +472,7 @@ describe('Gateway', () => {
         const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
           sender,
           {
+            account: account.address,
             nonce,
             to: [to],
             data: [data],
@@ -477,6 +494,7 @@ describe('Gateway', () => {
           const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
             sender,
             {
+              account: account.address,
               nonce,
               to: [to],
               data: [data],
@@ -528,6 +546,7 @@ describe('Gateway', () => {
   context('hashDelegatedBatch()', () => {
     it('expect to return correct hash', async () => {
       const message = {
+        account: randomAddress(),
         nonce: 100,
         to: [to],
         data: [data],
@@ -546,6 +565,7 @@ describe('Gateway', () => {
   context('hashDelegatedBatchWithGasPrice()', () => {
     it('expect to return correct hash', async () => {
       const message = {
+        account: randomAddress(),
         nonce: 100,
         to: [to],
         data: [data],
@@ -581,6 +601,7 @@ describe('Gateway', () => {
       const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
         sender,
         {
+          account: account.address,
           nonce,
           to: [to],
           data: [data],
