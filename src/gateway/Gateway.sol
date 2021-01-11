@@ -22,12 +22,14 @@ contract Gateway is Initializable, TypedDataContainer {
   using SignatureLib for bytes32;
 
   struct DelegatedBatch {
+    address account;
     uint256 nonce;
     address[] to;
     bytes[] data;
   }
 
   struct DelegatedBatchWithGasPrice {
+    address account;
     uint256 nonce;
     address[] to;
     bytes[] data;
@@ -35,11 +37,11 @@ contract Gateway is Initializable, TypedDataContainer {
   }
 
   bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(
-    "DelegatedBatch(uint256 nonce,address[] to,bytes[] data)"
+    "DelegatedBatch(address account,uint256 nonce,address[] to,bytes[] data)"
   );
 
   bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE = keccak256(
-    "DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
+    "DelegatedBatchWithGasPrice(address account,uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
   ExternalAccountRegistry public externalAccountRegistry;
@@ -177,6 +179,7 @@ contract Gateway is Initializable, TypedDataContainer {
 
     address sender = _hashPrimaryTypedData(
       _hashTypedData(
+        account,
         nonce,
         to,
         data
@@ -224,6 +227,7 @@ contract Gateway is Initializable, TypedDataContainer {
 
     address sender = _hashPrimaryTypedData(
       _hashTypedData(
+        account,
         nonce,
         to,
         data,
@@ -301,6 +305,7 @@ contract Gateway is Initializable, TypedDataContainer {
   {
     return _hashPrimaryTypedData(
       _hashTypedData(
+        delegatedBatch.account,
         delegatedBatch.nonce,
         delegatedBatch.to,
         delegatedBatch.data
@@ -322,6 +327,7 @@ contract Gateway is Initializable, TypedDataContainer {
   {
     return _hashPrimaryTypedData(
       _hashTypedData(
+        delegatedBatch.account,
         delegatedBatch.nonce,
         delegatedBatch.to,
         delegatedBatch.data,
@@ -399,6 +405,7 @@ contract Gateway is Initializable, TypedDataContainer {
   // private functions (pure)
 
   function _hashTypedData(
+    address account,
     uint256 nonce,
     address[] memory to,
     bytes[] memory data
@@ -415,6 +422,7 @@ contract Gateway is Initializable, TypedDataContainer {
 
     return keccak256(abi.encode(
       DELEGATED_BATCH_TYPE_HASH,
+      account,
       nonce,
       keccak256(abi.encodePacked(to)),
       keccak256(abi.encodePacked(dataHashes))
@@ -422,6 +430,7 @@ contract Gateway is Initializable, TypedDataContainer {
   }
 
   function _hashTypedData(
+    address account,
     uint256 nonce,
     address[] memory to,
     bytes[] memory data,
@@ -439,6 +448,7 @@ contract Gateway is Initializable, TypedDataContainer {
 
     return keccak256(abi.encode(
         DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE,
+        account,
         nonce,
         keccak256(abi.encodePacked(to)),
         keccak256(abi.encodePacked(dataHashes)),

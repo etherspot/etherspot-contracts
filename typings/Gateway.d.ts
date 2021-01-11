@@ -59,12 +59,15 @@ interface GatewayInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "hashDelegatedBatch",
-    values: [{ nonce: BigNumberish; to: string[]; data: BytesLike[] }]
+    values: [
+      { account: string; nonce: BigNumberish; to: string[]; data: BytesLike[] }
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "hashDelegatedBatchWithGasPrice",
     values: [
       {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -230,17 +233,28 @@ export class Gateway extends Contract {
     ): Promise<[BigNumber]>;
 
     hashDelegatedBatch(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     "hashDelegatedBatch(tuple)"(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     hashDelegatedBatchWithGasPrice(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -251,6 +265,7 @@ export class Gateway extends Contract {
 
     "hashDelegatedBatchWithGasPrice(tuple)"(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -379,17 +394,28 @@ export class Gateway extends Contract {
   ): Promise<BigNumber>;
 
   hashDelegatedBatch(
-    delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+    delegatedBatch: {
+      account: string;
+      nonce: BigNumberish;
+      to: string[];
+      data: BytesLike[];
+    },
     overrides?: CallOverrides
   ): Promise<string>;
 
   "hashDelegatedBatch(tuple)"(
-    delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+    delegatedBatch: {
+      account: string;
+      nonce: BigNumberish;
+      to: string[];
+      data: BytesLike[];
+    },
     overrides?: CallOverrides
   ): Promise<string>;
 
   hashDelegatedBatchWithGasPrice(
     delegatedBatch: {
+      account: string;
       nonce: BigNumberish;
       to: string[];
       data: BytesLike[];
@@ -400,6 +426,7 @@ export class Gateway extends Contract {
 
   "hashDelegatedBatchWithGasPrice(tuple)"(
     delegatedBatch: {
+      account: string;
       nonce: BigNumberish;
       to: string[];
       data: BytesLike[];
@@ -528,17 +555,28 @@ export class Gateway extends Contract {
     ): Promise<BigNumber>;
 
     hashDelegatedBatch(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<string>;
 
     "hashDelegatedBatch(tuple)"(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<string>;
 
     hashDelegatedBatchWithGasPrice(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -549,6 +587,7 @@ export class Gateway extends Contract {
 
     "hashDelegatedBatchWithGasPrice(tuple)"(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -684,17 +723,28 @@ export class Gateway extends Contract {
     ): Promise<BigNumber>;
 
     hashDelegatedBatch(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "hashDelegatedBatch(tuple)"(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     hashDelegatedBatchWithGasPrice(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -705,6 +755,7 @@ export class Gateway extends Contract {
 
     "hashDelegatedBatchWithGasPrice(tuple)"(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -838,17 +889,28 @@ export class Gateway extends Contract {
     ): Promise<PopulatedTransaction>;
 
     hashDelegatedBatch(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "hashDelegatedBatch(tuple)"(
-      delegatedBatch: { nonce: BigNumberish; to: string[]; data: BytesLike[] },
+      delegatedBatch: {
+        account: string;
+        nonce: BigNumberish;
+        to: string[];
+        data: BytesLike[];
+      },
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     hashDelegatedBatchWithGasPrice(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
@@ -859,6 +921,7 @@ export class Gateway extends Contract {
 
     "hashDelegatedBatchWithGasPrice(tuple)"(
       delegatedBatch: {
+        account: string;
         nonce: BigNumberish;
         to: string[];
         data: BytesLike[];
