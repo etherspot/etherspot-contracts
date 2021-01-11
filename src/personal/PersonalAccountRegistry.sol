@@ -298,7 +298,7 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   }
 
   /**
-   * @notice Verifies the owner of the account at current block
+   * @notice Verifies the owner of the account at the current block
    * @param account account address
    * @param owner owner address
    * @return true on correct account owner
