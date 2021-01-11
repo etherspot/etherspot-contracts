@@ -4,9 +4,9 @@ pragma solidity ^0.6.12;
 /**
  * @title Controlled
  *
- * @dev Contract module which provides access control mechanism, where
- * there is the controller account that can be granted exclusive access to
- * specific functions.
+ * @dev Contract module which provides an access control mechanism.
+ * It ensures there is only one controlling account of the smart contract
+ * and grants that account exclusive access to specific functions.
  *
  * The controller account will be the one that deploys the contract.
  *
