@@ -474,7 +474,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
   }
 
   /**
-   * @notice Commits payment channel, withdraw and deposit (split) payment
+   * @notice Commits payment channel, withdraws and deposits (split) payment
    * @param sender sender address
    * @param token token address
    * @param uid unique channel id
