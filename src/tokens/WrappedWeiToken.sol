@@ -11,7 +11,7 @@ import "../gateway/GatewayRecipient.sol";
  *
  * @notice One to one wei consumable ERC20 token
  *
- * @dev After transfer to consumer account token will be automatically burn and withdraw.
+ * @dev After the transfer to consumer's account is done, the token will be automatically burned and withdrawn.
  *
  * Use `startConsuming` to become a consumer.
  *
