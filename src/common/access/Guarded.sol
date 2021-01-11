@@ -79,7 +79,7 @@ contract Guarded {
   }
 
   /**
-   * @notice Removes existing guardian
+   * @notice Removes the existing guardian
    * @param guardian guardian address
    */
   function removeGuardian(
