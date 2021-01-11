@@ -2,7 +2,9 @@
 pragma solidity ^0.6.12;
 
 /**
- * @title ENSRegistry
+ * @title ENS registry
+ *
+ * @dev Base on https://github.com/ensdomains/ens/blob/v0.2.2/contracts/ENSRegistry.sol
  */
 contract ENSRegistry {
   struct Record {

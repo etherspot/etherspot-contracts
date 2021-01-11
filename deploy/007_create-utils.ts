@@ -7,7 +7,7 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  await deploy('BalanceChecker', {
+  await deploy('Utils', {
     from,
     log: true,
   });

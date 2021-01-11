@@ -2,15 +2,20 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
-import "../account/AccountOwnerRegistry.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/typedData/TypedDataContainer.sol";
+import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
+
 
 /**
  * @title Gateway
+ *
+ * @notice GSN replacement
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Gateway is Initializable, TypedDataContainer {
   using SafeMathLib for uint256;
@@ -37,13 +42,19 @@ contract Gateway is Initializable, TypedDataContainer {
     "DelegatedBatchWithGasPrice(uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
-  AccountOwnerRegistry public accountOwnerRegistry;
+  ExternalAccountRegistry public externalAccountRegistry;
   PersonalAccountRegistry public personalAccountRegistry;
 
   mapping(address => uint256) private accountNonce;
 
   // events
 
+  /**
+   * @dev Emitted when the single batch is delegated
+   * @param sender sender address
+   * @param batch batch
+   * @param succeeded if succeeded
+   */
   event BatchDelegated(
     address sender,
     bytes batch,
@@ -51,14 +62,22 @@ contract Gateway is Initializable, TypedDataContainer {
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor() public Initializable() {}
 
   // external functions
 
+  /**
+   * @notice Initializes `Gateway` contract
+   * @param externalAccountRegistry_ `ExternalAccountRegistry` contract address
+   * @param personalAccountRegistry_ `PersonalAccountRegistry` contract address
+   * @param typedDataDomainNameHash hash of a typed data domain name
+   * @param typedDataDomainVersionHash hash of a typed data domain version
+   * @param typedDataDomainSalt typed data salt
+   */
   function initialize(
-    AccountOwnerRegistry accountOwnerRegistry_,
+    ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     bytes32 typedDataDomainNameHash,
     bytes32 typedDataDomainVersionHash,
@@ -67,7 +86,7 @@ contract Gateway is Initializable, TypedDataContainer {
     external
     onlyInitializer
   {
-    accountOwnerRegistry = accountOwnerRegistry_;
+    externalAccountRegistry = externalAccountRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
 
     // TypedDataContainer
@@ -80,6 +99,15 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // public functions
 
+  /**
+   * @notice Sends batch
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `msg.sender`
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
   function sendBatch(
     address[] memory to,
     bytes[] memory data
@@ -94,6 +122,16 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Sends batch from the account
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param account account address
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
   function sendBatchFromAccount(
     address account,
     address[] memory to,
@@ -109,6 +147,20 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates batch from the account
+   * @dev Use `hashDelegatedBatch` to create sender message payload.
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
   function delegateBatch(
     address account,
     uint256 nonce,
@@ -141,6 +193,21 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates batch from the account (with gas price)
+   *
+   * @dev Use `hashDelegatedBatchWithGasPrice` to create sender message payload (tx.gasprice as gasPrice)
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
   function delegateBatchWithGasPrice(
     address account,
     uint256 nonce,
@@ -174,6 +241,12 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Delegates multiple batches
+   * @dev It will revert when all batches fail
+   * @param batches array of batches
+   * @param revertOnFailure reverts on any error
+   */
   function delegateBatches(
     bytes[] memory batches,
     bool revertOnFailure
@@ -214,6 +287,11 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // public functions (views)
 
+  /**
+   * @notice Hashes `DelegatedBatch` typed data
+   * @param delegatedBatch struct
+   * @return hash
+   */
   function hashDelegatedBatch(
     DelegatedBatch memory delegatedBatch
   )
@@ -230,6 +308,11 @@ contract Gateway is Initializable, TypedDataContainer {
     );
   }
 
+  /**
+   * @notice Hashes `DelegatedBatchWithGasPrice` typed data
+   * @param delegatedBatch struct
+   * @return hash
+   */
   function hashDelegatedBatchWithGasPrice(
     DelegatedBatchWithGasPrice memory delegatedBatch
   )
@@ -249,6 +332,11 @@ contract Gateway is Initializable, TypedDataContainer {
 
   // external functions (views)
 
+  /**
+   * @notice Gets next account nonce
+   * @param account account address
+   * @return next nonce
+   */
   function getAccountNextNonce(
     address account
   )
@@ -285,7 +373,7 @@ contract Gateway is Initializable, TypedDataContainer {
     if (account != sender) {
       require(
         personalAccountRegistry.verifyAccountOwner(account, sender) ||
-        accountOwnerRegistry.verifyAccountOwner(account, sender),
+        externalAccountRegistry.verifyAccountOwner(account, sender),
         "Gateway: sender is not the account owner"
       );
     }

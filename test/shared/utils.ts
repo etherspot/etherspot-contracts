@@ -114,6 +114,20 @@ export async function increaseTime(seconds: BigNumberish = 0): Promise<void> {
   await provider.send('evm_increaseTime', [value.toNumber()]);
 }
 
+export async function deployContract<T extends Contract = Contract>(
+  name: string,
+  args: any[] = [],
+  deployer: SignerWithAddress = null,
+): Promise<T> {
+  let factory = await ethers.getContractFactory(name);
+
+  if (deployer) {
+    factory = factory.connect(deployer);
+  }
+
+  return (await factory.deploy(...(args || []))) as T;
+}
+
 export function getNow(additionalSeconds: BigNumberish = 0) {
   return BigNumber.from(additionalSeconds).add(Math.ceil(Date.now() / 1000));
 }

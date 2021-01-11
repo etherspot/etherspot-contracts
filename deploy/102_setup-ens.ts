@@ -43,7 +43,8 @@ const func: DeployFunction = async hre => {
 
   if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
     for (const name of ens.internalTopLevelDomains) {
-      const nameHash = utils.id(name);
+      const nameHash = utils.namehash(name);
+      const labelHash = utils.id(name);
 
       await execute(
         'ENSRegistry',
@@ -53,7 +54,7 @@ const func: DeployFunction = async hre => {
         },
         'setSubnodeOwner',
         constants.HashZero,
-        nameHash,
+        labelHash,
         from,
       );
 

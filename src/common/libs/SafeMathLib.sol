@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
+/**
+ * @title Safe math library
+ *
+ * @dev Based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contracts/math/SafeMath.sol
+ */
 library SafeMathLib {
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a + b;
+
     require(c >= a, "SafeMathLib: addition overflow");
 
     return c;
@@ -15,20 +21,17 @@ library SafeMathLib {
 
   function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
     require(b <= a, errorMessage);
-    uint256 c = a - b;
 
-    return c;
+    return a - b;
   }
 
   function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-    // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-    // benefit is lost if 'b' is also tested.
-    // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
     if (a == 0) {
       return 0;
     }
 
     uint256 c = a * b;
+
     require(c / a == b, "SafeMathLib: multiplication overflow");
 
     return c;
@@ -40,10 +43,8 @@ library SafeMathLib {
 
   function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
     require(b > 0, errorMessage);
-    uint256 c = a / b;
-    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
 
-    return c;
+    return a / b;
   }
 
   function mod(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -52,6 +53,7 @@ library SafeMathLib {
 
   function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
     require(b != 0, errorMessage);
+
     return a % b;
   }
 }

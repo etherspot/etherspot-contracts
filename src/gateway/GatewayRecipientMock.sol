@@ -5,7 +5,11 @@ import "./GatewayRecipient.sol";
 
 
 /**
- * @title GatewayRecipientMock
+ * @title Gateway recipient mock
+ *
+ * @dev Used in `GatewayRecipient` contract tests
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract GatewayRecipientMock is GatewayRecipient {
   // events

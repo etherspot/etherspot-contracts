@@ -35,7 +35,7 @@ interface InitializableInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "Initialized()": EventFragment;
+    "Initialized(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
@@ -71,7 +71,7 @@ export class Initializable extends Contract {
   };
 
   filters: {
-    Initialized(): EventFilter;
+    Initialized(initializer: null): EventFilter;
   };
 
   estimateGas: {

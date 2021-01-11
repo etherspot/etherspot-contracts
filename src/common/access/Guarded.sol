@@ -6,6 +6,15 @@ import "../libs/SignatureLib.sol";
 
 /**
  * @title Guarded
+ *
+ * @dev Contract module which provides a guardian-type control mechanism.
+ * It allows key accounts to have guardians and restricts specific methods to be accessible by guardians only.
+ *
+ * Each guardian account can remove other guardians
+ *
+ * Use `_initializeGuarded` to initialize the contract
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Guarded {
   using SignatureLib for bytes32;
@@ -14,11 +23,21 @@ contract Guarded {
 
   // events
 
+  /**
+   * @dev Emitted when a new guardian is added
+   * @param sender sender address
+   * @param guardian guardian address
+   */
   event GuardianAdded(
     address sender,
     address guardian
   );
 
+  /**
+   * @dev Emitted when the existing guardian is removed
+   * @param sender sender address
+   * @param guardian guardian address
+   */
   event GuardianRemoved(
     address sender,
     address guardian
@@ -26,6 +45,9 @@ contract Guarded {
 
   // modifiers
 
+  /**
+   * @dev Throws if tx.origin is not a guardian account
+   */
   modifier onlyGuardian() {
     require(
       // solhint-disable-next-line avoid-tx-origin
@@ -37,12 +59,16 @@ contract Guarded {
   }
 
   /**
-   * @dev internal constructor
+   * @dev Internal constructor
    */
   constructor() internal {}
 
   // external functions
 
+  /**
+   * @notice Adds a new guardian
+   * @param guardian guardian address
+   */
   function addGuardian(
     address guardian
   )
@@ -52,6 +78,10 @@ contract Guarded {
     _addGuardian(guardian);
   }
 
+  /**
+   * @notice Removes the existing guardian
+   * @param guardian guardian address
+   */
   function removeGuardian(
     address guardian
   )
@@ -80,6 +110,11 @@ contract Guarded {
 
   // external functions (views)
 
+  /**
+   * @notice Check if guardian exists
+   * @param guardian guardian address
+   * @return true when guardian exists
+   */
   function isGuardian(
     address guardian
   )
@@ -90,6 +125,12 @@ contract Guarded {
     return guardians[guardian];
   }
 
+  /**
+   * @notice Verifies guardian signature
+   * @param messageHash message hash
+   * @param signature signature
+   * @return true on correct guardian signature
+   */
   function verifyGuardianSignature(
     bytes32 messageHash,
     bytes calldata signature
@@ -106,6 +147,11 @@ contract Guarded {
 
   // internal functions
 
+  /**
+   * @notice Initializes `Guarded` contract
+   * @dev If `guardians_` array is empty `tx.origin` is added as guardian account
+   * @param guardians_ array of guardians addresses
+   */
   function _initializeGuarded(
     address[] memory guardians_
   )

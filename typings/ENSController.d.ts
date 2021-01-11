@@ -37,6 +37,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "setRegistry(address)": FunctionFragment;
     "submitNode(bytes32)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "syncAddr(bytes32)": FunctionFragment;
     "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
     "verifyNode(bytes32)": FunctionFragment;
@@ -84,6 +85,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "syncAddr", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "typedDataDomainSeparator",
     values?: undefined
@@ -136,6 +138,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "syncAddr", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "typedDataDomainSeparator",
     data: BytesLike
@@ -150,7 +153,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "AddrChanged(bytes32,address)": EventFragment;
     "GuardianAdded(address,address)": EventFragment;
     "GuardianRemoved(address,address)": EventFragment;
-    "Initialized()": EventFragment;
+    "Initialized(address)": EventFragment;
     "NodeReleased(bytes32,address)": EventFragment;
     "NodeSubmitted(bytes32,address)": EventFragment;
     "NodeVerified(bytes32)": EventFragment;
@@ -331,6 +334,16 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    syncAddr(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "syncAddr(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
@@ -497,6 +510,16 @@ export class ENSController extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  syncAddr(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "syncAddr(bytes32)"(
+    node: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
   "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
@@ -659,6 +682,13 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    syncAddr(node: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    "syncAddr(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
     "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
@@ -690,7 +720,7 @@ export class ENSController extends Contract {
 
     GuardianRemoved(sender: null, guardian: null): EventFilter;
 
-    Initialized(): EventFilter;
+    Initialized(initializer: null): EventFilter;
 
     NodeReleased(node: null, owner: null): EventFilter;
 
@@ -835,6 +865,13 @@ export class ENSController extends Contract {
     "supportsInterface(bytes4)"(
       interfaceID: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    syncAddr(node: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+
+    "syncAddr(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
     ): Promise<BigNumber>;
 
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1016,6 +1053,16 @@ export class ENSController extends Contract {
     "supportsInterface(bytes4)"(
       interfaceID: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    syncAddr(
+      node: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "syncAddr(bytes32)"(
+      node: BytesLike,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     typedDataDomainSeparator(

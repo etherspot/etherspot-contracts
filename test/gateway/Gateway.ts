@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
 import { BigNumberish, BytesLike } from 'ethers';
 import {
-  AccountOwnerRegistry,
+  ExternalAccountRegistry,
   Gateway,
   GatewayRecipientMock,
   PersonalAccountRegistry,
@@ -17,13 +17,14 @@ import {
   randomAddress,
   getNextNonce,
   TypedDataFactory,
+  deployContract,
 } from '../shared';
 
 const { getSigners } = ethers;
 
 describe('Gateway', () => {
   let signers: SignerWithAddress[];
-  let accountOwnerRegistry: AccountOwnerRegistry;
+  let externalAccountRegistry: ExternalAccountRegistry;
   let gateway: Gateway;
   let gatewayRecipientMock: GatewayRecipientMock;
   let personalAccountRegistry: PersonalAccountRegistry;
@@ -46,27 +47,16 @@ describe('Gateway', () => {
   before(async () => {
     signers = await getSigners();
 
-    accountOwnerRegistry = (await ethers
-      .getContractFactory('AccountOwnerRegistry')
-      .then(factory => factory.deploy())) as AccountOwnerRegistry;
-
-    gateway = (await ethers
-      .getContractFactory('Gateway')
-      .then(factory => factory.deploy())) as Gateway;
-
-    gatewayRecipientMock = (await ethers
-      .getContractFactory('GatewayRecipientMock')
-      .then(factory =>
-        factory.deploy(gateway.address),
-      )) as GatewayRecipientMock;
-
-    personalAccountRegistry = (await ethers
-      .getContractFactory('PersonalAccountRegistry')
-      .then(factory => factory.deploy())) as PersonalAccountRegistry;
+    externalAccountRegistry = await deployContract('ExternalAccountRegistry');
+    gateway = await deployContract('Gateway');
+    gatewayRecipientMock = await deployContract('GatewayRecipientMock', [
+      gateway.address,
+    ]);
+    personalAccountRegistry = await deployContract('PersonalAccountRegistry');
 
     await processTx(
       gateway.initialize(
-        accountOwnerRegistry.address,
+        externalAccountRegistry.address,
         personalAccountRegistry.address,
         TYPED_DATA_DOMAIN_NAME_HASH,
         TYPED_DATA_DOMAIN_VERSION_HASH,
@@ -168,7 +158,9 @@ describe('Gateway', () => {
         gateway = gateway.connect(sender);
 
         await processTx(
-          accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+          externalAccountRegistry
+            .connect(account)
+            .addAccountOwner(sender.address),
         );
       });
 
@@ -231,7 +223,9 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
       );
     });
 
@@ -297,7 +291,9 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
       );
     });
 
@@ -347,7 +343,9 @@ describe('Gateway', () => {
       gateway = gateway.connect(from);
 
       await processTx(
-        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
       );
     });
 
@@ -574,7 +572,9 @@ describe('Gateway', () => {
       gateway = gateway.connect(signers.pop());
 
       await processTx(
-        accountOwnerRegistry.connect(account).addAccountOwner(sender.address),
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
       );
       nonce = getNextNonce();
 

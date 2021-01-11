@@ -5,6 +5,7 @@ import {
   randomAddress,
   processTx,
   concatHex,
+  deployContract,
 } from '../shared';
 
 const { getSigners } = ethers;
@@ -20,11 +21,11 @@ describe('GatewayRecipient (using mock)', () => {
     gateway = signers.pop();
     sender = signers.pop();
 
-    gatewayRecipientMock = (await ethers
-      .getContractFactory('GatewayRecipientMock')
-      .then(factory =>
-        factory.connect(gateway).deploy(gateway.address),
-      )) as GatewayRecipientMock;
+    gatewayRecipientMock = await deployContract(
+      'GatewayRecipientMock',
+      [gateway.address],
+      gateway,
+    );
   });
 
   context('gateway()', () => {

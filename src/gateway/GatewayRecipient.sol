@@ -5,7 +5,11 @@ import "../common/libs/BytesLib.sol";
 
 
 /**
- * @title GatewayRecipient
+ * @title Gateway recipient
+ *
+ * @notice Gateway target contract
+ *
+ * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract GatewayRecipient {
   using BytesLib for bytes;
@@ -19,6 +23,10 @@ contract GatewayRecipient {
 
   // internal functions
 
+  /**
+   * @notice Initializes `GatewayRecipient` contract
+   * @param gateway_ `Gateway` contract address
+   */
   function _initializeGatewayRecipient(
     address gateway_
   )
@@ -29,6 +37,10 @@ contract GatewayRecipient {
 
   // internal functions (views)
 
+  /**
+   * @notice Gets gateway context account
+   * @return context account address
+   */
   function _getContextAccount()
     internal
     view
@@ -37,6 +49,10 @@ contract GatewayRecipient {
     return _getContextAddress(40);
   }
 
+  /**
+   * @notice Gets gateway context sender
+   * @return context sender address
+   */
   function _getContextSender()
     internal
     view
@@ -45,6 +61,10 @@ contract GatewayRecipient {
     return _getContextAddress(20);
   }
 
+  /**
+   * @notice Gets gateway context data
+   * @return context data
+   */
   function _getContextData()
     internal
     view

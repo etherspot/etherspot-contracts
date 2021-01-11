@@ -59,7 +59,7 @@ module.exports = {
       "6666": null,
       "9999": null
     },
-    "byteCodeHash": "0x46bf54760e2a2027195a3f53df73638c3389400b5b05c6d8536ef889a94f93d2",
+    "byteCodeHash": "0xf0507154b7890354336c4a8a8e1f9bd27240b6e099cd752bf69a63e4d8f1bbf6",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -70,297 +70,6 @@ module.exports = {
       "9999": null
     },
     "byteCodeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-    "typedDataDomainName": null,
-    "typedDataDomainVersion": null
-  },
-  "AccountOwnerRegistry": {
-    "abi": [
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "name": "AccountOwnerAdded",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "name": "AccountOwnerRemoved",
-        "type": "event"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "name": "addAccountOwner",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "name": "removeAccountOwner",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          }
-        ],
-        "name": "verifyAccountOwner",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "blockNumber",
-            "type": "uint256"
-          }
-        ],
-        "name": "verifyAccountOwnerAtBlock",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ],
-    "addresses": {
-      "6666": "0xf873E70f4ad2b0adf3Dc19B3f85f98215C180132",
-      "9999": "0xb3c5C32b77932BB0b5215b225F85A633e418e03d"
-    },
-    "byteCodeHash": "0x51ae9f5a6d16d1f4b530351cdd2b50783997aa0f0cb256c918fb18ddcc57a4a7",
-    "typedDataDomainName": null,
-    "typedDataDomainVersion": null
-  },
-  "AccountProofRegistry": {
-    "abi": [
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "AccountProofAdded",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "AccountProofRemoved",
-        "type": "event"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "addAccountProof",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "removeAccountProof",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          }
-        ],
-        "name": "verifyAccountProof",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "hash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "uint256",
-            "name": "blockNumber",
-            "type": "uint256"
-          }
-        ],
-        "name": "verifyAccountProofAtBlock",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ],
-    "addresses": {
-      "6666": "0x5dEEc2E23572581a2e3e81E8B98B60957644C3bc",
-      "9999": "0x66E5F42662a4826Ad4ae65A3ac04Fc8F2d5958C2"
-    },
-    "byteCodeHash": "0xf3dd24dc17639c3c8bf1c47cedd2b46c418b528edef0a8fb4fbc3caacfd1fe3e",
-    "typedDataDomainName": null,
-    "typedDataDomainVersion": null
-  },
-  "BalanceChecker": {
-    "abi": [
-      {
-        "inputs": [
-          {
-            "internalType": "address[]",
-            "name": "accounts",
-            "type": "address[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "tokens",
-            "type": "address[]"
-          }
-        ],
-        "name": "getBalances",
-        "outputs": [
-          {
-            "internalType": "uint256[]",
-            "name": "",
-            "type": "uint256[]"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ],
-    "addresses": {
-      "6666": "0xEFbD218A48736eb04C77E2E3E21f8481561f1fD8",
-      "9999": "0xDC105575501a4a772DaFE2Cc14c3b6A9DaF9c6a2"
-    },
-    "byteCodeHash": "0x63415201f43892304b3406e995ce39b5807a5ebb7e0c896fa4a4e9396c76ad15",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -420,6 +129,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
@@ -433,6 +148,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
@@ -442,8 +163,53 @@ module.exports = {
       },
       {
         "anonymous": false,
-        "inputs": [],
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
         "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NodeReleased",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NodeSubmitted",
         "type": "event"
       },
       {
@@ -456,7 +222,7 @@ module.exports = {
             "type": "bytes32"
           }
         ],
-        "name": "NodeAdded",
+        "name": "NodeVerified",
         "type": "event"
       },
       {
@@ -481,19 +247,6 @@ module.exports = {
           }
         ],
         "name": "addGuardian",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "node",
-            "type": "bytes32"
-          }
-        ],
-        "name": "addNode",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -675,6 +428,19 @@ module.exports = {
       {
         "inputs": [
           {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "releaseNode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "address",
             "name": "guardian",
             "type": "address"
@@ -712,6 +478,19 @@ module.exports = {
           }
         ],
         "name": "setRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "submitNode",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -771,13 +550,26 @@ module.exports = {
         ],
         "stateMutability": "view",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "verifyNode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
       }
     ],
     "addresses": {
-      "6666": "0xb86b41Ed872920E2532e4f266f4049023AEc6a8f",
-      "9999": "0x2dcF821442205b7550bDBDb7DABF6c547a86e92d"
+      "6666": "0x0CA8EC9f23938FA9c1766BE8A2d2Ce37ea1D4918",
+      "9999": "0x978d6F6385D9C9E2D9Fc747469e0Ab9F6741bC62"
     },
-    "byteCodeHash": "0x02bd66c403988da1aed40939bc8aa0e572771ec3081c3556d5cc180de8dcc5c3",
+    "byteCodeHash": "0x75a34eefeda1ddc9ff48dcafc2949fbc1f349c13a72754c22cce31c6931dea45",
     "typedDataDomainName": "ETHERspot ENS Controller",
     "typedDataDomainVersion": "1"
   },
@@ -1006,10 +798,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xA5CbbaDe8A99F8Ae210D29039eB0b18F3E4826B7",
-      "9999": "0x29a3e75D5164b48E4963E12c5964D09ED1FEB5b2"
+      "6666": "0x11e98922Cf62ec9C690CAf68d6C0843e41F5c625",
+      "9999": "0xAC5af5b2E279657dF0E22818cb422b3A6f126145"
     },
-    "byteCodeHash": "0x12c0a054fcf139f011980045a139ea3e422630bca92833c59fd4b2871fc582b3",
+    "byteCodeHash": "0x405020edb47690e202147f13b9a39268f9932b0d64e36216ad36b6bf5d56623f",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -1246,6 +1038,251 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
+  "ExternalAccountRegistry": {
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "AccountOwnerAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "AccountOwnerRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "AccountProofAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "AccountProofRemoved",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "addAccountOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "addAccountProof",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "removeAccountOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "removeAccountProof",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "verifyAccountOwner",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "name": "verifyAccountOwnerAtBlock",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "verifyAccountProof",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "hash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "name": "verifyAccountProofAtBlock",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "addresses": {
+      "6666": "0x5c15e9dFACd02d5D0229b611C41b37A1A393C28f",
+      "9999": "0x43D74963FB83F6964746E1C83347258Ad300d638"
+    },
+    "byteCodeHash": "0xca0ca5ba3b7aa15bf477eccaf9af4395842d8019f24b69f25f4edd35e0b8a4f5",
+    "typedDataDomainName": null,
+    "typedDataDomainVersion": null
+  },
   "Gateway": {
     "abi": [
       {
@@ -1280,22 +1317,16 @@ module.exports = {
       },
       {
         "anonymous": false,
-        "inputs": [],
-        "name": "Initialized",
-        "type": "event"
-      },
-      {
-        "inputs": [],
-        "name": "accountOwnerRegistry",
-        "outputs": [
+        "inputs": [
           {
-            "internalType": "contract AccountOwnerRegistry",
-            "name": "",
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
             "type": "address"
           }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        "name": "Initialized",
+        "type": "event"
       },
       {
         "inputs": [
@@ -1382,6 +1413,19 @@ module.exports = {
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "externalAccountRegistry",
+        "outputs": [
+          {
+            "internalType": "contract ExternalAccountRegistry",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1389,7 +1433,7 @@ module.exports = {
             "type": "address"
           }
         ],
-        "name": "getAccountNonce",
+        "name": "getAccountNextNonce",
         "outputs": [
           {
             "internalType": "uint256",
@@ -1480,8 +1524,8 @@ module.exports = {
       {
         "inputs": [
           {
-            "internalType": "contract AccountOwnerRegistry",
-            "name": "accountOwnerRegistry_",
+            "internalType": "contract ExternalAccountRegistry",
+            "name": "externalAccountRegistry_",
             "type": "address"
           },
           {
@@ -1592,10 +1636,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xB0bf4E43aBd9acb79C42e3764De97Bbf502AD915",
-      "9999": "0x6d3F4983F4aA480c53EE117ce8B0b9A42cD3E351"
+      "6666": "0x859697030604Dd9E1Cc393105e35b091a72DCbC8",
+      "9999": "0x87161Bf725f583d4174712be1A9Ce1fe4B7743D7"
     },
-    "byteCodeHash": "0x2a73271e1c51f75479b1071321e1d0fc93189989c1258f77bbe0a0cbe0f27d36",
+    "byteCodeHash": "0x178b5ad8c00f9c192580c205a5c21ca348d4f72d7d1ade27cff327147bac144a",
     "typedDataDomainName": "ETHERspot Gateway",
     "typedDataDomainVersion": "1"
   },
@@ -1631,6 +1675,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
@@ -1641,6 +1691,12 @@ module.exports = {
       {
         "anonymous": false,
         "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
           {
             "indexed": false,
             "internalType": "address",
@@ -1725,7 +1781,7 @@ module.exports = {
       "6666": null,
       "9999": null
     },
-    "byteCodeHash": "0xba49ee01ca7ddcd3f1f52d3fba7e636cdc86bfc28cb9c13c959a5313fec60bf2",
+    "byteCodeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -1733,7 +1789,14 @@ module.exports = {
     "abi": [
       {
         "anonymous": false,
-        "inputs": [],
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
         "name": "Initialized",
         "type": "event"
       },
@@ -1805,9 +1868,40 @@ module.exports = {
             "internalType": "address",
             "name": "token",
             "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           }
         ],
-        "name": "DepositWithdrawalRejected",
+        "name": "DepositExitCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "depositAccount",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "DepositExitRejected",
         "type": "event"
       },
       {
@@ -1838,7 +1932,7 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "name": "DepositWithdrawalRequested",
+        "name": "DepositExitRequested",
         "type": "event"
       },
       {
@@ -1878,6 +1972,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
@@ -1891,6 +1991,12 @@ module.exports = {
           {
             "indexed": false,
             "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
@@ -1900,7 +2006,14 @@ module.exports = {
       },
       {
         "anonymous": false,
-        "inputs": [],
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
         "name": "Initialized",
         "type": "event"
       },
@@ -2009,32 +2122,6 @@ module.exports = {
         ],
         "name": "PaymentWithdrawn",
         "type": "event"
-      },
-      {
-        "inputs": [],
-        "name": "accountOwnerRegistry",
-        "outputs": [
-          {
-            "internalType": "contract AccountOwnerRegistry",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "accountProofRegistry",
-        "outputs": [
-          {
-            "internalType": "contract AccountProofRegistry",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
       },
       {
         "inputs": [
@@ -2251,12 +2338,25 @@ module.exports = {
       },
       {
         "inputs": [],
-        "name": "depositWithdrawalLockPeriod",
+        "name": "depositExitLockPeriod",
         "outputs": [
           {
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "externalAccountRegistry",
+        "outputs": [
+          {
+            "internalType": "contract ExternalAccountRegistry",
+            "name": "",
+            "type": "address"
           }
         ],
         "stateMutability": "view",
@@ -2288,7 +2388,31 @@ module.exports = {
             "type": "address"
           }
         ],
-        "name": "getDepositWithdrawalLockedUntil",
+        "name": "getDepositExitLockedUntil",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "getDepositWithdrawnAmount",
         "outputs": [
           {
             "internalType": "uint256",
@@ -2313,6 +2437,42 @@ module.exports = {
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct PaymentRegistry.DepositWithdrawal",
+            "name": "depositWithdrawal",
+            "type": "tuple"
+          }
+        ],
+        "name": "hashDepositWithdrawal",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
           }
         ],
         "stateMutability": "view",
@@ -2372,13 +2532,8 @@ module.exports = {
       {
         "inputs": [
           {
-            "internalType": "contract AccountOwnerRegistry",
-            "name": "accountOwnerRegistry_",
-            "type": "address"
-          },
-          {
-            "internalType": "contract AccountProofRegistry",
-            "name": "accountProofRegistry_",
+            "internalType": "contract ExternalAccountRegistry",
+            "name": "externalAccountRegistry_",
             "type": "address"
           },
           {
@@ -2388,7 +2543,7 @@ module.exports = {
           },
           {
             "internalType": "uint256",
-            "name": "depositWithdrawalLockPeriod_",
+            "name": "depositExitLockPeriod_",
             "type": "uint256"
           },
           {
@@ -2490,11 +2645,37 @@ module.exports = {
         "inputs": [
           {
             "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "processDepositExit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
             "name": "guardian",
             "type": "address"
           }
         ],
         "name": "removeGuardian",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "requestDepositExit",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -2542,6 +2723,16 @@ module.exports = {
             "internalType": "address",
             "name": "token",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "guardianSignature",
+            "type": "bytes"
           }
         ],
         "name": "withdrawDeposit",
@@ -2551,10 +2742,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xeC36ebEC6BC1Ff27777c025Bb15b1c756bFd1F83",
-      "9999": "0x5E0649FD1FdBE671A5971A7eE6a0b7D3A6ba9B68"
+      "6666": "0xCCC3E9264380F0bedF91664728FE0C39A8A557D2",
+      "9999": "0x91c6246F54559d3d66998D3b10727E588551AdEf"
     },
-    "byteCodeHash": "0xeadaec5e19603c2f0c4303e3845d5eb0af91c9ed81556d961dd44f4f2451087e",
+    "byteCodeHash": "0x40184bc44ebad1bd206397e41bfca045e499da9595f2b9eed95add9bf9256fa3",
     "typedDataDomainName": "ETHERspot Payment Network",
     "typedDataDomainVersion": "1"
   },
@@ -2686,7 +2877,14 @@ module.exports = {
       },
       {
         "anonymous": false,
-        "inputs": [],
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
         "name": "Initialized",
         "type": "event"
       },
@@ -2909,10 +3107,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xddc4Bb0f2aFf80429FD87202EA37ba89B9B7C5e6",
-      "9999": "0x97f369151f8DA34cBfAf3EFd70BeE6BEBccD11d7"
+      "6666": "0xA7160C364CA24c7eb8F729f27e9770C98cbeF97c",
+      "9999": "0x6A6B2595ED44E8Af5339B8e13575A7c71acF7392"
     },
-    "byteCodeHash": "0xc7b8822412acb322c79816b94794486e601a88e61bd7db3449e1814917a63952",
+    "byteCodeHash": "0xe8fdfe4fb080ae8193679838afa47a77ba2333836bb01f586624ad3e848fb810",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
@@ -2940,11 +3138,46 @@ module.exports = {
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   },
+  "Utils": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "accounts",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          }
+        ],
+        "name": "getBalances",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "addresses": {
+      "6666": "0x8C08c34E06eb1c6306fc136721a0703AcC1C6204",
+      "9999": "0x74384B6425Ae7ea84FA0f2c0b4cc7A957F955277"
+    },
+    "byteCodeHash": "0x871d273afbbac6ef8e967c79d4f581a490509ae27daa91c6286a4bdba69ca66b",
+    "typedDataDomainName": null,
+    "typedDataDomainVersion": null
+  },
   "WrappedWeiToken": {
     "abi": [
       {
         "inputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "constructor"
       },
       {
@@ -3000,7 +3233,14 @@ module.exports = {
       },
       {
         "anonymous": false,
-        "inputs": [],
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
         "name": "Initialized",
         "type": "event"
       },
@@ -3123,11 +3363,29 @@ module.exports = {
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "gateway",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address[]",
             "name": "consumers_",
             "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "gateway_",
+            "type": "address"
           }
         ],
         "name": "initialize",
@@ -3330,10 +3588,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x88268Ff7ef7428928C92Db80B7BbE07C6997EdFA",
-      "9999": "0x9e698Ff3dC081b41d7a10381aC791B6D427acA10"
+      "6666": "0xF220B3BDEC3f7F9CF6329E18F08EE8e7187766D7",
+      "9999": "0xdf502Ee2CD9BB33af73f35EC2398a75E53D99396"
     },
-    "byteCodeHash": "0x6ba42ad7fbf23318dce1e278be52b3b801bde113518fff6cae3bf24e4888d858",
+    "byteCodeHash": "0xaf19d83c72ee66a5f1e399634ac5720726ad1426febe8b496725357d1bfabc60",
     "typedDataDomainName": null,
     "typedDataDomainVersion": null
   }

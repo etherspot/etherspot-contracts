@@ -119,7 +119,7 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
     "AccountOwnerAdded(address,address)": EventFragment;
     "AccountOwnerRemoved(address,address)": EventFragment;
     "AccountTransactionExecuted(address,address,uint256,bytes,bytes)": EventFragment;
-    "Initialized()": EventFragment;
+    "Initialized(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AccountCallRefunded"): EventFragment;
@@ -520,7 +520,7 @@ export class PersonalAccountRegistry extends Contract {
       response: null
     ): EventFilter;
 
-    Initialized(): EventFilter;
+    Initialized(initializer: null): EventFilter;
   };
 
   estimateGas: {
