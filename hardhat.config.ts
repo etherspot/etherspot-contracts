@@ -40,8 +40,18 @@ const config: HardhatUserConfig = {
       97,
       'https://data-seed-prebsc-1-s1.binance.org:8545',
     ),
-    ...createConfigNetwork(NetworkNames.LocalA, 9999, 'http://localhost:8545'),
-    ...createConfigNetwork(NetworkNames.LocalB, 6666, 'http://localhost:9545'),
+    ...createConfigNetwork(
+      NetworkNames.LocalA,
+      9999,
+      'http://localhost:8545',
+      20000000000,
+    ),
+    ...createConfigNetwork(
+      NetworkNames.LocalB,
+      6666,
+      'http://localhost:9545',
+      20000000000,
+    ),
   },
   solidity: {
     version: '0.6.12',

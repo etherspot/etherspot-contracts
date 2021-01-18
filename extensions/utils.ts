@@ -5,6 +5,7 @@ export function createConfigNetwork(
   networkName: NetworkNames,
   chainId: number,
   defaultProvider?: 'infura' | string,
+  gasPrice?: number,
 ): HardhatUserConfig['networks'] {
   const envPrefix = networkName.replace(/([A-Z])+/, '_$1').toUpperCase();
 
@@ -30,6 +31,7 @@ export function createConfigNetwork(
           chainId,
           url,
           accounts,
+          gasPrice,
         },
       }
     : {};
