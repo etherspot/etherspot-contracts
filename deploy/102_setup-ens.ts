@@ -10,11 +10,6 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  if (await read('ENSController', 'isInitialized')) {
-    log('ENSController already initialized');
-    return;
-  }
-
   const ensController = await get('ENSController');
   const gateway = await get('Gateway');
 
@@ -26,68 +21,92 @@ const func: DeployFunction = async hre => {
     ({ address: ensRegistryAddress } = ensRegistry);
   }
 
-  await execute(
-    'ENSController',
-    {
-      from,
-      log: true,
-    },
-    'initialize',
-    ensRegistryAddress,
-    [],
-    gateway.address,
-    utils.id(typedData.domains.ENSController.name),
-    utils.id(typedData.domains.ENSController.version),
-    typedData.domainSalt,
-  );
+  if (await read('ENSController', 'isInitialized')) {
+    log('ENSController already initialized');
+  } else {
+    await execute(
+      'ENSController',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      ensRegistryAddress,
+      [],
+      gateway.address,
+      utils.id(typedData.domains.ENSController.name),
+      utils.id(typedData.domains.ENSController.version),
+      typedData.domainSalt,
+    );
+  }
 
   if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
     for (const name of ens.internalTopLevelDomains) {
       const nameHash = utils.namehash(name);
       const labelHash = utils.id(name);
 
-      await execute(
-        'ENSRegistry',
-        {
-          from,
-          log: true,
-        },
-        'setSubnodeOwner',
-        constants.HashZero,
-        labelHash,
-        from,
-      );
+      let ensOwner = await read('ENSRegistry', 'owner', nameHash);
 
-      await execute(
-        'ENSController',
-        {
+      if (ensOwner === constants.AddressZero) {
+        await execute(
+          'ENSRegistry',
+          {
+            from,
+            log: true,
+          },
+          'setSubnodeOwner',
+          constants.HashZero,
+          labelHash,
           from,
-          log: true,
-        },
-        'submitNode',
-        nameHash,
-      );
+        );
+      }
 
-      await execute(
-        'ENSRegistry',
-        {
-          from,
-          log: true,
-        },
-        'setOwner',
-        nameHash,
-        ensController.address,
-      );
+      const {
+        nodeAddr,
+        nodeOwner,
+      }: {
+        nodeAddr: string;
+        nodeOwner: string;
+      } = await read('ENSController', 'getNode', nameHash);
 
-      await execute(
-        'ENSController',
-        {
-          from,
-          log: true,
-        },
-        'verifyNode',
-        nameHash,
-      );
+      if (nodeOwner === constants.HashZero) {
+        await execute(
+          'ENSController',
+          {
+            from,
+            log: true,
+          },
+          'submitNode',
+          nameHash,
+        );
+      }
+
+      ensOwner = await read('ENSRegistry', 'owner', nameHash);
+
+      if (ensOwner !== ensController.address) {
+        await execute(
+          'ENSRegistry',
+          {
+            from,
+            log: true,
+          },
+          'setOwner',
+          nameHash,
+          ensController.address,
+        );
+      }
+
+      if (nodeAddr === constants.HashZero) {
+        await execute(
+          'ENSController',
+          {
+            from,
+            log: true,
+          },
+          'verifyNode',
+          nameHash,
+        );
+      }
     }
   }
 };

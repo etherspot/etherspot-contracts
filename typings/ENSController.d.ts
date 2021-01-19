@@ -25,6 +25,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "addGuardian(address)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
     "gateway()": FunctionFragment;
+    "getNode(bytes32)": FunctionFragment;
     "hashSubNodeRegistration(tuple)": FunctionFragment;
     "initialize(address,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
@@ -46,6 +47,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(functionFragment: "getNode", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "hashSubNodeRegistration",
     values: [{ account: string; node: BytesLike; label: BytesLike }]
@@ -105,6 +107,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getNode", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "hashSubNodeRegistration",
     data: BytesLike
@@ -204,6 +207,16 @@ export class ENSController extends Contract {
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
+
+    getNode(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
+
+    "getNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -389,6 +402,16 @@ export class ENSController extends Contract {
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
 
+  getNode(
+    node: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
+
+  "getNode(bytes32)"(
+    node: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
+
   hashSubNodeRegistration(
     subNodeRegistration: { account: string; node: BytesLike; label: BytesLike },
     overrides?: CallOverrides
@@ -564,6 +587,16 @@ export class ENSController extends Contract {
     gateway(overrides?: CallOverrides): Promise<string>;
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
+
+    getNode(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
+
+    "getNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -750,6 +783,13 @@ export class ENSController extends Contract {
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getNode(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     hashSubNodeRegistration(
       subNodeRegistration: {
         account: string;
@@ -922,6 +962,16 @@ export class ENSController extends Contract {
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getNode(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getNode(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {

@@ -377,6 +377,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
    * @notice Gets address
    * @dev Used in address resolver
    * @param node node name hash
+   * @return node address
    */
   function addr(
     bytes32 node
@@ -386,6 +387,19 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     returns (address)
   {
     return nodes[node].addr;
+  }
+  /**
+   * @notice Gets node
+   * @param node node name hash
+   */
+  function getNode(
+    bytes32 node
+  )
+    external
+    view
+    returns (address nodeAddr, address nodeOwner)
+  {
+    return (nodes[node].addr, nodes[node].owner);
   }
 
   // external functions (pure)
