@@ -19,7 +19,7 @@ const config = {
             },
             chainId: 192,
             gasPrice: 20000000000,
-        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://dai.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s1.binance.org:8545')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545', 20000000000)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545', 20000000000)),
+        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura', 120000000000)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s1.binance.org:8545')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545', 20000000000)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545', 20000000000)),
     solidity: {
         version: '0.6.12',
         settings: {
@@ -40,6 +40,9 @@ const config = {
         artifacts: 'artifacts',
         dist: 'dist',
         typings: 'typings',
+    },
+    gasReporter: {
+        enabled: false,
     },
     ens: {
         internalTopLevelDomains: ['pillar', 'etherspot'],
@@ -66,8 +69,14 @@ const config = {
         },
         domainSalt: ethers_1.utils.id('ETHERspot'),
     },
-    gasReporter: {
-        enabled: false,
+    create2Salts: {
+        [extensions_1.ContractNames.ENSController]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.ENSRegistry]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.ExternalAccountRegistry]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.PaymentRegistry]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.PersonalAccountRegistry]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.Utils]: ethers_1.utils.id('v1'),
+        [extensions_1.ContractNames.WrappedWeiToken]: ethers_1.utils.id('v1'),
     },
 };
 module.exports = config;

@@ -69,7 +69,7 @@ const func: DeployFunction = async hre => {
         nodeOwner: string;
       } = await read('ENSController', 'getNode', nameHash);
 
-      if (nodeOwner === constants.HashZero) {
+      if (nodeOwner === constants.AddressZero) {
         await execute(
           'ENSController',
           {
@@ -83,7 +83,7 @@ const func: DeployFunction = async hre => {
 
       ensOwner = await read('ENSRegistry', 'owner', nameHash);
 
-      if (ensOwner !== ensController.address) {
+      if (ensOwner === from) {
         await execute(
           'ENSRegistry',
           {
@@ -96,7 +96,7 @@ const func: DeployFunction = async hre => {
         );
       }
 
-      if (nodeAddr === constants.HashZero) {
+      if (nodeAddr === constants.AddressZero) {
         await execute(
           'ENSController',
           {
