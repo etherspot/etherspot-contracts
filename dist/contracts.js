@@ -515,6 +515,19 @@ module.exports = {
         "type": "function"
       },
       {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "syncAddr",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "inputs": [],
         "name": "typedDataDomainSeparator",
         "outputs": [
@@ -566,10 +579,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x0CA8EC9f23938FA9c1766BE8A2d2Ce37ea1D4918",
-      "9999": "0x978d6F6385D9C9E2D9Fc747469e0Ab9F6741bC62"
+      "6666": "0xCa93E45039C131ed036ACc0e3BC4805EFeC4e334",
+      "9999": "0xCa93E45039C131ed036ACc0e3BC4805EFeC4e334"
     },
-    "byteCodeHash": "0x75a34eefeda1ddc9ff48dcafc2949fbc1f349c13a72754c22cce31c6931dea45",
+    "byteCodeHash": "0xbe159256990e4912647a65ab4dd4ccf965f1fa40e10c3146ca18d8a4830c277f",
     "typedDataDomainName": "ETHERspot ENS Controller",
     "typedDataDomainVersion": "1"
   },
@@ -798,8 +811,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x11e98922Cf62ec9C690CAf68d6C0843e41F5c625",
-      "9999": "0xAC5af5b2E279657dF0E22818cb422b3A6f126145"
+      "6666": "0xB7FC181B3d5E8A2D66c4cb9F8056C1AE7f992AC5",
+      "9999": "0xB7FC181B3d5E8A2D66c4cb9F8056C1AE7f992AC5"
     },
     "byteCodeHash": "0x405020edb47690e202147f13b9a39268f9932b0d64e36216ad36b6bf5d56623f",
     "typedDataDomainName": null,
@@ -1276,8 +1289,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x5c15e9dFACd02d5D0229b611C41b37A1A393C28f",
-      "9999": "0x43D74963FB83F6964746E1C83347258Ad300d638"
+      "6666": "0x5a370848f862CC5aeA713c2968E3F4820026B752",
+      "9999": "0x5a370848f862CC5aeA713c2968E3F4820026B752"
     },
     "byteCodeHash": "0xca0ca5ba3b7aa15bf477eccaf9af4395842d8019f24b69f25f4edd35e0b8a4f5",
     "typedDataDomainName": null,
@@ -1449,6 +1462,11 @@ module.exports = {
           {
             "components": [
               {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
+              {
                 "internalType": "uint256",
                 "name": "nonce",
                 "type": "uint256"
@@ -1484,6 +1502,11 @@ module.exports = {
         "inputs": [
           {
             "components": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
               {
                 "internalType": "uint256",
                 "name": "nonce",
@@ -1636,10 +1659,10 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x859697030604Dd9E1Cc393105e35b091a72DCbC8",
-      "9999": "0x87161Bf725f583d4174712be1A9Ce1fe4B7743D7"
+      "6666": "0xDD4BF86C7DA27ed8b43C2b554b69bdEF69578f5f",
+      "9999": "0xDD4BF86C7DA27ed8b43C2b554b69bdEF69578f5f"
     },
-    "byteCodeHash": "0x178b5ad8c00f9c192580c205a5c21ca348d4f72d7d1ade27cff327147bac144a",
+    "byteCodeHash": "0x123d670645cf4393ff379b5c34209f69fc0e9a9e1b915aae90222dd99deff940",
     "typedDataDomainName": "ETHERspot Gateway",
     "typedDataDomainVersion": "1"
   },
@@ -2742,8 +2765,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xCCC3E9264380F0bedF91664728FE0C39A8A557D2",
-      "9999": "0x91c6246F54559d3d66998D3b10727E588551AdEf"
+      "6666": "0x291BA1f48a3983A9E057A20E2F04334dfb3B2908",
+      "9999": "0x291BA1f48a3983A9E057A20E2F04334dfb3B2908"
     },
     "byteCodeHash": "0x40184bc44ebad1bd206397e41bfca045e499da9595f2b9eed95add9bf9256fa3",
     "typedDataDomainName": "ETHERspot Payment Network",
@@ -3107,8 +3130,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xA7160C364CA24c7eb8F729f27e9770C98cbeF97c",
-      "9999": "0x6A6B2595ED44E8Af5339B8e13575A7c71acF7392"
+      "6666": "0xd4c5eDF4dbF487e91AE9486CFA9C52589d65B220",
+      "9999": "0xd4c5eDF4dbF487e91AE9486CFA9C52589d65B220"
     },
     "byteCodeHash": "0xe8fdfe4fb080ae8193679838afa47a77ba2333836bb01f586624ad3e848fb810",
     "typedDataDomainName": null,
@@ -3166,8 +3189,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0x8C08c34E06eb1c6306fc136721a0703AcC1C6204",
-      "9999": "0x74384B6425Ae7ea84FA0f2c0b4cc7A957F955277"
+      "6666": "0x46E64eA2d561584721897418f51322268C3815a6",
+      "9999": "0x46E64eA2d561584721897418f51322268C3815a6"
     },
     "byteCodeHash": "0x871d273afbbac6ef8e967c79d4f581a490509ae27daa91c6286a4bdba69ca66b",
     "typedDataDomainName": null,
@@ -3588,8 +3611,8 @@ module.exports = {
       }
     ],
     "addresses": {
-      "6666": "0xF220B3BDEC3f7F9CF6329E18F08EE8e7187766D7",
-      "9999": "0xdf502Ee2CD9BB33af73f35EC2398a75E53D99396"
+      "6666": "0xFFCDC19d4d026cEee9D0BE767bd4C8bcC081066c",
+      "9999": "0xFFCDC19d4d026cEee9D0BE767bd4C8bcC081066c"
     },
     "byteCodeHash": "0xaf19d83c72ee66a5f1e399634ac5720726ad1426febe8b496725357d1bfabc60",
     "typedDataDomainName": null,

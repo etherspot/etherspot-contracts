@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createConfigNetwork = void 0;
-function createConfigNetwork(networkName, chainId, defaultProvider) {
+function createConfigNetwork(networkName, chainId, defaultProvider, gasPrice) {
     const envPrefix = networkName.replace(/([A-Z])+/, '_$1').toUpperCase();
     let url = process.env[`${envPrefix}_PROVIDER_ENDPOINT`];
     if (!url) {
@@ -21,6 +21,7 @@ function createConfigNetwork(networkName, chainId, defaultProvider) {
                 chainId,
                 url,
                 accounts,
+                gasPrice,
             },
         }
         : {};
