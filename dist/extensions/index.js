@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("./build-artifacts");
 require("./build-dist");
 require("./build-typings");
+require("./deploy");
 require("./test");
 require("./typings");
 __exportStar(require("./constants"), exports);

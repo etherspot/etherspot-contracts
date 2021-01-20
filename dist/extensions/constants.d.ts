@@ -12,11 +12,12 @@ export declare enum NetworkNames {
     LocalB = "localB"
 }
 export declare enum ContractNames {
-    AccountOwnerRegistry = "AccountOwnerRegistry",
-    AccountProofRegistry = "AccountProofRegistry",
     ENSController = "ENSController",
     ENSRegistry = "ENSRegistry",
+    ExternalAccountRegistry = "ExternalAccountRegistry",
     Gateway = "Gateway",
     PaymentRegistry = "PaymentRegistry",
-    PersonalAccountRegistry = "PersonalAccountRegistry"
+    PersonalAccountRegistry = "PersonalAccountRegistry",
+    Utils = "Utils",
+    WrappedWeiToken = "WrappedWeiToken"
 }

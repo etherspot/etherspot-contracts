@@ -13,11 +13,12 @@ export enum NetworkNames {
 }
 
 export enum ContractNames {
-  AccountOwnerRegistry = 'AccountOwnerRegistry',
-  AccountProofRegistry = 'AccountProofRegistry',
   ENSController = 'ENSController',
   ENSRegistry = 'ENSRegistry',
+  ExternalAccountRegistry = 'ExternalAccountRegistry',
   Gateway = 'Gateway',
   PaymentRegistry = 'PaymentRegistry',
   PersonalAccountRegistry = 'PersonalAccountRegistry',
+  Utils = 'Utils',
+  WrappedWeiToken = 'WrappedWeiToken',
 }

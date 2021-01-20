@@ -57,7 +57,7 @@ contract ENSRegistry {
   constructor()
     public
   {
-    records[0x0].owner = msg.sender;
+    records[0x0].owner = tx.origin;
   }
 
   // external functions

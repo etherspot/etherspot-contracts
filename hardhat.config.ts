@@ -23,12 +23,12 @@ const config: HardhatUserConfig = {
       chainId: 192,
       gasPrice: 20000000000,
     },
-    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura'),
+    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura', 120000000000),
     ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura'),
     ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura'),
     ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura'),
     ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura'),
-    ...createConfigNetwork(NetworkNames.Xdai, 100, 'https://dai.poa.network'),
+    ...createConfigNetwork(NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com'),
     ...createConfigNetwork(NetworkNames.Sokol, 77, 'https://sokol.poa.network'),
     ...createConfigNetwork(
       NetworkNames.Bsc,
@@ -74,6 +74,9 @@ const config: HardhatUserConfig = {
     dist: 'dist',
     typings: 'typings',
   },
+  gasReporter: {
+    enabled: false,
+  },
   ens: {
     internalTopLevelDomains: ['pillar', 'etherspot'],
   },
@@ -99,8 +102,14 @@ const config: HardhatUserConfig = {
     },
     domainSalt: utils.id('ETHERspot'),
   },
-  gasReporter: {
-    enabled: false,
+  create2Salts: {
+    [ContractNames.ENSController]: utils.id('v1'),
+    [ContractNames.ENSRegistry]: utils.id('v1'),
+    [ContractNames.ExternalAccountRegistry]: utils.id('v1'),
+    [ContractNames.PaymentRegistry]: utils.id('v1'),
+    [ContractNames.PersonalAccountRegistry]: utils.id('v1'),
+    [ContractNames.Utils]: utils.id('v1'),
+    [ContractNames.WrappedWeiToken]: utils.id('v1'),
   },
 };
 

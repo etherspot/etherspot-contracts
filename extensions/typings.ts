@@ -55,6 +55,8 @@ declare module 'hardhat/types/config' {
     domainSalt: string;
   }
 
+  type Create2Salts = { [key: string]: string };
+
   type KnownContractsConfig = {
     [key: string]: { [key: string]: string };
   };
@@ -64,6 +66,7 @@ declare module 'hardhat/types/config' {
     ens: ENSConfig;
     knownContracts: KnownContractsConfig;
     typedData: TypedDataConfig;
+    create2Salts: Create2Salts;
   }
 
   export interface HardhatConfig {
@@ -71,5 +74,6 @@ declare module 'hardhat/types/config' {
     ens: ENSConfig;
     knownContracts: KnownContractsConfig;
     typedData: TypedDataConfig;
+    create2Salts: Create2Salts;
   }
 }
