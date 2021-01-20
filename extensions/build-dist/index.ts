@@ -137,6 +137,11 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
       templates.constantsDts(contractNames),
     );
 
+    await writeFile(
+      join(cwd, 'DEPLOYMENTS.md'),
+      templates.deploymentsMd(contracts),
+    );
+
     console.log('Dist built successfully');
   }
 });
