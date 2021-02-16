@@ -12,7 +12,7 @@ extendEnvironment(hre => {
   deployments.deploy = async (name, options) => {
     let result: DeployResult;
 
-    const salt = create2Salts[name];
+    const salt = create2Salts[name] || create2Salts['default'];
 
     if (salt) {
       const { deploy } = await deterministic(name, {

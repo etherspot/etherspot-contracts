@@ -12,6 +12,21 @@ const func: DeployFunction = async hre => {
   } else {
     const gateway = await get('Gateway');
 
+    const personalAccountImplementation = await get(
+      'PersonalAccountImplementation',
+    );
+    const personalAccountRegistry = await get('PersonalAccountRegistry');
+
+    await execute(
+      'PersonalAccountImplementation',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      personalAccountRegistry.address,
+    );
+
     await execute(
       'PersonalAccountRegistry',
       {
@@ -19,6 +34,7 @@ const func: DeployFunction = async hre => {
         log: true,
       },
       'initialize',
+      personalAccountImplementation.address,
       gateway.address,
     );
   }

@@ -13,6 +13,6 @@ const func: DeployFunction = async hre => {
   });
 };
 
-func.tags = ['create', 'payment'];
+func.tags = ['create', 'payments'];
 
 module.exports = func;
