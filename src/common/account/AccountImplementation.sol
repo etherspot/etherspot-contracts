@@ -25,6 +25,8 @@ contract AccountImplementation is Initializable {
    */
   constructor() internal Initializable() {}
 
+  // external functions
+
   /**
    * @notice Initializes contract
    * @param registry_ registry address

@@ -56,8 +56,6 @@ contract PaymentDepositAccount is Controlled {
       "Account: transaction reverted"
     );
 
-
-
     return result;
   }
 }
