@@ -32,14 +32,16 @@ contract Account is Controlled {
   }
 
   /**
-   * @notice Fallback
+   * @notice Payable fallback
    */
   fallback()
     external
+    payable
   {
     if (msg.data.length != 0) {
       address implementation_ = implementation;
 
+      // solhint-disable-next-line no-inline-assembly
       assembly {
         let calldedatasize := calldatasize()
 
