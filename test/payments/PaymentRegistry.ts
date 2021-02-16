@@ -786,7 +786,11 @@ describe('PaymentRegistry', () => {
     const owner = randomAddress();
 
     it('expect to return correct deposit address', async () => {
-      const deposit = await computeAccountAddress(paymentRegistry, owner);
+      const deposit = await computeAccountAddress(
+        paymentRegistry,
+        'PaymentDepositAccount',
+        owner,
+      );
 
       await expect(
         paymentRegistry.computeDepositAccountAddress(owner),

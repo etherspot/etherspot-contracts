@@ -1,6 +1,10 @@
 import { ethers } from 'hardhat';
 import { constants } from 'ethers';
-import { PersonalAccountRegistry, WrappedWeiToken } from '../../typings';
+import {
+  PersonalAccountRegistry,
+  PersonalAccountImplementation,
+  WrappedWeiToken,
+} from '../../typings';
 import {
   SignerWithAddress,
   randomAddress,
@@ -13,16 +17,57 @@ const { getSigners, provider } = ethers;
 
 describe('PersonalAccountRegistry', () => {
   let signers: SignerWithAddress[];
+  let personalAccountImplementation: PersonalAccountImplementation;
   let personalAccountRegistry: PersonalAccountRegistry;
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {
     signers = await getSigners();
 
+    personalAccountImplementation = await deployContract(
+      'PersonalAccountImplementation',
+    );
     personalAccountRegistry = await deployContract('PersonalAccountRegistry');
     wrappedWeiToken = await deployContract('WrappedWeiToken');
 
-    await processTx(personalAccountRegistry.initialize(randomAddress()));
+    await processTx(
+      personalAccountImplementation.initialize(personalAccountRegistry.address),
+    );
+
+    await processTx(
+      personalAccountRegistry.initialize(
+        personalAccountImplementation.address,
+        randomAddress(),
+      ),
+    );
+  });
+
+  context('deployAccount()', () => {
+    let saltOwner: SignerWithAddress;
+    let account: string;
+
+    before(async () => {
+      saltOwner = signers.pop();
+
+      account = await personalAccountRegistry.computeAccountAddress(
+        saltOwner.address,
+      );
+
+      await processTx(
+        personalAccountRegistry
+          .connect(saltOwner)
+          .addAccountOwner(account, randomAddress()),
+      );
+    });
+
+    it('expect to deploy account', async () => {
+      const { events } = await processTx(
+        personalAccountRegistry.connect(saltOwner).deployAccount(account),
+      );
+
+      expect(events[0].event).toBe('AccountDeployed');
+      expect(events[0].args.account).toBe(account);
+    });
   });
 
   context('addAccountOwner()', () => {
@@ -390,7 +435,9 @@ describe('PersonalAccountRegistry', () => {
       const owner = randomAddress();
       const account = await computeAccountAddress(
         personalAccountRegistry,
+        'Account',
         owner,
+        personalAccountImplementation.address,
       );
 
       await expect(

@@ -97,9 +97,15 @@ export async function processTx(
 
 export async function computeAccountAddress(
   deployer: Contract,
+  account: 'Account' | 'PaymentDepositAccount',
   salt: string,
+  ...args: string[]
 ): Promise<string> {
-  const { bytecode } = await ethers.getContractFactory('Account');
+  let { bytecode } = await ethers.getContractFactory(account);
+
+  for (const arg of args) {
+    bytecode = concatHex(bytecode, utils.hexZeroPad(arg, 32));
+  }
 
   return utils.getCreate2Address(
     deployer.address,
