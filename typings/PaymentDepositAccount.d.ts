@@ -20,11 +20,10 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface AccountInterface extends ethers.utils.Interface {
+interface PaymentDepositAccountInterface extends ethers.utils.Interface {
   functions: {
     "controller()": FunctionFragment;
     "executeTransaction(address,uint256,bytes)": FunctionFragment;
-    "implementation()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -35,25 +34,17 @@ interface AccountInterface extends ethers.utils.Interface {
     functionFragment: "executeTransaction",
     values: [string, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "implementation",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(functionFragment: "controller", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeTransaction",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "implementation",
-    data: BytesLike
-  ): Result;
 
   events: {};
 }
 
-export class Account extends Contract {
+export class PaymentDepositAccount extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -64,7 +55,7 @@ export class Account extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: AccountInterface;
+  interface: PaymentDepositAccountInterface;
 
   functions: {
     controller(overrides?: CallOverrides): Promise<[string]>;
@@ -84,10 +75,6 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
-
-    implementation(overrides?: CallOverrides): Promise<[string]>;
-
-    "implementation()"(overrides?: CallOverrides): Promise<[string]>;
   };
 
   controller(overrides?: CallOverrides): Promise<string>;
@@ -108,10 +95,6 @@ export class Account extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  implementation(overrides?: CallOverrides): Promise<string>;
-
-  "implementation()"(overrides?: CallOverrides): Promise<string>;
-
   callStatic: {
     controller(overrides?: CallOverrides): Promise<string>;
 
@@ -130,10 +113,6 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    implementation(overrides?: CallOverrides): Promise<string>;
-
-    "implementation()"(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
@@ -156,10 +135,6 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
-
-    implementation(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "implementation()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -179,12 +154,6 @@ export class Account extends Contract {
       value: BigNumberish,
       data: BytesLike,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    implementation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "implementation()"(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

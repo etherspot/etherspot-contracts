@@ -78,7 +78,7 @@ const config: HardhatUserConfig = {
     enabled: false,
   },
   ens: {
-    internalTopLevelDomains: ['pillar', 'etherspot'],
+    internalTopLevelDomains: ['pillar', 'etherspot', 'dank'],
   },
   knownContracts: {
     [NetworkNames.Mainnet]: {
@@ -96,20 +96,14 @@ const config: HardhatUserConfig = {
         version: '1',
       },
       PaymentRegistry: {
-        name: 'ETHERspot Payment Network',
+        name: 'ETHERspot Payment Registry',
         version: '1',
       },
     },
     domainSalt: utils.id('ETHERspot'),
   },
   create2Salts: {
-    [ContractNames.ENSController]: utils.id('v1'),
-    [ContractNames.ENSRegistry]: utils.id('v1'),
-    [ContractNames.ExternalAccountRegistry]: utils.id('v1'),
-    [ContractNames.PaymentRegistry]: utils.id('v1'),
-    [ContractNames.PersonalAccountRegistry]: utils.id('v1'),
-    [ContractNames.Utils]: utils.id('v1'),
-    [ContractNames.WrappedWeiToken]: utils.id('v1'),
+    default: utils.id('v1'),
   },
 };
 

@@ -22,19 +22,26 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   functions: {
+    "accountImplementation()": FunctionFragment;
     "addAccountOwner(address,address)": FunctionFragment;
     "computeAccountAddress(address)": FunctionFragment;
+    "deployAccount(address)": FunctionFragment;
     "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
     "gateway()": FunctionFragment;
-    "initialize(address)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
     "isAccountDeployed(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
+    "isValidAccountSignature(address,bytes,bytes)": FunctionFragment;
     "refundAccountCall(address,address,uint256)": FunctionFragment;
     "removeAccountOwner(address,address)": FunctionFragment;
     "verifyAccountOwner(address,address)": FunctionFragment;
     "verifyAccountOwnerAtBlock(address,address,uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "accountImplementation",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "addAccountOwner",
     values: [string, string]
@@ -44,11 +51,18 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "deployAccount",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "executeAccountTransaction",
     values: [string, string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
-  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [string, string]
+  ): string;
   encodeFunctionData(
     functionFragment: "isAccountDeployed",
     values: [string]
@@ -56,6 +70,10 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "isInitialized",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isValidAccountSignature",
+    values: [string, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "refundAccountCall",
@@ -75,11 +93,19 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "accountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "addAccountOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "computeAccountAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deployAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -94,6 +120,10 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isValidAccountSignature",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -144,6 +174,10 @@ export class PersonalAccountRegistry extends Contract {
   interface: PersonalAccountRegistryInterface;
 
   functions: {
+    accountImplementation(overrides?: CallOverrides): Promise<[string]>;
+
+    "accountImplementation()"(overrides?: CallOverrides): Promise<[string]>;
+
     addAccountOwner(
       account: string,
       owner: string,
@@ -166,6 +200,16 @@ export class PersonalAccountRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    deployAccount(
+      account: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "deployAccount(address)"(
+      account: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     executeAccountTransaction(
       account: string,
       to: string,
@@ -187,11 +231,13 @@ export class PersonalAccountRegistry extends Contract {
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
 
     initialize(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address)"(
+    "initialize(address,address)"(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -209,6 +255,20 @@ export class PersonalAccountRegistry extends Contract {
     isInitialized(overrides?: CallOverrides): Promise<[boolean]>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "isValidAccountSignature(address,bytes,bytes)"(
+      account: string,
+      message: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "isValidAccountSignature(address,bytes32,bytes)"(
+      account: string,
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     refundAccountCall(
       account: string,
@@ -263,6 +323,10 @@ export class PersonalAccountRegistry extends Contract {
     ): Promise<[boolean]>;
   };
 
+  accountImplementation(overrides?: CallOverrides): Promise<string>;
+
+  "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
+
   addAccountOwner(
     account: string,
     owner: string,
@@ -285,6 +349,16 @@ export class PersonalAccountRegistry extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  deployAccount(
+    account: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "deployAccount(address)"(
+    account: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   executeAccountTransaction(
     account: string,
     to: string,
@@ -306,11 +380,13 @@ export class PersonalAccountRegistry extends Contract {
   "gateway()"(overrides?: CallOverrides): Promise<string>;
 
   initialize(
+    accountImplementation_: string,
     gateway_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address)"(
+  "initialize(address,address)"(
+    accountImplementation_: string,
     gateway_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -328,6 +404,20 @@ export class PersonalAccountRegistry extends Contract {
   isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
   "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
+
+  "isValidAccountSignature(address,bytes,bytes)"(
+    account: string,
+    message: BytesLike,
+    signature: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isValidAccountSignature(address,bytes32,bytes)"(
+    account: string,
+    messageHash: BytesLike,
+    signature: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   refundAccountCall(
     account: string,
@@ -382,6 +472,10 @@ export class PersonalAccountRegistry extends Contract {
   ): Promise<boolean>;
 
   callStatic: {
+    accountImplementation(overrides?: CallOverrides): Promise<string>;
+
+    "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
+
     addAccountOwner(
       account: string,
       owner: string,
@@ -404,6 +498,13 @@ export class PersonalAccountRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    deployAccount(account: string, overrides?: CallOverrides): Promise<void>;
+
+    "deployAccount(address)"(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     executeAccountTransaction(
       account: string,
       to: string,
@@ -424,9 +525,14 @@ export class PersonalAccountRegistry extends Contract {
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
 
-    initialize(gateway_: string, overrides?: CallOverrides): Promise<void>;
+    initialize(
+      accountImplementation_: string,
+      gateway_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    "initialize(address)"(
+    "initialize(address,address)"(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -444,6 +550,20 @@ export class PersonalAccountRegistry extends Contract {
     isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
+
+    "isValidAccountSignature(address,bytes,bytes)"(
+      account: string,
+      message: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isValidAccountSignature(address,bytes32,bytes)"(
+      account: string,
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     refundAccountCall(
       account: string,
@@ -524,6 +644,10 @@ export class PersonalAccountRegistry extends Contract {
   };
 
   estimateGas: {
+    accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "accountImplementation()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     addAccountOwner(
       account: string,
       owner: string,
@@ -546,6 +670,13 @@ export class PersonalAccountRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    deployAccount(account: string, overrides?: Overrides): Promise<BigNumber>;
+
+    "deployAccount(address)"(
+      account: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     executeAccountTransaction(
       account: string,
       to: string,
@@ -566,9 +697,14 @@ export class PersonalAccountRegistry extends Contract {
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    initialize(gateway_: string, overrides?: Overrides): Promise<BigNumber>;
+    initialize(
+      accountImplementation_: string,
+      gateway_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "initialize(address)"(
+    "initialize(address,address)"(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -586,6 +722,20 @@ export class PersonalAccountRegistry extends Contract {
     isInitialized(overrides?: CallOverrides): Promise<BigNumber>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "isValidAccountSignature(address,bytes,bytes)"(
+      account: string,
+      message: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isValidAccountSignature(address,bytes32,bytes)"(
+      account: string,
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     refundAccountCall(
       account: string,
@@ -641,6 +791,14 @@ export class PersonalAccountRegistry extends Contract {
   };
 
   populateTransaction: {
+    accountImplementation(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "accountImplementation()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     addAccountOwner(
       account: string,
       owner: string,
@@ -661,6 +819,16 @@ export class PersonalAccountRegistry extends Contract {
     "computeAccountAddress(address)"(
       saltOwner: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    deployAccount(
+      account: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "deployAccount(address)"(
+      account: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     executeAccountTransaction(
@@ -684,11 +852,13 @@ export class PersonalAccountRegistry extends Contract {
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address)"(
+    "initialize(address,address)"(
+      accountImplementation_: string,
       gateway_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
@@ -706,6 +876,20 @@ export class PersonalAccountRegistry extends Contract {
     isInitialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "isInitialized()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "isValidAccountSignature(address,bytes,bytes)"(
+      account: string,
+      message: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isValidAccountSignature(address,bytes32,bytes)"(
+      account: string,
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     refundAccountCall(
       account: string,

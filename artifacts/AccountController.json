@@ -2,7 +2,21 @@
   "_format": "hh-sol-artifact-1",
   "contractName": "AccountController",
   "sourceName": "src/common/account/AccountController.sol",
-  "abi": [],
+  "abi": [
+    {
+      "inputs": [],
+      "name": "accountImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
