@@ -380,7 +380,7 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
     view
     returns (bool)
   {
-    return this.verifyAccountOwner(
+    return _verifyAccountOwner(
       account,
       messageHash.recoverAddress(signature)
     );
@@ -403,10 +403,9 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
     view
     returns (bool)
   {
-    return this.isValidAccountSignature(
+    return _verifyAccountOwner(
       account,
-      message.toEthereumSignedMessageHash(),
-      signature
+      message.toEthereumSignedMessageHash().recoverAddress(signature)
     );
   }
 

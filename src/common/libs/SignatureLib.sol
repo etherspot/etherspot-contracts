@@ -53,7 +53,7 @@ library SignatureLib {
     return keccak256(abi.encodePacked(
       "\x19Ethereum Signed Message:\n",
       _uintToString(message.length),
-      message
+      abi.encodePacked(message)
     ));
   }
 
@@ -66,6 +66,8 @@ library SignatureLib {
   {
     if (num == 0) {
       return "0";
+    } else if (num == 32) {
+      return "32";
     }
 
     uint i = num;

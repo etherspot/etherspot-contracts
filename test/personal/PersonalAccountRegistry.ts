@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { constants } from 'ethers';
+import { constants, utils } from 'ethers';
 import {
   PersonalAccountRegistry,
   PersonalAccountImplementation,
@@ -600,6 +600,71 @@ describe('PersonalAccountRegistry', () => {
           account,
           randomAddress(),
           removedAt,
+        ),
+      ).resolves.toBeFalsy();
+    });
+  });
+
+  context('isValidAccountSignature()', () => {
+    let saltOwner: SignerWithAddress;
+    let unknownOwner: SignerWithAddress;
+    let account: string;
+
+    before(async () => {
+      saltOwner = signers.pop();
+      unknownOwner = signers.pop();
+
+      account = await personalAccountRegistry.computeAccountAddress(
+        saltOwner.address,
+      );
+    });
+
+    it('expect to return true for valid signature', async () => {
+      const message = 'test message';
+      const signature = await saltOwner.signMessage(message);
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes32,bytes)'
+        ](
+          account, //
+          utils.hashMessage(message),
+          signature,
+        ),
+      ).resolves.toBeTruthy();
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes,bytes)' //
+        ](
+          account, //
+          utils.hexlify(utils.toUtf8Bytes(message)),
+          signature,
+        ),
+      ).resolves.toBeTruthy();
+    });
+
+    it('expect to return false for invalid signature', async () => {
+      const message = 'test message';
+      const signature = await unknownOwner.signMessage(message);
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes32,bytes)'
+        ](
+          account, //
+          utils.hashMessage(message),
+          signature,
+        ),
+      ).resolves.toBeFalsy();
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes,bytes)' //
+        ](
+          account, //
+          utils.hexlify(utils.toUtf8Bytes(message)),
+          signature,
         ),
       ).resolves.toBeFalsy();
     });
