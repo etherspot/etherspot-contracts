@@ -7,18 +7,22 @@ import "../access/Controlled.sol";
 /**
  * @title Account
  *
- * @dev Simple account contract with only one method - `executeTransaction`
- *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Account is Controlled {
+  address public implementation;
+
   /**
    * @dev Public constructor
    */
-  constructor() public payable Controlled() {}
+  constructor(address implementation_) public Controlled() {
+    implementation = implementation_;
+  }
+
+  // external functions
 
   /**
-   * @notice Allow receives
+   * @notice Payable receive
    */
   receive()
     external
@@ -27,7 +31,31 @@ contract Account is Controlled {
     //
   }
 
-  // external functions
+  /**
+   * @notice Fallback
+   */
+  fallback()
+    external
+  {
+    if (msg.data.length != 0) {
+      address implementation_ = implementation;
+
+      assembly {
+        let calldedatasize := calldatasize()
+
+        calldatacopy(0, 0, calldedatasize)
+
+        let result := delegatecall(gas(), implementation_, 0, calldedatasize, 0, 0)
+        let returneddatasize := returndatasize()
+
+        returndatacopy(0, 0, returneddatasize)
+
+        switch result
+        case 0 { revert(0, returneddatasize) }
+        default { return(0, returneddatasize) }
+      }
+    }
+  }
 
   /**
    * @notice Executes transaction

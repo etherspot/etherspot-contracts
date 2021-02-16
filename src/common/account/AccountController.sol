@@ -12,12 +12,22 @@ import "./Account.sol";
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract AccountController {
+  address public accountImplementation;
+
   /**
    * @dev Internal constructor
    */
   constructor() internal {}
 
   // internal functions
+
+  /**
+   * @notice Initializes `AccountController` contract
+   * @param accountImplementation_ account implementation address
+   */
+  function _initializeAccountController(address accountImplementation_) internal {
+    accountImplementation = accountImplementation_;
+  }
 
   /**
    * @notice Deploys account
@@ -30,7 +40,7 @@ contract AccountController {
     internal
     returns (address)
   {
-    return address(new Account{salt: salt}());
+    return address(new Account{salt: salt}(accountImplementation));
   }
 
   /**
@@ -86,7 +96,11 @@ contract AccountController {
     view
     returns (address)
   {
-    bytes memory creationCode = type(Account).creationCode;
+    bytes memory creationCode = abi.encodePacked(
+      type(Account).creationCode,
+      bytes12(0),
+      accountImplementation
+    );
 
     bytes32 data = keccak256(
       abi.encodePacked(

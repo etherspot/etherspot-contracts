@@ -4,7 +4,9 @@ pragma solidity ^0.6.12;
 /**
  * @title Signature library
  *
- * @dev Based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contracts/cryptography/ECDSA.sol#L26
+ * @dev Based on
+ * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contracts/cryptography/ECDSA.sol#L26
+ * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contracts/utils/Strings.sol#L12
  */
 library SignatureLib {
   function recoverAddress(
@@ -39,5 +41,52 @@ library SignatureLib {
     }
 
     return result;
+  }
+
+  function toEthereumSignedMessageHash(
+    bytes memory message
+  )
+    internal
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encodePacked(
+      "\x19Ethereum Signed Message:\n",
+      _uintToString(message.length),
+      message
+    ));
+  }
+
+  function _uintToString(
+    uint num
+  )
+    private
+    pure
+    returns (string memory)
+  {
+    if (num == 0) {
+      return "0";
+    }
+
+    uint i = num;
+    uint j = num;
+
+    uint len;
+
+    while (j != 0) {
+      len++;
+      j /= 10;
+    }
+
+    bytes memory result = new bytes(len);
+
+    uint k = len - 1;
+
+    while (i != 0) {
+      result[k--] = byte(uint8(48 + i % 10));
+      i /= 10;
+    }
+
+    return string(result);
   }
 }

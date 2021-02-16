@@ -3,7 +3,6 @@ pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "../common/access/Guarded.sol";
-import "../common/account/AccountController.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
@@ -12,6 +11,7 @@ import "../common/typedData/TypedDataContainer.sol";
 import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 import "../gateway/GatewayRecipient.sol";
+import "./PaymentDepositAccount.sol";
 
 
 /**
@@ -24,7 +24,7 @@ import "../gateway/GatewayRecipient.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract PaymentRegistry is Guarded, AccountController, Initializable, TypedDataContainer, GatewayRecipient {
+contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
 
@@ -690,7 +690,7 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
         )
       );
 
-      deposits[owner].account = _deployAccount(salt);
+      deposits[owner].account = address(new PaymentDepositAccount{salt: salt}());
 
       emit DepositAccountDeployed(
         deposits[owner].account,
@@ -806,15 +806,13 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
     private
   {
     if (token == address(0)) {
-      _executeAccountTransaction(
-        depositAccount,
+      PaymentDepositAccount(payable(depositAccount)).executeTransaction(
         to,
         value,
         new bytes(0)
       );
     } else {
-      bytes memory response = _executeAccountTransaction(
-        depositAccount,
+      bytes memory response = PaymentDepositAccount(payable(depositAccount)).executeTransaction(
         token,
         0,
         abi.encodeWithSelector(
@@ -884,7 +882,18 @@ contract PaymentRegistry is Guarded, AccountController, Initializable, TypedData
       )
     );
 
-    return _computeAccountAddress(salt);
+    bytes memory creationCode = type(PaymentDepositAccount).creationCode;
+
+    bytes32 data = keccak256(
+      abi.encodePacked(
+        bytes1(0xff),
+        address(this),
+        salt,
+        keccak256(creationCode)
+      )
+    );
+
+    return address(uint160(uint256(data)));
   }
 
   // private functions (pure)

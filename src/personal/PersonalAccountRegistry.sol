@@ -2,8 +2,10 @@
 pragma solidity ^0.6.12;
 
 import "../common/account/AccountController.sol";
+import "../common/account/AccountRegistry.sol";
 import "../common/libs/BlockLib.sol";
 import "../common/libs/SafeMathLib.sol";
+import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
 import "../gateway/GatewayRecipient.sol";
@@ -16,9 +18,11 @@ import "../gateway/GatewayRecipient.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract PersonalAccountRegistry is AccountController, Initializable, GatewayRecipient {
+contract PersonalAccountRegistry is AccountController, AccountRegistry, Initializable, GatewayRecipient {
   using BlockLib for BlockLib.BlockRelated;
   using SafeMathLib for uint256;
+  using SignatureLib for bytes32;
+  using SignatureLib for bytes;
 
   struct Account {
     bool deployed;
@@ -96,17 +100,35 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
   // external functions
 
   /**
-   * @notice Initialize `PersonalAccountRegistry` contract
+   * @notice Initializes `PersonalAccountRegistry` contract
+   * @param accountImplementation_ account implementation address
    * @param gateway_ `Gateway` contract address
    */
   function initialize(
+    address accountImplementation_,
     address gateway_
   )
     external
     onlyInitializer
   {
+    // AccountController
+    _initializeAccountController(accountImplementation_);
+
     // GatewayRecipient
     _initializeGatewayRecipient(gateway_);
+  }
+
+  /**
+   * @notice Deploys account
+   * @param account account address
+   */
+  function deployAccount(
+    address account
+  )
+    external
+  {
+    _verifySender(account);
+    _deployAccount(account);
   }
 
   /**
@@ -339,6 +361,53 @@ contract PersonalAccountRegistry is AccountController, Initializable, GatewayRec
     }
 
     return result;
+  }
+
+  /**
+   * @notice Verifies account signature
+   * @param account account address
+   * @param messageHash message hash
+   * @param signature signature
+   * @return magic hash if valid
+   */
+  function isValidAccountSignature(
+    address account,
+    bytes32 messageHash,
+    bytes calldata signature
+  )
+    override
+    external
+    view
+    returns (bool)
+  {
+    return this.verifyAccountOwner(
+      account,
+      messageHash.recoverAddress(signature)
+    );
+  }
+
+  /**
+   * @notice Verifies account signature
+   * @param account account address
+   * @param message message
+   * @param signature signature
+   * @return magic hash if valid
+   */
+  function isValidAccountSignature(
+    address account,
+    bytes calldata message,
+    bytes calldata signature
+  )
+    override
+    external
+    view
+    returns (bool)
+  {
+    return this.isValidAccountSignature(
+      account,
+      message.toEthereumSignedMessageHash(),
+      signature
+    );
   }
 
   // private functions
