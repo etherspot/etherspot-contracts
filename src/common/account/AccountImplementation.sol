@@ -40,15 +40,66 @@ contract AccountImplementation is Initializable {
     registry = AccountRegistry(registry_);
   }
 
+  // external functions (views)
+
+  // ERC1820
+
+  function canImplementInterfaceForAddress(
+    bytes32 interfaceHash,
+    address addr
+  )
+    external
+    view
+    returns(bytes32)
+  {
+    bytes32 result;
+
+    if (interfaceHash == ERC777_TOKENS_RECIPIENT_INTERFACE_HASH && addr == address(this)) {
+      result =  ERC1820_ACCEPT_MAGIC;
+    }
+
+    return result;
+  }
+
+  // ERC1271
+
+  function isValidSignature(
+    bytes32 messageHash,
+    bytes calldata signature
+  )
+    external
+    view
+    returns (bytes4)
+  {
+    return registry.isValidAccountSignature(address(this), messageHash, signature)
+      ? ERC1271_VALID_MESSAGE_HASH_SIGNATURE
+      : ERC1271_INVALID_SIGNATURE;
+  }
+
+  function isValidSignature(
+    bytes calldata message,
+    bytes calldata signature
+  )
+    external
+    view
+    returns (bytes4)
+  {
+    return registry.isValidAccountSignature(address(this), message, signature)
+      ? ERC1271_VALID_MESSAGE_SIGNATURE
+      : ERC1271_INVALID_SIGNATURE;
+  }
+
+  // external functions (pure)
+
   // ERC721
 
   function onERC721Received(
     address,
     address,
     uint256,
-    bytes memory
+    bytes calldata
   )
-    public
+    external
     pure
     returns (bytes4)
   {
@@ -84,51 +135,4 @@ contract AccountImplementation is Initializable {
     external
     pure
   {}
-
-  // ERC1820
-
-  function canImplementInterfaceForAddress(
-    bytes32 interfaceHash,
-    address addr
-  )
-    external
-    view
-    returns(bytes32)
-  {
-    bytes32 result;
-
-    if (interfaceHash == ERC777_TOKENS_RECIPIENT_INTERFACE_HASH && addr == address(this)) {
-      result =  ERC1820_ACCEPT_MAGIC;
-    }
-
-    return result;
-  }
-
-  // ERC1271
-
-  function isValidSignature(
-    bytes32 messageHash,
-    bytes memory signature
-  )
-    public
-    view
-    returns (bytes4)
-  {
-    return registry.isValidAccountSignature(address(this), messageHash, signature)
-      ? ERC1271_VALID_MESSAGE_HASH_SIGNATURE
-      : ERC1271_INVALID_SIGNATURE;
-  }
-
-  function isValidSignature(
-    bytes memory message,
-    bytes memory signature
-  )
-    public
-    view
-    returns (bytes4)
-  {
-    return registry.isValidAccountSignature(address(this), message, signature)
-    ? ERC1271_VALID_MESSAGE_SIGNATURE
-    : ERC1271_INVALID_SIGNATURE;
-  }
 }

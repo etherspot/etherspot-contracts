@@ -23,6 +23,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
+    "accountRegistry()": FunctionFragment;
     "addAccountOwner(address,address)": FunctionFragment;
     "computeAccountAddress(address)": FunctionFragment;
     "deployAccount(address)": FunctionFragment;
@@ -40,6 +41,10 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "accountImplementation",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "accountRegistry",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -94,6 +99,10 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "accountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "accountRegistry",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -177,6 +186,10 @@ export class PersonalAccountRegistry extends Contract {
     accountImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<[string]>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<[string]>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<[string]>;
 
     addAccountOwner(
       account: string,
@@ -327,6 +340,10 @@ export class PersonalAccountRegistry extends Contract {
 
   "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
 
+  accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+  "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
+
   addAccountOwner(
     account: string,
     owner: string,
@@ -475,6 +492,10 @@ export class PersonalAccountRegistry extends Contract {
     accountImplementation(overrides?: CallOverrides): Promise<string>;
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
     addAccountOwner(
       account: string,
@@ -648,6 +669,10 @@ export class PersonalAccountRegistry extends Contract {
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     addAccountOwner(
       account: string,
       owner: string,
@@ -796,6 +821,12 @@ export class PersonalAccountRegistry extends Contract {
     ): Promise<PopulatedTransaction>;
 
     "accountImplementation()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "accountRegistry()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

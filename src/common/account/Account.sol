@@ -10,12 +10,14 @@ import "../access/Controlled.sol";
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Account is Controlled {
+  address public registry;
   address public implementation;
 
   /**
    * @dev Public constructor
    */
-  constructor(address implementation_) public Controlled() {
+  constructor(address registry_, address implementation_) public Controlled() {
+    registry = registry_;
     implementation = implementation_;
   }
 

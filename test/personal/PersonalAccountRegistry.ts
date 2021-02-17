@@ -437,6 +437,7 @@ describe('PersonalAccountRegistry', () => {
         personalAccountRegistry,
         'Account',
         owner,
+        personalAccountRegistry.address,
         personalAccountImplementation.address,
       );
 

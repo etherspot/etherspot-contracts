@@ -22,15 +22,24 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface AccountControllerInterface extends ethers.utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
+    "accountRegistry()": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "accountImplementation",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "accountRegistry",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "accountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "accountRegistry",
     data: BytesLike
   ): Result;
 
@@ -54,16 +63,28 @@ export class AccountController extends Contract {
     accountImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<[string]>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<[string]>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<[string]>;
   };
 
   accountImplementation(overrides?: CallOverrides): Promise<string>;
 
   "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
 
+  accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+  "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     accountImplementation(overrides?: CallOverrides): Promise<string>;
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<string>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
@@ -72,6 +93,10 @@ export class AccountController extends Contract {
     accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     "accountImplementation()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "accountRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -80,6 +105,12 @@ export class AccountController extends Contract {
     ): Promise<PopulatedTransaction>;
 
     "accountImplementation()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "accountRegistry()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

@@ -137,3 +137,7 @@ export async function deployContract<T extends Contract = Contract>(
 export function getNow(additionalSeconds: BigNumberish = 0) {
   return BigNumber.from(additionalSeconds).add(Math.ceil(Date.now() / 1000));
 }
+
+export function getMethodSignature(method: string): string {
+  return utils.id(method).slice(0, 10);
+}

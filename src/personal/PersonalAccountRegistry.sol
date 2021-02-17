@@ -112,7 +112,7 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
     onlyInitializer
   {
     // AccountController
-    _initializeAccountController(accountImplementation_);
+    _initializeAccountController(address(this), accountImplementation_);
 
     // GatewayRecipient
     _initializeGatewayRecipient(gateway_);
