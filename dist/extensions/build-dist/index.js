@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("hardhat/config");
-const ethers_1 = require("ethers");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const templates_1 = __importDefault(require("./templates"));
@@ -56,8 +55,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                     }
                     addresses[chainId] = address;
                 }
-                const { abi, bytecode, } = await fs_extra_1.readJSON(filePath);
-                const byteCodeHash = ethers_1.utils.solidityKeccak256(['bytes'], [bytecode]);
+                const { abi, bytecode: byteCode, } = await fs_extra_1.readJSON(filePath);
                 let typedDataDomainName = null;
                 let typedDataDomainVersion = null;
                 if (typedData.domains[contractName]) {
@@ -69,7 +67,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                 contracts[contractName] = {
                     abi,
                     addresses,
-                    byteCodeHash,
+                    byteCode,
                     typedDataDomainName,
                     typedDataDomainVersion,
                 };
@@ -79,6 +77,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         await fs_extra_1.writeFile(path_1.join(distPath, 'contracts.js'), templates_1.default.contractsJs(contracts));
         await fs_extra_1.writeFile(path_1.join(distPath, 'constants.js'), templates_1.default.constantsJs(typedData.domainSalt, contractNames));
         await fs_extra_1.writeFile(path_1.join(distPath, 'constants.d.ts'), templates_1.default.constantsDts(contractNames));
+        await fs_extra_1.writeFile(path_1.join(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contracts));
         console.log('Dist built successfully');
     }
 });

@@ -6,7 +6,7 @@ config_1.extendEnvironment(hre => {
     const { deploy, deterministic } = deployments;
     deployments.deploy = async (name, options) => {
         let result;
-        const salt = create2Salts[name];
+        const salt = create2Salts[name] || create2Salts['default'];
         if (salt) {
             const { deploy } = await deterministic(name, Object.assign(Object.assign({}, options), { salt }));
             result = await deploy();

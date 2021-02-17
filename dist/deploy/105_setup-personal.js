@@ -8,10 +8,16 @@ const func = async (hre) => {
     }
     else {
         const gateway = await get('Gateway');
+        const personalAccountImplementation = await get('PersonalAccountImplementation');
+        const personalAccountRegistry = await get('PersonalAccountRegistry');
+        await execute('PersonalAccountImplementation', {
+            from,
+            log: true,
+        }, 'initialize', personalAccountRegistry.address);
         await execute('PersonalAccountRegistry', {
             from,
             log: true,
-        }, 'initialize', gateway.address);
+        }, 'initialize', personalAccountImplementation.address, gateway.address);
     }
 };
 func.tags = ['setup', 'personal'];

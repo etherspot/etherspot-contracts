@@ -1,9 +1,7 @@
 const contracts = require('./contracts');
 
 function getContractAbi(contractName) {
-  return contracts[contractName]
-    ? contracts[contractName].abi || null
-    : null;
+  return contracts[contractName] ? contracts[contractName].abi || null : null;
 }
 
 function getContractAddress(contractName, networkId = 1) {
@@ -12,9 +10,9 @@ function getContractAddress(contractName, networkId = 1) {
     : null;
 }
 
-function getContractByteCodeHash(contractName) {
+function getContractByteCode(contractName) {
   return contracts[contractName]
-    ? contracts[contractName].byteCodeHash || null
+    ? contracts[contractName].byteCode || null
     : null;
 }
 
@@ -33,7 +31,7 @@ function getContractTypedDataDomainVersion(contractName) {
 module.exports = {
   getContractAbi,
   getContractAddress,
-  getContractByteCodeHash,
+  getContractByteCode,
   getContractTypedDataDomainName,
   getContractTypedDataDomainVersion,
 };

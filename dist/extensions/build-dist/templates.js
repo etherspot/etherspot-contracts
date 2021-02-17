@@ -19,8 +19,27 @@ export declare enum ContractNames {${data
     .join('')}
 }
 `;
+const deploymentsMd = (data) => `# Deployments
+
+| chain id | contract name | contract address |  
+| --- | --- | --- | 
+${Object.entries(data)
+    .map(([name, { addresses }]) => {
+    let result = '';
+    const entries = Object.entries(addresses);
+    for (const [chainId, address] of entries) {
+        if (address) {
+            result = `${result}| \`${chainId}\` | ${name} | \`${address}\` | \n`;
+        }
+    }
+    return result;
+})
+    .filter(value => !!value)
+    .join('')}
+`;
 exports.default = {
     contractsJs,
     constantsJs,
     constantsDts,
+    deploymentsMd,
 };
