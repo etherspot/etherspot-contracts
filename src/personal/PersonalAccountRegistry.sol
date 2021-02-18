@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
+import "../common/access/Guarded.sol";
 import "../common/account/AccountController.sol";
 import "../common/account/AccountRegistry.sol";
 import "../common/libs/BlockLib.sol";
@@ -18,7 +19,7 @@ import "../gateway/GatewayRecipient.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract PersonalAccountRegistry is AccountController, AccountRegistry, Initializable, GatewayRecipient {
+contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry, Initializable, GatewayRecipient {
   using BlockLib for BlockLib.BlockRelated;
   using SafeMathLib for uint256;
   using SignatureLib for bytes32;
@@ -33,14 +34,6 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
   mapping(address => Account) private accounts;
 
   // events
-
-  /**
-   * @dev Emitted when the account is deployed
-   * @param account account address
-   */
-  event AccountDeployed(
-    address account
-  );
 
   /**
    * @dev Emitted when the new owner is added
@@ -101,21 +94,39 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
 
   /**
    * @notice Initializes `PersonalAccountRegistry` contract
+   * @param guardians_ array of guardians addresses
    * @param accountImplementation_ account implementation address
    * @param gateway_ `Gateway` contract address
    */
   function initialize(
+    address[] calldata guardians_,
     address accountImplementation_,
     address gateway_
   )
     external
     onlyInitializer
   {
+    // Guarded
+    _initializeGuarded(guardians_);
+
     // AccountController
     _initializeAccountController(address(this), accountImplementation_);
 
     // GatewayRecipient
     _initializeGatewayRecipient(gateway_);
+  }
+
+  /**
+   * @notice Upgrades `PersonalAccountRegistry` contract
+   * @param accountImplementation_ account implementation address
+   */
+  function upgrade(
+    address accountImplementation_
+  )
+    external
+    onlyGuardian
+  {
+    _setAccountImplementation(accountImplementation_);
   }
 
   /**
@@ -129,6 +140,19 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
   {
     _verifySender(account);
     _deployAccount(account);
+  }
+
+  /**
+   * @notice Upgrades account
+   * @param account account address
+   */
+  function upgradeAccount(
+    address account
+  )
+    external
+  {
+    _verifySender(account);
+    _upgradeAccount(account);
   }
 
   /**
@@ -462,10 +486,6 @@ contract PersonalAccountRegistry is AccountController, AccountRegistry, Initiali
       );
 
       accounts[account].deployed = true;
-
-      emit AccountDeployed(
-        account
-      );
     }
   }
 

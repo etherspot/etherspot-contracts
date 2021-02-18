@@ -34,6 +34,7 @@ const func: DeployFunction = async hre => {
         log: true,
       },
       'initialize',
+      [],
       personalAccountImplementation.address,
       gateway.address,
     );

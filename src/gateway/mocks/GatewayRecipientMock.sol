@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "./GatewayRecipient.sol";
+import "../GatewayRecipient.sol";
 
 
 /**
@@ -21,9 +21,14 @@ contract GatewayRecipientMock is GatewayRecipient {
   );
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
+   * @param gateway_ `Gateway` contract address
    */
-  constructor(address gateway_) public {
+  constructor(
+    address gateway_
+  )
+    public
+  {
     _initializeGatewayRecipient(gateway_);
   }
 

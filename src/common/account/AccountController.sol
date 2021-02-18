@@ -15,6 +15,28 @@ contract AccountController {
   address public accountRegistry;
   address public accountImplementation;
 
+  // events
+
+  /**
+   * @dev Emitted when the account is deployed
+   * @param account account address
+   * @param accountImplementation account implementation address
+   */
+  event AccountDeployed(
+    address account,
+    address accountImplementation
+  );
+
+  /**
+   * @dev Emitted when the account is upgraded
+   * @param account account address
+   * @param accountImplementation account implementation address
+   */
+  event AccountUpgraded(
+    address account,
+    address accountImplementation
+  );
+
   /**
    * @dev Internal constructor
    */
@@ -24,6 +46,7 @@ contract AccountController {
 
   /**
    * @notice Initializes `AccountController` contract
+   * @param accountRegistry_ account registry address
    * @param accountImplementation_ account implementation address
    */
   function _initializeAccountController(
@@ -32,7 +55,41 @@ contract AccountController {
   )
     internal
   {
+    _setAccountRegistry(accountRegistry_);
+    _setAccountImplementation(accountImplementation_);
+  }
+
+  /**
+   * @notice Sets account registry
+   * @param accountRegistry_ account registry address
+   */
+  function _setAccountRegistry(
+    address accountRegistry_
+  )
+    internal
+  {
+    require(
+      accountRegistry_ != address(0),
+      "AccountController: cannot set account registry to 0x0"
+    );
+
     accountRegistry = accountRegistry_;
+  }
+
+  /**
+   * @notice Sets account implementation
+   * @param accountImplementation_ account implementation address
+   */
+  function _setAccountImplementation(
+    address accountImplementation_
+  )
+    internal
+  {
+    require(
+      accountImplementation_ != address(0),
+      "AccountController: cannot set account Implementation to 0x0"
+    );
+
     accountImplementation = accountImplementation_;
   }
 
@@ -47,7 +104,39 @@ contract AccountController {
     internal
     returns (address)
   {
-    return address(new Account{salt: salt}(accountRegistry, accountImplementation));
+    address account = address(new Account{salt: salt}(
+      accountRegistry,
+      accountImplementation
+    ));
+
+    emit AccountDeployed(
+      account,
+      accountImplementation
+    );
+
+    return account;
+  }
+
+  /**
+   * @notice Upgrades account
+   * @param account account address
+   */
+  function _upgradeAccount(
+    address account
+  )
+    internal
+  {
+    require(
+      Account(payable(account)).implementation() != accountImplementation,
+      "AccountController: account already upgraded"
+    );
+
+    Account(payable(account)).setImplementation(accountImplementation);
+
+    emit AccountUpgraded(
+      account,
+      accountImplementation
+    );
   }
 
   /**

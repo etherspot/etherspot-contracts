@@ -67,7 +67,7 @@ describe('Gateway', () => {
     );
 
     await processTx(
-      personalAccountRegistry.initialize(randomAddress(), gateway.address),
+      personalAccountRegistry.initialize([], randomAddress(), gateway.address),
     );
 
     to = gatewayRecipientMock.address;

@@ -43,7 +43,13 @@ interface AccountControllerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {};
+  events: {
+    "AccountDeployed(address,address)": EventFragment;
+    "AccountUpgraded(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "AccountDeployed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountUpgraded"): EventFragment;
 }
 
 export class AccountController extends Contract {
@@ -87,7 +93,11 @@ export class AccountController extends Contract {
     "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
   };
 
-  filters: {};
+  filters: {
+    AccountDeployed(account: null, accountImplementation: null): EventFilter;
+
+    AccountUpgraded(account: null, accountImplementation: null): EventFilter;
+  };
 
   estimateGas: {
     accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;

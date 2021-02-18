@@ -36,6 +36,7 @@ describe('PersonalAccountRegistry', () => {
 
     await processTx(
       personalAccountRegistry.initialize(
+        [],
         personalAccountImplementation.address,
         randomAddress(),
       ),

@@ -25,14 +25,14 @@ describe('AccountImplementation (using mock)', () => {
     signers = await getSigners();
 
     accountRegistry = await deployContract('AccountRegistryMock');
-    accountImplementation = await deployContract('AccountImplementationMock');
+    accountImplementation = await deployContract('AccountImplementationMock', [
+      accountRegistry.address,
+    ]);
 
     const accountProxy = await deployContract('Account', [
       accountRegistry.address,
       accountImplementation.address,
     ]);
-
-    await processTx(accountImplementation.initialize(accountRegistry.address));
 
     account = AccountImplementationMockFactory.connect(
       accountProxy.address,

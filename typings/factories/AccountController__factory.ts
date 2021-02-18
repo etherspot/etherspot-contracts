@@ -18,6 +18,44 @@ export class AccountController__factory {
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "accountImplementation",
+        type: "address",
+      },
+    ],
+    name: "AccountDeployed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "accountImplementation",
+        type: "address",
+      },
+    ],
+    name: "AccountUpgraded",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "accountImplementation",
     outputs: [

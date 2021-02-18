@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "../libs/SignatureLib.sol";
-import "./AccountRegistry.sol";
+import "../../libs/SignatureLib.sol";
+import "../AccountRegistry.sol";
 
 
 /**

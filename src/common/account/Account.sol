@@ -15,8 +15,16 @@ contract Account is Controlled {
 
   /**
    * @dev Public constructor
+   * @param registry_ account registry address
+   * @param implementation_ account implementation address
    */
-  constructor(address registry_, address implementation_) public Controlled() {
+  constructor(
+    address registry_,
+    address implementation_
+  )
+    public
+    Controlled()
+  {
     registry = registry_;
     implementation = implementation_;
   }
@@ -59,6 +67,19 @@ contract Account is Controlled {
         default { return(0, returneddatasize) }
       }
     }
+  }
+
+  /**
+   * @notice Sets implementation
+   * @param implementation_ implementation address
+   */
+  function setImplementation(
+    address implementation_
+  )
+    external
+    onlyController
+  {
+    implementation = implementation_;
   }
 
   /**

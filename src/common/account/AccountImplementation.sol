@@ -28,7 +28,7 @@ contract AccountImplementation is Initializable {
   // external functions
 
   /**
-   * @notice Initializes contract
+   * @notice Initializes `AccountImplementation` contract
    * @param registry_ registry address
    */
   function initialize(
@@ -37,7 +37,7 @@ contract AccountImplementation is Initializable {
     external
     onlyInitializer
   {
-    registry = AccountRegistry(registry_);
+    _initialize(registry_);
   }
 
   // external functions (views)
@@ -135,4 +135,14 @@ contract AccountImplementation is Initializable {
     external
     pure
   {}
+
+  // internal functions
+
+  function _initialize(
+    address registry_
+  )
+    internal
+  {
+    registry = AccountRegistry(registry_);
+  }
 }
