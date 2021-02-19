@@ -6,11 +6,11 @@ import "./AccountRegistry.sol";
 
 
 /**
- * @title Account implementation
+ * @title Account implementation (version 1)
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract AccountImplementation is Initializable {
+contract AccountImplementationV1 is Initializable {
   bytes32 constant private ERC777_TOKENS_RECIPIENT_INTERFACE_HASH = keccak256(abi.encodePacked("ERC777TokensRecipient"));
   bytes32 constant private ERC1820_ACCEPT_MAGIC = keccak256(abi.encodePacked("ERC1820_ACCEPT_MAGIC"));
 

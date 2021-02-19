@@ -13,6 +13,7 @@ import {
 import {
   Contract,
   ContractTransaction,
+  Overrides,
   CallOverrides,
 } from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
@@ -23,6 +24,12 @@ interface AccountControllerMockInterface extends ethers.utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
     "accountRegistry()": FunctionFragment;
+    "computeAccountAddress(bytes32)": FunctionFragment;
+    "deployAccount(bytes32)": FunctionFragment;
+    "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
+    "setAccountImplementation(address)": FunctionFragment;
+    "setAccountRegistry(address)": FunctionFragment;
+    "upgradeAccount(address)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -33,6 +40,30 @@ interface AccountControllerMockInterface extends ethers.utils.Interface {
     functionFragment: "accountRegistry",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "computeAccountAddress",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deployAccount",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeAccountTransaction",
+    values: [string, string, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAccountImplementation",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAccountRegistry",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeAccount",
+    values: [string]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "accountImplementation",
@@ -40,15 +71,47 @@ interface AccountControllerMockInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "accountRegistry",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "computeAccountAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deployAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "executeAccountTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAccountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAccountRegistry",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeAccount",
     data: BytesLike
   ): Result;
 
   events: {
     "AccountDeployed(address,address)": EventFragment;
+    "AccountImplementationUpdated(address)": EventFragment;
+    "AccountRegistryUpdated(address)": EventFragment;
+    "AccountTransactionExecuted(address,address,uint256,bytes,bytes)": EventFragment;
     "AccountUpgraded(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AccountDeployed"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "AccountImplementationUpdated"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountRegistryUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountTransactionExecuted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountUpgraded"): EventFragment;
 }
 
@@ -73,6 +136,72 @@ export class AccountControllerMock extends Contract {
     accountRegistry(overrides?: CallOverrides): Promise<[string]>;
 
     "accountRegistry()"(overrides?: CallOverrides): Promise<[string]>;
+
+    computeAccountAddress(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "computeAccountAddress(bytes32)"(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    deployAccount(
+      salt: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "deployAccount(bytes32)"(
+      salt: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    executeAccountTransaction(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "executeAccountTransaction(address,address,uint256,bytes)"(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setAccountImplementation(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setAccountImplementation(address)"(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setAccountRegistry(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setAccountRegistry(address)"(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    upgradeAccount(
+      account: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "upgradeAccount(address)"(
+      account: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
   accountImplementation(overrides?: CallOverrides): Promise<string>;
@@ -83,6 +212,72 @@ export class AccountControllerMock extends Contract {
 
   "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
 
+  computeAccountAddress(
+    salt: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "computeAccountAddress(bytes32)"(
+    salt: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  deployAccount(
+    salt: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "deployAccount(bytes32)"(
+    salt: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  executeAccountTransaction(
+    account: string,
+    to: string,
+    value: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "executeAccountTransaction(address,address,uint256,bytes)"(
+    account: string,
+    to: string,
+    value: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setAccountImplementation(
+    accountImplementation_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setAccountImplementation(address)"(
+    accountImplementation_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setAccountRegistry(
+    accountRegistry_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setAccountRegistry(address)"(
+    accountRegistry_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  upgradeAccount(
+    account: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "upgradeAccount(address)"(
+    account: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     accountImplementation(overrides?: CallOverrides): Promise<string>;
 
@@ -91,10 +286,82 @@ export class AccountControllerMock extends Contract {
     accountRegistry(overrides?: CallOverrides): Promise<string>;
 
     "accountRegistry()"(overrides?: CallOverrides): Promise<string>;
+
+    computeAccountAddress(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "computeAccountAddress(bytes32)"(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    deployAccount(salt: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    "deployAccount(bytes32)"(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    executeAccountTransaction(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "executeAccountTransaction(address,address,uint256,bytes)"(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setAccountImplementation(
+      accountImplementation_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setAccountImplementation(address)"(
+      accountImplementation_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setAccountRegistry(
+      accountRegistry_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setAccountRegistry(address)"(
+      accountRegistry_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeAccount(account: string, overrides?: CallOverrides): Promise<void>;
+
+    "upgradeAccount(address)"(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
     AccountDeployed(account: null, accountImplementation: null): EventFilter;
+
+    AccountImplementationUpdated(accountImplementation: null): EventFilter;
+
+    AccountRegistryUpdated(accountRegistry: null): EventFilter;
+
+    AccountTransactionExecuted(
+      account: null,
+      to: null,
+      value: null,
+      data: null,
+      response: null
+    ): EventFilter;
 
     AccountUpgraded(account: null, accountImplementation: null): EventFilter;
   };
@@ -107,6 +374,66 @@ export class AccountControllerMock extends Contract {
     accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
     "accountRegistry()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    computeAccountAddress(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "computeAccountAddress(bytes32)"(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    deployAccount(salt: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+
+    "deployAccount(bytes32)"(
+      salt: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    executeAccountTransaction(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "executeAccountTransaction(address,address,uint256,bytes)"(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setAccountImplementation(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setAccountImplementation(address)"(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setAccountRegistry(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setAccountRegistry(address)"(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    upgradeAccount(account: string, overrides?: Overrides): Promise<BigNumber>;
+
+    "upgradeAccount(address)"(
+      account: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -122,6 +449,72 @@ export class AccountControllerMock extends Contract {
 
     "accountRegistry()"(
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    computeAccountAddress(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "computeAccountAddress(bytes32)"(
+      salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    deployAccount(
+      salt: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "deployAccount(bytes32)"(
+      salt: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    executeAccountTransaction(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "executeAccountTransaction(address,address,uint256,bytes)"(
+      account: string,
+      to: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setAccountImplementation(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setAccountImplementation(address)"(
+      accountImplementation_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setAccountRegistry(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setAccountRegistry(address)"(
+      accountRegistry_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    upgradeAccount(
+      account: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "upgradeAccount(address)"(
+      account: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "../AccountImplementation.sol";
+import "../AccountImplementationV1.sol";
 
 
 /**
- * @title Account implementation mock
+ * @title Account implementation mock (version 1)
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract AccountImplementationMock is AccountImplementation {
+contract AccountImplementationV1Mock is AccountImplementationV1 {
   /**
    * @dev Public constructor
    * @param registry_ account registry address
@@ -18,7 +18,7 @@ contract AccountImplementationMock is AccountImplementation {
     address registry_
   )
     public
-    AccountImplementation()
+    AccountImplementationV1()
   {
     _initialize(registry_);
   }

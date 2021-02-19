@@ -13,18 +13,7 @@ const func: DeployFunction = async hre => {
     const gateway = await get('Gateway');
 
     const personalAccountImplementation = await get(
-      'PersonalAccountImplementation',
-    );
-    const personalAccountRegistry = await get('PersonalAccountRegistry');
-
-    await execute(
-      'PersonalAccountImplementation',
-      {
-        from,
-        log: true,
-      },
-      'initialize',
-      personalAccountRegistry.address,
+      'PersonalAccountImplementationV1',
     );
 
     await execute(
@@ -37,6 +26,22 @@ const func: DeployFunction = async hre => {
       [],
       personalAccountImplementation.address,
       gateway.address,
+    );
+  }
+
+  if (await read('PersonalAccountImplementationV1', 'isInitialized')) {
+    log('PersonalAccountImplementationV1 already initialized');
+  } else {
+    const personalAccountRegistry = await get('PersonalAccountRegistry');
+
+    await execute(
+      'PersonalAccountImplementationV1',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      personalAccountRegistry.address,
     );
   }
 };

@@ -103,7 +103,7 @@ const config: HardhatUserConfig = {
     domainSalt: utils.id('ETHERspot'),
   },
   create2Salts: {
-    default: utils.id('v1'),
+    default: utils.id('ETHERspot'),
   },
 };
 

@@ -18,6 +18,22 @@ contract AccountController {
   // events
 
   /**
+   * @dev Emitted when the account registry is updated
+   * @param accountRegistry account registry address
+   */
+  event AccountRegistryUpdated(
+    address accountRegistry
+  );
+
+  /**
+   * @dev Emitted when the account implementation is updated
+   * @param accountImplementation account implementation address
+   */
+  event AccountImplementationUpdated(
+    address accountImplementation
+  );
+
+  /**
    * @dev Emitted when the account is deployed
    * @param account account address
    * @param accountImplementation account implementation address
@@ -38,6 +54,22 @@ contract AccountController {
   );
 
   /**
+   * @dev Emitted when the transaction is executed
+   * @param account account address
+   * @param to to address
+   * @param value value
+   * @param data data
+   * @param response response
+   */
+  event AccountTransactionExecuted(
+    address account,
+    address to,
+    uint256 value,
+    bytes data,
+    bytes response
+  );
+
+  /**
    * @dev Internal constructor
    */
   constructor() internal {}
@@ -55,16 +87,18 @@ contract AccountController {
   )
     internal
   {
-    _setAccountRegistry(accountRegistry_);
-    _setAccountImplementation(accountImplementation_);
+    _setAccountRegistry(accountRegistry_, false);
+    _setAccountImplementation(accountImplementation_, false);
   }
 
   /**
    * @notice Sets account registry
    * @param accountRegistry_ account registry address
+   * @param emitEvent it will emit event when flag is set to true
    */
   function _setAccountRegistry(
-    address accountRegistry_
+    address accountRegistry_,
+    bool emitEvent
   )
     internal
   {
@@ -74,14 +108,20 @@ contract AccountController {
     );
 
     accountRegistry = accountRegistry_;
+
+    if (emitEvent) {
+      emit AccountRegistryUpdated(accountRegistry);
+    }
   }
 
   /**
    * @notice Sets account implementation
    * @param accountImplementation_ account implementation address
+   * @param emitEvent it will emit event when flag is set to true
    */
   function _setAccountImplementation(
-    address accountImplementation_
+    address accountImplementation_,
+    bool emitEvent
   )
     internal
   {
@@ -91,15 +131,21 @@ contract AccountController {
     );
 
     accountImplementation = accountImplementation_;
+
+    if (emitEvent) {
+      emit AccountImplementationUpdated(accountImplementation);
+    }
   }
 
   /**
    * @notice Deploys account
    * @param salt CREATE2 salt
+   * @param emitEvent it will emit event when flag is set to true
    * @return account address
    */
   function _deployAccount(
-    bytes32 salt
+    bytes32 salt,
+    bool emitEvent
   )
     internal
     returns (address)
@@ -109,10 +155,12 @@ contract AccountController {
       accountImplementation
     ));
 
-    emit AccountDeployed(
-      account,
-      accountImplementation
-    );
+    if (emitEvent) {
+      emit AccountDeployed(
+        account,
+        accountImplementation
+      );
+    }
 
     return account;
   }
@@ -120,9 +168,11 @@ contract AccountController {
   /**
    * @notice Upgrades account
    * @param account account address
+   * @param emitEvent it will emit event when flag is set to true
    */
   function _upgradeAccount(
-    address account
+    address account,
+    bool emitEvent
   )
     internal
   {
@@ -133,10 +183,12 @@ contract AccountController {
 
     Account(payable(account)).setImplementation(accountImplementation);
 
-    emit AccountUpgraded(
-      account,
-      accountImplementation
-    );
+    if (emitEvent) {
+      emit AccountUpgraded(
+        account,
+        accountImplementation
+      );
+    }
   }
 
   /**
@@ -145,13 +197,15 @@ contract AccountController {
    * @param to to address
    * @param value value
    * @param data data
+   * @param emitEvent it will emit event when flag is set to true
    * @return transaction result
    */
   function _executeAccountTransaction(
     address account,
     address to,
     uint256 value,
-    bytes memory data
+    bytes memory data,
+    bool emitEvent
   )
     internal
     returns (bytes memory)
@@ -171,11 +225,23 @@ contract AccountController {
       "AccountController: cannot send to self"
     );
 
-    return Account(payable(account)).executeTransaction(
+    bytes memory response = Account(payable(account)).executeTransaction(
       to,
       value,
       data
     );
+
+    if (emitEvent) {
+      emit AccountTransactionExecuted(
+        account,
+        to,
+        value,
+        data,
+        response
+      );
+    }
+
+    return response;
   }
 
   // internal functions (views)

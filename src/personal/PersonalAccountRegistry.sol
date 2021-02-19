@@ -56,22 +56,6 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
   );
 
   /**
-   * @dev Emitted when the transaction is executed
-   * @param account account address
-   * @param to to address
-   * @param value value
-   * @param data data
-   * @param response response
-   */
-  event AccountTransactionExecuted(
-    address account,
-    address to,
-    uint256 value,
-    bytes data,
-    bytes response
-  );
-
-  /**
    * @dev Emitted when the call is refunded
    * @param account account address
    * @param beneficiary beneficiary address
@@ -126,7 +110,7 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
     external
     onlyGuardian
   {
-    _setAccountImplementation(accountImplementation_);
+    _setAccountImplementation(accountImplementation_, true);
   }
 
   /**
@@ -152,7 +136,7 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
     external
   {
     _verifySender(account);
-    _upgradeAccount(account);
+    _upgradeAccount(account, true);
   }
 
   /**
@@ -238,19 +222,12 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
 
     _deployAccount(account);
 
-    bytes memory response = _executeAccountTransaction(
-      account,
-      to,
-      value,
-      data
-    );
-
-    emit AccountTransactionExecuted(
+    _executeAccountTransaction(
       account,
       to,
       value,
       data,
-      response
+      true
     );
   }
 
@@ -279,7 +256,8 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
         account,
         tx.origin,
         value,
-        new bytes(0)
+        new bytes(0),
+        false
       );
     } else {
       bytes memory response = _executeAccountTransaction(
@@ -290,7 +268,8 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
           ERC20Token(token).transfer.selector,
           tx.origin,
           value
-        )
+        ),
+        false
       );
 
       if (response.length > 0) {
@@ -482,7 +461,8 @@ contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry,
   {
     if (!accounts[account].deployed) {
       _deployAccount(
-        accounts[account].salt
+        accounts[account].salt,
+        true
       );
 
       accounts[account].deployed = true;

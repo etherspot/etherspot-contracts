@@ -194,8 +194,10 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
   events: {
     "AccountCallRefunded(address,address,address,uint256)": EventFragment;
     "AccountDeployed(address,address)": EventFragment;
+    "AccountImplementationUpdated(address)": EventFragment;
     "AccountOwnerAdded(address,address)": EventFragment;
     "AccountOwnerRemoved(address,address)": EventFragment;
+    "AccountRegistryUpdated(address)": EventFragment;
     "AccountTransactionExecuted(address,address,uint256,bytes,bytes)": EventFragment;
     "AccountUpgraded(address,address)": EventFragment;
     "GuardianAdded(address,address)": EventFragment;
@@ -205,8 +207,12 @@ interface PersonalAccountRegistryInterface extends ethers.utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AccountCallRefunded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountDeployed"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "AccountImplementationUpdated"
+  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountOwnerAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountOwnerRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountRegistryUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountTransactionExecuted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianAdded"): EventFragment;
@@ -868,9 +874,13 @@ export class PersonalAccountRegistry extends Contract {
 
     AccountDeployed(account: null, accountImplementation: null): EventFilter;
 
+    AccountImplementationUpdated(accountImplementation: null): EventFilter;
+
     AccountOwnerAdded(account: null, owner: null): EventFilter;
 
     AccountOwnerRemoved(account: null, owner: null): EventFilter;
+
+    AccountRegistryUpdated(accountRegistry: null): EventFilter;
 
     AccountTransactionExecuted(
       account: null,

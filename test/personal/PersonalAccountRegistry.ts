@@ -2,7 +2,7 @@ import { ethers } from 'hardhat';
 import { constants, utils } from 'ethers';
 import {
   PersonalAccountRegistry,
-  PersonalAccountImplementation,
+  PersonalAccountImplementationV1,
   WrappedWeiToken,
 } from '../../typings';
 import {
@@ -15,9 +15,9 @@ import {
 
 const { getSigners, provider } = ethers;
 
-describe('PersonalAccountRegistry', () => {
+describe('PersonalAccountRegistryV1', () => {
   let signers: SignerWithAddress[];
-  let personalAccountImplementation: PersonalAccountImplementation;
+  let personalAccountImplementation: PersonalAccountImplementationV1;
   let personalAccountRegistry: PersonalAccountRegistry;
   let wrappedWeiToken: WrappedWeiToken;
 
@@ -25,7 +25,7 @@ describe('PersonalAccountRegistry', () => {
     signers = await getSigners();
 
     personalAccountImplementation = await deployContract(
-      'PersonalAccountImplementation',
+      'PersonalAccountImplementationV1',
     );
     personalAccountRegistry = await deployContract('PersonalAccountRegistry');
     wrappedWeiToken = await deployContract('WrappedWeiToken');

@@ -7,7 +7,7 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  await deploy('PersonalAccountImplementation', {
+  await deploy('PersonalAccountImplementationV1', {
     from,
     log: true,
   });

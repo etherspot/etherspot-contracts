@@ -2,8 +2,8 @@ import { ethers } from 'hardhat';
 import { utils, constants } from 'ethers';
 import {
   AccountRegistryMock,
-  AccountImplementationMock__factory as AccountImplementationMockFactory,
-  AccountImplementation,
+  AccountImplementationV1Mock__factory as AccountImplementationV1MockFactory,
+  AccountImplementationV1,
 } from '../../../typings';
 import {
   processTx,
@@ -15,26 +15,27 @@ import {
 
 const { getSigners } = ethers;
 
-describe('AccountImplementation (using mock)', () => {
+describe('AccountImplementationV1 (using mock)', () => {
   let signers: SignerWithAddress[];
-  let account: AccountImplementation;
+  let account: AccountImplementationV1;
   let accountRegistry: AccountRegistryMock;
-  let accountImplementation: AccountImplementation;
+  let accountImplementation: AccountImplementationV1;
 
   before(async () => {
     signers = await getSigners();
 
     accountRegistry = await deployContract('AccountRegistryMock');
-    accountImplementation = await deployContract('AccountImplementationMock', [
-      accountRegistry.address,
-    ]);
+    accountImplementation = await deployContract(
+      'AccountImplementationV1Mock',
+      [accountRegistry.address],
+    );
 
     const accountProxy = await deployContract('Account', [
       accountRegistry.address,
       accountImplementation.address,
     ]);
 
-    account = AccountImplementationMockFactory.connect(
+    account = AccountImplementationV1MockFactory.connect(
       accountProxy.address,
       signers.pop(),
     );

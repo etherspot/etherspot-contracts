@@ -45,10 +45,18 @@ interface AccountControllerInterface extends ethers.utils.Interface {
 
   events: {
     "AccountDeployed(address,address)": EventFragment;
+    "AccountImplementationUpdated(address)": EventFragment;
+    "AccountRegistryUpdated(address)": EventFragment;
+    "AccountTransactionExecuted(address,address,uint256,bytes,bytes)": EventFragment;
     "AccountUpgraded(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AccountDeployed"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "AccountImplementationUpdated"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountRegistryUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AccountTransactionExecuted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AccountUpgraded"): EventFragment;
 }
 
@@ -95,6 +103,18 @@ export class AccountController extends Contract {
 
   filters: {
     AccountDeployed(account: null, accountImplementation: null): EventFilter;
+
+    AccountImplementationUpdated(accountImplementation: null): EventFilter;
+
+    AccountRegistryUpdated(accountRegistry: null): EventFilter;
+
+    AccountTransactionExecuted(
+      account: null,
+      to: null,
+      value: null,
+      data: null,
+      response: null
+    ): EventFilter;
 
     AccountUpgraded(account: null, accountImplementation: null): EventFilter;
   };
