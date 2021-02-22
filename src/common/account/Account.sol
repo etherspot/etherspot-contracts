@@ -2,6 +2,7 @@
 pragma solidity ^0.6.12;
 
 import "../access/Controlled.sol";
+import "./AccountBase.sol";
 
 
 /**
@@ -9,8 +10,7 @@ import "../access/Controlled.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract Account is Controlled {
-  address public registry;
+contract Account is Controlled, AccountBase {
   address public implementation;
 
   /**
@@ -42,11 +42,11 @@ contract Account is Controlled {
   }
 
   /**
-   * @notice Payable fallback
+   * @notice Fallback
    */
+  // solhint-disable-next-line payable-fallback
   fallback()
     external
-    payable
   {
     if (msg.data.length != 0) {
       address implementation_ = implementation;

@@ -104,12 +104,18 @@ export async function computeAccountAddress(
   let { bytecode } = await ethers.getContractFactory(accountContract);
 
   for (const arg of args) {
-    bytecode = concatHex(bytecode, utils.hexZeroPad(arg, 32));
+    bytecode = concatHex(bytecode, utils.hexZeroPad(arg.toLowerCase(), 32));
+  }
+
+  salt = salt.toLowerCase();
+
+  if (!utils.isHexString(salt, 32)) {
+    salt = utils.solidityKeccak256(['bytes'], [salt]);
   }
 
   return utils.getCreate2Address(
     deployer.address,
-    utils.solidityKeccak256(['bytes'], [salt.toLowerCase()]),
+    salt,
     utils.solidityKeccak256(['bytes'], [bytecode]),
   );
 }
@@ -132,6 +138,11 @@ export async function deployContract<T extends Contract = Contract>(
   }
 
   return (await factory.deploy(...(args || []))) as T;
+}
+
+export async function isContract(address: string): Promise<boolean> {
+  const code = await provider.getCode(address);
+  return code !== '0x';
 }
 
 export function getNow(additionalSeconds: BigNumberish = 0) {

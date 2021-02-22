@@ -2,6 +2,7 @@
 pragma solidity ^0.6.12;
 
 import "../lifecycle/Initializable.sol";
+import "./AccountBase.sol";
 import "./AccountRegistry.sol";
 
 
@@ -10,15 +11,13 @@ import "./AccountRegistry.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract AccountImplementationV1 is Initializable {
+contract AccountImplementationV1 is Initializable, AccountBase {
   bytes32 constant private ERC777_TOKENS_RECIPIENT_INTERFACE_HASH = keccak256(abi.encodePacked("ERC777TokensRecipient"));
   bytes32 constant private ERC1820_ACCEPT_MAGIC = keccak256(abi.encodePacked("ERC1820_ACCEPT_MAGIC"));
 
   bytes4 constant private ERC1271_VALID_MESSAGE_HASH_SIGNATURE = bytes4(keccak256(abi.encodePacked("isValidSignature(bytes32,bytes)")));
   bytes4 constant private ERC1271_VALID_MESSAGE_SIGNATURE = bytes4(keccak256(abi.encodePacked("isValidSignature(bytes,bytes)")));
   bytes4 constant private ERC1271_INVALID_SIGNATURE = 0xffffffff;
-
-  AccountRegistry public registry;
 
   /**
    * @dev Internal constructor
@@ -37,7 +36,7 @@ contract AccountImplementationV1 is Initializable {
     external
     onlyInitializer
   {
-    _initialize(registry_);
+    registry = registry_;
   }
 
   // external functions (views)
@@ -71,7 +70,7 @@ contract AccountImplementationV1 is Initializable {
     view
     returns (bytes4)
   {
-    return registry.isValidAccountSignature(address(this), messageHash, signature)
+    return AccountRegistry(registry).isValidAccountSignature(address(this), messageHash, signature)
       ? ERC1271_VALID_MESSAGE_HASH_SIGNATURE
       : ERC1271_INVALID_SIGNATURE;
   }
@@ -84,7 +83,7 @@ contract AccountImplementationV1 is Initializable {
     view
     returns (bytes4)
   {
-    return registry.isValidAccountSignature(address(this), message, signature)
+    return AccountRegistry(registry).isValidAccountSignature(address(this), message, signature)
       ? ERC1271_VALID_MESSAGE_SIGNATURE
       : ERC1271_INVALID_SIGNATURE;
   }
@@ -135,14 +134,4 @@ contract AccountImplementationV1 is Initializable {
     external
     pure
   {}
-
-  // internal functions
-
-  function _initialize(
-    address registry_
-  )
-    internal
-  {
-    registry = AccountRegistry(registry_);
-  }
 }

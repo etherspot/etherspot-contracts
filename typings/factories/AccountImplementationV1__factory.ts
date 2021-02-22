@@ -210,7 +210,7 @@ const _abi = [
     name: "registry",
     outputs: [
       {
-        internalType: "contract AccountRegistry",
+        internalType: "address",
         name: "",
         type: "address",
       },

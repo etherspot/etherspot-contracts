@@ -20,6 +20,6 @@ contract AccountImplementationV1Mock is AccountImplementationV1 {
     public
     AccountImplementationV1()
   {
-    _initialize(registry_);
+    registry = registry_;
   }
 }
