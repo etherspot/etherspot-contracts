@@ -2,8 +2,9 @@ export declare const TYPED_DATA_DOMAIN_SALT: string;
 
 export declare enum ContractNames {
   Account = 'Account',
+  AccountBase = 'AccountBase',
   AccountController = 'AccountController',
-  AccountImplementation = 'AccountImplementation',
+  AccountImplementationV1 = 'AccountImplementationV1',
   AccountRegistry = 'AccountRegistry',
   Controlled = 'Controlled',
   ENSController = 'ENSController',
@@ -16,7 +17,7 @@ export declare enum ContractNames {
   Initializable = 'Initializable',
   PaymentDepositAccount = 'PaymentDepositAccount',
   PaymentRegistry = 'PaymentRegistry',
-  PersonalAccountImplementation = 'PersonalAccountImplementation',
+  PersonalAccountImplementationV1 = 'PersonalAccountImplementationV1',
   PersonalAccountRegistry = 'PersonalAccountRegistry',
   TypedDataContainer = 'TypedDataContainer',
   Utils = 'Utils',
