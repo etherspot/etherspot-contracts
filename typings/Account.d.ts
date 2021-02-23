@@ -24,6 +24,9 @@ interface AccountInterface extends ethers.utils.Interface {
   functions: {
     "controller()": FunctionFragment;
     "executeTransaction(address,uint256,bytes)": FunctionFragment;
+    "implementation()": FunctionFragment;
+    "registry()": FunctionFragment;
+    "setImplementation(address)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -34,10 +37,28 @@ interface AccountInterface extends ethers.utils.Interface {
     functionFragment: "executeTransaction",
     values: [string, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "implementation",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "registry", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setImplementation",
+    values: [string]
+  ): string;
 
   decodeFunctionResult(functionFragment: "controller", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "implementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setImplementation",
     data: BytesLike
   ): Result;
 
@@ -75,6 +96,24 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    implementation(overrides?: CallOverrides): Promise<[string]>;
+
+    "implementation()"(overrides?: CallOverrides): Promise<[string]>;
+
+    registry(overrides?: CallOverrides): Promise<[string]>;
+
+    "registry()"(overrides?: CallOverrides): Promise<[string]>;
+
+    setImplementation(
+      implementation_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setImplementation(address)"(
+      implementation_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
   controller(overrides?: CallOverrides): Promise<string>;
@@ -92,6 +131,24 @@ export class Account extends Contract {
     to: string,
     value: BigNumberish,
     data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  implementation(overrides?: CallOverrides): Promise<string>;
+
+  "implementation()"(overrides?: CallOverrides): Promise<string>;
+
+  registry(overrides?: CallOverrides): Promise<string>;
+
+  "registry()"(overrides?: CallOverrides): Promise<string>;
+
+  setImplementation(
+    implementation_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setImplementation(address)"(
+    implementation_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -113,6 +170,24 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    implementation(overrides?: CallOverrides): Promise<string>;
+
+    "implementation()"(overrides?: CallOverrides): Promise<string>;
+
+    registry(overrides?: CallOverrides): Promise<string>;
+
+    "registry()"(overrides?: CallOverrides): Promise<string>;
+
+    setImplementation(
+      implementation_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setImplementation(address)"(
+      implementation_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -135,6 +210,24 @@ export class Account extends Contract {
       data: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    implementation(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "implementation()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    registry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "registry()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setImplementation(
+      implementation_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setImplementation(address)"(
+      implementation_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -153,6 +246,26 @@ export class Account extends Contract {
       to: string,
       value: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    implementation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "implementation()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    registry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "registry()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setImplementation(
+      implementation_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setImplementation(address)"(
+      implementation_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

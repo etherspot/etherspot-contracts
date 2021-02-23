@@ -1,5 +1,4 @@
 import { task } from 'hardhat/config';
-import { utils } from 'ethers';
 import {
   readdir,
   readFile,
@@ -61,7 +60,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
       [key: string]: {
         abi: any;
         addresses: { [key: string]: string };
-        byteCodeHash: string;
+        byteCode: string;
         typedDataDomainName: string;
         typedDataDomainVersion: string;
       };
@@ -95,10 +94,8 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
 
         const {
           abi,
-          bytecode,
+          bytecode: byteCode,
         }: { abi: any; bytecode: string } = await readJSON(filePath);
-
-        const byteCodeHash = utils.solidityKeccak256(['bytes'], [bytecode]);
 
         let typedDataDomainName: string = null;
         let typedDataDomainVersion: string = null;
@@ -113,7 +110,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         contracts[contractName] = {
           abi,
           addresses,
-          byteCodeHash,
+          byteCode,
           typedDataDomainName,
           typedDataDomainVersion,
         };

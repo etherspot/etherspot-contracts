@@ -17,8 +17,8 @@ import {
   TYPED_DATA_DOMAIN_SALT,
   ContractNames, 
   getContractAbi, 
-  getContractAddress, 
-  getContractByteCodeHash, 
+  getContractAddress,
+  getContractByteCode, 
   getContractTypedDataDomainName, 
   getContractTypedDataDomainVersion, 
 } from '@etherspot/contracts'; 
@@ -39,8 +39,8 @@ console.log(
 );
 
 console.log(
-  'Account byte code hash:',
-  getContractByteCodeHash(ContractNames.Account),
+  'Account byte code:',
+  getContractByteCode(ContractNames.Account),
 );
 
 // see: https://eips.ethereum.org/EIPS/eip-712

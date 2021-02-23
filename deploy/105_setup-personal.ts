@@ -12,6 +12,10 @@ const func: DeployFunction = async hre => {
   } else {
     const gateway = await get('Gateway');
 
+    const personalAccountImplementation = await get(
+      'PersonalAccountImplementationV1',
+    );
+
     await execute(
       'PersonalAccountRegistry',
       {
@@ -19,7 +23,25 @@ const func: DeployFunction = async hre => {
         log: true,
       },
       'initialize',
+      [],
+      personalAccountImplementation.address,
       gateway.address,
+    );
+  }
+
+  if (await read('PersonalAccountImplementationV1', 'isInitialized')) {
+    log('PersonalAccountImplementationV1 already initialized');
+  } else {
+    const personalAccountRegistry = await get('PersonalAccountRegistry');
+
+    await execute(
+      'PersonalAccountImplementationV1',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      personalAccountRegistry.address,
     );
   }
 };

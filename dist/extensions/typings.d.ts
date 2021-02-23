@@ -43,6 +43,7 @@ declare module 'hardhat/types/config' {
         domainSalt: string;
     }
     type Create2Salts = {
+        default: string;
         [key: string]: string;
     };
     type KnownContractsConfig = {

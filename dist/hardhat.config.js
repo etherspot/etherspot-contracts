@@ -45,7 +45,7 @@ const config = {
         enabled: false,
     },
     ens: {
-        internalTopLevelDomains: ['pillar', 'etherspot'],
+        internalTopLevelDomains: ['pillar', 'etherspot', 'dank'],
     },
     knownContracts: {
         [extensions_1.NetworkNames.Mainnet]: {
@@ -63,20 +63,14 @@ const config = {
                 version: '1',
             },
             PaymentRegistry: {
-                name: 'ETHERspot Payment Network',
+                name: 'ETHERspot Payment Registry',
                 version: '1',
             },
         },
         domainSalt: ethers_1.utils.id('ETHERspot'),
     },
     create2Salts: {
-        [extensions_1.ContractNames.ENSController]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.ENSRegistry]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.ExternalAccountRegistry]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.PaymentRegistry]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.PersonalAccountRegistry]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.Utils]: ethers_1.utils.id('v1'),
-        [extensions_1.ContractNames.WrappedWeiToken]: ethers_1.utils.id('v1'),
+        default: ethers_1.utils.id('ETHERspot'),
     },
 };
 module.exports = config;

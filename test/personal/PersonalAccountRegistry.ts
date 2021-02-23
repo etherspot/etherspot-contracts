@@ -1,6 +1,10 @@
 import { ethers } from 'hardhat';
-import { constants } from 'ethers';
-import { PersonalAccountRegistry, WrappedWeiToken } from '../../typings';
+import { constants, utils } from 'ethers';
+import {
+  PersonalAccountRegistry,
+  PersonalAccountImplementationV1,
+  WrappedWeiToken,
+} from '../../typings';
 import {
   SignerWithAddress,
   randomAddress,
@@ -11,18 +15,60 @@ import {
 
 const { getSigners, provider } = ethers;
 
-describe('PersonalAccountRegistry', () => {
+describe('PersonalAccountRegistryV1', () => {
   let signers: SignerWithAddress[];
+  let personalAccountImplementation: PersonalAccountImplementationV1;
   let personalAccountRegistry: PersonalAccountRegistry;
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {
     signers = await getSigners();
 
+    personalAccountImplementation = await deployContract(
+      'PersonalAccountImplementationV1',
+    );
     personalAccountRegistry = await deployContract('PersonalAccountRegistry');
     wrappedWeiToken = await deployContract('WrappedWeiToken');
 
-    await processTx(personalAccountRegistry.initialize(randomAddress()));
+    await processTx(
+      personalAccountImplementation.initialize(personalAccountRegistry.address),
+    );
+
+    await processTx(
+      personalAccountRegistry.initialize(
+        [],
+        personalAccountImplementation.address,
+        randomAddress(),
+      ),
+    );
+  });
+
+  context('deployAccount()', () => {
+    let saltOwner: SignerWithAddress;
+    let account: string;
+
+    before(async () => {
+      saltOwner = signers.pop();
+
+      account = await personalAccountRegistry.computeAccountAddress(
+        saltOwner.address,
+      );
+
+      await processTx(
+        personalAccountRegistry
+          .connect(saltOwner)
+          .addAccountOwner(account, randomAddress()),
+      );
+    });
+
+    it('expect to deploy account', async () => {
+      const { events } = await processTx(
+        personalAccountRegistry.connect(saltOwner).deployAccount(account),
+      );
+
+      expect(events[0].event).toBe('AccountDeployed');
+      expect(events[0].args.account).toBe(account);
+    });
   });
 
   context('addAccountOwner()', () => {
@@ -390,7 +436,10 @@ describe('PersonalAccountRegistry', () => {
       const owner = randomAddress();
       const account = await computeAccountAddress(
         personalAccountRegistry,
+        'Account',
         owner,
+        personalAccountRegistry.address,
+        personalAccountImplementation.address,
       );
 
       await expect(
@@ -553,6 +602,71 @@ describe('PersonalAccountRegistry', () => {
           account,
           randomAddress(),
           removedAt,
+        ),
+      ).resolves.toBeFalsy();
+    });
+  });
+
+  context('isValidAccountSignature()', () => {
+    let saltOwner: SignerWithAddress;
+    let unknownOwner: SignerWithAddress;
+    let account: string;
+
+    before(async () => {
+      saltOwner = signers.pop();
+      unknownOwner = signers.pop();
+
+      account = await personalAccountRegistry.computeAccountAddress(
+        saltOwner.address,
+      );
+    });
+
+    it('expect to return true for valid signature', async () => {
+      const message = 'test message';
+      const signature = await saltOwner.signMessage(message);
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes32,bytes)'
+        ](
+          account, //
+          utils.hashMessage(message),
+          signature,
+        ),
+      ).resolves.toBeTruthy();
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes,bytes)' //
+        ](
+          account, //
+          utils.hexlify(utils.toUtf8Bytes(message)),
+          signature,
+        ),
+      ).resolves.toBeTruthy();
+    });
+
+    it('expect to return false for invalid signature', async () => {
+      const message = 'test message';
+      const signature = await unknownOwner.signMessage(message);
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes32,bytes)'
+        ](
+          account, //
+          utils.hashMessage(message),
+          signature,
+        ),
+      ).resolves.toBeFalsy();
+
+      await expect(
+        personalAccountRegistry[
+          'isValidAccountSignature(address,bytes,bytes)' //
+        ](
+          account, //
+          utils.hexlify(utils.toUtf8Bytes(message)),
+          signature,
         ),
       ).resolves.toBeFalsy();
     });
