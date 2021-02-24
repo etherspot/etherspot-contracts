@@ -24,10 +24,10 @@ const config: HardhatUserConfig = {
       gasPrice: 20 * 1000000000,
     },
     ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura'),
-    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura'),
-    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura'),
+    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura', 1),
+    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura', 1),
     ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura', 1),
-    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura'),
+    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura', 1),
     ...createConfigNetwork(
       NetworkNames.Xdai,
       100,
