@@ -44,11 +44,13 @@ const config: HardhatUserConfig = {
       NetworkNames.Bsc,
       56,
       'https://bsc-dataseed1.binance.org',
+      20,
     ),
     ...createConfigNetwork(
       NetworkNames.BscTest,
       97,
       'https://data-seed-prebsc-1-s2.binance.org:8545',
+      20,
     ),
     ...createConfigNetwork(
       NetworkNames.LocalA,
