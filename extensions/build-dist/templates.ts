@@ -27,7 +27,7 @@ export declare enum ContractNames {${data
 
 const deploymentsMd = (data: ContractsMD) => `# Deployments
 
-| network | contract name | contract address | transaction hash |  
+| contract name | network | contract address | transaction hash |  
 | --- | --- | --- |  --- | 
 ${Object.entries(data)
   .map(([name, deployments]) => {
@@ -35,8 +35,8 @@ ${Object.entries(data)
 
     for (const { address, network, transaction } of deployments) {
       if (address) {
-        result = `${result}| \`${network.name}\` `;
         result = `${result}| \`${name}\` `;
+        result = `${result}| \`${network.name}\` `;
         result = `${result}| [${address}](${getScanUrl(
           network.name,
           address,
