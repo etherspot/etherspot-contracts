@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("hardhat/config");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
+const constants_1 = require("../constants");
 const templates_1 = __importDefault(require("./templates"));
 const TASK_BUILD_DIST = 'build-dist';
 config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
@@ -33,6 +34,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
             }
         }
         const contracts = {};
+        const contractsMD = {};
         const fileNames = await fs_extra_1.readdir(artifactsPath);
         for (const fileName of fileNames) {
             if (fileName.endsWith('.json')) {
@@ -42,18 +44,38 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                 for (const network of networks) {
                     const { chainId, path, name } = network;
                     let address = null;
+                    let transactionHash = null;
                     if (knownContracts[name] && knownContracts[name][contractName]) {
                         address = knownContracts[name][contractName];
                     }
                     else {
                         try {
-                            ({ address } = await fs_extra_1.readJSON(path_1.join(path, fileName)));
+                            ({ address, transactionHash } = await fs_extra_1.readJSON(path_1.join(path, fileName)));
                         }
                         catch (err) {
                             address = null;
                         }
                     }
                     addresses[chainId] = address;
+                    if (address &&
+                        transactionHash &&
+                        name !== constants_1.NetworkNames.LocalA &&
+                        name !== constants_1.NetworkNames.LocalB) {
+                        if (!contractsMD[contractName]) {
+                            contractsMD[contractName] = [];
+                        }
+                        contractsMD[contractName].push({
+                            address,
+                            network: {
+                                name,
+                                chainId,
+                            },
+                            transaction: {
+                                hash: transactionHash,
+                                url: null,
+                            },
+                        });
+                    }
                 }
                 const { abi, bytecode: byteCode, } = await fs_extra_1.readJSON(filePath);
                 let typedDataDomainName = null;
@@ -77,7 +99,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         await fs_extra_1.writeFile(path_1.join(distPath, 'contracts.js'), templates_1.default.contractsJs(contracts));
         await fs_extra_1.writeFile(path_1.join(distPath, 'constants.js'), templates_1.default.constantsJs(typedData.domainSalt, contractNames));
         await fs_extra_1.writeFile(path_1.join(distPath, 'constants.d.ts'), templates_1.default.constantsDts(contractNames));
-        await fs_extra_1.writeFile(path_1.join(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contracts));
+        await fs_extra_1.writeFile(path_1.join(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contractsMD));
         console.log('Dist built successfully');
     }
 });
