@@ -8,6 +8,8 @@ import {
   mkdirp,
 } from 'fs-extra';
 import { resolve, join } from 'path';
+import { NetworkNames } from '../constants';
+import { ContractsMD } from './interfaces';
 import templates from './templates';
 
 const TASK_BUILD_DIST = 'build-dist';
@@ -66,6 +68,8 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
       };
     } = {};
 
+    const contractsMD: ContractsMD = {};
+
     const fileNames = await readdir(artifactsPath);
 
     for (const fileName of fileNames) {
@@ -78,18 +82,44 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         for (const network of networks) {
           const { chainId, path, name } = network;
           let address: string = null;
+          let transactionHash: string = null;
 
           if (knownContracts[name] && knownContracts[name][contractName]) {
             address = knownContracts[name][contractName];
           } else {
             try {
-              ({ address } = await readJSON(join(path, fileName)));
+              ({ address, transactionHash } = await readJSON(
+                join(path, fileName),
+              ));
             } catch (err) {
               address = null;
             }
           }
 
           addresses[chainId] = address;
+
+          if (
+            address &&
+            transactionHash &&
+            name !== NetworkNames.LocalA &&
+            name !== NetworkNames.LocalB
+          ) {
+            if (!contractsMD[contractName]) {
+              contractsMD[contractName] = [];
+            }
+
+            contractsMD[contractName].push({
+              address,
+              network: {
+                name,
+                chainId,
+              },
+              transaction: {
+                hash: transactionHash,
+                url: null,
+              },
+            });
+          }
         }
 
         const {
@@ -136,7 +166,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
 
     await writeFile(
       join(cwd, 'DEPLOYMENTS.md'),
-      templates.deploymentsMd(contracts),
+      templates.deploymentsMd(contractsMD),
     );
 
     console.log('Dist built successfully');
