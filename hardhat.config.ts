@@ -1,3 +1,5 @@
+import 'hardhat-docgen';
+import '@nomiclabs/hardhat-etherscan';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
 import 'hardhat-gas-reporter';
@@ -6,7 +8,7 @@ import { HardhatUserConfig } from 'hardhat/config';
 import { utils } from 'ethers';
 import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
 
-const { HARDHAT_MNEMONIC } = process.env;
+const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   namedAccounts: {
@@ -116,6 +118,14 @@ const config: HardhatUserConfig = {
   },
   create2Salts: {
     default: utils.id('ETHERspot'),
+  },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true,
+  },
+  etherscan: {
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 
