@@ -1,4 +1,3 @@
-import 'hardhat-docgen';
 import '@nomiclabs/hardhat-etherscan';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
@@ -118,11 +117,6 @@ const config: HardhatUserConfig = {
   },
   create2Salts: {
     default: utils.id('ETHERspot'),
-  },
-  docgen: {
-    path: './docs',
-    clear: true,
-    runOnCompile: true,
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
