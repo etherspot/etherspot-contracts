@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("@nomiclabs/hardhat-etherscan");
 require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
-const { HARDHAT_MNEMONIC } = process.env;
+const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 const config = {
     namedAccounts: {
         from: 0,
@@ -71,6 +72,9 @@ const config = {
     },
     create2Salts: {
         default: ethers_1.utils.id('ETHERspot'),
+    },
+    etherscan: {
+        apiKey: ETHERSCAN_API_KEY,
     },
 };
 module.exports = config;
