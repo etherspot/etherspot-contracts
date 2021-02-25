@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("@nomiclabs/hardhat-etherscan");
 require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
-const { HARDHAT_MNEMONIC } = process.env;
+const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 const config = {
     namedAccounts: {
         from: 0,
@@ -18,8 +19,8 @@ const config = {
                 count: 256,
             },
             chainId: 192,
-            gasPrice: 20000000000,
-        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura', 120000000000)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s1.binance.org:8545')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545', 20000000000)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545', 20000000000)),
+            gasPrice: 20 * 1000000000,
+        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s2.binance.org:8545', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545', 20)),
     solidity: {
         version: '0.6.12',
         settings: {
@@ -71,6 +72,9 @@ const config = {
     },
     create2Salts: {
         default: ethers_1.utils.id('ETHERspot'),
+    },
+    etherscan: {
+        apiKey: ETHERSCAN_API_KEY,
     },
 };
 module.exports = config;

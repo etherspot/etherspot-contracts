@@ -16,5 +16,6 @@ require("./build-typings");
 require("./deploy");
 require("./test");
 require("./typings");
+require("./verify-all");
 __exportStar(require("./constants"), exports);
 __exportStar(require("./utils"), exports);

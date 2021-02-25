@@ -1,3 +1,4 @@
+import '@nomiclabs/hardhat-etherscan';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
 import 'hardhat-gas-reporter';
@@ -6,7 +7,7 @@ import { HardhatUserConfig } from 'hardhat/config';
 import { utils } from 'ethers';
 import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
 
-const { HARDHAT_MNEMONIC } = process.env;
+const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   namedAccounts: {
@@ -21,36 +22,48 @@ const config: HardhatUserConfig = {
         count: 256,
       },
       chainId: 192,
-      gasPrice: 20000000000,
+      gasPrice: 20 * 1000000000,
     },
-    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura', 120000000000),
-    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura'),
-    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura'),
-    ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura'),
-    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura'),
-    ...createConfigNetwork(NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com'),
-    ...createConfigNetwork(NetworkNames.Sokol, 77, 'https://sokol.poa.network'),
+    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura'),
+    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura', 1),
+    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura', 1),
+    ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura', 1),
+    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura', 1),
+    ...createConfigNetwork(
+      NetworkNames.Xdai,
+      100,
+      'https://rpc.xdaichain.com',
+      1,
+    ),
+    ...createConfigNetwork(
+      NetworkNames.Sokol,
+      77,
+      'https://sokol.poa.network',
+      1,
+    ),
     ...createConfigNetwork(
       NetworkNames.Bsc,
       56,
       'https://bsc-dataseed1.binance.org',
+      20,
     ),
     ...createConfigNetwork(
       NetworkNames.BscTest,
       97,
-      'https://data-seed-prebsc-1-s1.binance.org:8545',
+      'https://data-seed-prebsc-1-s2.binance.org:8545',
+      20,
     ),
     ...createConfigNetwork(
       NetworkNames.LocalA,
       9999,
       'http://localhost:8545',
-      20000000000,
+      20,
     ),
     ...createConfigNetwork(
       NetworkNames.LocalB,
       6666,
       'http://localhost:9545',
-      20000000000,
+      20,
     ),
   },
   solidity: {
@@ -104,6 +117,9 @@ const config: HardhatUserConfig = {
   },
   create2Salts: {
     default: utils.id('ETHERspot'),
+  },
+  etherscan: {
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 

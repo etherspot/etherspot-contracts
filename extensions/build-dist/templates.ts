@@ -1,3 +1,6 @@
+import { ContractsMD } from './interfaces';
+import { getScanUrl } from './utils';
+
 const contractsJs = (data: any) => `/* eslint-disable */
 
 module.exports = ${JSON.stringify(data, null, 2)};
@@ -22,29 +25,35 @@ export declare enum ContractNames {${data
 }
 `;
 
-const deploymentsMd = (data: any) => `# Deployments
+const deploymentsMd = (data: ContractsMD) => `# Deployments
 
-| chain id | contract name | contract address |  
-| --- | --- | --- | 
+| contract name | network | contract address | transaction hash |  
+| --- | --- | --- |  --- | 
 ${Object.entries(data)
-  .map(
-    ([name, { addresses }]: [
-      string,
-      { addresses: { [key: string]: string } },
-    ]) => {
-      let result = '';
+  .map(([name, deployments]) => {
+    let result = '';
 
-      const entries = Object.entries(addresses);
+    for (const { address, network, transaction } of deployments) {
+      if (address) {
+        result = `${result}| \`${name}\` `;
+        result = `${result}| \`${network.name}\` `;
+        result = `${result}| [${address}](${getScanUrl(
+          network.name,
+          address,
+          'Address',
+        )}) `;
 
-      for (const [chainId, address] of entries) {
-        if (address) {
-          result = `${result}| \`${chainId}\` | ${name} | \`${address}\` | \n`;
-        }
+        result = `${result}| [${transaction.hash}](${getScanUrl(
+          network.name,
+          transaction.hash,
+          'Transaction',
+        )}) `;
+        result = `${result}| \n`;
       }
+    }
 
-      return result;
-    },
-  )
+    return result;
+  })
   .filter(value => !!value)
   .join('')}
 `;
