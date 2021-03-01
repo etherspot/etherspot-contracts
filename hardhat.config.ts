@@ -54,6 +54,18 @@ const config: HardhatUserConfig = {
       20,
     ),
     ...createConfigNetwork(
+      NetworkNames.Fantom,
+      250,
+      'https://rpcapi.fantom.network',
+      22,
+    ),
+    ...createConfigNetwork(
+      NetworkNames.FantomTest,
+      4002,
+      'https://rpc.testnet.fantom.network',
+      22,
+    ),
+    ...createConfigNetwork(
       NetworkNames.LocalA,
       9999,
       'http://localhost:8545',

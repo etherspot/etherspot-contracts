@@ -34,6 +34,8 @@
     "deploy:sokol": "hardhat deploy --network sokol",
     "deploy:bsc": "hardhat deploy --network bsc",
     "deploy:bscTest": "hardhat deploy --network bscTest",
+    "deploy:fantom": "hardhat deploy --network fantom",
+    "deploy:fantomTest": "hardhat deploy --network fantomTest",
     "deploy:localA": "hardhat deploy --network localA",
     "deploy:localB": "hardhat deploy --network localB",
     "format": "prettier --write \"{deploy,extensions,test}/**/*.ts\"",
