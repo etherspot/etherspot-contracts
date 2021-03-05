@@ -8,6 +8,8 @@ export declare enum NetworkNames {
     Sokol = "sokol",
     Bsc = "bsc",
     BscTest = "bscTest",
+    Fantom = "fantom",
+    FantomTest = "fantomTest",
     LocalA = "localA",
     LocalB = "localB"
 }

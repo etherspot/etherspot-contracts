@@ -15,6 +15,7 @@ task(TASK_VERIFY_ALL, 'Verify all contracts').setAction(async (args, hre) => {
   const entries = Object.entries(contracts);
 
   switch (networkName) {
+    // etherscan
     case NetworkNames.Mainnet:
     case NetworkNames.Ropsten:
     case NetworkNames.Rinkeby:

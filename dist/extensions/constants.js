@@ -12,6 +12,8 @@ var NetworkNames;
     NetworkNames["Sokol"] = "sokol";
     NetworkNames["Bsc"] = "bsc";
     NetworkNames["BscTest"] = "bscTest";
+    NetworkNames["Fantom"] = "fantom";
+    NetworkNames["FantomTest"] = "fantomTest";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
 })(NetworkNames = exports.NetworkNames || (exports.NetworkNames = {}));
