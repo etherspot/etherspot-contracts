@@ -22,20 +22,41 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface ENSRegistryInterface extends ethers.utils.Interface {
   functions: {
+    "isApprovedForAll(address,address)": FunctionFragment;
     "owner(bytes32)": FunctionFragment;
+    "recordExists(bytes32)": FunctionFragment;
     "resolver(bytes32)": FunctionFragment;
+    "setApprovalForAll(address,bool)": FunctionFragment;
     "setOwner(bytes32,address)": FunctionFragment;
+    "setRecord(bytes32,address,address,uint64)": FunctionFragment;
     "setResolver(bytes32,address)": FunctionFragment;
     "setSubnodeOwner(bytes32,bytes32,address)": FunctionFragment;
+    "setSubnodeRecord(bytes32,bytes32,address,address,uint64)": FunctionFragment;
     "setTTL(bytes32,uint64)": FunctionFragment;
     "ttl(bytes32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "isApprovedForAll",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "recordExists",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "resolver", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "setApprovalForAll",
+    values: [string, boolean]
+  ): string;
   encodeFunctionData(
     functionFragment: "setOwner",
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRecord",
+    values: [BytesLike, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setResolver",
@@ -46,14 +67,31 @@ interface ENSRegistryInterface extends ethers.utils.Interface {
     values: [BytesLike, BytesLike, string]
   ): string;
   encodeFunctionData(
+    functionFragment: "setSubnodeRecord",
+    values: [BytesLike, BytesLike, string, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setTTL",
     values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "ttl", values: [BytesLike]): string;
 
+  decodeFunctionResult(
+    functionFragment: "isApprovedForAll",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "recordExists",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "resolver", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setApprovalForAll",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setOwner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setRecord", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setResolver",
     data: BytesLike
@@ -62,16 +100,22 @@ interface ENSRegistryInterface extends ethers.utils.Interface {
     functionFragment: "setSubnodeOwner",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setSubnodeRecord",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setTTL", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ttl", data: BytesLike): Result;
 
   events: {
+    "ApprovalForAll(address,address,bool)": EventFragment;
     "NewOwner(bytes32,bytes32,address)": EventFragment;
     "NewResolver(bytes32,address)": EventFragment;
     "NewTTL(bytes32,uint64)": EventFragment;
     "Transfer(bytes32,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewOwner"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewResolver"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewTTL"): EventFragment;
@@ -92,12 +136,34 @@ export class ENSRegistry extends Contract {
   interface: ENSRegistryInterface;
 
   functions: {
+    isApprovedForAll(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "isApprovedForAll(address,address)"(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
     "owner(bytes32)"(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    recordExists(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "recordExists(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     resolver(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
@@ -106,53 +172,99 @@ export class ENSRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    setApprovalForAll(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setApprovalForAll(address,bool)"(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     setOwner(
       node: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "setOwner(bytes32,address)"(
       node: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setRecord(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setRecord(bytes32,address,address,uint64)"(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     setResolver(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "setResolver(bytes32,address)"(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     setSubnodeOwner(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "setSubnodeOwner(bytes32,bytes32,address)"(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setSubnodeRecord(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setSubnodeRecord(bytes32,bytes32,address,address,uint64)"(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     setTTL(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "setTTL(bytes32,uint64)"(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -164,9 +276,28 @@ export class ENSRegistry extends Contract {
     ): Promise<[BigNumber]>;
   };
 
+  isApprovedForAll(
+    owner_: string,
+    operator: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isApprovedForAll(address,address)"(
+    owner_: string,
+    operator: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
   "owner(bytes32)"(node: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  recordExists(node: BytesLike, overrides?: CallOverrides): Promise<boolean>;
+
+  "recordExists(bytes32)"(
+    node: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   resolver(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -175,53 +306,99 @@ export class ENSRegistry extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  setApprovalForAll(
+    operator: string,
+    approved: boolean,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setApprovalForAll(address,bool)"(
+    operator: string,
+    approved: boolean,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   setOwner(
     node: BytesLike,
-    owner: string,
+    owner_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "setOwner(bytes32,address)"(
     node: BytesLike,
-    owner: string,
+    owner_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setRecord(
+    node: BytesLike,
+    owner_: string,
+    resolver_: string,
+    ttl_: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setRecord(bytes32,address,address,uint64)"(
+    node: BytesLike,
+    owner_: string,
+    resolver_: string,
+    ttl_: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   setResolver(
     node: BytesLike,
-    resolver: string,
+    resolver_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "setResolver(bytes32,address)"(
     node: BytesLike,
-    resolver: string,
+    resolver_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   setSubnodeOwner(
     node: BytesLike,
     label: BytesLike,
-    owner: string,
+    owner_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "setSubnodeOwner(bytes32,bytes32,address)"(
     node: BytesLike,
     label: BytesLike,
-    owner: string,
+    owner_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setSubnodeRecord(
+    node: BytesLike,
+    label: BytesLike,
+    owner_: string,
+    resolver_: string,
+    ttl_: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setSubnodeRecord(bytes32,bytes32,address,address,uint64)"(
+    node: BytesLike,
+    label: BytesLike,
+    owner_: string,
+    resolver_: string,
+    ttl_: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   setTTL(
     node: BytesLike,
-    ttl: BigNumberish,
+    ttl_: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "setTTL(bytes32,uint64)"(
     node: BytesLike,
-    ttl: BigNumberish,
+    ttl_: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -233,12 +410,31 @@ export class ENSRegistry extends Contract {
   ): Promise<BigNumber>;
 
   callStatic: {
+    isApprovedForAll(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isApprovedForAll(address,address)"(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
     "owner(bytes32)"(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    recordExists(node: BytesLike, overrides?: CallOverrides): Promise<boolean>;
+
+    "recordExists(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     resolver(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -247,53 +443,99 @@ export class ENSRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    setApprovalForAll(
+      operator: string,
+      approved: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setApprovalForAll(address,bool)"(
+      operator: string,
+      approved: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setOwner(
       node: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "setOwner(bytes32,address)"(
       node: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRecord(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setRecord(bytes32,address,address,uint64)"(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setResolver(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "setResolver(bytes32,address)"(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setSubnodeOwner(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<string>;
 
     "setSubnodeOwner(bytes32,bytes32,address)"(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    setSubnodeRecord(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setSubnodeRecord(bytes32,bytes32,address,address,uint64)"(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setTTL(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "setTTL(bytes32,uint64)"(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -306,6 +548,12 @@ export class ENSRegistry extends Contract {
   };
 
   filters: {
+    ApprovalForAll(
+      owner: string | null,
+      operator: string | null,
+      approved: null
+    ): EventFilter;
+
     NewOwner(
       node: BytesLike | null,
       label: BytesLike | null,
@@ -320,9 +568,31 @@ export class ENSRegistry extends Contract {
   };
 
   estimateGas: {
+    isApprovedForAll(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isApprovedForAll(address,address)"(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     "owner(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    recordExists(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "recordExists(bytes32)"(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -334,53 +604,99 @@ export class ENSRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    setApprovalForAll(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setApprovalForAll(address,bool)"(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     setOwner(
       node: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "setOwner(bytes32,address)"(
       node: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setRecord(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setRecord(bytes32,address,address,uint64)"(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     setResolver(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "setResolver(bytes32,address)"(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     setSubnodeOwner(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "setSubnodeOwner(bytes32,bytes32,address)"(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setSubnodeRecord(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setSubnodeRecord(bytes32,bytes32,address,address,uint64)"(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     setTTL(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "setTTL(bytes32,uint64)"(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -393,12 +709,34 @@ export class ENSRegistry extends Contract {
   };
 
   populateTransaction: {
+    isApprovedForAll(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isApprovedForAll(address,address)"(
+      owner_: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "owner(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    recordExists(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "recordExists(bytes32)"(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -413,53 +751,99 @@ export class ENSRegistry extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    setApprovalForAll(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setApprovalForAll(address,bool)"(
+      operator: string,
+      approved: boolean,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     setOwner(
       node: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setOwner(bytes32,address)"(
       node: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setRecord(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setRecord(bytes32,address,address,uint64)"(
+      node: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     setResolver(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setResolver(bytes32,address)"(
       node: BytesLike,
-      resolver: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     setSubnodeOwner(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setSubnodeOwner(bytes32,bytes32,address)"(
       node: BytesLike,
       label: BytesLike,
-      owner: string,
+      owner_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setSubnodeRecord(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setSubnodeRecord(bytes32,bytes32,address,address,uint64)"(
+      node: BytesLike,
+      label: BytesLike,
+      owner_: string,
+      resolver_: string,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     setTTL(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setTTL(bytes32,uint64)"(
       node: BytesLike,
-      ttl: BigNumberish,
+      ttl_: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

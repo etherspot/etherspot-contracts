@@ -4,7 +4,7 @@ pragma solidity ^0.6.12;
 /**
  * @title ENS registry
  *
- * @dev Base on https://github.com/ensdomains/ens/blob/v0.2.2/contracts/ENSRegistry.sol
+ * @dev Base on https://github.com/ensdomains/ens/blob/ff0f41747c05f1598973b0fe7ad0d9e09565dfcd/contracts/ENSRegistry.sol
  */
 contract ENSRegistry {
   struct Record {
@@ -13,7 +13,8 @@ contract ENSRegistry {
     uint64 ttl;
   }
 
-  mapping(bytes32 => Record) private records;
+  mapping (bytes32 => Record) records;
+  mapping (address => mapping(address => bool)) operators;
 
   // events
 
@@ -38,88 +39,91 @@ contract ENSRegistry {
     uint64 ttl
   );
 
+  event ApprovalForAll(
+    address indexed owner,
+    address indexed operator,
+    bool approved
+  );
+
   // modifiers
 
-  modifier onlyNodeOwner(
+  modifier authorised(
     bytes32 node
-  ) {
+  )
+  {
+    address owner = records[node].owner;
+
     require(
-      records[node].owner == msg.sender,
-      "ENSRegistry: msg.sender is not the node owner"
+      owner == msg.sender || operators[owner][msg.sender],
+      "ENSRegistry: reverted by authorised modifier"
     );
 
     _;
   }
 
   /**
-   * @dev public constructor
+   * @dev Public constructor
    */
   constructor()
     public
   {
-    // solhint-disable-next-line avoid-tx-origin
     records[0x0].owner = tx.origin;
   }
 
   // external functions
 
-  function setOwner(
+  function setRecord(
     bytes32 node,
-    address owner
+    address owner_,
+    address resolver_,
+    uint64 ttl_
   )
     external
-    onlyNodeOwner(node)
   {
-    records[node].owner = owner;
+    setOwner(node, owner_);
 
-    emit Transfer(node, owner);
-  }
-
-  function setSubnodeOwner(
-    bytes32 node,
-    bytes32 label,
-    address owner
-  )
-    external
-    onlyNodeOwner(node)
-    returns(bytes32)
-  {
-    bytes32 subNode = keccak256(
-      abi.encodePacked(
-        node,
-        label
-      )
-    );
-
-    records[subNode].owner = owner;
-
-    emit NewOwner(node, label, owner);
-
-    return subNode;
-  }
-
-  function setResolver(
-    bytes32 node,
-    address resolver
-  )
-    external
-    onlyNodeOwner(node)
-  {
-    records[node].resolver = resolver;
-
-    emit NewResolver(node, resolver);
+    _setResolverAndTTL(node, resolver_, ttl_);
   }
 
   function setTTL(
     bytes32 node,
-    uint64 ttl
+    uint64 ttl_
   )
     external
-    onlyNodeOwner(node)
+    authorised(node)
   {
-    records[node].ttl = ttl;
+    records[node].ttl = ttl_;
 
-    emit NewTTL(node, ttl);
+    emit NewTTL(node, ttl_);
+  }
+
+  function setSubnodeRecord(
+    bytes32 node,
+    bytes32 label,
+    address owner_,
+    address resolver_,
+    uint64 ttl_
+  )
+    external
+  {
+    bytes32 subNode = setSubnodeOwner(node, label, owner_);
+
+    _setResolverAndTTL(subNode, resolver_, ttl_);
+  }
+
+  function setApprovalForAll(
+    address operator,
+    bool approved
+  )
+    external
+  {
+    operators[msg.sender][operator] = approved;
+
+    emit ApprovalForAll(
+      msg.sender,
+      operator,
+      approved
+    );
   }
 
   // external functions (views)
@@ -131,7 +135,13 @@ contract ENSRegistry {
     view
     returns (address)
   {
-    return records[node].owner;
+    address addr = records[node].owner;
+
+    if (addr == address(this)) {
+      return address(0x0);
+    }
+
+    return addr;
   }
 
   function resolver(
@@ -152,5 +162,92 @@ contract ENSRegistry {
     returns (uint64)
   {
     return records[node].ttl;
+  }
+
+  function recordExists(
+    bytes32 node
+  )
+    external
+    view
+    returns (bool)
+  {
+    return records[node].owner != address(0x0);
+  }
+
+  function isApprovedForAll(
+    address owner_,
+    address operator
+  )
+    external
+    view
+    returns (bool)
+  {
+    return operators[owner_][operator];
+  }
+
+  // public functions
+
+  function setOwner(
+    bytes32 node,
+    address owner_
+  )
+    public
+    authorised(node)
+  {
+    records[node].owner = owner_;
+
+    emit Transfer(node, owner_);
+  }
+
+  function setResolver(
+    bytes32 node,
+    address resolver_
+  )
+    public
+    authorised(node)
+  {
+    records[node].resolver = resolver_;
+
+    emit NewResolver(node, resolver_);
+  }
+
+  function setSubnodeOwner(
+    bytes32 node,
+    bytes32 label,
+    address owner_
+  )
+    public
+    authorised(node)
+    returns(bytes32)
+  {
+    bytes32 subNode = keccak256(abi.encodePacked(node, label));
+
+    records[subNode].owner = owner_;
+
+    emit NewOwner(node, label, owner_);
+
+    return subNode;
+  }
+
+  // private functions
+
+  function _setResolverAndTTL(
+    bytes32 node,
+    address resolver_,
+    uint64 ttl_
+  )
+    private
+  {
+    if (resolver_ != records[node].resolver) {
+      records[node].resolver = resolver_;
+
+      emit NewResolver(node, resolver_);
+    }
+
+    if (ttl_ != records[node].ttl) {
+      records[node].ttl = ttl_;
+
+      emit NewTTL(node, ttl_);
+    }
   }
 }

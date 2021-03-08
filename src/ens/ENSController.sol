@@ -364,8 +364,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
     nodes[subNode].addr = account;
 
-    registry.setSubnodeOwner(node, label, address(this));
-    registry.setResolver(subNode, address(this));
+    registry.setSubnodeRecord(node, label, address(this), address(this), 0);
     registry.setOwner(subNode, account);
 
     emit AddrChanged(subNode, account);
