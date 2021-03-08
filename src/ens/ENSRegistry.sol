@@ -13,8 +13,8 @@ contract ENSRegistry {
     uint64 ttl;
   }
 
-  mapping (bytes32 => Record) records;
-  mapping (address => mapping(address => bool)) operators;
+  mapping (bytes32 => Record) private records;
+  mapping (address => mapping(address => bool)) private operators;
 
   // events
 
