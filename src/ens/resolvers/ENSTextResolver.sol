@@ -10,7 +10,7 @@ import "./ENSAbstractResolver.sol";
  * @dev Base on https://github.com/ensdomains/resolvers/blob/f7d62ab04bfe1692a4344f6f1d31ff81315a98c3/contracts/profiles/TextResolver.sol
  */
 abstract contract ENSTextResolver is ENSAbstractResolver {
-  bytes4 internal constant INTERFACE_TEXT_ID = bytes4(keccak256(abi.encodePacked("pubkey(bytes32)")));
+  bytes4 internal constant INTERFACE_TEXT_ID = bytes4(keccak256(abi.encodePacked("text(bytes32,string)")));
 
   mapping(bytes32 => mapping(string => string)) resolverTexts;
 

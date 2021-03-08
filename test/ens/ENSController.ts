@@ -266,13 +266,11 @@ describe('ENSController', () => {
 
   context('setAddr()', () => {
     let account: SignerWithAddress;
-    let newOwner: SignerWithAddress;
 
     let subNode: Node;
 
     before(async () => {
       account = signers.pop();
-      newOwner = signers.pop();
 
       const nodeFactory = await createNodeFactory();
 
@@ -298,35 +296,26 @@ describe('ENSController', () => {
 
     it('expect to update addr by creator', async () => {
       const { node } = subNode;
+      const newOwner = randomAddress();
 
-      const {
-        events: [event],
-      } = await processTx(
-        ensController.connect(account).setAddr(node, newOwner.address),
+      const { events } = await processTx(
+        ensController
+          .connect(account)
+          ['setAddr(bytes32,address)'](node, newOwner),
       );
 
+      const event = events.find(({ event }) => event === 'AddrChanged');
+
+      expect(event).toBeDefined();
       expect(event.event).toBe('AddrChanged');
       expect(event.args.node).toBe(node);
-      expect(event.args.addr).toBe(newOwner.address);
-    });
-
-    it('expect to update addr by new owner', async () => {
-      const { node } = subNode;
-      const addr = randomAddress();
-
-      const {
-        events: [event],
-      } = await processTx(ensController.connect(newOwner).setAddr(node, addr));
-
-      expect(event.event).toBe('AddrChanged');
-      expect(event.args.node).toBe(node);
-      expect(event.args.addr).toBe(addr);
+      expect(event.args.addr).toBe(newOwner);
     });
 
     it('expect to reject when sender is not node owner', async () => {
       const { node } = subNode;
       await expect(
-        ensController.setAddr(node, randomAddress()),
+        ensController['setAddr(bytes32,address)'](node, randomAddress()),
       ).rejects.toThrow(/rever/);
     });
   });
@@ -344,11 +333,13 @@ describe('ENSController', () => {
     });
 
     it('expect to sync addr', async () => {
-      const {
-        events: [event],
-      } = await processTx(ensController.connect(owner).syncAddr(node));
+      const { events } = await processTx(
+        ensController.connect(owner).syncAddr(node),
+      );
 
-      expect(event.event).toBe('AddrChanged');
+      const event = events.find(({ event }) => event === 'AddrChanged');
+
+      expect(event).toBeDefined();
       expect(event.args.node).toBe(node);
       expect(event.args.addr).toBe(owner.address);
     });
@@ -391,6 +382,7 @@ describe('ENSController', () => {
 
       const event = events.find(({ event }) => event === 'AddrChanged');
 
+      expect(event).toBeDefined();
       expect(event.args.node).toBe(subNode.node);
       expect(event.args.addr).toBe(account.address);
     });
@@ -466,20 +458,20 @@ describe('ENSController', () => {
     });
 
     it('expect to return controller address for root node', async () => {
-      await expect(ensController.addr(nodeFactory.node)).resolves.toBe(
-        ensController.address,
-      );
+      await expect(
+        ensController['addr(bytes32)'](nodeFactory.node),
+      ).resolves.toBe(ensController.address);
     });
 
     it('expect to return owner address for sub node', async () => {
-      await expect(ensController.addr(subNode.node)).resolves.toBe(
+      await expect(ensController['addr(bytes32)'](subNode.node)).resolves.toBe(
         account.address,
       );
     });
 
     it('expect to return zero address for unknown node', async () => {
       await expect(
-        ensController.addr(randomHex32()),
+        ensController['addr(bytes32)'](randomHex32()),
       ).resolves.toBeZeroAddress();
     });
   });
@@ -496,6 +488,28 @@ describe('ENSController', () => {
     it('expect to return true for addr(bytes32) interface', async () => {
       await expect(
         ensController.supportsInterface(utils.id('addr(bytes32)').slice(0, 10)),
+      ).resolves.toBeTruthy();
+    });
+
+    it('expect to return true for name(bytes32) interface', async () => {
+      await expect(
+        ensController.supportsInterface(utils.id('name(bytes32)').slice(0, 10)),
+      ).resolves.toBeTruthy();
+    });
+
+    it('expect to return true for pubkey(bytes32) interface', async () => {
+      await expect(
+        ensController.supportsInterface(
+          utils.id('pubkey(bytes32)').slice(0, 10),
+        ),
+      ).resolves.toBeTruthy();
+    });
+
+    it('expect to return true for text(bytes32,string) interface', async () => {
+      await expect(
+        ensController.supportsInterface(
+          utils.id('text(bytes32,string)').slice(0, 10),
+        ),
       ).resolves.toBeTruthy();
     });
 

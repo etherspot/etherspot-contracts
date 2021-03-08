@@ -334,10 +334,9 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      _addr(node) == address(0),
+      _addr(subNode) == address(0),
       "ENSController: label already taken"
     );
-
 
     registry.setSubnodeRecord(node, label, address(this), address(this), 0);
     registry.setOwner(subNode, account);
@@ -346,7 +345,6 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   }
 
   // external functions (pure)
-
   function supportsInterface(
     bytes4 interfaceID
   )
@@ -354,7 +352,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     pure
     returns(bool)
   {
-    return interfaceID == INTERFACE_TEXT_ID ||
+    return interfaceID == INTERFACE_META_ID ||
     interfaceID == INTERFACE_ADDR_ID ||
     interfaceID == INTERFACE_ADDRESS_ID ||
     interfaceID == INTERFACE_NAME_ID ||
