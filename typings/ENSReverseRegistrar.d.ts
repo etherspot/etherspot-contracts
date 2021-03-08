@@ -22,18 +22,29 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface ENSReverseRegistrarInterface extends ethers.utils.Interface {
   functions: {
+    "ADDR_REVERSE_NODE()": FunctionFragment;
     "claim(address)": FunctionFragment;
-    "initialize(address,bytes32)": FunctionFragment;
+    "claimWithResolver(address,address)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "node(address)": FunctionFragment;
     "registry()": FunctionFragment;
-    "rootNode()": FunctionFragment;
+    "resolver()": FunctionFragment;
+    "setName(string)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "ADDR_REVERSE_NODE",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "claim", values: [string]): string;
   encodeFunctionData(
+    functionFragment: "claimWithResolver",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, BytesLike]
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
@@ -41,9 +52,18 @@ interface ENSReverseRegistrarInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "node", values: [string]): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
-  encodeFunctionData(functionFragment: "rootNode", values?: undefined): string;
+  encodeFunctionData(functionFragment: "resolver", values?: undefined): string;
+  encodeFunctionData(functionFragment: "setName", values: [string]): string;
 
+  decodeFunctionResult(
+    functionFragment: "ADDR_REVERSE_NODE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimWithResolver",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
@@ -51,7 +71,8 @@ interface ENSReverseRegistrarInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "node", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "rootNode", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "resolver", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
 
   events: {
     "Initialized(address)": EventFragment;
@@ -74,6 +95,10 @@ export class ENSReverseRegistrar extends Contract {
   interface: ENSReverseRegistrarInterface;
 
   functions: {
+    ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<[string]>;
+
+    "ADDR_REVERSE_NODE()"(overrides?: CallOverrides): Promise<[string]>;
+
     claim(owner: string, overrides?: Overrides): Promise<ContractTransaction>;
 
     "claim(address)"(
@@ -81,15 +106,27 @@ export class ENSReverseRegistrar extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    initialize(
-      registry_: string,
-      rootNode_: BytesLike,
+    claimWithResolver(
+      owner: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address,bytes32)"(
+    "claimWithResolver(address,address)"(
+      owner: string,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    initialize(
       registry_: string,
-      rootNode_: BytesLike,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "initialize(address,address)"(
+      registry_: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -97,18 +134,32 @@ export class ENSReverseRegistrar extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<[boolean]>;
 
-    node(addr: string, overrides?: CallOverrides): Promise<[string]>;
+    node(addr_: string, overrides?: CallOverrides): Promise<[string]>;
 
-    "node(address)"(addr: string, overrides?: CallOverrides): Promise<[string]>;
+    "node(address)"(
+      addr_: string,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     registry(overrides?: CallOverrides): Promise<[string]>;
 
     "registry()"(overrides?: CallOverrides): Promise<[string]>;
 
-    rootNode(overrides?: CallOverrides): Promise<[string]>;
+    resolver(overrides?: CallOverrides): Promise<[string]>;
 
-    "rootNode()"(overrides?: CallOverrides): Promise<[string]>;
+    "resolver()"(overrides?: CallOverrides): Promise<[string]>;
+
+    setName(name: string, overrides?: Overrides): Promise<ContractTransaction>;
+
+    "setName(string)"(
+      name: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
+
+  ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<string>;
+
+  "ADDR_REVERSE_NODE()"(overrides?: CallOverrides): Promise<string>;
 
   claim(owner: string, overrides?: Overrides): Promise<ContractTransaction>;
 
@@ -117,15 +168,27 @@ export class ENSReverseRegistrar extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  initialize(
-    registry_: string,
-    rootNode_: BytesLike,
+  claimWithResolver(
+    owner: string,
+    resolver_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address,bytes32)"(
+  "claimWithResolver(address,address)"(
+    owner: string,
+    resolver_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  initialize(
     registry_: string,
-    rootNode_: BytesLike,
+    resolver_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "initialize(address,address)"(
+    registry_: string,
+    resolver_: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -133,32 +196,55 @@ export class ENSReverseRegistrar extends Contract {
 
   "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
 
-  node(addr: string, overrides?: CallOverrides): Promise<string>;
+  node(addr_: string, overrides?: CallOverrides): Promise<string>;
 
-  "node(address)"(addr: string, overrides?: CallOverrides): Promise<string>;
+  "node(address)"(addr_: string, overrides?: CallOverrides): Promise<string>;
 
   registry(overrides?: CallOverrides): Promise<string>;
 
   "registry()"(overrides?: CallOverrides): Promise<string>;
 
-  rootNode(overrides?: CallOverrides): Promise<string>;
+  resolver(overrides?: CallOverrides): Promise<string>;
 
-  "rootNode()"(overrides?: CallOverrides): Promise<string>;
+  "resolver()"(overrides?: CallOverrides): Promise<string>;
+
+  setName(name: string, overrides?: Overrides): Promise<ContractTransaction>;
+
+  "setName(string)"(
+    name: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   callStatic: {
+    ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<string>;
+
+    "ADDR_REVERSE_NODE()"(overrides?: CallOverrides): Promise<string>;
+
     claim(owner: string, overrides?: CallOverrides): Promise<string>;
 
     "claim(address)"(owner: string, overrides?: CallOverrides): Promise<string>;
 
+    claimWithResolver(
+      owner: string,
+      resolver_: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "claimWithResolver(address,address)"(
+      owner: string,
+      resolver_: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     initialize(
       registry_: string,
-      rootNode_: BytesLike,
+      resolver_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(address,bytes32)"(
+    "initialize(address,address)"(
       registry_: string,
-      rootNode_: BytesLike,
+      resolver_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -166,17 +252,21 @@ export class ENSReverseRegistrar extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
 
-    node(addr: string, overrides?: CallOverrides): Promise<string>;
+    node(addr_: string, overrides?: CallOverrides): Promise<string>;
 
-    "node(address)"(addr: string, overrides?: CallOverrides): Promise<string>;
+    "node(address)"(addr_: string, overrides?: CallOverrides): Promise<string>;
 
     registry(overrides?: CallOverrides): Promise<string>;
 
     "registry()"(overrides?: CallOverrides): Promise<string>;
 
-    rootNode(overrides?: CallOverrides): Promise<string>;
+    resolver(overrides?: CallOverrides): Promise<string>;
 
-    "rootNode()"(overrides?: CallOverrides): Promise<string>;
+    "resolver()"(overrides?: CallOverrides): Promise<string>;
+
+    setName(name: string, overrides?: CallOverrides): Promise<string>;
+
+    "setName(string)"(name: string, overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -184,19 +274,35 @@ export class ENSReverseRegistrar extends Contract {
   };
 
   estimateGas: {
+    ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "ADDR_REVERSE_NODE()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     claim(owner: string, overrides?: Overrides): Promise<BigNumber>;
 
     "claim(address)"(owner: string, overrides?: Overrides): Promise<BigNumber>;
 
-    initialize(
-      registry_: string,
-      rootNode_: BytesLike,
+    claimWithResolver(
+      owner: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(address,bytes32)"(
+    "claimWithResolver(address,address)"(
+      owner: string,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    initialize(
       registry_: string,
-      rootNode_: BytesLike,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "initialize(address,address)"(
+      registry_: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -204,10 +310,10 @@ export class ENSReverseRegistrar extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    node(addr: string, overrides?: CallOverrides): Promise<BigNumber>;
+    node(addr_: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "node(address)"(
-      addr: string,
+      addr_: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -215,12 +321,22 @@ export class ENSReverseRegistrar extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    rootNode(overrides?: CallOverrides): Promise<BigNumber>;
+    resolver(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "rootNode()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "resolver()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setName(name: string, overrides?: Overrides): Promise<BigNumber>;
+
+    "setName(string)"(name: string, overrides?: Overrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "ADDR_REVERSE_NODE()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     claim(owner: string, overrides?: Overrides): Promise<PopulatedTransaction>;
 
     "claim(address)"(
@@ -228,15 +344,27 @@ export class ENSReverseRegistrar extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    initialize(
-      registry_: string,
-      rootNode_: BytesLike,
+    claimWithResolver(
+      owner: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,bytes32)"(
+    "claimWithResolver(address,address)"(
+      owner: string,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    initialize(
       registry_: string,
-      rootNode_: BytesLike,
+      resolver_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "initialize(address,address)"(
+      registry_: string,
+      resolver_: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -245,12 +373,12 @@ export class ENSReverseRegistrar extends Contract {
     "isInitialized()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     node(
-      addr: string,
+      addr_: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "node(address)"(
-      addr: string,
+      addr_: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -258,8 +386,15 @@ export class ENSReverseRegistrar extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    rootNode(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    resolver(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "rootNode()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    "resolver()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setName(name: string, overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    "setName(string)"(
+      name: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
   };
 }
