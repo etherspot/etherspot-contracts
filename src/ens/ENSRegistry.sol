@@ -82,6 +82,7 @@ contract ENSRegistry {
   )
     external
     onlyNodeOwner(node)
+    returns(bytes32)
   {
     bytes32 subNode = keccak256(
       abi.encodePacked(
@@ -93,6 +94,8 @@ contract ENSRegistry {
     records[subNode].owner = owner;
 
     emit NewOwner(node, label, owner);
+
+    return subNode;
   }
 
   function setResolver(
