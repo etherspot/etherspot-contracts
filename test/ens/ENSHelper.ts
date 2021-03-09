@@ -15,7 +15,6 @@ import {
 const { getSigners } = ethers;
 
 describe('ENSHelper', () => {
-  let signers: SignerWithAddress[];
   let ensController: ENSController;
   let ensRegistry: ENSRegistry;
   let ensHelpers: ENSHelper;
@@ -30,7 +29,7 @@ describe('ENSHelper', () => {
   const ensNamesHashes: string[] = [];
 
   before(async () => {
-    signers = await getSigners();
+    const signers = await getSigners();
     const sender = signers.pop();
 
     ensController = await deployContract('ENSController', [], sender);

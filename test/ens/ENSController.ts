@@ -14,7 +14,17 @@ import {
   deployContract,
   randomName,
 } from '../shared';
-import { NodeFactory, Node } from './interfaces';
+
+export interface Node {
+  name: string;
+  labelHash: string;
+  node: string;
+}
+
+export interface NodeFactory extends Node {
+  owner: SignerWithAddress;
+  createSubNode(): Node;
+}
 
 const { getSigners } = ethers;
 
