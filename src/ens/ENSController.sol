@@ -50,16 +50,6 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   // events
 
   /**
-   * @dev Emitted when the address field in node resolver is changed
-   * @param node node name hash
-   * @param addr new address
-   */
-  event AddrChanged(
-    bytes32 indexed node,
-    address addr
-  );
-
-  /**
    * @dev Emitted when new node is submitted
    * @param node node name hash
    * @param owner owner address
