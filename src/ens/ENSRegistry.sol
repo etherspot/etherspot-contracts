@@ -67,6 +67,7 @@ contract ENSRegistry {
   constructor()
     public
   {
+    // solhint-disable-next-line avoid-tx-origin
     records[0x0].owner = tx.origin;
   }
 

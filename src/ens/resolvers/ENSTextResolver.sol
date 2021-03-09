@@ -12,7 +12,7 @@ import "./ENSAbstractResolver.sol";
 abstract contract ENSTextResolver is ENSAbstractResolver {
   bytes4 internal constant INTERFACE_TEXT_ID = bytes4(keccak256(abi.encodePacked("text(bytes32,string)")));
 
-  mapping(bytes32 => mapping(string => string)) resolverTexts;
+  mapping(bytes32 => mapping(string => string)) internal resolverTexts;
 
   // events
 

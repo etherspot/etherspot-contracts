@@ -19,6 +19,7 @@ library AddressLib {
   {
     bytes32 result;
 
+    // solhint-disable-next-line no-inline-assembly
     assembly {
       let lookup := 0x3031323334353637383961626364656600000000000000000000000000000000
 
