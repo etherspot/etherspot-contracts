@@ -7,12 +7,12 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  await deploy('Utils', {
+  await deploy('BalancesHelper', {
     from,
     log: true,
   });
 };
 
-func.tags = ['create', 'utils'];
+func.tags = ['create', 'common'];
 
 module.exports = func;

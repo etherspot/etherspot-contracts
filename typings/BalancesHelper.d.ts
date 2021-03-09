@@ -19,7 +19,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface UtilsInterface extends ethers.utils.Interface {
+interface BalancesHelperInterface extends ethers.utils.Interface {
   functions: {
     "getBalances(address[],address[])": FunctionFragment;
   };
@@ -37,7 +37,7 @@ interface UtilsInterface extends ethers.utils.Interface {
   events: {};
 }
 
-export class Utils extends Contract {
+export class BalancesHelper extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -48,7 +48,7 @@ export class Utils extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: UtilsInterface;
+  interface: BalancesHelperInterface;
 
   functions: {
     getBalances(

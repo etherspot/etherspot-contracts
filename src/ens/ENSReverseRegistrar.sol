@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
+import "../common/libs/AddressLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "./resolvers/ENSNameResolver.sol";
 import "./ENSRegistry.sol";
@@ -11,6 +12,9 @@ import "./ENSRegistry.sol";
  * @dev Base on https://github.com/ensdomains/ens/blob/ff0f41747c05f1598973b0fe7ad0d9e09565dfcd/contracts/ReverseRegistrar.sol
  */
 contract ENSReverseRegistrar is Initializable {
+  using AddressLib for address;
+
+  // namehash('addr.reverse')
   bytes32 public constant ADDR_REVERSE_NODE = 0x91d1777781884d03a6757a803996e38de2a42967fb37eeaca72729271025a9e2;
 
   ENSRegistry public registry;
@@ -82,7 +86,7 @@ contract ENSReverseRegistrar is Initializable {
     pure
     returns (bytes32)
   {
-    return keccak256(abi.encodePacked(ADDR_REVERSE_NODE, _sha3HexAddress(addr_)));
+    return keccak256(abi.encodePacked(ADDR_REVERSE_NODE, addr_.toSha3Hash()));
   }
 
   // private functions
@@ -94,7 +98,7 @@ contract ENSReverseRegistrar is Initializable {
     private
     returns (bytes32)
   {
-    bytes32 label = _sha3HexAddress(msg.sender);
+    bytes32 label = address(msg.sender).toSha3Hash();
     bytes32 node_ = keccak256(abi.encodePacked(ADDR_REVERSE_NODE, label));
     address currentOwner = registry.owner(node_);
 
@@ -113,34 +117,5 @@ contract ENSReverseRegistrar is Initializable {
     }
 
     return node_;
-  }
-
-  // private functions (pure)
-
-  function _sha3HexAddress(
-    address addr_
-  )
-    private
-    pure
-    returns (bytes32)
-  {
-    bytes32 result;
-
-    assembly {
-      let lookup := 0x3031323334353637383961626364656600000000000000000000000000000000
-
-      for { let i := 40 } gt(i, 0) { } {
-        i := sub(i, 1)
-        mstore8(i, byte(and(addr_, 0xf), lookup))
-        addr_ := div(addr_, 0x10)
-        i := sub(i, 1)
-        mstore8(i, byte(and(addr_, 0xf), lookup))
-        addr_ := div(addr_, 0x10)
-      }
-
-      result := keccak256(0, 40)
-    }
-
-    return result;
   }
 }

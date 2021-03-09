@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "../common/token/ERC20Token.sol";
-import "../common/libs/SafeMathLib.sol";
+import "../token/ERC20Token.sol";
+import "../libs/SafeMathLib.sol";
 
 
 /**
- * @title Utils
+ * @title Balances helper
  *
  * @author Jegor Sidorenko <jegor@pillarproject.io>
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract Utils {
+contract BalancesHelper {
   using SafeMathLib for uint256;
 
   // external functions

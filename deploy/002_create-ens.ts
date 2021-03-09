@@ -16,8 +16,18 @@ const func: DeployFunction = async hre => {
     log: true,
   });
 
+  await deploy('ENSLookupHelper', {
+    from,
+    log: true,
+  });
+
   if (!ensRegistryAddress) {
     await deploy('ENSRegistry', {
+      from,
+      log: true,
+    });
+
+    await deploy('ENSReverseRegistrar', {
       from,
       log: true,
     });
