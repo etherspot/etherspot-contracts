@@ -54,6 +54,7 @@ const func: DeployFunction = async hre => {
     );
   }
 
+  // only on not mainnet network
   if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
     if (await read('ENSReverseRegistrar', 'isInitialized')) {
       log('ENSReverseRegistrar already initialized');

@@ -16,6 +16,7 @@ import { SignerWithAddress, ProcessedTx, TypedDataFactory } from './interfaces';
 
 const { provider } = ethers;
 
+let nameCounter = 0;
 let currentNonce = 0;
 
 export function getNextNonce(): number {
@@ -43,6 +44,10 @@ export function randomAddress(): string {
   }
 
   return result;
+}
+
+export function randomName(): string {
+  return `test${++nameCounter}`;
 }
 
 export function randomHex32(): string {

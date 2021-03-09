@@ -35,6 +35,8 @@ contract ENSHelper is Initializable {
     registry = registry_;
   }
 
+  // external functions (views)
+
   /**
    * @notice Gets nodes addresses
    * @param nodes array of nodes
@@ -51,11 +53,7 @@ contract ENSHelper is Initializable {
     address[] memory result = new address[](nodesLen);
 
     for (uint i = 0; i < nodesLen; i++) {
-      address resolver = registry.resolver(nodes[i]);
-
-      if (resolver != address(0)) {
-        result[i] = ENSAddressResolver(resolver).addr(nodes[i]);
-      }
+      result[i] = _getAddress(nodes[i]);
     }
 
     return result;
@@ -77,10 +75,50 @@ contract ENSHelper is Initializable {
     string[] memory result = new string[](nodesLen);
 
     for (uint i = 0; i < nodesLen; i++) {
-      address resolver = registry.resolver(nodes[i]);
+      result[i] = _getName(nodes[i]);
+    }
 
-      if (resolver != address(0)) {
-        result[i] = ENSNameResolver(resolver).name(nodes[i]);
+    return result;
+  }
+
+  // private functions (views)
+
+  function _getAddress(
+    bytes32 node
+  )
+    private
+    view
+    returns (address)
+  {
+    address result;
+    address resolver = registry.resolver(node);
+
+    if (resolver != address(0)) {
+      try ENSAddressResolver(resolver).addr(node) returns (address addr) {
+        result = addr;
+      } catch {
+        //
+      }
+    }
+
+    return result;
+  }
+
+  function _getName(
+    bytes32 node
+  )
+    private
+    view
+    returns (string memory)
+  {
+    string memory result;
+    address resolver = registry.resolver(node);
+
+    if (resolver != address(0)) {
+      try ENSNameResolver(resolver).name(node) returns (string memory name) {
+        result = name;
+      } catch {
+        //
       }
     }
 

@@ -12,13 +12,13 @@ const { getSigners, constants } = ethers;
 
 describe('BalancesHelper', () => {
   let signers: SignerWithAddress[];
-  let helper: BalancesHelper;
+  let balancesHelper: BalancesHelper;
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {
     signers = await getSigners();
 
-    helper = await deployContract('BalancesHelper');
+    balancesHelper = await deployContract('BalancesHelper');
     wrappedWeiToken = await deployContract('WrappedWeiToken');
   });
 
@@ -44,7 +44,7 @@ describe('BalancesHelper', () => {
       const randomOwner = randomAddress();
       const randomToken = randomAddress();
 
-      const output: BigNumber[] = await helper.getBalances(
+      const output: BigNumber[] = await balancesHelper.getBalances(
         [owner.address, randomOwner],
         [wrappedWeiToken.address, randomToken, constants.AddressZero],
       );

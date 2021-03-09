@@ -12,6 +12,7 @@ import {
   TypedDataFactory,
   randomHex32,
   deployContract,
+  randomName,
 } from '../shared';
 import { NodeFactory, Node } from './interfaces';
 
@@ -24,8 +25,6 @@ describe('ENSController', () => {
   let ensController: ENSController;
   let ensRegistry: ENSRegistry;
 
-  let nameCounter = 0;
-
   let subNodeRegistrationTypedDataFactory: TypedDataFactory<{
     account: string;
     node: string;
@@ -35,9 +34,7 @@ describe('ENSController', () => {
   const createNodeFactory: (addNode?: boolean) => Promise<NodeFactory> = async (
     addNode = true,
   ) => {
-    nameCounter += 1;
-
-    const name = `test${nameCounter}`;
+    const name = randomName();
     const labelHash = utils.id(name);
     const node = utils.namehash(name);
 
@@ -63,8 +60,7 @@ describe('ENSController', () => {
       labelHash,
       node,
       createSubNode: () => {
-        nameCounter += 1;
-        const label = `test${nameCounter}`;
+        const label = randomName();
         return {
           name: `${label}.${name}`,
           labelHash: utils.id(label),
