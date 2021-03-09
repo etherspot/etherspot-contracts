@@ -20,13 +20,23 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface ENSLookupHelperInterface extends ethers.utils.Interface {
+interface ENSHelperInterface extends ethers.utils.Interface {
   functions: {
+    "getAddresses(bytes32[])": FunctionFragment;
+    "getNames(bytes32[])": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "registry()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "getAddresses",
+    values: [BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNames",
+    values: [BytesLike[]]
+  ): string;
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
@@ -34,6 +44,11 @@ interface ENSLookupHelperInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
 
+  decodeFunctionResult(
+    functionFragment: "getAddresses",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getNames", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
@@ -48,7 +63,7 @@ interface ENSLookupHelperInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
 }
 
-export class ENSLookupHelper extends Contract {
+export class ENSHelper extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -59,9 +74,29 @@ export class ENSLookupHelper extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: ENSLookupHelperInterface;
+  interface: ENSHelperInterface;
 
   functions: {
+    getAddresses(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
+    "getAddresses(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
+    getNames(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
+    "getNames(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
     initialize(
       registry_: string,
       overrides?: Overrides
@@ -80,6 +115,23 @@ export class ENSLookupHelper extends Contract {
 
     "registry()"(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  getAddresses(
+    nodes: BytesLike[],
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
+  "getAddresses(bytes32[])"(
+    nodes: BytesLike[],
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
+  getNames(nodes: BytesLike[], overrides?: CallOverrides): Promise<string[]>;
+
+  "getNames(bytes32[])"(
+    nodes: BytesLike[],
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   initialize(
     registry_: string,
@@ -100,6 +152,23 @@ export class ENSLookupHelper extends Contract {
   "registry()"(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    getAddresses(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
+    "getAddresses(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
+    getNames(nodes: BytesLike[], overrides?: CallOverrides): Promise<string[]>;
+
+    "getNames(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
     initialize(registry_: string, overrides?: CallOverrides): Promise<void>;
 
     "initialize(address)"(
@@ -121,6 +190,23 @@ export class ENSLookupHelper extends Contract {
   };
 
   estimateGas: {
+    getAddresses(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getAddresses(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getNames(nodes: BytesLike[], overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getNames(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     initialize(registry_: string, overrides?: Overrides): Promise<BigNumber>;
 
     "initialize(address)"(
@@ -138,6 +224,26 @@ export class ENSLookupHelper extends Contract {
   };
 
   populateTransaction: {
+    getAddresses(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getAddresses(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getNames(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getNames(bytes32[])"(
+      nodes: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initialize(
       registry_: string,
       overrides?: Overrides

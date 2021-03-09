@@ -16,7 +16,7 @@ const func: DeployFunction = async hre => {
     log: true,
   });
 
-  await deploy('ENSLookupHelper', {
+  await deploy('ENSHelper', {
     from,
     log: true,
   });

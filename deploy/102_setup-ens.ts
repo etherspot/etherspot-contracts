@@ -40,11 +40,11 @@ const func: DeployFunction = async hre => {
     );
   }
 
-  if (await read('ENSLookupHelper', 'isInitialized')) {
-    log('ENSLookupHelper already initialized');
+  if (await read('ENSHelper', 'isInitialized')) {
+    log('ENSHelper already initialized');
   } else {
     await execute(
-      'ENSLookupHelper',
+      'ENSHelper',
       {
         from,
         log: true,
