@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.0.1",
+  "version": "1.1.0-beta.1",
   "description": "ETHERspot contracts",
   "keywords": [
     "ether",
@@ -51,6 +51,7 @@
     "verify:kovan": "hardhat verify-all --network kovan",
     "test": "hardhat test"
   },
+  "dependencies": {},
   "devDependencies": {
     "@nomiclabs/hardhat-etherscan": "2.1.1",
     "@typechain/ethers-v5": "5.0.0",

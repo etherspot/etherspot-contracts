@@ -25,20 +25,26 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "addGuardian(address)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
     "gateway()": FunctionFragment;
-    "getNode(bytes32)": FunctionFragment;
     "hashSubNodeRegistration(tuple)": FunctionFragment;
     "initialize(address,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
+    "name(bytes32)": FunctionFragment;
+    "nodeOwners(bytes32)": FunctionFragment;
+    "pubkey(bytes32)": FunctionFragment;
     "registerSubNode(bytes32,bytes32,bytes)": FunctionFragment;
     "registry()": FunctionFragment;
     "releaseNode(bytes32)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
-    "setAddr(bytes32,address)": FunctionFragment;
+    "setAddr(bytes32,uint256,bytes)": FunctionFragment;
+    "setName(bytes32,string)": FunctionFragment;
+    "setPubkey(bytes32,bytes32,bytes32)": FunctionFragment;
     "setRegistry(address)": FunctionFragment;
+    "setText(bytes32,string,string)": FunctionFragment;
     "submitNode(bytes32)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "syncAddr(bytes32)": FunctionFragment;
+    "text(bytes32,string)": FunctionFragment;
     "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
     "verifyNode(bytes32)": FunctionFragment;
@@ -47,7 +53,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getNode", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "hashSubNodeRegistration",
     values: [{ account: string; node: BytesLike; label: BytesLike }]
@@ -61,6 +66,12 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "isInitialized",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "name", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "nodeOwners",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: "pubkey", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "registerSubNode",
     values: [BytesLike, BytesLike, BytesLike]
@@ -76,9 +87,21 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setAddr",
+    values: [BytesLike, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setName",
     values: [BytesLike, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "setPubkey",
+    values: [BytesLike, BytesLike, BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "setRegistry", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setText",
+    values: [BytesLike, string, string]
+  ): string;
   encodeFunctionData(
     functionFragment: "submitNode",
     values: [BytesLike]
@@ -88,6 +111,10 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "syncAddr", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "text",
+    values: [BytesLike, string]
+  ): string;
   encodeFunctionData(
     functionFragment: "typedDataDomainSeparator",
     values?: undefined
@@ -107,7 +134,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getNode", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "hashSubNodeRegistration",
     data: BytesLike
@@ -118,6 +144,9 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     functionFragment: "isInitialized",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "nodeOwners", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pubkey", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerSubNode",
     data: BytesLike
@@ -132,16 +161,20 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setAddr", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setPubkey", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setRegistry",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setText", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "submitNode", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "syncAddr", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "text", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "typedDataDomainSeparator",
     data: BytesLike
@@ -154,23 +187,31 @@ interface ENSControllerInterface extends ethers.utils.Interface {
 
   events: {
     "AddrChanged(bytes32,address)": EventFragment;
+    "AddressChanged(bytes32,uint256,bytes)": EventFragment;
     "GuardianAdded(address,address)": EventFragment;
     "GuardianRemoved(address,address)": EventFragment;
     "Initialized(address)": EventFragment;
+    "NameChanged(bytes32,string)": EventFragment;
     "NodeReleased(bytes32,address)": EventFragment;
     "NodeSubmitted(bytes32,address)": EventFragment;
     "NodeVerified(bytes32)": EventFragment;
+    "PubkeyChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RegistryChanged(address)": EventFragment;
+    "TextChanged(bytes32,string,string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AddrChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AddressChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GuardianRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NameChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NodeReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NodeSubmitted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NodeVerified"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PubkeyChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RegistryChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TextChanged"): EventFragment;
 }
 
 export class ENSController extends Contract {
@@ -197,26 +238,20 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    addr(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
-
     "addr(bytes32)"(
       node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "addr(bytes32,uint256)"(
+      node: BytesLike,
+      coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
-
-    getNode(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
-
-    "getNode(bytes32)"(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -267,6 +302,30 @@ export class ENSController extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<[boolean]>;
 
+    name(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+
+    "name(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    nodeOwners(arg0: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+
+    "nodeOwners(bytes32)"(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    pubkey(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { x: string; y: string }>;
+
+    "pubkey(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { x: string; y: string }>;
+
     registerSubNode(
       node: BytesLike,
       label: BytesLike,
@@ -305,15 +364,42 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setAddr(
+    "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
-      addr: string,
+      coinType: BigNumberish,
+      addr_: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "setAddr(bytes32,address)"(
       node: BytesLike,
-      addr: string,
+      addr_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setName(bytes32,string)"(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setPubkey(bytes32,bytes32,bytes32)"(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -324,6 +410,20 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setText(bytes32,string,string)"(
+      node: BytesLike,
+      key: string,
+      value: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -356,6 +456,18 @@ export class ENSController extends Contract {
       node: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    text(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "text(bytes32,string)"(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
 
@@ -394,23 +506,17 @@ export class ENSController extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  addr(node: BytesLike, overrides?: CallOverrides): Promise<string>;
-
   "addr(bytes32)"(node: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  "addr(bytes32,uint256)"(
+    node: BytesLike,
+    coinType: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
-
-  getNode(
-    node: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
-
-  "getNode(bytes32)"(
-    node: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
 
   hashSubNodeRegistration(
     subNodeRegistration: { account: string; node: BytesLike; label: BytesLike },
@@ -453,6 +559,27 @@ export class ENSController extends Contract {
 
   "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
 
+  name(node: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  "name(bytes32)"(node: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  nodeOwners(arg0: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  "nodeOwners(bytes32)"(
+    arg0: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  pubkey(
+    node: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<[string, string] & { x: string; y: string }>;
+
+  "pubkey(bytes32)"(
+    node: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<[string, string] & { x: string; y: string }>;
+
   registerSubNode(
     node: BytesLike,
     label: BytesLike,
@@ -491,15 +618,42 @@ export class ENSController extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setAddr(
+  "setAddr(bytes32,uint256,bytes)"(
     node: BytesLike,
-    addr: string,
+    coinType: BigNumberish,
+    addr_: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "setAddr(bytes32,address)"(
     node: BytesLike,
-    addr: string,
+    addr_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setName(
+    node: BytesLike,
+    name: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setName(bytes32,string)"(
+    node: BytesLike,
+    name: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setPubkey(
+    node: BytesLike,
+    x: BytesLike,
+    y: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setPubkey(bytes32,bytes32,bytes32)"(
+    node: BytesLike,
+    x: BytesLike,
+    y: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -510,6 +664,20 @@ export class ENSController extends Contract {
 
   "setRegistry(address)"(
     registry_: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setText(
+    node: BytesLike,
+    key: string,
+    value: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setText(bytes32,string,string)"(
+    node: BytesLike,
+    key: string,
+    value: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -542,6 +710,18 @@ export class ENSController extends Contract {
     node: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  text(
+    node: BytesLike,
+    key: string,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "text(bytes32,string)"(
+    node: BytesLike,
+    key: string,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
@@ -577,26 +757,20 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    addr(node: BytesLike, overrides?: CallOverrides): Promise<string>;
-
     "addr(bytes32)"(
       node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "addr(bytes32,uint256)"(
+      node: BytesLike,
+      coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
     gateway(overrides?: CallOverrides): Promise<string>;
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
-
-    getNode(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
-
-    "getNode(bytes32)"(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[string, string] & { nodeAddr: string; nodeOwner: string }>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -647,6 +821,30 @@ export class ENSController extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<boolean>;
 
+    name(node: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+    "name(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    nodeOwners(arg0: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+    "nodeOwners(bytes32)"(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    pubkey(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { x: string; y: string }>;
+
+    "pubkey(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { x: string; y: string }>;
+
     registerSubNode(
       node: BytesLike,
       label: BytesLike,
@@ -679,15 +877,42 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setAddr(
+    "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
-      addr: string,
+      coinType: BigNumberish,
+      addr_: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "setAddr(bytes32,address)"(
       node: BytesLike,
-      addr: string,
+      addr_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setName(bytes32,string)"(
+      node: BytesLike,
+      name: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setPubkey(bytes32,bytes32,bytes32)"(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -695,6 +920,20 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setText(bytes32,string,string)"(
+      node: BytesLike,
+      key: string,
+      value: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -721,6 +960,18 @@ export class ENSController extends Contract {
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    text(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "text(bytes32,string)"(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
 
@@ -749,11 +1000,19 @@ export class ENSController extends Contract {
   filters: {
     AddrChanged(node: BytesLike | null, addr: null): EventFilter;
 
+    AddressChanged(
+      node: BytesLike | null,
+      coinType: null,
+      newAddress: null
+    ): EventFilter;
+
     GuardianAdded(sender: null, guardian: null): EventFilter;
 
     GuardianRemoved(sender: null, guardian: null): EventFilter;
 
     Initialized(initializer: null): EventFilter;
+
+    NameChanged(node: BytesLike | null, name: null): EventFilter;
 
     NodeReleased(node: null, owner: null): EventFilter;
 
@@ -761,7 +1020,15 @@ export class ENSController extends Contract {
 
     NodeVerified(node: null): EventFilter;
 
+    PubkeyChanged(node: BytesLike | null, x: null, y: null): EventFilter;
+
     RegistryChanged(registry: null): EventFilter;
+
+    TextChanged(
+      node: BytesLike | null,
+      indexedKey: string | null,
+      key: null
+    ): EventFilter;
   };
 
   estimateGas: {
@@ -772,23 +1039,20 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    addr(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-
     "addr(bytes32)"(
       node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "addr(bytes32,uint256)"(
+      node: BytesLike,
+      coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getNode(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getNode(bytes32)"(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -839,6 +1103,27 @@ export class ENSController extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    name(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "name(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    nodeOwners(arg0: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "nodeOwners(bytes32)"(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    pubkey(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "pubkey(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     registerSubNode(
       node: BytesLike,
       label: BytesLike,
@@ -871,15 +1156,42 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setAddr(
+    "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
-      addr: string,
+      coinType: BigNumberish,
+      addr_: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "setAddr(bytes32,address)"(
       node: BytesLike,
-      addr: string,
+      addr_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setName(bytes32,string)"(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setPubkey(bytes32,bytes32,bytes32)"(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -887,6 +1199,20 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setText(bytes32,string,string)"(
+      node: BytesLike,
+      key: string,
+      value: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -912,6 +1238,18 @@ export class ENSController extends Contract {
     "syncAddr(bytes32)"(
       node: BytesLike,
       overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    text(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "text(bytes32,string)"(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
@@ -949,29 +1287,20 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    addr(
+    "addr(bytes32)"(
       node: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "addr(bytes32)"(
+    "addr(bytes32,uint256)"(
       node: BytesLike,
+      coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getNode(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getNode(bytes32)"(
-      node: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     hashSubNodeRegistration(
       subNodeRegistration: {
@@ -1025,6 +1354,36 @@ export class ENSController extends Contract {
 
     "isInitialized()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    name(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "name(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    nodeOwners(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "nodeOwners(bytes32)"(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pubkey(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "pubkey(bytes32)"(
+      node: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     registerSubNode(
       node: BytesLike,
       label: BytesLike,
@@ -1063,15 +1422,42 @@ export class ENSController extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    setAddr(
+    "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
-      addr: string,
+      coinType: BigNumberish,
+      addr_: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setAddr(bytes32,address)"(
       node: BytesLike,
-      addr: string,
+      addr_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setName(bytes32,string)"(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setPubkey(bytes32,bytes32,bytes32)"(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1082,6 +1468,20 @@ export class ENSController extends Contract {
 
     "setRegistry(address)"(
       registry_: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setText(bytes32,string,string)"(
+      node: BytesLike,
+      key: string,
+      value: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1113,6 +1513,18 @@ export class ENSController extends Contract {
     "syncAddr(bytes32)"(
       node: BytesLike,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    text(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "text(bytes32,string)"(
+      node: BytesLike,
+      key: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     typedDataDomainSeparator(

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "Utils",
-  "sourceName": "src/utils/Utils.sol",
+  "contractName": "BalancesHelper",
+  "sourceName": "src/common/helpers/BalancesHelper.sol",
   "abi": [
     {
       "inputs": [

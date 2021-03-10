@@ -6,6 +6,10 @@ import "../common/access/Guarded.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/typedData/TypedDataContainer.sol";
 import "../gateway/GatewayRecipient.sol";
+import "./resolvers/ENSAddressResolver.sol";
+import "./resolvers/ENSNameResolver.sol";
+import "./resolvers/ENSPubKeyResolver.sol";
+import "./resolvers/ENSTextResolver.sol";
 import "./ENSRegistry.sol";
 
 
@@ -26,17 +30,14 @@ import "./ENSRegistry.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
-  struct Node {
-    address addr;
-    address owner;
-  }
-
+contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient, ENSAddressResolver, ENSNameResolver, ENSPubKeyResolver, ENSTextResolver {
   struct SubNodeRegistration {
     address account;
     bytes32 node;
     bytes32 label;
   }
+
+  bytes4 private constant INTERFACE_META_ID = bytes4(keccak256(abi.encodePacked("supportsInterface(bytes4)")));
 
   bytes32 private constant SUB_NODE_REGISTRATION_TYPE_HASH = keccak256(
     "SubNodeRegistration(address account,bytes32 node,bytes32 label)"
@@ -44,19 +45,9 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
   ENSRegistry public registry;
 
-  mapping(bytes32 => Node) private nodes;
+  mapping(bytes32 => address) public nodeOwners;
 
   // events
-
-  /**
-   * @dev Emitted when the address field in node resolver is changed
-   * @param node node name hash
-   * @param addr new address
-   */
-  event AddrChanged(
-    bytes32 indexed node,
-    address addr
-  );
 
   /**
    * @dev Emitted when new node is submitted
@@ -181,12 +172,12 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     address owner = _getContextAccount();
 
     require(
-      nodes[node].addr == address(0),
+      _addr(node) == address(0),
       "ENSController: node already exists"
     );
 
     require(
-      nodes[node].owner == address(0),
+      nodeOwners[node] == address(0),
       "ENSController: node already submitted"
     );
 
@@ -195,7 +186,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
       "ENSController: invalid ens node owner"
     );
 
-    nodes[node].owner = owner;
+    nodeOwners[node] = owner;
 
     emit NodeSubmitted(node, owner);
   }
@@ -213,12 +204,12 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     address owner = _getContextAccount();
 
     require(
-      nodes[node].addr == address(0),
+      _addr(node) == address(0),
       "ENSController: node already exists"
     );
 
     require(
-      nodes[node].owner == owner,
+      nodeOwners[node] == owner,
       "ENSController: invalid node owner"
     );
 
@@ -227,7 +218,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
       "ENSController: invalid ens node owner"
     );
 
-    nodes[node].addr = address(this);
+    _setAddr(node, address(this));
 
     registry.setResolver(node, address(this));
 
@@ -247,43 +238,20 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     address owner = _getContextAccount();
 
     require(
-      nodes[node].addr == address(this),
+      _addr(node) == address(this),
       "ENSController: node doesn't exist"
     );
 
     require(
-      nodes[node].owner == owner,
+      nodeOwners[node] == owner,
       "ENSController: invalid node owner"
     );
 
     registry.setOwner(node, owner);
 
-    delete nodes[node].addr;
-    delete nodes[node].owner;
+    delete nodeOwners[node];
 
     emit NodeReleased(node, owner);
-  }
-
-  /**
-   * @notice Sets address
-   * @dev Used in address resolver
-   * @param node node name hash
-   * @param addr address
-   */
-  function setAddr(
-    bytes32 node,
-    address addr
-  )
-    external
-  {
-    require(
-      nodes[node].addr == _getContextAccount(),
-      "ENSController: caller is not the node owner"
-    );
-
-    nodes[node].addr = addr;
-
-    emit AddrChanged(node, addr);
   }
 
   /**
@@ -308,13 +276,11 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      nodes[node].addr == address(0),
+      _addr(node) == address(0),
       "ENSController: node already in sync"
     );
 
-    nodes[node].addr = account;
-
-    emit AddrChanged(node, account);
+    _setAddr(node, account);
   }
 
   /**
@@ -353,75 +319,35 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     );
 
     require(
-      nodes[node].addr == address(this),
+      _addr(node) == address(this),
       "ENSController: invalid node"
     );
 
     require(
-      nodes[subNode].addr == address(0),
+      _addr(subNode) == address(0),
       "ENSController: label already taken"
     );
 
-    nodes[subNode].addr = account;
-
-    registry.setSubnodeOwner(node, label, address(this));
-    registry.setResolver(subNode, address(this));
+    registry.setSubnodeRecord(node, label, address(this), address(this), 0);
     registry.setOwner(subNode, account);
 
-    emit AddrChanged(subNode, account);
-  }
-
-  // external functions (views)
-
-  /**
-   * @notice Gets address
-   * @dev Used in address resolver
-   * @param node node name hash
-   * @return node address
-   */
-  function addr(
-    bytes32 node
-  )
-    external
-    view
-    returns (address)
-  {
-    return nodes[node].addr;
-  }
-  /**
-   * @notice Gets node
-   * @param node node name hash
-   */
-  function getNode(
-    bytes32 node
-  )
-    external
-    view
-    returns (address nodeAddr, address nodeOwner)
-  {
-    return (nodes[node].addr, nodes[node].owner);
+    _setAddr(subNode, account);
   }
 
   // external functions (pure)
-
-  /**
-   * @notice Checks if contract supports interface
-   * @param interfaceID method signature
-   * @return true when contract supports interface
-   */
   function supportsInterface(
     bytes4 interfaceID
   )
     external
     pure
-    returns (bool)
+    returns(bool)
   {
-    return (
-      /// @dev bytes4(keccak256('supportsInterface(bytes4)'));
-      interfaceID == 0x01ffc9a7 ||
-      /// @dev bytes4(keccak256('addr(bytes32)'));
-      interfaceID == 0x3b3b57de
-    );
+    return interfaceID == INTERFACE_META_ID ||
+    interfaceID == INTERFACE_ADDR_ID ||
+    interfaceID == INTERFACE_ADDRESS_ID ||
+    interfaceID == INTERFACE_NAME_ID ||
+    interfaceID == INTERFACE_PUB_KEY_ID ||
+    interfaceID == INTERFACE_TEXT_ID;
   }
 
   // public functions (views)
@@ -445,6 +371,19 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
         subNodeRegistration.label
       )
     );
+  }
+
+  // internal functions (views)
+
+  function _isNodeOwner(
+    bytes32 node
+  )
+    internal
+    override
+    view
+    returns (bool)
+  {
+    return registry.owner(node) == _getContextAccount();
   }
 
   // private functions (pure)

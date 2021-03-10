@@ -40,14 +40,86 @@ const func: DeployFunction = async hre => {
     );
   }
 
+  if (await read('ENSHelper', 'isInitialized')) {
+    log('ENSHelper already initialized');
+  } else {
+    await execute(
+      'ENSHelper',
+      {
+        from,
+        log: true,
+      },
+      'initialize',
+      ensRegistryAddress,
+    );
+  }
+
+  // only on not mainnet network
   if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
+    if (await read('ENSReverseRegistrar', 'isInitialized')) {
+      log('ENSReverseRegistrar already initialized');
+    } else {
+      await execute(
+        'ENSReverseRegistrar',
+        {
+          from,
+          log: true,
+        },
+        'initialize',
+        ensRegistry.address,
+        ensController.address,
+      );
+    }
+
+    // adds `addr.reverse` name to reverse registrar
+    {
+      const ensReverseRegistrar = await get('ENSReverseRegistrar');
+      const tld = 'reverse';
+      const label = 'addr';
+      const name = `${label}.${tld}`;
+
+      let owner = await read('ENSRegistry', 'owner', utils.namehash(tld));
+
+      if (owner === constants.AddressZero) {
+        await execute(
+          'ENSRegistry',
+          {
+            from,
+            log: true,
+          },
+          'setSubnodeOwner',
+          constants.HashZero,
+          utils.id(tld),
+          from,
+        );
+      }
+
+      owner = await read('ENSRegistry', 'owner', utils.namehash(name));
+
+      if (owner === constants.AddressZero) {
+        await execute(
+          'ENSRegistry',
+          {
+            from,
+            log: true,
+          },
+          'setSubnodeOwner',
+          utils.namehash(tld),
+          utils.id(label),
+          ensReverseRegistrar.address,
+        );
+      }
+    }
+
+    // adds and verifies controller root nodes
+
     for (const name of ens.internalTopLevelDomains) {
       const nameHash = utils.namehash(name);
       const labelHash = utils.id(name);
 
-      let ensOwner = await read('ENSRegistry', 'owner', nameHash);
+      let owner: string = await read('ENSRegistry', 'owner', nameHash);
 
-      if (ensOwner === constants.AddressZero) {
+      if (owner === constants.AddressZero) {
         await execute(
           'ENSRegistry',
           {
@@ -61,13 +133,11 @@ const func: DeployFunction = async hre => {
         );
       }
 
-      const {
-        nodeAddr,
-        nodeOwner,
-      }: {
-        nodeAddr: string;
-        nodeOwner: string;
-      } = await read('ENSController', 'getNode', nameHash);
+      const nodeOwner: string = await read(
+        'ENSController',
+        'nodeOwners',
+        nameHash,
+      );
 
       if (nodeOwner === constants.AddressZero) {
         await execute(
@@ -81,9 +151,9 @@ const func: DeployFunction = async hre => {
         );
       }
 
-      ensOwner = await read('ENSRegistry', 'owner', nameHash);
+      owner = await read('ENSRegistry', 'owner', nameHash);
 
-      if (ensOwner === from) {
+      if (owner === from) {
         await execute(
           'ENSRegistry',
           {
@@ -96,7 +166,9 @@ const func: DeployFunction = async hre => {
         );
       }
 
-      if (nodeAddr === constants.AddressZero) {
+      const addr = await read('ENSController', 'addr(bytes32)', nameHash);
+
+      if (addr === constants.AddressZero) {
         await execute(
           'ENSController',
           {

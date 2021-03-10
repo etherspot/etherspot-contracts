@@ -11,11 +11,13 @@ import {
   TYPED_DATA_DOMAIN_NAME,
   TYPED_DATA_DOMAIN_VERSION,
   TYPED_DATA_DOMAIN_SALT,
+  ENS_REVERSED_NAME,
 } from './constants';
 import { SignerWithAddress, ProcessedTx, TypedDataFactory } from './interfaces';
 
 const { provider } = ethers;
 
+let nameCounter = 0;
 let currentNonce = 0;
 
 export function getNextNonce(): number {
@@ -43,6 +45,10 @@ export function randomAddress(): string {
   }
 
   return result;
+}
+
+export function randomName(): string {
+  return `test${++nameCounter}`;
 }
 
 export function randomHex32(): string {
@@ -151,4 +157,18 @@ export function getNow(additionalSeconds: BigNumberish = 0) {
 
 export function getMethodSignature(method: string): string {
   return utils.id(method).slice(0, 10);
+}
+
+export function buildENSReversedNode(
+  address: string,
+): {
+  name: string;
+  nameHash: string;
+} {
+  const name = `${address.slice(2).toLowerCase()}.${ENS_REVERSED_NAME}`;
+
+  return {
+    name,
+    nameHash: utils.namehash(name),
+  };
 }

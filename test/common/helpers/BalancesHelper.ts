@@ -1,24 +1,24 @@
 import { ethers } from 'hardhat';
 import { BigNumber } from 'ethers';
-import { Utils, WrappedWeiToken } from '../../typings';
+import { BalancesHelper, WrappedWeiToken } from '../../../typings';
 import {
   deployContract,
   SignerWithAddress,
   randomAddress,
   processTx,
-} from '../shared';
+} from '../../shared';
 
 const { getSigners, constants } = ethers;
 
-describe('Utils', () => {
+describe('BalancesHelper', () => {
   let signers: SignerWithAddress[];
-  let utils: Utils;
+  let balancesHelper: BalancesHelper;
   let wrappedWeiToken: WrappedWeiToken;
 
   before(async () => {
     signers = await getSigners();
 
-    utils = await deployContract('Utils');
+    balancesHelper = await deployContract('BalancesHelper');
     wrappedWeiToken = await deployContract('WrappedWeiToken');
   });
 
@@ -44,7 +44,7 @@ describe('Utils', () => {
       const randomOwner = randomAddress();
       const randomToken = randomAddress();
 
-      const output: BigNumber[] = await utils.getBalances(
+      const output: BigNumber[] = await balancesHelper.getBalances(
         [owner.address, randomOwner],
         [wrappedWeiToken.address, randomToken, constants.AddressZero],
       );
