@@ -76,9 +76,6 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                             },
                         });
                     }
-                    else {
-                        console.log(contractName, transactionHash);
-                    }
                 }
                 const { abi, bytecode: byteCode, } = await fs_extra_1.readJSON(filePath);
                 let typedDataDomainName = null;
