@@ -22,32 +22,71 @@ const func = async (hre) => {
             log: true,
         }, 'initialize', ensRegistryAddress, [], gateway.address, ethers_1.utils.id(typedData.domains.ENSController.name), ethers_1.utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
     }
+    if (await read('ENSHelper', 'isInitialized')) {
+        log('ENSHelper already initialized');
+    }
+    else {
+        await execute('ENSHelper', {
+            from,
+            log: true,
+        }, 'initialize', ensRegistryAddress);
+    }
     if (ensRegistry && ens && Array.isArray(ens.internalTopLevelDomains)) {
+        if (await read('ENSReverseRegistrar', 'isInitialized')) {
+            log('ENSReverseRegistrar already initialized');
+        }
+        else {
+            await execute('ENSReverseRegistrar', {
+                from,
+                log: true,
+            }, 'initialize', ensRegistry.address, ensController.address);
+        }
+        {
+            const ensReverseRegistrar = await get('ENSReverseRegistrar');
+            const tld = 'reverse';
+            const label = 'addr';
+            const name = `${label}.${tld}`;
+            let owner = await read('ENSRegistry', 'owner', ethers_1.utils.namehash(tld));
+            if (owner === ethers_1.constants.AddressZero) {
+                await execute('ENSRegistry', {
+                    from,
+                    log: true,
+                }, 'setSubnodeOwner', ethers_1.constants.HashZero, ethers_1.utils.id(tld), from);
+            }
+            owner = await read('ENSRegistry', 'owner', ethers_1.utils.namehash(name));
+            if (owner === ethers_1.constants.AddressZero) {
+                await execute('ENSRegistry', {
+                    from,
+                    log: true,
+                }, 'setSubnodeOwner', ethers_1.utils.namehash(tld), ethers_1.utils.id(label), ensReverseRegistrar.address);
+            }
+        }
         for (const name of ens.internalTopLevelDomains) {
             const nameHash = ethers_1.utils.namehash(name);
             const labelHash = ethers_1.utils.id(name);
-            let ensOwner = await read('ENSRegistry', 'owner', nameHash);
-            if (ensOwner === ethers_1.constants.AddressZero) {
+            let owner = await read('ENSRegistry', 'owner', nameHash);
+            if (owner === ethers_1.constants.AddressZero) {
                 await execute('ENSRegistry', {
                     from,
                     log: true,
                 }, 'setSubnodeOwner', ethers_1.constants.HashZero, labelHash, from);
             }
-            const { nodeAddr, nodeOwner, } = await read('ENSController', 'getNode', nameHash);
+            const nodeOwner = await read('ENSController', 'nodeOwners', nameHash);
             if (nodeOwner === ethers_1.constants.AddressZero) {
                 await execute('ENSController', {
                     from,
                     log: true,
                 }, 'submitNode', nameHash);
             }
-            ensOwner = await read('ENSRegistry', 'owner', nameHash);
-            if (ensOwner === from) {
+            owner = await read('ENSRegistry', 'owner', nameHash);
+            if (owner === from) {
                 await execute('ENSRegistry', {
                     from,
                     log: true,
                 }, 'setOwner', nameHash, ensController.address);
             }
-            if (nodeAddr === ethers_1.constants.AddressZero) {
+            const addr = await read('ENSController', 'addr(bytes32)', nameHash);
+            if (addr === ethers_1.constants.AddressZero) {
                 await execute('ENSController', {
                     from,
                     log: true,
