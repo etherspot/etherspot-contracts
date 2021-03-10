@@ -26,6 +26,7 @@ via `env` variables:
 | --- | --- |
 | `<network config prefix>_PROVIDER_ENDPOINT` | |
 | `<network config prefix>_PROVIDER_PRIVATE_KEY` | |
+| `<network config prefix>_PROVIDER_GAS_PRICE` | optional |
 
 ## Test
 
