@@ -13,6 +13,8 @@
 | `testnets` | Sokol (xDai testnet) | `SOKOL` | `sokol` |
 | `mainnets` | Binance Smart Chain | `BSC` | `bsc` |
 | `testnets` | Binance Smart Chain (testnet) | `BSC_TEST` | `bscTest` |
+| `mainnets` | Fantom | `FANTOM` | `fantom` |
+| `testnets` | Fantom (testnet) | `FANTOM_TEST` | `fantomTest` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localA` |
 
