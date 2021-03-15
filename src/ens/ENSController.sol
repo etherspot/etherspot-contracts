@@ -380,7 +380,7 @@ contract ENSController is Guarded, Initializable, SignatureValidator, GatewayRec
     view
     returns (bytes32)
   {
-    return _hashMessagePayload(HASH_PREFIX_SUB_NODE_REGISTRATION, abi.encode(
+    return _hashMessagePayload(HASH_PREFIX_SUB_NODE_REGISTRATION, abi.encodePacked(
       account,
       node,
       label

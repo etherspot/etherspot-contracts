@@ -50,7 +50,7 @@ library ECDSALib {
   {
     return keccak256(abi.encodePacked(
       "\x19Ethereum Signed Message:\n32",
-      abi.encodePacked(messageHash)
+      messageHash
     ));
   }
 }

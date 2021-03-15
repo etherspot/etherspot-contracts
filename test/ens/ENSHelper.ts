@@ -3,9 +3,6 @@ import { constants, utils } from 'ethers';
 import { ENSController, ENSHelper, ENSRegistry } from '../../typings';
 import {
   SignerWithAddress,
-  TYPED_DATA_DOMAIN_NAME_HASH,
-  TYPED_DATA_DOMAIN_SALT,
-  TYPED_DATA_DOMAIN_VERSION_HASH,
   processTx,
   randomName,
   randomAddress,
@@ -37,14 +34,7 @@ describe('ENSHelper', () => {
     ensHelpers = await deployContract('ENSHelper', [], sender);
 
     await processTx(
-      ensController.initialize(
-        ensRegistry.address,
-        [],
-        randomAddress(),
-        TYPED_DATA_DOMAIN_NAME_HASH,
-        TYPED_DATA_DOMAIN_VERSION_HASH,
-        TYPED_DATA_DOMAIN_SALT,
-      ),
+      ensController.initialize(ensRegistry.address, [], randomAddress()),
     );
 
     await processTx(ensHelpers.initialize(ensRegistry.address));

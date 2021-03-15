@@ -885,7 +885,7 @@ contract PaymentRegistry is Guarded, Initializable, SignatureValidator, GatewayR
     view
     returns (bytes32)
   {
-    return _hashMessagePayload(HASH_PREFIX_DEPOSIT_WITHDRAWAL, abi.encode(
+    return _hashMessagePayload(HASH_PREFIX_DEPOSIT_WITHDRAWAL, abi.encodePacked(
       owner,
       token,
       amount
@@ -904,7 +904,7 @@ contract PaymentRegistry is Guarded, Initializable, SignatureValidator, GatewayR
     view
     returns (bytes32)
   {
-    return _hashMessagePayload(HASH_PREFIX_PAYMENT_CHANNEL_COMMIT, abi.encode(
+    return _hashMessagePayload(HASH_PREFIX_PAYMENT_CHANNEL_COMMIT, abi.encodePacked(
       sender,
       recipient,
       token,

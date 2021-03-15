@@ -3,13 +3,10 @@ import { utils, constants } from 'ethers';
 import { ENSController, ENSRegistry } from '../../typings';
 import {
   SignerWithAddress,
-  TYPED_DATA_DOMAIN_NAME_HASH,
-  TYPED_DATA_DOMAIN_SALT,
-  TYPED_DATA_DOMAIN_VERSION_HASH,
-  createTypedDataFactory,
+  createMessagePayloadFactory,
   processTx,
   randomAddress,
-  TypedDataFactory,
+  MessagePayloadFactory,
   randomHex32,
   deployContract,
   randomName,
@@ -35,7 +32,7 @@ describe('ENSController', () => {
   let ensController: ENSController;
   let ensRegistry: ENSRegistry;
 
-  let subNodeRegistrationTypedDataFactory: TypedDataFactory<{
+  let subNodeRegistrationMessagePayloadFactory: MessagePayloadFactory<{
     account: string;
     node: string;
     label: string;
@@ -93,13 +90,10 @@ describe('ENSController', () => {
         ensRegistry.address,
         [guardian.address],
         randomAddress(),
-        TYPED_DATA_DOMAIN_NAME_HASH,
-        TYPED_DATA_DOMAIN_VERSION_HASH,
-        TYPED_DATA_DOMAIN_SALT,
       ),
     );
 
-    subNodeRegistrationTypedDataFactory = createTypedDataFactory(
+    subNodeRegistrationMessagePayloadFactory = createMessagePayloadFactory(
       ensController,
       'SubNodeRegistration',
       [
@@ -284,7 +278,7 @@ describe('ENSController', () => {
 
       const { node } = nodeFactory;
 
-      const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
+      const guardianSignature = await subNodeRegistrationMessagePayloadFactory.sign(
         guardian,
         {
           account: account.address,
@@ -371,7 +365,7 @@ describe('ENSController', () => {
       const account = signers.pop();
       const { node } = nodeFactory;
 
-      const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
+      const guardianSignature = await subNodeRegistrationMessagePayloadFactory.sign(
         guardian,
         {
           account: account.address,
@@ -397,7 +391,7 @@ describe('ENSController', () => {
       const account = signers.pop();
       const { node } = nodeFactory;
 
-      const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
+      const guardianSignature = await subNodeRegistrationMessagePayloadFactory.sign(
         guardian,
         {
           account: account.address,
@@ -418,7 +412,7 @@ describe('ENSController', () => {
       const account = signers.pop();
       const { node } = nodeFactory;
 
-      const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
+      const guardianSignature = await subNodeRegistrationMessagePayloadFactory.sign(
         guardian,
         {
           account: randomAddress(),
@@ -447,7 +441,7 @@ describe('ENSController', () => {
 
       const { node } = nodeFactory;
 
-      const guardianSignature = await subNodeRegistrationTypedDataFactory.signTypeData(
+      const guardianSignature = await subNodeRegistrationMessagePayloadFactory.sign(
         guardian,
         {
           account: account.address,
@@ -534,13 +528,11 @@ describe('ENSController', () => {
         label: randomHex32(),
       };
 
-      const typedDataHash = subNodeRegistrationTypedDataFactory.hashTypedData(
-        message,
-      );
+      const expected = subNodeRegistrationMessagePayloadFactory.hash(message);
 
       await expect(
         ensController.hashSubNodeRegistration(message),
-      ).resolves.toBe(typedDataHash);
+      ).resolves.toBe(expected);
     });
   });
 });

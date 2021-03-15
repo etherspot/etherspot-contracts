@@ -3,9 +3,6 @@ import { constants, utils } from 'ethers';
 import { ENSController, ENSReverseRegistrar, ENSRegistry } from '../../typings';
 import {
   SignerWithAddress,
-  TYPED_DATA_DOMAIN_NAME_HASH,
-  TYPED_DATA_DOMAIN_SALT,
-  TYPED_DATA_DOMAIN_VERSION_HASH,
   ENS_REVERSED_LABEL,
   ENS_REVERSED_TLD,
   processTx,
@@ -37,14 +34,7 @@ describe('ENSReverseRegistrar', () => {
     );
 
     await processTx(
-      ensController.initialize(
-        ensRegistry.address,
-        [],
-        randomAddress(),
-        TYPED_DATA_DOMAIN_NAME_HASH,
-        TYPED_DATA_DOMAIN_VERSION_HASH,
-        TYPED_DATA_DOMAIN_SALT,
-      ),
+      ensController.initialize(ensRegistry.address, [], randomAddress()),
     );
 
     await processTx(

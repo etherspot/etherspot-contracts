@@ -9,14 +9,11 @@ import {
 import {
   GAS_PRICE,
   SignerWithAddress,
-  TYPED_DATA_DOMAIN_NAME_HASH,
-  TYPED_DATA_DOMAIN_SALT,
-  TYPED_DATA_DOMAIN_VERSION_HASH,
-  createTypedDataFactory,
+  createMessagePayloadFactory,
   processTx,
   randomAddress,
   getNextNonce,
-  TypedDataFactory,
+  MessagePayloadFactory,
   deployContract,
 } from '../shared';
 
@@ -32,13 +29,13 @@ describe('Gateway', () => {
   let to: string;
   let data: string;
 
-  let delegatedBatchTypedDataFactory: TypedDataFactory<{
+  let delegatedBatchMessagePayloadFactory: MessagePayloadFactory<{
     account: string;
     nonce: BigNumberish;
     to: string[];
     data: BytesLike[];
   }>;
-  let delegatedBatchWithGasPriceTypedDataFactory: TypedDataFactory<{
+  let delegatedBatchWithGasPriceMessagePayloadFactory: MessagePayloadFactory<{
     account: string;
     nonce: BigNumberish;
     to: string[];
@@ -60,9 +57,6 @@ describe('Gateway', () => {
       gateway.initialize(
         externalAccountRegistry.address,
         personalAccountRegistry.address,
-        TYPED_DATA_DOMAIN_NAME_HASH,
-        TYPED_DATA_DOMAIN_VERSION_HASH,
-        TYPED_DATA_DOMAIN_SALT,
       ),
     );
 
@@ -73,7 +67,7 @@ describe('Gateway', () => {
     to = gatewayRecipientMock.address;
     data = gatewayRecipientMock.interface.encodeFunctionData('emitContext');
 
-    delegatedBatchTypedDataFactory = createTypedDataFactory(
+    delegatedBatchMessagePayloadFactory = createMessagePayloadFactory(
       gateway,
       'DelegatedBatch',
       [
@@ -96,7 +90,7 @@ describe('Gateway', () => {
       ],
     );
 
-    delegatedBatchWithGasPriceTypedDataFactory = createTypedDataFactory(
+    delegatedBatchWithGasPriceMessagePayloadFactory = createMessagePayloadFactory(
       gateway,
       'DelegatedBatchWithGasPrice',
       [
@@ -243,7 +237,7 @@ describe('Gateway', () => {
 
     it('expect to send single call', async () => {
       const nonce = getNextNonce();
-      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
         sender,
         {
           account: account.address,
@@ -273,7 +267,7 @@ describe('Gateway', () => {
 
     it('expect to revert on invalid signature', async () => {
       const nonce = 0; // invalid nonce
-      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
         sender,
         {
           account: account.address,
@@ -313,7 +307,7 @@ describe('Gateway', () => {
 
     it('expect to send single call', async () => {
       const nonce = getNextNonce();
-      const senderSignature = await delegatedBatchWithGasPriceTypedDataFactory.signTypeData(
+      const senderSignature = await delegatedBatchWithGasPriceMessagePayloadFactory.sign(
         sender,
         {
           account: account.address,
@@ -366,7 +360,7 @@ describe('Gateway', () => {
 
     it('expect to send single batch', async () => {
       const nonce = getNextNonce();
-      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
         sender,
         {
           account: account.address,
@@ -401,7 +395,7 @@ describe('Gateway', () => {
 
       for (let index = 0; index < batchesCount; index += 1) {
         const nonce = getNextNonce();
-        const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+        const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
           sender,
           {
             account: account.address,
@@ -439,7 +433,7 @@ describe('Gateway', () => {
 
       for (let index = 0; index < batchesCount; index += 1) {
         const nonce = 0;
-        const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+        const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
           sender,
           {
             account: account.address,
@@ -471,7 +465,7 @@ describe('Gateway', () => {
 
         const nonce = getNextNonce();
 
-        const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+        const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
           sender,
           {
             account: account.address,
@@ -493,7 +487,7 @@ describe('Gateway', () => {
 
         {
           const nonce = 0; // invalid nonce
-          const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+          const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
             sender,
             {
               account: account.address,
@@ -554,13 +548,9 @@ describe('Gateway', () => {
         data: [data],
       };
 
-      const typedDataHash = delegatedBatchTypedDataFactory.hashTypedData(
-        message,
-      );
+      const expected = delegatedBatchMessagePayloadFactory.hash(message);
 
-      await expect(gateway.hashDelegatedBatch(message)).resolves.toBe(
-        typedDataHash,
-      );
+      await expect(gateway.hashDelegatedBatch(message)).resolves.toBe(expected);
     });
   });
 
@@ -574,13 +564,13 @@ describe('Gateway', () => {
         gasPrice: GAS_PRICE,
       };
 
-      const typedDataHash = delegatedBatchWithGasPriceTypedDataFactory.hashTypedData(
+      const expected = delegatedBatchWithGasPriceMessagePayloadFactory.hash(
         message,
       );
 
       await expect(
         gateway.hashDelegatedBatchWithGasPrice(message),
-      ).resolves.toBe(typedDataHash);
+      ).resolves.toBe(expected);
     });
   });
 
@@ -600,7 +590,7 @@ describe('Gateway', () => {
       );
       nonce = getNextNonce();
 
-      const senderSignature = await delegatedBatchTypedDataFactory.signTypeData(
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
         sender,
         {
           account: account.address,

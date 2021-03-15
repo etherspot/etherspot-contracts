@@ -3,13 +3,10 @@ import { BigNumber, BigNumberish, constants } from 'ethers';
 import { PaymentRegistry, WrappedWeiToken } from '../../typings';
 import {
   SignerWithAddress,
-  TYPED_DATA_DOMAIN_NAME_HASH,
-  TYPED_DATA_DOMAIN_SALT,
-  TYPED_DATA_DOMAIN_VERSION_HASH,
-  createTypedDataFactory,
+  createMessagePayloadFactory,
   processTx,
   randomAddress,
-  TypedDataFactory,
+  MessagePayloadFactory,
   getNow,
   increaseTime,
   randomHex32,
@@ -27,13 +24,13 @@ describe('PaymentRegistry', () => {
   let paymentRegistry: PaymentRegistry;
   let wrappedWeiToken: WrappedWeiToken;
 
-  let depositWithdrawalTypedDataFactory: TypedDataFactory<{
+  let depositWithdrawalMessagePayloadFactory: MessagePayloadFactory<{
     owner: string;
     token: string;
     amount: BigNumberish;
   }>;
 
-  let paymentChannelCommitTypedDataFactory: TypedDataFactory<{
+  let paymentChannelCommitMessagePayloadFactory: MessagePayloadFactory<{
     sender: string;
     recipient: string;
     token: string;
@@ -56,13 +53,10 @@ describe('PaymentRegistry', () => {
         depositExitLockPeriod,
         [guardian.address],
         randomAddress(),
-        TYPED_DATA_DOMAIN_NAME_HASH,
-        TYPED_DATA_DOMAIN_VERSION_HASH,
-        TYPED_DATA_DOMAIN_SALT,
       ),
     );
 
-    depositWithdrawalTypedDataFactory = createTypedDataFactory(
+    depositWithdrawalMessagePayloadFactory = createMessagePayloadFactory(
       paymentRegistry,
       'DepositWithdrawal',
       [
@@ -81,7 +75,7 @@ describe('PaymentRegistry', () => {
       ],
     );
 
-    paymentChannelCommitTypedDataFactory = createTypedDataFactory(
+    paymentChannelCommitMessagePayloadFactory = createMessagePayloadFactory(
       paymentRegistry,
       'PaymentChannelCommit',
       [
@@ -237,7 +231,7 @@ describe('PaymentRegistry', () => {
 
       amount += value;
 
-      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+      const guardianSignature = await depositWithdrawalMessagePayloadFactory.sign(
         guardian,
         {
           owner: owner.address,
@@ -275,7 +269,7 @@ describe('PaymentRegistry', () => {
 
       amount += value;
 
-      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+      const guardianSignature = await depositWithdrawalMessagePayloadFactory.sign(
         guardian,
         {
           owner: owner.address,
@@ -307,7 +301,7 @@ describe('PaymentRegistry', () => {
     });
 
     it('expect to revert on invalid guardian signature', async () => {
-      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+      const guardianSignature = await depositWithdrawalMessagePayloadFactory.sign(
         guardian,
         {
           owner: owner.address,
@@ -326,7 +320,7 @@ describe('PaymentRegistry', () => {
     });
 
     it('expect to revert on invalid amount', async () => {
-      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+      const guardianSignature = await depositWithdrawalMessagePayloadFactory.sign(
         guardian,
         {
           owner: owner.address,
@@ -393,11 +387,11 @@ describe('PaymentRegistry', () => {
           amount: amount1,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -447,11 +441,11 @@ describe('PaymentRegistry', () => {
           amount: amount2,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -489,11 +483,11 @@ describe('PaymentRegistry', () => {
           amount: amount2,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -547,11 +541,11 @@ describe('PaymentRegistry', () => {
           amount,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -626,11 +620,11 @@ describe('PaymentRegistry', () => {
           amount,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -685,11 +679,11 @@ describe('PaymentRegistry', () => {
           amount,
         };
 
-        const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           sender,
           message,
         );
-        const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+        const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
           guardian,
           message,
         );
@@ -752,11 +746,11 @@ describe('PaymentRegistry', () => {
         amount,
       };
 
-      const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+      const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
         sender,
         message,
       );
-      const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+      const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
         guardian,
         message,
       );
@@ -866,7 +860,7 @@ describe('PaymentRegistry', () => {
         }),
       );
 
-      const guardianSignature = await depositWithdrawalTypedDataFactory.signTypeData(
+      const guardianSignature = await depositWithdrawalMessagePayloadFactory.sign(
         guardian,
         {
           owner: owner.address,
@@ -939,11 +933,11 @@ describe('PaymentRegistry', () => {
         amount,
       };
 
-      const senderSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+      const senderSignature = await paymentChannelCommitMessagePayloadFactory.sign(
         sender,
         message,
       );
-      const guardianSignature = await paymentChannelCommitTypedDataFactory.signTypeData(
+      const guardianSignature = await paymentChannelCommitMessagePayloadFactory.sign(
         guardian,
         message,
       );
@@ -1009,13 +1003,11 @@ describe('PaymentRegistry', () => {
         amount: 200,
       };
 
-      const typedDataHash = depositWithdrawalTypedDataFactory.hashTypedData(
-        message,
-      );
+      const expected = depositWithdrawalMessagePayloadFactory.hash(message);
 
       await expect(
         paymentRegistry.hashDepositWithdrawal(message),
-      ).resolves.toBe(typedDataHash);
+      ).resolves.toBe(expected);
     });
   });
 
@@ -1030,13 +1022,11 @@ describe('PaymentRegistry', () => {
         amount: 200,
       };
 
-      const typedDataHash = paymentChannelCommitTypedDataFactory.hashTypedData(
-        message,
-      );
+      const expected = paymentChannelCommitMessagePayloadFactory.hash(message);
 
       await expect(
         paymentRegistry.hashPaymentChannelCommit(message),
-      ).resolves.toBe(typedDataHash);
+      ).resolves.toBe(expected);
     });
   });
 });

@@ -396,8 +396,8 @@ contract Gateway is Initializable, SignatureValidator {
     return _hashMessagePayload(HASH_PREFIX_DELEGATED_BATCH, abi.encodePacked(
       account,
       nonce,
-      abi.encode(to),
-      abi.encode(data)
+      to,
+      _concatBytes(data)
     ));
   }
 
@@ -415,9 +415,26 @@ contract Gateway is Initializable, SignatureValidator {
     return _hashMessagePayload(HASH_PREFIX_DELEGATED_BATCH_WITH_GAS_PRICE, abi.encodePacked(
       account,
       nonce,
-      abi.encode(to),
-      abi.encode(data),
+      to,
+      _concatBytes(data),
       gasPrice
     ));
+  }
+
+// private functions (pure)
+
+  function _concatBytes(bytes[] memory data)
+    private
+    pure
+    returns (bytes memory)
+  {
+    bytes memory result;
+    uint dataLen = data.length;
+
+    for (uint i = 0 ; i < dataLen ; i++) {
+      result = abi.encodePacked(result, data[i]);
+    }
+
+    return result;
   }
 }
