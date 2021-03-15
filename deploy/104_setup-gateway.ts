@@ -1,5 +1,4 @@
 import { DeployFunction } from 'hardhat-deploy/types';
-import { utils } from 'ethers';
 
 const func: DeployFunction = async hre => {
   const {
