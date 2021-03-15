@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 import "../common/access/Guarded.sol";
 import "../common/lifecycle/Initializable.sol";
-import "../common/typedData/TypedDataContainer.sol";
+import "../common/signature/SignatureValidator.sol";
 import "../gateway/GatewayRecipient.sol";
 import "./resolvers/ENSAddressResolver.sol";
 import "./resolvers/ENSNameResolver.sol";
@@ -30,7 +30,7 @@ import "./ENSRegistry.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRecipient, ENSAddressResolver, ENSNameResolver, ENSPubKeyResolver, ENSTextResolver {
+contract ENSController is Guarded, Initializable, SignatureValidator, GatewayRecipient, ENSAddressResolver, ENSNameResolver, ENSPubKeyResolver, ENSTextResolver {
   struct SubNodeRegistration {
     address account;
     bytes32 node;
@@ -39,7 +39,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
   bytes4 private constant INTERFACE_META_ID = bytes4(keccak256(abi.encodePacked("supportsInterface(bytes4)")));
 
-  bytes32 private constant SUB_NODE_REGISTRATION_TYPE_HASH = keccak256(
+  bytes32 private constant HASH_PREFIX_SUB_NODE_REGISTRATION = keccak256(
     "SubNodeRegistration(address account,bytes32 node,bytes32 label)"
   );
 
@@ -88,7 +88,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   /**
    * @dev Public constructor
    */
-  constructor() public Guarded() Initializable() {}
+  constructor() public Guarded() Initializable() SignatureValidator() {}
 
   // external functions
 
@@ -96,17 +96,11 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
    * @notice Initializes `ENSController` contract
    * @param registry_ ENS registry address
    * @param gateway_ gateway address
-   * @param typedDataDomainNameHash hash of a typed data domain name
-   * @param typedDataDomainVersionHash hash of a typed data domain version
-   * @param typedDataDomainSalt typed data salt
    */
   function initialize(
     ENSRegistry registry_,
     address[] calldata guardians_,
-    address gateway_,
-    bytes32 typedDataDomainNameHash,
-    bytes32 typedDataDomainVersionHash,
-    bytes32 typedDataDomainSalt
+    address gateway_
   )
     external
     onlyInitializer
@@ -123,13 +117,6 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
 
     // GatewayRecipient
     _initializeGatewayRecipient(gateway_);
-
-    // TypedDataContainer
-    _initializeTypedDataContainer(
-      typedDataDomainNameHash,
-      typedDataDomainVersionHash,
-      typedDataDomainSalt
-    );
   }
 
   /**
@@ -298,12 +285,10 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   {
     address account = _getContextAccount();
 
-    bytes32 messageHash = _hashPrimaryTypedData(
-      _hashTypedData(
-        account,
-        node,
-        label
-      )
+    bytes32 messageHash = _hashSubNodeRegistration(
+      account,
+      node,
+      label
     );
 
     require(
@@ -353,7 +338,7 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
   // public functions (views)
 
   /**
-   * @notice Hashes `SubNodeRegistration` typed data
+   * @notice Hashes `SubNodeRegistration` message payload
    * @param subNodeRegistration struct
    * @return hash
    */
@@ -364,12 +349,10 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     view
     returns (bytes32)
   {
-    return _hashPrimaryTypedData(
-      _hashTypedData(
-        subNodeRegistration.account,
-        subNodeRegistration.node,
-        subNodeRegistration.label
-      )
+    return _hashSubNodeRegistration(
+      subNodeRegistration.account,
+      subNodeRegistration.node,
+      subNodeRegistration.label
     );
   }
 
@@ -386,19 +369,18 @@ contract ENSController is Guarded, Initializable, TypedDataContainer, GatewayRec
     return registry.owner(node) == _getContextAccount();
   }
 
-  // private functions (pure)
+  // private functions (views)
 
-  function _hashTypedData(
+  function _hashSubNodeRegistration(
     address account,
     bytes32 node,
     bytes32 label
   )
     private
-    pure
+    view
     returns (bytes32)
   {
-    return keccak256(abi.encode(
-      SUB_NODE_REGISTRATION_TYPE_HASH,
+    return _hashMessagePayload(HASH_PREFIX_SUB_NODE_REGISTRATION, abi.encode(
       account,
       node,
       label

@@ -5,8 +5,9 @@ import "../common/access/Guarded.sol";
 import "../common/account/AccountController.sol";
 import "../common/account/AccountRegistry.sol";
 import "../common/libs/BlockLib.sol";
+import "../common/libs/ECDSALib.sol";
+import "../common/libs/ECDSAExtendedLib.sol";
 import "../common/libs/SafeMathLib.sol";
-import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
 import "../common/token/ERC20Token.sol";
 import "../gateway/GatewayRecipient.sol";
@@ -22,8 +23,8 @@ import "../gateway/GatewayRecipient.sol";
 contract PersonalAccountRegistry is Guarded, AccountController, AccountRegistry, Initializable, GatewayRecipient {
   using BlockLib for BlockLib.BlockRelated;
   using SafeMathLib for uint256;
-  using SignatureLib for bytes32;
-  using SignatureLib for bytes;
+  using ECDSALib for bytes32;
+  using ECDSAExtendedLib for bytes;
 
   struct Account {
     bool deployed;

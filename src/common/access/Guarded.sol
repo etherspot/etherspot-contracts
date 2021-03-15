@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "../libs/SignatureLib.sol";
+import "../libs/ECDSALib.sol";
 
 
 /**
@@ -17,7 +17,7 @@ import "../libs/SignatureLib.sol";
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract Guarded {
-  using SignatureLib for bytes32;
+  using ECDSALib for bytes32;
 
   mapping(address => bool) private guardians;
 

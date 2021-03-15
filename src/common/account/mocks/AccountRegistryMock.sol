@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
-import "../../libs/SignatureLib.sol";
+import "../../libs/ECDSALib.sol";
+import "../../libs/ECDSAExtendedLib.sol";
 import "../AccountRegistry.sol";
 
 
@@ -11,8 +12,8 @@ import "../AccountRegistry.sol";
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
 contract AccountRegistryMock is AccountRegistry {
-  using SignatureLib for bytes32;
-  using SignatureLib for bytes;
+  using ECDSALib for bytes32;
+  using ECDSAExtendedLib for bytes;
 
   mapping(address => mapping(address => bool)) private mockedAccountsOwners;
 
