@@ -45,16 +45,6 @@ declare module 'hardhat/types/config' {
     internalTopLevelDomains?: string[];
   }
 
-  interface TypedDataConfig {
-    domains: {
-      [key: string]: {
-        name: string;
-        version: string;
-      };
-    };
-    domainSalt: string;
-  }
-
   type Create2Salts = {
     default: string;
     [key: string]: string;
@@ -68,7 +58,6 @@ declare module 'hardhat/types/config' {
     buildPaths: BuildPathsConfig;
     ens: ENSConfig;
     knownContracts: KnownContractsConfig;
-    typedData: TypedDataConfig;
     create2Salts: Create2Salts;
   }
 
@@ -76,7 +65,6 @@ declare module 'hardhat/types/config' {
     buildPaths: BuildPathsConfig;
     ens: ENSConfig;
     knownContracts: KnownContractsConfig;
-    typedData: TypedDataConfig;
     create2Salts: Create2Salts;
   }
 }

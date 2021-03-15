@@ -11,6 +11,9 @@ config_1.task(TASK_BUILD_ARTIFACTS, 'Build artifacts').setAction(async (args, hr
     buildPaths = Object.assign({ artifacts: 'artifacts' }, (buildPaths || {}));
     const buildPath = path_1.resolve(process.cwd(), buildPaths.artifacts);
     const artifactPaths = await artifacts.getArtifactPaths();
+    if (await fs_extra_1.pathExists(buildPath)) {
+        await fs_extra_1.emptyDir(buildPath);
+    }
     await fs_extra_1.mkdirp(buildPath);
     const artifactsFileNames = new Set();
     for (const artifactPath of artifactPaths) {

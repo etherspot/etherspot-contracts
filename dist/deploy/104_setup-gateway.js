@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ethers_1 = require("ethers");
 const func = async (hre) => {
-    const { deployments: { get, log, execute, read }, config: { typedData }, getNamedAccounts, } = hre;
+    const { deployments: { get, log, execute, read }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
     if (await read('Gateway', 'isInitialized')) {
         log('Gateway already initialized');
@@ -13,7 +12,7 @@ const func = async (hre) => {
         await execute('Gateway', {
             from,
             log: true,
-        }, 'initialize', externalAccountRegistry.address, personalAccountRegistry.address, ethers_1.utils.id(typedData.domains.Gateway.name), ethers_1.utils.id(typedData.domains.Gateway.version), typedData.domainSalt);
+        }, 'initialize', externalAccountRegistry.address, personalAccountRegistry.address);
     }
 };
 func.tags = ['setup', 'gateway'];

@@ -24,9 +24,10 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
+    "chainId()": FunctionFragment;
     "gateway()": FunctionFragment;
     "hashSubNodeRegistration(tuple)": FunctionFragment;
-    "initialize(address,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
+    "initialize(address,address[],address)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "name(bytes32)": FunctionFragment;
@@ -45,13 +46,13 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "syncAddr(bytes32)": FunctionFragment;
     "text(bytes32,string)": FunctionFragment;
-    "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
     "verifyNode(bytes32)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "hashSubNodeRegistration",
@@ -59,7 +60,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string[], string, BytesLike, BytesLike, BytesLike]
+    values: [string, string[], string]
   ): string;
   encodeFunctionData(functionFragment: "isGuardian", values: [string]): string;
   encodeFunctionData(
@@ -116,10 +117,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "typedDataDomainSeparator",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "verifyGuardianSignature",
     values: [BytesLike, BytesLike]
   ): string;
@@ -133,6 +130,7 @@ interface ENSControllerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "hashSubNodeRegistration",
@@ -175,10 +173,6 @@ interface ENSControllerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "syncAddr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "text", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "typedDataDomainSeparator",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "verifyGuardianSignature",
     data: BytesLike
@@ -249,6 +243,10 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
     "gateway()"(overrides?: CallOverrides): Promise<[string]>;
@@ -275,19 +273,13 @@ export class ENSController extends Contract {
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address[],address)"(
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -469,10 +461,6 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
-
     verifyGuardianSignature(
       messageHash: BytesLike,
       signature: BytesLike,
@@ -514,6 +502,10 @@ export class ENSController extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   gateway(overrides?: CallOverrides): Promise<string>;
 
   "gateway()"(overrides?: CallOverrides): Promise<string>;
@@ -532,19 +524,13 @@ export class ENSController extends Contract {
     registry_: string,
     guardians_: string[],
     gateway_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address,address[],address,bytes32,bytes32,bytes32)"(
+  "initialize(address,address[],address)"(
     registry_: string,
     guardians_: string[],
     gateway_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -723,10 +709,6 @@ export class ENSController extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-  "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
-
   verifyGuardianSignature(
     messageHash: BytesLike,
     signature: BytesLike,
@@ -768,6 +750,10 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     gateway(overrides?: CallOverrides): Promise<string>;
 
     "gateway()"(overrides?: CallOverrides): Promise<string>;
@@ -794,19 +780,13 @@ export class ENSController extends Contract {
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(address,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address[],address)"(
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -973,10 +953,6 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
-
     verifyGuardianSignature(
       messageHash: BytesLike,
       signature: BytesLike,
@@ -1050,6 +1026,10 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     "gateway()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1076,19 +1056,13 @@ export class ENSController extends Contract {
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(address,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address[],address)"(
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1252,10 +1226,6 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     verifyGuardianSignature(
       messageHash: BytesLike,
       signature: BytesLike,
@@ -1298,6 +1268,10 @@ export class ENSController extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "gateway()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1324,19 +1298,13 @@ export class ENSController extends Contract {
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address[],address)"(
       registry_: string,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1524,14 +1492,6 @@ export class ENSController extends Contract {
     "text(bytes32,string)"(
       node: BytesLike,
       key: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    typedDataDomainSeparator(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "typedDataDomainSeparator()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

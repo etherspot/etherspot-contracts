@@ -53,23 +53,6 @@ const config = {
             [extensions_1.ContractNames.ENSRegistry]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
         },
     },
-    typedData: {
-        domains: {
-            Gateway: {
-                name: 'ETHERspot Gateway',
-                version: '1',
-            },
-            ENSController: {
-                name: 'ETHERspot ENS Controller',
-                version: '1',
-            },
-            PaymentRegistry: {
-                name: 'ETHERspot Payment Registry',
-                version: '1',
-            },
-        },
-        domainSalt: ethers_1.utils.id('ETHERspot'),
-    },
     create2Salts: {
         default: ethers_1.utils.id('ETHERspot'),
     },

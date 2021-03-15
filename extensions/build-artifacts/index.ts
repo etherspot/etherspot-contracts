@@ -1,7 +1,14 @@
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
 import { task } from 'hardhat/config';
 import { resolve, join, basename } from 'path';
-import { mkdirp, copyFile, pathExists, readdir, remove } from 'fs-extra';
+import {
+  mkdirp,
+  copyFile,
+  pathExists,
+  readdir,
+  remove,
+  emptyDir,
+} from 'fs-extra';
 
 const TASK_BUILD_ARTIFACTS = 'build-artifacts';
 
@@ -17,6 +24,10 @@ task(TASK_BUILD_ARTIFACTS, 'Build artifacts').setAction(async (args, hre) => {
 
   const buildPath = resolve(process.cwd(), buildPaths.artifacts);
   const artifactPaths = await artifacts.getArtifactPaths();
+
+  if (await pathExists(buildPath)) {
+    await emptyDir(buildPath);
+  }
 
   await mkdirp(buildPath);
 

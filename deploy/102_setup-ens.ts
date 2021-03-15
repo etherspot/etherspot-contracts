@@ -5,7 +5,7 @@ const func: DeployFunction = async hre => {
   const {
     deployments: { get, log, execute, read },
     network: { name },
-    config: { typedData, ens, knownContracts },
+    config: { ens, knownContracts },
     getNamedAccounts,
   } = hre;
   const { from } = await getNamedAccounts();
@@ -34,9 +34,6 @@ const func: DeployFunction = async hre => {
       ensRegistryAddress,
       [],
       gateway.address,
-      utils.id(typedData.domains.ENSController.name),
-      utils.id(typedData.domains.ENSController.version),
-      typedData.domainSalt,
     );
   }
 

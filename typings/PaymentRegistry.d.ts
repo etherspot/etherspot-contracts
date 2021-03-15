@@ -23,6 +23,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface PaymentRegistryInterface extends ethers.utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
+    "chainId()": FunctionFragment;
     "commitPaymentChannelAndDeposit(address,address,bytes32,uint256,uint256,bytes,bytes)": FunctionFragment;
     "commitPaymentChannelAndSplit(address,address,bytes32,uint256,uint256,uint256,bytes,bytes)": FunctionFragment;
     "commitPaymentChannelAndWithdraw(address,address,bytes32,uint256,uint256,bytes,bytes)": FunctionFragment;
@@ -37,7 +38,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "getPaymentChannelCommittedAmount(bytes32)": FunctionFragment;
     "hashDepositWithdrawal(tuple)": FunctionFragment;
     "hashPaymentChannelCommit(tuple)": FunctionFragment;
-    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)": FunctionFragment;
+    "initialize(address,address,uint256,address[],address)": FunctionFragment;
     "isDepositAccountDeployed(address)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
@@ -45,12 +46,12 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     "processDepositExit(address)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
     "requestDepositExit(address)": FunctionFragment;
-    "typedDataDomainSeparator()": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
     "withdrawDeposit(address,uint256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
+  encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "commitPaymentChannelAndDeposit",
     values: [
@@ -140,16 +141,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [
-      string,
-      string,
-      BigNumberish,
-      string[],
-      string,
-      BytesLike,
-      BytesLike,
-      BytesLike
-    ]
+    values: [string, string, BigNumberish, string[], string]
   ): string;
   encodeFunctionData(
     functionFragment: "isDepositAccountDeployed",
@@ -177,10 +169,6 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "typedDataDomainSeparator",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "verifyGuardianSignature",
     values: [BytesLike, BytesLike]
   ): string;
@@ -193,6 +181,7 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     functionFragment: "addGuardian",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "commitPaymentChannelAndDeposit",
     data: BytesLike
@@ -273,10 +262,6 @@ interface PaymentRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "typedDataDomainSeparator",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "verifyGuardianSignature",
     data: BytesLike
   ): Result;
@@ -337,6 +322,10 @@ export class PaymentRegistry extends Contract {
       guardian: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     commitPaymentChannelAndDeposit(
       sender: string,
@@ -528,21 +517,15 @@ export class PaymentRegistry extends Contract {
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address,uint256,address[],address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -601,10 +584,6 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
-
     verifyGuardianSignature(
       messageHash: BytesLike,
       signature: BytesLike,
@@ -641,6 +620,10 @@ export class PaymentRegistry extends Contract {
     guardian: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   commitPaymentChannelAndDeposit(
     sender: string,
@@ -832,21 +815,15 @@ export class PaymentRegistry extends Contract {
     depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
     gateway_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+  "initialize(address,address,uint256,address[],address)"(
     externalAccountRegistry_: string,
     personalAccountRegistry_: string,
     depositExitLockPeriod_: BigNumberish,
     guardians_: string[],
     gateway_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -905,10 +882,6 @@ export class PaymentRegistry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-  "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
-
   verifyGuardianSignature(
     messageHash: BytesLike,
     signature: BytesLike,
@@ -942,6 +915,10 @@ export class PaymentRegistry extends Contract {
       guardian: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     commitPaymentChannelAndDeposit(
       sender: string,
@@ -1133,21 +1110,15 @@ export class PaymentRegistry extends Contract {
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address,uint256,address[],address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1196,10 +1167,6 @@ export class PaymentRegistry extends Contract {
       token: string,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
 
     verifyGuardianSignature(
       messageHash: BytesLike,
@@ -1291,6 +1258,10 @@ export class PaymentRegistry extends Contract {
       guardian: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     commitPaymentChannelAndDeposit(
       sender: string,
@@ -1482,21 +1453,15 @@ export class PaymentRegistry extends Contract {
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address,uint256,address[],address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1552,10 +1517,6 @@ export class PaymentRegistry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     verifyGuardianSignature(
       messageHash: BytesLike,
       signature: BytesLike,
@@ -1593,6 +1554,10 @@ export class PaymentRegistry extends Contract {
       guardian: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
+
+    chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     commitPaymentChannelAndDeposit(
       sender: string,
@@ -1792,21 +1757,15 @@ export class PaymentRegistry extends Contract {
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,address,uint256,address[],address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address,uint256,address[],address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
       depositExitLockPeriod_: BigNumberish,
       guardians_: string[],
       gateway_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1870,14 +1829,6 @@ export class PaymentRegistry extends Contract {
     "requestDepositExit(address)"(
       token: string,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    typedDataDomainSeparator(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "typedDataDomainSeparator()"(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     verifyGuardianSignature(

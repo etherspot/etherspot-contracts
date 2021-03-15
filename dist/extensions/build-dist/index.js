@@ -10,7 +10,7 @@ const constants_1 = require("../constants");
 const templates_1 = __importDefault(require("./templates"));
 const TASK_BUILD_DIST = 'build-dist';
 config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
-    const { config: { buildPaths, paths, typedData, knownContracts }, } = hre;
+    const { config: { buildPaths, paths, knownContracts }, } = hre;
     let { artifacts: artifactsPath, dist: distPath } = Object.assign({ artifacts: 'artifacts', dist: 'dist' }, (buildPaths || {}));
     let { deployments: deploymentsPath } = Object.assign(Object.assign({}, paths), { deployments: 'deployments' });
     const cwd = process.cwd();
@@ -78,26 +78,16 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                     }
                 }
                 const { abi, bytecode: byteCode, } = await fs_extra_1.readJSON(filePath);
-                let typedDataDomainName = null;
-                let typedDataDomainVersion = null;
-                if (typedData.domains[contractName]) {
-                    ({
-                        name: typedDataDomainName,
-                        version: typedDataDomainVersion,
-                    } = typedData.domains[contractName]);
-                }
                 contracts[contractName] = {
                     abi,
                     addresses,
                     byteCode,
-                    typedDataDomainName,
-                    typedDataDomainVersion,
                 };
             }
         }
         const contractNames = Object.keys(contracts);
         await fs_extra_1.writeFile(path_1.join(distPath, 'contracts.js'), templates_1.default.contractsJs(contracts));
-        await fs_extra_1.writeFile(path_1.join(distPath, 'constants.js'), templates_1.default.constantsJs(typedData.domainSalt, contractNames));
+        await fs_extra_1.writeFile(path_1.join(distPath, 'constants.js'), templates_1.default.constantsJs(contractNames));
         await fs_extra_1.writeFile(path_1.join(distPath, 'constants.d.ts'), templates_1.default.constantsDts(contractNames));
         await fs_extra_1.writeFile(path_1.join(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contractsMD));
         console.log('Dist built successfully');
