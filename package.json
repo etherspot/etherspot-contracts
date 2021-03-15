@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "ETHERspot contracts",
   "keywords": [
     "ether",
@@ -64,7 +64,6 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.20.2",
     "ethers": "5.0.24",
-    "ethers-typed-data": "0.1.0",
     "expect": "26.6.2",
     "fs-extra": "9.0.0",
     "hardhat": "2.0.4",
