@@ -16,7 +16,7 @@ const TASK_BUILD_DIST = 'build-dist';
 
 task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
   const {
-    config: { buildPaths, paths, knownContracts },
+    config: { buildPaths, paths, knownContracts, networks },
   } = hre;
 
   let { artifacts: artifactsPath, dist: distPath } = {
@@ -30,6 +30,8 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
     deployments: 'deployments',
   };
 
+  const networkNames = Object.keys(networks);
+
   const cwd = process.cwd();
 
   artifactsPath = resolve(cwd, artifactsPath);
@@ -41,9 +43,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
 
     const networks: { name: string; chainId: string; path: string }[] = [];
 
-    const dirNames = await readdir(deploymentsPath);
-
-    for (const name of dirNames) {
+    for (const name of networkNames) {
       const path = join(deploymentsPath, name);
       const chainFilePath = join(path, '.chainId');
 
