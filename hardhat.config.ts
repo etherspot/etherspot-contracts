@@ -112,6 +112,9 @@ const config: HardhatUserConfig = {
   },
   create2Salts: {
     default: utils.id('ETHERspot'),
+    [ContractNames.ENSHelper]: utils.id('ETHERspot@1.2.0'),
+    [ContractNames.ENSRegistry]: utils.id('ETHERspot@1.2.0'),
+    [ContractNames.ENSReverseRegistrar]: utils.id('ETHERspot@1.2.0'),
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,

@@ -14,12 +14,15 @@ export declare enum NetworkNames {
     LocalB = "localB"
 }
 export declare enum ContractNames {
+    BalancesHelper = "BalancesHelper",
     ENSController = "ENSController",
+    ENSHelper = "ENSHelper",
     ENSRegistry = "ENSRegistry",
+    ENSReverseRegistrar = "ENSReverseRegistrar",
     ExternalAccountRegistry = "ExternalAccountRegistry",
     Gateway = "Gateway",
     PaymentRegistry = "PaymentRegistry",
+    PersonalAccountImplementationV1 = "PersonalAccountImplementationV1",
     PersonalAccountRegistry = "PersonalAccountRegistry",
-    Utils = "Utils",
     WrappedWeiToken = "WrappedWeiToken"
 }

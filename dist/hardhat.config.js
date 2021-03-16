@@ -55,6 +55,9 @@ const config = {
     },
     create2Salts: {
         default: ethers_1.utils.id('ETHERspot'),
+        [extensions_1.ContractNames.ENSHelper]: ethers_1.utils.id('ETHERspot@1.2.0'),
+        [extensions_1.ContractNames.ENSRegistry]: ethers_1.utils.id('ETHERspot@1.2.0'),
+        [extensions_1.ContractNames.ENSReverseRegistrar]: ethers_1.utils.id('ETHERspot@1.2.0'),
     },
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
