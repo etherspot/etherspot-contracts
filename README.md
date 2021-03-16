@@ -14,13 +14,10 @@ $ npm i @etherspot/contracts -S
 
 ```javascript
 import {
-  TYPED_DATA_DOMAIN_SALT,
   ContractNames, 
   getContractAbi, 
   getContractAddress,
   getContractByteCode, 
-  getContractTypedDataDomainName, 
-  getContractTypedDataDomainVersion, 
 } from '@etherspot/contracts'; 
 
 console.log(
@@ -41,23 +38,6 @@ console.log(
 console.log(
   'Account byte code:',
   getContractByteCode(ContractNames.Account),
-);
-
-// see: https://eips.ethereum.org/EIPS/eip-712
-
-console.log(
-  'Typed data domain salt (used in all contracts):',
-  TYPED_DATA_DOMAIN_SALT,
-);
-
-console.log(
-  'PaymentRegistry typed data domain name:',
-  getContractTypedDataDomainName(ContractNames.PaymentRegistry),
-);
-
-console.log(
-  'PaymentRegistry typed data domain version:',
-  getContractTypedDataDomainVersion(ContractNames.PaymentRegistry),
 );
 ```
 

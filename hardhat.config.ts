@@ -110,25 +110,11 @@ const config: HardhatUserConfig = {
       [ContractNames.ENSRegistry]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
     },
   },
-  typedData: {
-    domains: {
-      Gateway: {
-        name: 'ETHERspot Gateway',
-        version: '1',
-      },
-      ENSController: {
-        name: 'ETHERspot ENS Controller',
-        version: '1',
-      },
-      PaymentRegistry: {
-        name: 'ETHERspot Payment Registry',
-        version: '1',
-      },
-    },
-    domainSalt: utils.id('ETHERspot'),
-  },
   create2Salts: {
     default: utils.id('ETHERspot'),
+    [ContractNames.ENSHelper]: utils.id('ETHERspot@1.2.0'),
+    [ContractNames.ENSRegistry]: utils.id('ETHERspot@1.2.0'),
+    [ContractNames.ENSReverseRegistrar]: utils.id('ETHERspot@1.2.0'),
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,

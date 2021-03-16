@@ -6,10 +6,9 @@ const contractsJs = (data: any) => `/* eslint-disable */
 module.exports = ${JSON.stringify(data, null, 2)};
 `;
 
-const constantsJs = (salt: string, data: string[]) => `/* eslint-disable */
+const constantsJs = (data: string[]) => `/* eslint-disable */
 
 module.exports = {
-  TYPED_DATA_DOMAIN_SALT: '${salt}',
   ContractNames: {${data.map(name => `\n    ${name}: '${name}',`).join('')}
   },
 };
@@ -17,9 +16,7 @@ module.exports = {
 
 const constantsDts = (
   data: string[],
-) => `export declare const TYPED_DATA_DOMAIN_SALT: string;
-
-export declare enum ContractNames {${data
+) => `export declare enum ContractNames {${data
   .map(name => `\n  ${name} = '${name}',`)
   .join('')}
 }

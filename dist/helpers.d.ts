@@ -10,11 +10,3 @@ export declare function getContractAddress(
 export declare function getContractByteCode(
   contractName: ContractNames,
 ): string | null;
-
-export declare function getContractTypedDataDomainName(
-  contractName: ContractNames,
-): string | null;
-
-export declare function getContractTypedDataDomainVersion(
-  contractName: ContractNames,
-): string | null;

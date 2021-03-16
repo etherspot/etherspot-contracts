@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 module.exports = {
-  TYPED_DATA_DOMAIN_SALT: '0xb951433d313b5c9fec056dae66ca47abc822e0a17c3de20a5a713b9393a60a0a',
   ContractNames: {
     Account: 'Account',
     AccountBase: 'AccountBase',
@@ -29,7 +28,7 @@ module.exports = {
     PaymentRegistry: 'PaymentRegistry',
     PersonalAccountImplementationV1: 'PersonalAccountImplementationV1',
     PersonalAccountRegistry: 'PersonalAccountRegistry',
-    TypedDataContainer: 'TypedDataContainer',
+    SignatureValidator: 'SignatureValidator',
     WrappedWeiToken: 'WrappedWeiToken',
   },
 };

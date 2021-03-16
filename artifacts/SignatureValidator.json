@@ -1,16 +1,16 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "TypedDataContainer",
-  "sourceName": "src/common/typedData/TypedDataContainer.sol",
+  "contractName": "SignatureValidator",
+  "sourceName": "src/common/signature/SignatureValidator.sol",
   "abi": [
     {
       "inputs": [],
-      "name": "typedDataDomainSeparator",
+      "name": "chainId",
       "outputs": [
         {
-          "internalType": "bytes32",
+          "internalType": "uint256",
           "name": "",
-          "type": "bytes32"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",

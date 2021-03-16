@@ -5,26 +5,26 @@
 import { Contract, Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 
-import type { TypedDataContainer } from "../TypedDataContainer";
+import type { SignatureValidator } from "../SignatureValidator";
 
-export class TypedDataContainer__factory {
+export class SignatureValidator__factory {
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): TypedDataContainer {
-    return new Contract(address, _abi, signerOrProvider) as TypedDataContainer;
+  ): SignatureValidator {
+    return new Contract(address, _abi, signerOrProvider) as SignatureValidator;
   }
 }
 
 const _abi = [
   {
     inputs: [],
-    name: "typedDataDomainSeparator",
+    name: "chainId",
     outputs: [
       {
-        internalType: "bytes32",
+        internalType: "uint256",
         name: "",
-        type: "bytes32",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

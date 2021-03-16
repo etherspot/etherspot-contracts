@@ -1,5 +1,4 @@
 import { Signer, utils, providers, ContractReceipt, BigNumber } from 'ethers';
-import { TypedData } from 'ethers-typed-data';
 
 export interface SignerWithAddress extends Signer {
   address: string;
@@ -25,8 +24,7 @@ export interface ProcessedTx extends ContractReceipt {
   totalCost: BigNumber;
 }
 
-export interface TypedDataFactory<M = any> {
-  createTypedData(message: M): TypedData<M>;
-  hashTypedData(message: M): string;
-  signTypeData(signer: SignerWithAddress, message: M): Promise<string>;
+export interface MessagePayloadFactory<M = any> {
+  hash(message: M): string;
+  sign(signer: SignerWithAddress, message: M): Promise<string>;
 }

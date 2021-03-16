@@ -22,6 +22,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface GatewayInterface extends ethers.utils.Interface {
   functions: {
+    "chainId()": FunctionFragment;
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatches(bytes[],bool)": FunctionFragment;
@@ -29,14 +30,14 @@ interface GatewayInterface extends ethers.utils.Interface {
     "getAccountNextNonce(address)": FunctionFragment;
     "hashDelegatedBatch(tuple)": FunctionFragment;
     "hashDelegatedBatchWithGasPrice(tuple)": FunctionFragment;
-    "initialize(address,address,bytes32,bytes32,bytes32)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "personalAccountRegistry()": FunctionFragment;
     "sendBatch(address[],bytes[])": FunctionFragment;
     "sendBatchFromAccount(address,address[],bytes[])": FunctionFragment;
-    "typedDataDomainSeparator()": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "delegateBatch",
     values: [string, BigNumberish, string[], BytesLike[], BytesLike]
@@ -77,7 +78,7 @@ interface GatewayInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, BytesLike, BytesLike, BytesLike]
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
@@ -95,11 +96,8 @@ interface GatewayInterface extends ethers.utils.Interface {
     functionFragment: "sendBatchFromAccount",
     values: [string, string[], BytesLike[]]
   ): string;
-  encodeFunctionData(
-    functionFragment: "typedDataDomainSeparator",
-    values?: undefined
-  ): string;
 
+  decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "delegateBatch",
     data: BytesLike
@@ -142,10 +140,6 @@ interface GatewayInterface extends ethers.utils.Interface {
     functionFragment: "sendBatchFromAccount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "typedDataDomainSeparator",
-    data: BytesLike
-  ): Result;
 
   events: {
     "BatchDelegated(address,bytes,bool)": EventFragment;
@@ -170,6 +164,10 @@ export class Gateway extends Contract {
   interface: GatewayInterface;
 
   functions: {
+    chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -277,18 +275,12 @@ export class Gateway extends Contract {
     initialize(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(address,address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -325,11 +317,11 @@ export class Gateway extends Contract {
       data: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
-
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<[string]>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   delegateBatch(
     account: string,
@@ -438,18 +430,12 @@ export class Gateway extends Contract {
   initialize(
     externalAccountRegistry_: string,
     personalAccountRegistry_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(address,address,bytes32,bytes32,bytes32)"(
+  "initialize(address,address)"(
     externalAccountRegistry_: string,
     personalAccountRegistry_: string,
-    typedDataDomainNameHash: BytesLike,
-    typedDataDomainVersionHash: BytesLike,
-    typedDataDomainSalt: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -487,11 +473,11 @@ export class Gateway extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-  "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
-
   callStatic: {
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -599,18 +585,12 @@ export class Gateway extends Contract {
     initialize(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(address,address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -647,10 +627,6 @@ export class Gateway extends Contract {
       data: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
-
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<string>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -660,6 +636,10 @@ export class Gateway extends Contract {
   };
 
   estimateGas: {
+    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -767,18 +747,12 @@ export class Gateway extends Contract {
     initialize(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(address,address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -815,13 +789,13 @@ export class Gateway extends Contract {
       data: BytesLike[],
       overrides?: Overrides
     ): Promise<BigNumber>;
-
-    typedDataDomainSeparator(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "typedDataDomainSeparator()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "chainId()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     delegateBatch(
       account: string,
       nonce: BigNumberish,
@@ -933,18 +907,12 @@ export class Gateway extends Contract {
     initialize(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,address,bytes32,bytes32,bytes32)"(
+    "initialize(address,address)"(
       externalAccountRegistry_: string,
       personalAccountRegistry_: string,
-      typedDataDomainNameHash: BytesLike,
-      typedDataDomainVersionHash: BytesLike,
-      typedDataDomainSalt: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -984,14 +952,6 @@ export class Gateway extends Contract {
       to: string[],
       data: BytesLike[],
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    typedDataDomainSeparator(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "typedDataDomainSeparator()"(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

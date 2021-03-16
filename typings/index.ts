@@ -14,8 +14,8 @@ export type { AccountImplementationV1Mock } from "./AccountImplementationV1Mock"
 export type { AccountRegistryMock } from "./AccountRegistryMock";
 export type { BalancesHelper } from "./BalancesHelper";
 export type { Initializable } from "./Initializable";
+export type { SignatureValidator } from "./SignatureValidator";
 export type { ERC20Token } from "./ERC20Token";
-export type { TypedDataContainer } from "./TypedDataContainer";
 export type { ENSController } from "./ENSController";
 export type { ENSHelper } from "./ENSHelper";
 export type { ENSRegistry } from "./ENSRegistry";
@@ -47,8 +47,8 @@ export { AccountImplementationV1Mock__factory } from "./factories/AccountImpleme
 export { AccountRegistryMock__factory } from "./factories/AccountRegistryMock__factory";
 export { BalancesHelper__factory } from "./factories/BalancesHelper__factory";
 export { Initializable__factory } from "./factories/Initializable__factory";
+export { SignatureValidator__factory } from "./factories/SignatureValidator__factory";
 export { ERC20Token__factory } from "./factories/ERC20Token__factory";
-export { TypedDataContainer__factory } from "./factories/TypedDataContainer__factory";
 export { ENSController__factory } from "./factories/ENSController__factory";
 export { ENSHelper__factory } from "./factories/ENSHelper__factory";
 export { ENSRegistry__factory } from "./factories/ENSRegistry__factory";

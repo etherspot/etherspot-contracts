@@ -2,10 +2,10 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
+import "../common/libs/ECDSALib.sol";
 import "../common/libs/SafeMathLib.sol";
-import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
-import "../common/typedData/TypedDataContainer.sol";
+import "../common/signature/SignatureValidator.sol";
 import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
@@ -17,9 +17,9 @@ import "../personal/PersonalAccountRegistry.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract Gateway is Initializable, TypedDataContainer {
+contract Gateway is Initializable, SignatureValidator {
+  using ECDSALib for bytes32;
   using SafeMathLib for uint256;
-  using SignatureLib for bytes32;
 
   struct DelegatedBatch {
     address account;
@@ -36,11 +36,11 @@ contract Gateway is Initializable, TypedDataContainer {
     uint256 gasPrice;
   }
 
-  bytes32 private constant DELEGATED_BATCH_TYPE_HASH = keccak256(
+  bytes32 private constant HASH_PREFIX_DELEGATED_BATCH = keccak256(
     "DelegatedBatch(address account,uint256 nonce,address[] to,bytes[] data)"
   );
 
-  bytes32 private constant DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE = keccak256(
+  bytes32 private constant HASH_PREFIX_DELEGATED_BATCH_WITH_GAS_PRICE = keccak256(
     "DelegatedBatchWithGasPrice(address account,uint256 nonce,address[] to,bytes[] data,uint256 gasPrice)"
   );
 
@@ -66,7 +66,7 @@ contract Gateway is Initializable, TypedDataContainer {
   /**
    * @dev Public constructor
    */
-  constructor() public Initializable() {}
+  constructor() public Initializable() SignatureValidator() {}
 
   // external functions
 
@@ -74,29 +74,16 @@ contract Gateway is Initializable, TypedDataContainer {
    * @notice Initializes `Gateway` contract
    * @param externalAccountRegistry_ `ExternalAccountRegistry` contract address
    * @param personalAccountRegistry_ `PersonalAccountRegistry` contract address
-   * @param typedDataDomainNameHash hash of a typed data domain name
-   * @param typedDataDomainVersionHash hash of a typed data domain version
-   * @param typedDataDomainSalt typed data salt
    */
   function initialize(
     ExternalAccountRegistry externalAccountRegistry_,
-    PersonalAccountRegistry personalAccountRegistry_,
-    bytes32 typedDataDomainNameHash,
-    bytes32 typedDataDomainVersionHash,
-    bytes32 typedDataDomainSalt
+    PersonalAccountRegistry personalAccountRegistry_
   )
     external
     onlyInitializer
   {
     externalAccountRegistry = externalAccountRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
-
-    // TypedDataContainer
-    _initializeTypedDataContainer(
-      typedDataDomainNameHash,
-      typedDataDomainVersionHash,
-      typedDataDomainSalt
-    );
   }
 
   // public functions
@@ -177,13 +164,11 @@ contract Gateway is Initializable, TypedDataContainer {
       "Gateway: nonce is lower than current account nonce"
     );
 
-    address sender = _hashPrimaryTypedData(
-      _hashTypedData(
-        account,
-        nonce,
-        to,
-        data
-      )
+    address sender = _hashDelegatedBatch(
+      account,
+      nonce,
+      to,
+      data
     ).recoverAddress(senderSignature);
 
     accountNonce[account] = nonce;
@@ -225,14 +210,12 @@ contract Gateway is Initializable, TypedDataContainer {
       "Gateway: nonce is lower than current account nonce"
     );
 
-    address sender = _hashPrimaryTypedData(
-      _hashTypedData(
-        account,
-        nonce,
-        to,
-        data,
-        tx.gasprice
-      )
+    address sender = _hashDelegatedBatchWithGasPrice(
+      account,
+      nonce,
+      to,
+      data,
+      tx.gasprice
     ).recoverAddress(senderSignature);
 
     accountNonce[account] = nonce;
@@ -292,7 +275,7 @@ contract Gateway is Initializable, TypedDataContainer {
   // public functions (views)
 
   /**
-   * @notice Hashes `DelegatedBatch` typed data
+   * @notice Hashes `DelegatedBatch` message payload
    * @param delegatedBatch struct
    * @return hash
    */
@@ -303,18 +286,16 @@ contract Gateway is Initializable, TypedDataContainer {
     view
     returns (bytes32)
   {
-    return _hashPrimaryTypedData(
-      _hashTypedData(
-        delegatedBatch.account,
-        delegatedBatch.nonce,
-        delegatedBatch.to,
-        delegatedBatch.data
-      )
+    return _hashDelegatedBatch(
+      delegatedBatch.account,
+      delegatedBatch.nonce,
+      delegatedBatch.to,
+      delegatedBatch.data
     );
   }
 
   /**
-   * @notice Hashes `DelegatedBatchWithGasPrice` typed data
+   * @notice Hashes `DelegatedBatchWithGasPrice` message payload
    * @param delegatedBatch struct
    * @return hash
    */
@@ -325,14 +306,12 @@ contract Gateway is Initializable, TypedDataContainer {
     view
     returns (bytes32)
   {
-    return _hashPrimaryTypedData(
-      _hashTypedData(
-        delegatedBatch.account,
-        delegatedBatch.nonce,
-        delegatedBatch.to,
-        delegatedBatch.data,
-        delegatedBatch.gasPrice
-      )
+    return _hashDelegatedBatchWithGasPrice(
+      delegatedBatch.account,
+      delegatedBatch.nonce,
+      delegatedBatch.to,
+      delegatedBatch.data,
+      delegatedBatch.gasPrice
     );
   }
 
@@ -402,34 +381,27 @@ contract Gateway is Initializable, TypedDataContainer {
     }
   }
 
-  // private functions (pure)
+  // private functions (views)
 
-  function _hashTypedData(
+  function _hashDelegatedBatch(
     address account,
     uint256 nonce,
     address[] memory to,
     bytes[] memory data
   )
     private
-    pure
+    view
     returns (bytes32)
   {
-    bytes32[] memory dataHashes = new bytes32[](data.length);
-
-    for (uint256 i = 0; i < data.length; i++) {
-      dataHashes[i] = keccak256(data[i]);
-    }
-
-    return keccak256(abi.encode(
-      DELEGATED_BATCH_TYPE_HASH,
+    return _hashMessagePayload(HASH_PREFIX_DELEGATED_BATCH, abi.encodePacked(
       account,
       nonce,
-      keccak256(abi.encodePacked(to)),
-      keccak256(abi.encodePacked(dataHashes))
+      to,
+      _concatBytes(data)
     ));
   }
 
-  function _hashTypedData(
+  function _hashDelegatedBatchWithGasPrice(
     address account,
     uint256 nonce,
     address[] memory to,
@@ -437,22 +409,32 @@ contract Gateway is Initializable, TypedDataContainer {
     uint256 gasPrice
   )
     private
-    pure
+    view
     returns (bytes32)
   {
-    bytes32[] memory dataHashes = new bytes32[](data.length);
+    return _hashMessagePayload(HASH_PREFIX_DELEGATED_BATCH_WITH_GAS_PRICE, abi.encodePacked(
+      account,
+      nonce,
+      to,
+      _concatBytes(data),
+      gasPrice
+    ));
+  }
 
-    for (uint256 i = 0; i < data.length; i++) {
-      dataHashes[i] = keccak256(data[i]);
+// private functions (pure)
+
+  function _concatBytes(bytes[] memory data)
+    private
+    pure
+    returns (bytes memory)
+  {
+    bytes memory result;
+    uint dataLen = data.length;
+
+    for (uint i = 0 ; i < dataLen ; i++) {
+      result = abi.encodePacked(result, data[i]);
     }
 
-    return keccak256(abi.encode(
-        DELEGATED_BATCH_TYPE_HASH_WITH_GAS_PRICE,
-        account,
-        nonce,
-        keccak256(abi.encodePacked(to)),
-        keccak256(abi.encodePacked(dataHashes)),
-        gasPrice
-      ));
+    return result;
   }
 }

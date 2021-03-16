@@ -1,5 +1,3 @@
-export declare const TYPED_DATA_DOMAIN_SALT: string;
-
 export declare enum ContractNames {
   Account = 'Account',
   AccountBase = 'AccountBase',
@@ -27,6 +25,6 @@ export declare enum ContractNames {
   PaymentRegistry = 'PaymentRegistry',
   PersonalAccountImplementationV1 = 'PersonalAccountImplementationV1',
   PersonalAccountRegistry = 'PersonalAccountRegistry',
-  TypedDataContainer = 'TypedDataContainer',
+  SignatureValidator = 'SignatureValidator',
   WrappedWeiToken = 'WrappedWeiToken',
 }

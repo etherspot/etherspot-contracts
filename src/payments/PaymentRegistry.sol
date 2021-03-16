@@ -3,11 +3,11 @@ pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "../common/access/Guarded.sol";
+import "../common/libs/ECDSALib.sol";
 import "../common/libs/SafeMathLib.sol";
-import "../common/libs/SignatureLib.sol";
 import "../common/lifecycle/Initializable.sol";
+import "../common/signature/SignatureValidator.sol";
 import "../common/token/ERC20Token.sol";
-import "../common/typedData/TypedDataContainer.sol";
 import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 import "../gateway/GatewayRecipient.sol";
@@ -24,9 +24,9 @@ import "./PaymentDepositAccount.sol";
  *
  * @author Stanisław Głogowski <stan@pillarproject.io>
  */
-contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayRecipient {
+contract PaymentRegistry is Guarded, Initializable, SignatureValidator, GatewayRecipient {
+  using ECDSALib for bytes32;
   using SafeMathLib for uint256;
-  using SignatureLib for bytes32;
 
   struct Deposit {
     address account;
@@ -54,10 +54,11 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
   }
 
   uint256 private constant DEFAULT_DEPOSIT_EXIT_LOCK_PERIOD = 28 days;
-  bytes32 private constant DEPOSIT_WITHDRAWAL_TYPE_HASH = keccak256(
+
+  bytes32 private constant HASH_PREFIX_DEPOSIT_WITHDRAWAL = keccak256(
     "DepositWithdrawal(address owner,address token,uint256 amount)"
   );
-  bytes32 private constant PAYMENT_CHANNEL_COMMIT_TYPE_HASH = keccak256(
+  bytes32 private constant HASH_PREFIX_PAYMENT_CHANNEL_COMMIT = keccak256(
     "PaymentChannelCommit(address sender,address recipient,address token,bytes32 uid,uint256 blockNumber,uint256 amount)"
   );
 
@@ -188,7 +189,7 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
   /**
    * @dev Public constructor
    */
-  constructor() public Guarded() Initializable() {}
+  constructor() public Initializable() SignatureValidator() {}
 
   // external functions
 
@@ -199,19 +200,13 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
    * @param depositExitLockPeriod_ deposit exit lock period
    * @param guardians_ array of guardians addresses
    * @param gateway_ `Gateway` contract address
-   * @param typedDataDomainNameHash hash of a typed data domain name
-   * @param typedDataDomainVersionHash hash of a typed data domain version
-   * @param typedDataDomainSalt typed data salt
    */
   function initialize(
     ExternalAccountRegistry externalAccountRegistry_,
     PersonalAccountRegistry personalAccountRegistry_,
     uint256 depositExitLockPeriod_,
     address[] calldata guardians_,
-    address gateway_,
-    bytes32 typedDataDomainNameHash,
-    bytes32 typedDataDomainVersionHash,
-    bytes32 typedDataDomainSalt
+    address gateway_
   )
     external
     onlyInitializer
@@ -230,13 +225,6 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
 
     // GatewayRecipient
     _initializeGatewayRecipient(gateway_);
-
-    // TypedDataContainer
-    _initializeTypedDataContainer(
-      typedDataDomainNameHash,
-      typedDataDomainVersionHash,
-      typedDataDomainSalt
-    );
   }
 
   /**
@@ -353,12 +341,10 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
       "PaymentRegistry: invalid amount"
     );
 
-    bytes32 messageHash = _hashPrimaryTypedData(
-      _hashTypedData(
-        owner,
-        token,
-        amount
-      )
+    bytes32 messageHash = _hashDepositWithdrawal(
+      owner,
+      token,
+      amount
     );
 
     require(
@@ -632,7 +618,7 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
   // public functions (views)
 
   /**
-   * @notice Hashes `DepositWithdrawal` typed data
+   * @notice Hashes `DepositWithdrawal` message payload
    * @param depositWithdrawal struct
    * @return hash
    */
@@ -643,17 +629,15 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
     view
     returns (bytes32)
   {
-    return _hashPrimaryTypedData(
-      _hashTypedData(
-        depositWithdrawal.owner,
-        depositWithdrawal.token,
-        depositWithdrawal.amount
-      )
+    return _hashDepositWithdrawal(
+      depositWithdrawal.owner,
+      depositWithdrawal.token,
+      depositWithdrawal.amount
     );
   }
 
   /**
-   * @notice Hashes `PaymentChannelCommit` typed data
+   * @notice Hashes `PaymentChannelCommit` message payload
    * @param paymentChannelCommit struct
    * @return hash
    */
@@ -664,15 +648,13 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
     view
     returns (bytes32)
   {
-    return _hashPrimaryTypedData(
-      _hashTypedData(
-        paymentChannelCommit.sender,
-        paymentChannelCommit.recipient,
-        paymentChannelCommit.token,
-        paymentChannelCommit.uid,
-        paymentChannelCommit.blockNumber,
-        paymentChannelCommit.amount
-      )
+    return _hashPaymentChannelCommit(
+      paymentChannelCommit.sender,
+      paymentChannelCommit.recipient,
+      paymentChannelCommit.token,
+      paymentChannelCommit.uid,
+      paymentChannelCommit.blockNumber,
+      paymentChannelCommit.amount
     );
   }
 
@@ -731,15 +713,13 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
     private
     returns (bytes32 hash, address depositAccount, uint256 paymentValue)
   {
-    bytes32 messageHash = _hashPrimaryTypedData(
-      _hashTypedData(
-        sender,
-        recipient,
-        token,
-        uid,
-        blockNumber,
-        amount
-      )
+    bytes32 messageHash = _hashPaymentChannelCommit(
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount
     );
 
     if (senderSignature.length == 0) {
@@ -896,6 +876,44 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
     return address(uint160(uint256(data)));
   }
 
+  function _hashDepositWithdrawal(
+    address owner,
+    address token,
+    uint256 amount
+  )
+    private
+    view
+    returns (bytes32)
+  {
+    return _hashMessagePayload(HASH_PREFIX_DEPOSIT_WITHDRAWAL, abi.encodePacked(
+      owner,
+      token,
+      amount
+    ));
+  }
+
+  function _hashPaymentChannelCommit(
+    address sender,
+    address recipient,
+    address token,
+    bytes32 uid,
+    uint256 blockNumber,
+    uint256 amount
+  )
+    private
+    view
+    returns (bytes32)
+  {
+    return _hashMessagePayload(HASH_PREFIX_PAYMENT_CHANNEL_COMMIT, abi.encodePacked(
+      sender,
+      recipient,
+      token,
+      uid,
+      blockNumber,
+      amount
+    ));
+  }
+
   // private functions (pure)
 
   function _computePaymentChannelHash(
@@ -916,45 +934,5 @@ contract PaymentRegistry is Guarded, Initializable, TypedDataContainer, GatewayR
         uid
       )
     );
-  }
-
-  function _hashTypedData(
-    address owner,
-    address token,
-    uint256 amount
-  )
-    private
-    pure
-    returns (bytes32)
-  {
-    return keccak256(abi.encode(
-      DEPOSIT_WITHDRAWAL_TYPE_HASH,
-      owner,
-      token,
-      amount
-    ));
-  }
-
-  function _hashTypedData(
-    address sender,
-    address recipient,
-    address token,
-    bytes32 uid,
-    uint256 blockNumber,
-    uint256 amount
-  )
-    private
-    pure
-    returns (bytes32)
-  {
-    return keccak256(abi.encode(
-        PAYMENT_CHANNEL_COMMIT_TYPE_HASH,
-        sender,
-        recipient,
-        token,
-        uid,
-        blockNumber,
-        amount
-      ));
   }
 }

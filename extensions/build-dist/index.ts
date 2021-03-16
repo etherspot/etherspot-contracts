@@ -16,7 +16,7 @@ const TASK_BUILD_DIST = 'build-dist';
 
 task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
   const {
-    config: { buildPaths, paths, typedData, knownContracts },
+    config: { buildPaths, paths, knownContracts },
   } = hre;
 
   let { artifacts: artifactsPath, dist: distPath } = {
@@ -63,8 +63,6 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         abi: any;
         addresses: { [key: string]: string };
         byteCode: string;
-        typedDataDomainName: string;
-        typedDataDomainVersion: string;
       };
     } = {};
 
@@ -127,22 +125,10 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
           bytecode: byteCode,
         }: { abi: any; bytecode: string } = await readJSON(filePath);
 
-        let typedDataDomainName: string = null;
-        let typedDataDomainVersion: string = null;
-
-        if (typedData.domains[contractName]) {
-          ({
-            name: typedDataDomainName,
-            version: typedDataDomainVersion,
-          } = typedData.domains[contractName]);
-        }
-
         contracts[contractName] = {
           abi,
           addresses,
           byteCode,
-          typedDataDomainName,
-          typedDataDomainVersion,
         };
       }
     }
@@ -156,7 +142,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
 
     await writeFile(
       join(distPath, 'constants.js'),
-      templates.constantsJs(typedData.domainSalt, contractNames),
+      templates.constantsJs(contractNames),
     );
 
     await writeFile(

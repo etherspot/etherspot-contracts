@@ -1,19 +1,11 @@
 import { ethers } from 'hardhat';
 import { utils, providers, Contract, BigNumberish, BigNumber } from 'ethers';
+import { CHAIN_ID, ENS_REVERSED_NAME } from './constants';
 import {
-  buildTypedData,
-  hashTypedData,
-  TypedData,
-  TypeProperty,
-} from 'ethers-typed-data';
-import {
-  CHAIN_ID,
-  TYPED_DATA_DOMAIN_NAME,
-  TYPED_DATA_DOMAIN_VERSION,
-  TYPED_DATA_DOMAIN_SALT,
-  ENS_REVERSED_NAME,
-} from './constants';
-import { SignerWithAddress, ProcessedTx, TypedDataFactory } from './interfaces';
+  SignerWithAddress,
+  ProcessedTx,
+  MessagePayloadFactory,
+} from './interfaces';
 
 const { provider } = ethers;
 
@@ -55,34 +47,44 @@ export function randomHex32(): string {
   return utils.hexlify(utils.randomBytes(32));
 }
 
-export function createTypedDataFactory<M = any>(
+export function createMessagePayloadFactory<M extends {} = any>(
   contract: Contract,
-  primaryType: string,
-  types: TypeProperty[],
-): TypedDataFactory<M> {
+  structName: string,
+  structFields: {
+    name: keyof M;
+    type: string;
+  }[] = [],
+): MessagePayloadFactory<M> {
+  const prefix = `${structName}(${structFields
+    .map(({ type, name }) => `${type} ${name}`)
+    .join(',')})`;
+
+  const prefixHash = utils.id(prefix);
+
+  const buildMessagePayload = (message: M) => {
+    const types = [
+      'uint256', //
+      'address',
+      'bytes32',
+      ...structFields.map(({ type }) => type),
+    ];
+
+    const values = [
+      CHAIN_ID,
+      contract.address,
+      prefixHash, //
+      ...structFields.map(({ name }) => message[name]),
+    ];
+
+    return utils.arrayify(utils.solidityKeccak256(types, values));
+  };
+
   return {
-    createTypedData(message: M): TypedData<M> {
-      return buildTypedData(
-        {
-          verifyingContract: contract.address,
-          chainId: CHAIN_ID,
-          name: TYPED_DATA_DOMAIN_NAME,
-          version: TYPED_DATA_DOMAIN_VERSION,
-          salt: TYPED_DATA_DOMAIN_SALT,
-        },
-        primaryType,
-        types,
-        message,
-      );
+    hash(message: M): string {
+      return utils.hashMessage(buildMessagePayload(message));
     },
-    hashTypedData(message: M): string {
-      return hashTypedData(this.createTypedData(message));
-    },
-    signTypeData(signer: SignerWithAddress, message: M): Promise<string> {
-      return provider.send('eth_signTypedData', [
-        signer.address,
-        this.createTypedData(message),
-      ]);
+    async sign(signer: SignerWithAddress, message: M): Promise<string> {
+      return signer.signMessage(utils.arrayify(buildMessagePayload(message)));
     },
   };
 }

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ethers_1 = require("ethers");
 const func = async (hre) => {
     var _a;
-    const { deployments: { get, log, execute, read }, network: { name }, config: { typedData, ens, knownContracts }, getNamedAccounts, } = hre;
+    const { deployments: { get, log, execute, read }, network: { name }, config: { ens, knownContracts }, getNamedAccounts, } = hre;
     const { from } = await getNamedAccounts();
     const ensController = await get('ENSController');
     const gateway = await get('Gateway');
@@ -20,7 +20,7 @@ const func = async (hre) => {
         await execute('ENSController', {
             from,
             log: true,
-        }, 'initialize', ensRegistryAddress, [], gateway.address, ethers_1.utils.id(typedData.domains.ENSController.name), ethers_1.utils.id(typedData.domains.ENSController.version), typedData.domainSalt);
+        }, 'initialize', ensRegistryAddress, [], gateway.address);
     }
     if (await read('ENSHelper', 'isInitialized')) {
         log('ENSHelper already initialized');
