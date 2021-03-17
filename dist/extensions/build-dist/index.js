@@ -10,9 +10,10 @@ const constants_1 = require("../constants");
 const templates_1 = __importDefault(require("./templates"));
 const TASK_BUILD_DIST = 'build-dist';
 config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
-    const { config: { buildPaths, paths, knownContracts }, } = hre;
+    const { config: { buildPaths, paths, knownContracts, networks }, } = hre;
     let { artifacts: artifactsPath, dist: distPath } = Object.assign({ artifacts: 'artifacts', dist: 'dist' }, (buildPaths || {}));
     let { deployments: deploymentsPath } = Object.assign(Object.assign({}, paths), { deployments: 'deployments' });
+    const networkNames = Object.keys(networks);
     const cwd = process.cwd();
     artifactsPath = path_1.resolve(cwd, artifactsPath);
     distPath = path_1.resolve(cwd, distPath);
@@ -20,8 +21,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
     if ((await fs_extra_1.pathExists(artifactsPath)) && (await fs_extra_1.pathExists(distPath))) {
         await fs_extra_1.mkdirp(distPath);
         const networks = [];
-        const dirNames = await fs_extra_1.readdir(deploymentsPath);
-        for (const name of dirNames) {
+        for (const name of networkNames) {
             const path = path_1.join(deploymentsPath, name);
             const chainFilePath = path_1.join(path, '.chainId');
             if (await fs_extra_1.pathExists(chainFilePath)) {
