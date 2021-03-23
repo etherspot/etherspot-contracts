@@ -66,6 +66,16 @@ const config: HardhatUserConfig = {
       22,
     ),
     ...createConfigNetwork(
+      NetworkNames.Matic,
+      137,
+      'https://rpc-mainnet.maticvigil.com',
+    ),
+    ...createConfigNetwork(
+      NetworkNames.Mumbai,
+      80001,
+      'https://rpc-mumbai.maticvigil.com',
+    ),
+    ...createConfigNetwork(
       NetworkNames.LocalA,
       9999,
       'http://localhost:8545',
