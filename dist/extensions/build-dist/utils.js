@@ -34,6 +34,12 @@ function getScanUrl(network, item, type) {
             result = 'https://explorer.testnet.fantom.network';
             transactionPath = 'transactions';
             break;
+        case constants_1.NetworkNames.Matic:
+            result = 'https://explorer-mainnet.maticvigil.com';
+            break;
+        case constants_1.NetworkNames.Mumbai:
+            result = 'https://explorer-mumbai.maticvigil.com';
+            break;
     }
     if (result) {
         item = item.toLowerCase();

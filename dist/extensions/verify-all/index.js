@@ -27,7 +27,7 @@ config_1.task(TASK_VERIFY_ALL, 'Verify all contracts').setAction(async (args, hr
                     await run(TASK_VERIFY, verifyArgs);
                 }
                 catch (err) {
-                    console.warn(err);
+                    console.warn(`${name} verification error:`, err.toString());
                 }
             }
             break;

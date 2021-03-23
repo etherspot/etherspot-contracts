@@ -10,6 +10,8 @@ export declare enum NetworkNames {
     BscTest = "bscTest",
     Fantom = "fantom",
     FantomTest = "fantomTest",
+    Matic = "matic",
+    Mumbai = "mumbai",
     LocalA = "localA",
     LocalB = "localB"
 }

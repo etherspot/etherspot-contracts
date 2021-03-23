@@ -74,6 +74,7 @@ const config: HardhatUserConfig = {
       NetworkNames.Mumbai,
       80001,
       'https://rpc-mumbai.maticvigil.com',
+      5,
     ),
     ...createConfigNetwork(
       NetworkNames.LocalA,
