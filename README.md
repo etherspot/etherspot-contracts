@@ -1,4 +1,4 @@
-# ETHERspot contracts
+# Etherspot Solidity contracts
 
 [![NPM version][npm-image]][npm-url]
 
