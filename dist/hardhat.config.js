@@ -12,7 +12,7 @@ const config = {
     namedAccounts: {
         from: 0,
     },
-    networks: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ hardhat: {
+    networks: Object.assign({ hardhat: {
             accounts: {
                 mnemonic: HARDHAT_MNEMONIC ||
                     'test test test test test test test test test test test junk',
@@ -20,7 +20,7 @@ const config = {
             },
             chainId: 192,
             gasPrice: 20 * 1000000000,
-        } }, extensions_1.createConfigNetwork(extensions_1.NetworkNames.Mainnet, 1, 'infura')), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Ropsten, 3, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Rinkeby, 4, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Goerli, 5, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Kovan, 42, 'infura', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Xdai, 100, 'https://rpc.xdaichain.com', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Sokol, 77, 'https://sokol.poa.network', 1)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Bsc, 56, 'https://bsc-dataseed1.binance.org', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.BscTest, 97, 'https://data-seed-prebsc-1-s2.binance.org:8545', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.Fantom, 250, 'https://rpcapi.fantom.network', 22)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.FantomTest, 4002, 'https://rpc.testnet.fantom.network', 22)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalA, 9999, 'http://localhost:8545', 20)), extensions_1.createConfigNetwork(extensions_1.NetworkNames.LocalB, 6666, 'http://localhost:9545', 20)),
+        } }, extensions_1.createConfigNetworks()),
     solidity: {
         version: '0.6.12',
         settings: {
