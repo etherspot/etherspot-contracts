@@ -34,17 +34,22 @@ ${Object.entries(data)
       if (address) {
         result = `${result}| \`${name}\` `;
         result = `${result}| \`${network.name}\` `;
-        result = `${result}| [${address}](${getScanUrl(
-          network.name,
-          address,
-          'Address',
-        )}) `;
 
-        result = `${result}| [${transaction.hash}](${getScanUrl(
-          network.name,
-          transaction.hash,
-          'Transaction',
-        )}) `;
+        {
+          const url = getScanUrl(network.name, address, 'address');
+
+          result = url
+            ? `${result}| [${address}](${url}) `
+            : `${result}| ${address} `;
+        }
+
+        {
+          const url = getScanUrl(network.name, transaction.hash, 'transaction');
+
+          result = url
+            ? `${result}| [${transaction.hash}](${url}) `
+            : `${result}| ${transaction.hash} `;
+        }
         result = `${result}| \n`;
       }
     }

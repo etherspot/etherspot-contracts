@@ -12,9 +12,23 @@ export declare enum NetworkNames {
     FantomTest = "fantomTest",
     Matic = "matic",
     Mumbai = "mumbai",
+    Avalanche = "avalanche",
+    Fuji = "fuji",
     LocalA = "localA",
     LocalB = "localB"
 }
+export declare const NETWORK_CONFIGS: {
+    [key: string]: {
+        chainId: number;
+        defaultProviderUrl: 'infura' | string;
+        defaultGas?: number;
+        defaultGasPrice?: number;
+        explorer?: string | {
+            address: string;
+            transaction: string;
+        };
+    };
+};
 export declare enum ContractNames {
     BalancesHelper = "BalancesHelper",
     ENSController = "ENSController",

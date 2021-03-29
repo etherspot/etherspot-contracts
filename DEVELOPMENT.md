@@ -17,6 +17,8 @@
 | `testnets` | Fantom (testnet) | `FANTOM_TEST` | `fantomTest` |
 | `mainnets` | Matic | `MATIC` | `matic` |
 | `testnets` | Mumbai (Matic testnet) | `MUMBAI` | `mumbai` |
+| `mainnets` | Avalanche | `AVALANCHE` | `avalanche` |
+| `testnets` | FUJI (Avalanche testnet) | `FUJI` | `fuji` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localA` |
 
@@ -28,6 +30,7 @@ via `env` variables:
 | --- | --- |
 | `<network config prefix>_PROVIDER_ENDPOINT` | |
 | `<network config prefix>_PROVIDER_PRIVATE_KEY` | |
+| `<network config prefix>_PROVIDER_GAS` | optional |
 | `<network config prefix>_PROVIDER_GAS_PRICE` | optional |
 
 ## Test

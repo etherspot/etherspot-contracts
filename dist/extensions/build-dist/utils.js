@@ -3,52 +3,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getScanUrl = void 0;
 const constants_1 = require("../constants");
 function getScanUrl(network, item, type) {
+    const { explorer } = constants_1.NETWORK_CONFIGS[network];
     let result = null;
-    let transactionPath = 'tx';
-    switch (network) {
-        case constants_1.NetworkNames.Mainnet:
-            result = 'https://etherscan.io';
-            break;
-        case constants_1.NetworkNames.Ropsten:
-        case constants_1.NetworkNames.Rinkeby:
-        case constants_1.NetworkNames.Goerli:
-        case constants_1.NetworkNames.Kovan:
-            result = `https://${network}.etherscan.io`;
-            break;
-        case constants_1.NetworkNames.Xdai:
-            result = 'https://blockscout.com/poa/xdai';
-            break;
-        case constants_1.NetworkNames.Sokol:
-            result = 'https://blockscout.com/poa/sokol';
-            break;
-        case constants_1.NetworkNames.Bsc:
-            result = 'https://bscscan.com';
-            break;
-        case constants_1.NetworkNames.BscTest:
-            result = 'https://testnet.bscscan.com';
-            break;
-        case constants_1.NetworkNames.Fantom:
-            result = 'https://ftmscan.com';
-            break;
-        case constants_1.NetworkNames.FantomTest:
-            result = 'https://explorer.testnet.fantom.network';
-            transactionPath = 'transactions';
-            break;
-        case constants_1.NetworkNames.Matic:
-            result = 'https://explorer-mainnet.maticvigil.com';
-            break;
-        case constants_1.NetworkNames.Mumbai:
-            result = 'https://explorer-mumbai.maticvigil.com';
-            break;
-    }
-    if (result) {
-        item = item.toLowerCase();
-        switch (type) {
-            case 'Address':
-                result = `${result}/address/${item}`;
+    if (explorer) {
+        let address;
+        let transaction;
+        switch (typeof explorer) {
+            case 'string':
+                address = `${explorer}/address`;
+                transaction = `${explorer}/tx`;
                 break;
-            case 'Transaction':
-                result = `${result}/${transactionPath}/${item}`;
+            case 'object':
+                ({ address, transaction } = explorer);
+                break;
+        }
+        switch (type) {
+            case 'address':
+                result = `${address}/${item}`;
+                break;
+            case 'transaction':
+                result = `${transaction}/${item}`;
                 break;
         }
     }

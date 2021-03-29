@@ -5,7 +5,11 @@ import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 import { HardhatUserConfig } from 'hardhat/config';
 import { utils } from 'ethers';
-import { NetworkNames, ContractNames, createConfigNetwork } from './extensions';
+import {
+  NetworkNames,
+  ContractNames,
+  createConfigNetworks,
+} from './extensions';
 
 const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 
@@ -24,70 +28,7 @@ const config: HardhatUserConfig = {
       chainId: 192,
       gasPrice: 20 * 1000000000,
     },
-    ...createConfigNetwork(NetworkNames.Mainnet, 1, 'infura'),
-    ...createConfigNetwork(NetworkNames.Ropsten, 3, 'infura', 1),
-    ...createConfigNetwork(NetworkNames.Rinkeby, 4, 'infura', 1),
-    ...createConfigNetwork(NetworkNames.Goerli, 5, 'infura', 1),
-    ...createConfigNetwork(NetworkNames.Kovan, 42, 'infura', 1),
-    ...createConfigNetwork(
-      NetworkNames.Xdai,
-      100,
-      'https://rpc.xdaichain.com',
-      1,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.Sokol,
-      77,
-      'https://sokol.poa.network',
-      1,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.Bsc,
-      56,
-      'https://bsc-dataseed1.binance.org',
-      20,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.BscTest,
-      97,
-      'https://data-seed-prebsc-1-s2.binance.org:8545',
-      20,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.Fantom,
-      250,
-      'https://rpcapi.fantom.network',
-      22,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.FantomTest,
-      4002,
-      'https://rpc.testnet.fantom.network',
-      22,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.Matic,
-      137,
-      'https://rpc-mainnet.maticvigil.com',
-    ),
-    ...createConfigNetwork(
-      NetworkNames.Mumbai,
-      80001,
-      'https://rpc-mumbai.maticvigil.com',
-      5,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.LocalA,
-      9999,
-      'http://localhost:8545',
-      20,
-    ),
-    ...createConfigNetwork(
-      NetworkNames.LocalB,
-      6666,
-      'http://localhost:9545',
-      20,
-    ),
+    ...createConfigNetworks(),
   },
   solidity: {
     version: '0.6.12',
