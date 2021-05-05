@@ -47,19 +47,19 @@ export const NETWORK_CONFIGS: {
     chainId: 4,
     defaultProviderUrl: 'infura',
     defaultGasPrice: 1,
-    explorer: 'https://rinkeby.ropsten.etherscan.io',
+    explorer: 'https://rinkeby.etherscan.io',
   },
   [NetworkNames.Goerli]: {
     chainId: 5,
     defaultProviderUrl: 'infura',
     defaultGasPrice: 1,
-    explorer: 'https://goerli.ropsten.etherscan.io',
+    explorer: 'https://goerli.etherscan.io',
   },
   [NetworkNames.Kovan]: {
     chainId: 42,
     defaultProviderUrl: 'infura',
     defaultGasPrice: 1,
-    explorer: 'https://kovan.ropsten.etherscan.io',
+    explorer: 'https://kovan.etherscan.io',
   },
   [NetworkNames.Xdai]: {
     chainId: 100,
