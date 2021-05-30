@@ -5,34 +5,35 @@ export function getScanUrl(
   item: string,
   type: 'transaction' | 'address',
 ): string {
-  const { explorer } = NETWORK_CONFIGS[network];
-
   let result: string = null;
 
-  if (explorer) {
-    let address: string;
-    let transaction: string;
+  if (NETWORK_CONFIGS[network]) {
+    const { explorer } = NETWORK_CONFIGS[network];
 
-    switch (typeof explorer) {
-      case 'string':
-        address = `${explorer}/address`;
-        transaction = `${explorer}/tx`;
-        break;
+    if (explorer) {
+      let address: string;
+      let transaction: string;
 
-      case 'object':
-        ({ address, transaction } = explorer);
-        break;
-    }
+      switch (typeof explorer) {
+        case 'string':
+          address = `${explorer}/address`;
+          transaction = `${explorer}/tx`;
+          break;
 
-    switch (type) {
-      case 'address':
-        result = `${address}/${item}`;
-        break;
-      case 'transaction':
-        result = `${transaction}/${item}`;
-        break;
+        case 'object':
+          ({ address, transaction } = explorer);
+          break;
+      }
+
+      switch (type) {
+        case 'address':
+          result = `${address}/${item}`;
+          break;
+        case 'transaction':
+          result = `${transaction}/${item}`;
+          break;
+      }
     }
   }
-
   return result;
 }
