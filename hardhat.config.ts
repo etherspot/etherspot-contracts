@@ -25,7 +25,7 @@ const config: HardhatUserConfig = {
           'test test test test test test test test test test test junk',
         count: 256,
       },
-      chainId: 192,
+      chainId: 3333,
       gasPrice: 20 * 1000000000,
     },
     ...createConfigNetworks(),

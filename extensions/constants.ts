@@ -14,14 +14,16 @@ export enum NetworkNames {
   Mumbai = 'mumbai',
   Avalanche = 'avalanche',
   Fuji = 'fuji',
+  Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
+  LocalH = 'localH',
 }
 
 export const NETWORK_CONFIGS: {
   [key: string]: {
     chainId: number;
-    defaultProviderUrl: 'infura' | string;
+    defaultProviderUrl?: 'infura' | string;
     defaultGas?: number;
     defaultGasPrice?: number;
     explorer?:
@@ -121,6 +123,9 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
     explorer: 'https://cchain.explorer.avax-test.network',
     defaultGasPrice: 470,
+  },
+  [NetworkNames.Etherspot]: {
+    chainId: 4386,
   },
   [NetworkNames.LocalA]: {
     chainId: 9999,
