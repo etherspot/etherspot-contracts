@@ -48,7 +48,7 @@
     "lint:sol": "solhint ./src/**/*.sol ./src/**/**/*.sol",
     "lint:ts": "eslint \"{deploy,extensions,test}/**/*.ts\"",
     "lint:ts-fix": "npm run lint -- --fix",
-    "start": "hardhat node",
+    "start": "hardhat node --port 7545",
     "verify:mainnet": "hardhat verify-all --network mainnet",
     "verify:ropsten": "hardhat verify-all --network ropsten",
     "verify:rinkeby": "hardhat verify-all --network rinkeby",
