@@ -18,8 +18,10 @@ var NetworkNames;
     NetworkNames["Mumbai"] = "mumbai";
     NetworkNames["Avalanche"] = "avalanche";
     NetworkNames["Fuji"] = "fuji";
+    NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
+    NetworkNames["LocalH"] = "localH";
 })(NetworkNames = exports.NetworkNames || (exports.NetworkNames = {}));
 exports.NETWORK_CONFIGS = {
     [NetworkNames.Mainnet]: {
@@ -111,6 +113,9 @@ exports.NETWORK_CONFIGS = {
         defaultProviderUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
         explorer: 'https://cchain.explorer.avax-test.network',
         defaultGasPrice: 470,
+    },
+    [NetworkNames.Etherspot]: {
+        chainId: 4386,
     },
     [NetworkNames.LocalA]: {
         chainId: 9999,
