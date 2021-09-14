@@ -14,6 +14,8 @@ export enum NetworkNames {
   Mumbai = 'mumbai',
   Avalanche = 'avalanche',
   Fuji = 'fuji',
+  Aurora = 'aurora',
+  AuroraTest = 'auroraTest',
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -124,6 +126,16 @@ export const NETWORK_CONFIGS: {
     explorer: 'https://cchain.explorer.avax-test.network',
     defaultGasPrice: 470,
   },
+  [NetworkNames.Aurora]: {
+    chainId: 1313161554,
+    defaultProviderUrl: 'https://rpc.mainnet.aurora.dev',
+    defaultGasPrice: 10,
+  },
+  [NetworkNames.AuroraTest]: {
+    chainId: 1313161555,
+    defaultProviderUrl: 'https://testnet.aurora.dev/',
+    defaultGasPrice: 10,
+  }, 
   [NetworkNames.Etherspot]: {
     chainId: 4386,
   },
