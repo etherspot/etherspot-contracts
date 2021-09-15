@@ -135,9 +135,11 @@ export const NETWORK_CONFIGS: {
     chainId: 1313161555,
     defaultProviderUrl: 'https://testnet.aurora.dev/',
     defaultGasPrice: 10,
-  }, 
+  },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
+    defaultProviderUrl: 'https://qa-etherspot-testnet.pillarproject.io',
+    defaultGasPrice: 20,
   },
   [NetworkNames.LocalA]: {
     chainId: 9999,

@@ -128,6 +128,8 @@ exports.NETWORK_CONFIGS = {
     },
     [NetworkNames.Etherspot]: {
         chainId: 4386,
+        defaultProviderUrl: 'https://qa-etherspot-testnet.pillarproject.io',
+        defaultGasPrice: 20,
     },
     [NetworkNames.LocalA]: {
         chainId: 9999,
