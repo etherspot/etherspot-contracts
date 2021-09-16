@@ -14,13 +14,17 @@ export declare enum NetworkNames {
     Mumbai = "mumbai",
     Avalanche = "avalanche",
     Fuji = "fuji",
+    Aurora = "aurora",
+    AuroraTest = "auroraTest",
+    Etherspot = "etherspot",
     LocalA = "localA",
-    LocalB = "localB"
+    LocalB = "localB",
+    LocalH = "localH"
 }
 export declare const NETWORK_CONFIGS: {
     [key: string]: {
         chainId: number;
-        defaultProviderUrl: 'infura' | string;
+        defaultProviderUrl?: 'infura' | string;
         defaultGas?: number;
         defaultGasPrice?: number;
         explorer?: string | {

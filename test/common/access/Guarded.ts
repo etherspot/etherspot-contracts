@@ -1,6 +1,5 @@
 import { ethers } from 'hardhat';
 import { utils } from 'ethers';
-import { GuardedMock } from '../../../typings';
 import {
   SignerWithAddress,
   processTx,
@@ -14,7 +13,7 @@ const { getSigners } = ethers;
 describe('Guarded (using mock)', () => {
   const guardians: SignerWithAddress[] = [];
   let signers: SignerWithAddress[];
-  let guardedMock: GuardedMock;
+  let guardedMock: any;
 
   before(async () => {
     signers = await getSigners();

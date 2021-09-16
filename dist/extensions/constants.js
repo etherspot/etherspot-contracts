@@ -18,8 +18,12 @@ var NetworkNames;
     NetworkNames["Mumbai"] = "mumbai";
     NetworkNames["Avalanche"] = "avalanche";
     NetworkNames["Fuji"] = "fuji";
+    NetworkNames["Aurora"] = "aurora";
+    NetworkNames["AuroraTest"] = "auroraTest";
+    NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
+    NetworkNames["LocalH"] = "localH";
 })(NetworkNames = exports.NetworkNames || (exports.NetworkNames = {}));
 exports.NETWORK_CONFIGS = {
     [NetworkNames.Mainnet]: {
@@ -111,6 +115,21 @@ exports.NETWORK_CONFIGS = {
         defaultProviderUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
         explorer: 'https://cchain.explorer.avax-test.network',
         defaultGasPrice: 470,
+    },
+    [NetworkNames.Aurora]: {
+        chainId: 1313161554,
+        defaultProviderUrl: 'https://mainnet.aurora.dev',
+        defaultGasPrice: 3,
+    },
+    [NetworkNames.AuroraTest]: {
+        chainId: 1313161555,
+        defaultProviderUrl: 'https://testnet.aurora.dev/',
+        defaultGasPrice: 3,
+    },
+    [NetworkNames.Etherspot]: {
+        chainId: 4386,
+        defaultProviderUrl: 'https://qa-etherspot-testnet.pillarproject.io',
+        defaultGasPrice: 20,
     },
     [NetworkNames.LocalA]: {
         chainId: 9999,

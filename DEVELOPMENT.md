@@ -19,8 +19,12 @@
 | `testnets` | Mumbai (Matic testnet) | `MUMBAI` | `mumbai` |
 | `mainnets` | Avalanche | `AVALANCHE` | `avalanche` |
 | `testnets` | FUJI (Avalanche testnet) | `FUJI` | `fuji` |
+| `testnets` | Aurora Testnet | `AURORA_TEST`| `auroraTest` |
+| `mainnets` | Aurora | `Aurora` | `aurora` |
+| `testnets` | Etherspot | `ETHERSPOT` | `etherspot` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
-| `localnets` | Localnet (instance B) | `LOCAL_B` | `localA` |
+| `localnets` | Localnet (instance B) | `LOCAL_B` | `localB` |
+| `localnets` | Localnet (instance H) | `LOCAL_H` | `localH` |
 
 ## Configuration
 

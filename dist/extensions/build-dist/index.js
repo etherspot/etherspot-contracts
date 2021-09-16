@@ -22,7 +22,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         await fs_extra_1.mkdirp(distPath);
         const networks = [];
         for (const name of networkNames) {
-            const path = path_1.join(deploymentsPath, name);
+            const path = path_1.join(deploymentsPath, name === constants_1.NetworkNames.LocalH ? 'localhost' : name);
             const chainFilePath = path_1.join(path, '.chainId');
             if (await fs_extra_1.pathExists(chainFilePath)) {
                 const chainId = await fs_extra_1.readFile(chainFilePath, 'utf8');
@@ -57,10 +57,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                         }
                     }
                     addresses[chainId] = address;
-                    if (address &&
-                        transactionHash &&
-                        name !== constants_1.NetworkNames.LocalA &&
-                        name !== constants_1.NetworkNames.LocalB) {
+                    if (address && transactionHash && !name.startsWith('local')) {
                         if (!contractsMD[contractName]) {
                             contractsMD[contractName] = [];
                         }

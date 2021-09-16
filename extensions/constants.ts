@@ -14,14 +14,18 @@ export enum NetworkNames {
   Mumbai = 'mumbai',
   Avalanche = 'avalanche',
   Fuji = 'fuji',
+  Aurora = 'aurora',
+  AuroraTest = 'auroraTest',
+  Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
+  LocalH = 'localH',
 }
 
 export const NETWORK_CONFIGS: {
   [key: string]: {
     chainId: number;
-    defaultProviderUrl: 'infura' | string;
+    defaultProviderUrl?: 'infura' | string;
     defaultGas?: number;
     defaultGasPrice?: number;
     explorer?:
@@ -121,6 +125,21 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
     explorer: 'https://cchain.explorer.avax-test.network',
     defaultGasPrice: 470,
+  },
+  [NetworkNames.Aurora]: {
+    chainId: 1313161554,
+    defaultProviderUrl: 'https://mainnet.aurora.dev',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.AuroraTest]: {
+    chainId: 1313161555,
+    defaultProviderUrl: 'https://testnet.aurora.dev/',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.Etherspot]: {
+    chainId: 4386,
+    defaultProviderUrl: 'https://qa-etherspot-testnet.pillarproject.io',
+    defaultGasPrice: 20,
   },
   [NetworkNames.LocalA]: {
     chainId: 9999,

@@ -44,7 +44,10 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
     const networks: { name: string; chainId: string; path: string }[] = [];
 
     for (const name of networkNames) {
-      const path = join(deploymentsPath, name);
+      const path = join(
+        deploymentsPath,
+        name === NetworkNames.LocalH ? 'localhost' : name,
+      );
       const chainFilePath = join(path, '.chainId');
 
       if (await pathExists(chainFilePath)) {
@@ -96,12 +99,7 @@ task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
 
           addresses[chainId] = address;
 
-          if (
-            address &&
-            transactionHash &&
-            name !== NetworkNames.LocalA &&
-            name !== NetworkNames.LocalB
-          ) {
+          if (address && transactionHash && !name.startsWith('local')) {
             if (!contractsMD[contractName]) {
               contractsMD[contractName] = [];
             }
