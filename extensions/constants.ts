@@ -128,13 +128,13 @@ export const NETWORK_CONFIGS: {
   },
   [NetworkNames.Aurora]: {
     chainId: 1313161554,
-    defaultProviderUrl: 'https://rpc.mainnet.aurora.dev',
-    defaultGasPrice: 10,
+    defaultProviderUrl: 'https://mainnet.aurora.dev',
+    defaultGasPrice: 3,
   },
   [NetworkNames.AuroraTest]: {
     chainId: 1313161555,
     defaultProviderUrl: 'https://testnet.aurora.dev/',
-    defaultGasPrice: 10,
+    defaultGasPrice: 3,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
