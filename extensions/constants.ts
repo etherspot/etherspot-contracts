@@ -118,7 +118,7 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Avalanche]: {
     chainId: 43114,
     defaultProviderUrl: 'https://api.avax.network/ext/bc/C/rpc',
-    explorer: 'https://cchain.explorer.avax.network',
+    explorer: 'https://snowtrace.io',
   },
   [NetworkNames.Fuji]: {
     chainId: 43113,
