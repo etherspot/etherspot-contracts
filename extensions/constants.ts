@@ -123,8 +123,8 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Fuji]: {
     chainId: 43113,
     defaultProviderUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
-    explorer: 'https://cchain.explorer.avax-test.network',
-    defaultGasPrice: 470,
+    explorer: 'https://testnet.snowtrace.io',
+    defaultGasPrice: 25,
   },
   [NetworkNames.Aurora]: {
     chainId: 1313161554,
