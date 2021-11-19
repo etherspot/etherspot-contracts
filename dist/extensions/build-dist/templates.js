@@ -29,13 +29,13 @@ ${Object.entries(data)
             result = `${result}| \`${name}\` `;
             result = `${result}| \`${network.name}\` `;
             {
-                const url = utils_1.getScanUrl(network.name, address, 'address');
+                const url = (0, utils_1.getScanUrl)(network.name, address, 'address');
                 result = url
                     ? `${result}| [${address}](${url}) `
                     : `${result}| ${address} `;
             }
             {
-                const url = utils_1.getScanUrl(network.name, transaction.hash, 'transaction');
+                const url = (0, utils_1.getScanUrl)(network.name, transaction.hash, 'transaction');
                 result = url
                     ? `${result}| [${transaction.hash}](${url}) `
                     : `${result}| ${transaction.hash} `;
