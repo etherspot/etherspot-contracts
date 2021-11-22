@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("hardhat/config");
-config_1.extendEnvironment(hre => {
+(0, config_1.extendEnvironment)(hre => {
     const { config: { create2Salts }, deployments, } = hre;
     const { deploy, deterministic } = deployments;
     deployments.deploy = async (name, options) => {

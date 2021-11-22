@@ -52,6 +52,18 @@ $ # example:
 $ npm run deploy:mainnet
 ```
 
+## Contracts verification (ethereum)
+
+```bash
+$ npm run verify:mainnet
+```
+
+## Contracts verification (non-ethereum)
+
+```bash
+$ npx hardhat --network avalanche etherscan-verify --api-key <API_KEY>
+```
+
 ## Build `./dist` files
 
 ```bash
