@@ -9,23 +9,23 @@ const path_1 = require("path");
 const constants_1 = require("../constants");
 const templates_1 = __importDefault(require("./templates"));
 const TASK_BUILD_DIST = 'build-dist';
-config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
+(0, config_1.task)(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
     const { config: { buildPaths, paths, knownContracts, networks }, } = hre;
     let { artifacts: artifactsPath, dist: distPath } = Object.assign({ artifacts: 'artifacts', dist: 'dist' }, (buildPaths || {}));
     let { deployments: deploymentsPath } = Object.assign(Object.assign({}, paths), { deployments: 'deployments' });
     const networkNames = Object.keys(networks);
     const cwd = process.cwd();
-    artifactsPath = path_1.resolve(cwd, artifactsPath);
-    distPath = path_1.resolve(cwd, distPath);
-    deploymentsPath = path_1.resolve(cwd, deploymentsPath);
-    if ((await fs_extra_1.pathExists(artifactsPath)) && (await fs_extra_1.pathExists(distPath))) {
-        await fs_extra_1.mkdirp(distPath);
+    artifactsPath = (0, path_1.resolve)(cwd, artifactsPath);
+    distPath = (0, path_1.resolve)(cwd, distPath);
+    deploymentsPath = (0, path_1.resolve)(cwd, deploymentsPath);
+    if ((await (0, fs_extra_1.pathExists)(artifactsPath)) && (await (0, fs_extra_1.pathExists)(distPath))) {
+        await (0, fs_extra_1.mkdirp)(distPath);
         const networks = [];
         for (const name of networkNames) {
-            const path = path_1.join(deploymentsPath, name === constants_1.NetworkNames.LocalH ? 'localhost' : name);
-            const chainFilePath = path_1.join(path, '.chainId');
-            if (await fs_extra_1.pathExists(chainFilePath)) {
-                const chainId = await fs_extra_1.readFile(chainFilePath, 'utf8');
+            const path = (0, path_1.join)(deploymentsPath, name === constants_1.NetworkNames.LocalH ? 'localhost' : name);
+            const chainFilePath = (0, path_1.join)(path, '.chainId');
+            if (await (0, fs_extra_1.pathExists)(chainFilePath)) {
+                const chainId = await (0, fs_extra_1.readFile)(chainFilePath, 'utf8');
                 networks.push({
                     name,
                     chainId,
@@ -35,11 +35,11 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
         }
         const contracts = {};
         const contractsMD = {};
-        const fileNames = await fs_extra_1.readdir(artifactsPath);
+        const fileNames = await (0, fs_extra_1.readdir)(artifactsPath);
         for (const fileName of fileNames) {
             if (fileName.endsWith('.json')) {
                 const contractName = fileName.slice(0, -5);
-                const filePath = path_1.join(artifactsPath, fileName);
+                const filePath = (0, path_1.join)(artifactsPath, fileName);
                 const addresses = {};
                 for (const network of networks) {
                     const { chainId, path, name } = network;
@@ -50,7 +50,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                     }
                     else {
                         try {
-                            ({ address, transactionHash } = await fs_extra_1.readJSON(path_1.join(path, fileName)));
+                            ({ address, transactionHash } = await (0, fs_extra_1.readJSON)((0, path_1.join)(path, fileName)));
                         }
                         catch (err) {
                             address = null;
@@ -74,7 +74,7 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
                         });
                     }
                 }
-                const { abi, bytecode: byteCode, } = await fs_extra_1.readJSON(filePath);
+                const { abi, bytecode: byteCode, } = await (0, fs_extra_1.readJSON)(filePath);
                 contracts[contractName] = {
                     abi,
                     addresses,
@@ -83,10 +83,10 @@ config_1.task(TASK_BUILD_DIST, 'Build dist', async (args, hre) => {
             }
         }
         const contractNames = Object.keys(contracts);
-        await fs_extra_1.writeFile(path_1.join(distPath, 'contracts.js'), templates_1.default.contractsJs(contracts));
-        await fs_extra_1.writeFile(path_1.join(distPath, 'constants.js'), templates_1.default.constantsJs(contractNames));
-        await fs_extra_1.writeFile(path_1.join(distPath, 'constants.d.ts'), templates_1.default.constantsDts(contractNames));
-        await fs_extra_1.writeFile(path_1.join(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contractsMD));
+        await (0, fs_extra_1.writeFile)((0, path_1.join)(distPath, 'contracts.js'), templates_1.default.contractsJs(contracts));
+        await (0, fs_extra_1.writeFile)((0, path_1.join)(distPath, 'constants.js'), templates_1.default.constantsJs(contractNames));
+        await (0, fs_extra_1.writeFile)((0, path_1.join)(distPath, 'constants.d.ts'), templates_1.default.constantsDts(contractNames));
+        await (0, fs_extra_1.writeFile)((0, path_1.join)(cwd, 'DEPLOYMENTS.md'), templates_1.default.deploymentsMd(contractsMD));
         console.log('Dist built successfully');
     }
 });
