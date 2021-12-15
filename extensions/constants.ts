@@ -107,13 +107,13 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Matic]: {
     chainId: 137,
     defaultProviderUrl: 'https://rpc-mainnet.maticvigil.com',
-    explorer: 'https://explorer-mainnet.maticvigil.com',
+    explorer: 'https://polygonscan.com',
   },
   [NetworkNames.Mumbai]: {
     chainId: 80001,
     defaultProviderUrl: 'https://rpc-mumbai.maticvigil.com',
     defaultGasPrice: 5,
-    explorer: 'https://explorer-mumbai.maticvigil.com',
+    explorer: 'https://mumbai.polygonscan.com',
   },
   [NetworkNames.Avalanche]: {
     chainId: 43114,
