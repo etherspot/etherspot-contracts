@@ -42,6 +42,8 @@
     "deploy:fuji": "hardhat deploy --network fuji",
     "deploy:aurora": "hardhat deploy --network aurora",
     "deploy:auroraTest": "hardhat deploy --network auroraTest",
+    "deploy:optimism": "hardhat deploy --network optimism",
+    "deploy:optimismKovan": "hardhat deploy --network optimismKovan",
     "deploy:etherspot": "hardhat deploy --network etherspot",
     "deploy:localA": "hardhat deploy --network localA",
     "deploy:localB": "hardhat deploy --network localB",
