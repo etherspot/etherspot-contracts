@@ -19,11 +19,8 @@
 | `BalancesHelper` | `fuji` | [0x4bAe95A44FD4eA76DDaE87b1c046E995cD8e4DF2](https://testnet.snowtrace.io/address/0x4bAe95A44FD4eA76DDaE87b1c046E995cD8e4DF2) | [0x5444c4a66f75def9f63514e9bee4f83d834bc05cf796fc2dd3048a63e645de87](https://testnet.snowtrace.io/tx/0x5444c4a66f75def9f63514e9bee4f83d834bc05cf796fc2dd3048a63e645de87) | 
 | `BalancesHelper` | `aurora` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x5536da980254dce91308acbd7787e41e3f59e5ac8e8b7c32269ddbf21dadcee8 | 
 | `BalancesHelper` | `auroraTest` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x7a87389696ef27a95857edc847290b8ffa9fb902e3f283b64cb2d97223e6552d | 
-<<<<<<< HEAD
 | `BalancesHelper` | `arbitrum` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x0111419c51229835ccf4feedf1d310b51fa5fa257b5232cc5be3a68c02db051d | 
 | `BalancesHelper` | `arbitrumTest` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x2ea1c5b0a83f2d4ba481222ceeb787f5c18222abb355dd2e42196807c18cc63b | 
-=======
->>>>>>> origin/develop
 | `BalancesHelper` | `optimism` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x5139864d23ca73059564d0dc0821625d8f80af011a78488945ab13147a18fd10 | 
 | `BalancesHelper` | `optimismKovan` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x77429ac3d85ee908dcc1a08e87270011a4c9a9d33b014489527c987001330064 | 
 | `BalancesHelper` | `etherspot` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xac7270105c381ce52e137b815727c88f9f03a0005afa776154de199de41c1d33 | 
@@ -44,11 +41,8 @@
 | `ENSController` | `fuji` | [0x329393556727F42F2D19243bb8C5660C3aa98140](https://testnet.snowtrace.io/address/0x329393556727F42F2D19243bb8C5660C3aa98140) | [0x73a3a986ba65d5a84421e8f4ba8a8faed40caca76e2eed23643dc2f2072035a5](https://testnet.snowtrace.io/tx/0x73a3a986ba65d5a84421e8f4ba8a8faed40caca76e2eed23643dc2f2072035a5) | 
 | `ENSController` | `aurora` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x11f0f6a3be7a171d8197d3a3ca7561bb855a324f01e5619f6b99af002ec7c37c | 
 | `ENSController` | `auroraTest` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x656d2d4a0854418cc7f40446a63cfa9962234ea3cad6e732f4e1e93d03d08912 | 
-<<<<<<< HEAD
 | `ENSController` | `arbitrum` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xe49585adcc70774f5be4d4d52fcdd3f11f4bc1f5cf910326601f5d97b061321e | 
 | `ENSController` | `arbitrumTest` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xd48e4a796211cfa84f82c5cd32f14318978454e1674a2e73ef92e2e50e823e6b | 
-=======
->>>>>>> origin/develop
 | `ENSController` | `optimism` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x1a0e1688a61b31b68acb8b09f532eb6d9dfcabbb2a7aba5dd5ebe0b1592f24ba | 
 | `ENSController` | `optimismKovan` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xf1beabf6fdf7605d23b80072280ffc82249161d85ae7418c546464a8ffcdb2c1 | 
 | `ENSController` | `etherspot` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x2dd4c61274c93e97aa5ce56138d7d67d4cc74503a97b0e2af4f2dee9844c7253 | 
@@ -69,11 +63,8 @@
 | `ENSHelper` | `fuji` | [0xf52454A9DE293f59aCd957a9c4D49C8D4152bae9](https://testnet.snowtrace.io/address/0xf52454A9DE293f59aCd957a9c4D49C8D4152bae9) | [0x8551904b9d04ddc98d4c24378037de7cddc73cbdafc1fae25536f960f4a2c384](https://testnet.snowtrace.io/tx/0x8551904b9d04ddc98d4c24378037de7cddc73cbdafc1fae25536f960f4a2c384) | 
 | `ENSHelper` | `aurora` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x90f2eb19bdc572d684242a12e271a94a7e3fa212fedd003be7bcb3134df493b7 | 
 | `ENSHelper` | `auroraTest` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xd68dcce0c3c011dfd7de61e661e53adec77d21b36dfa3c74d2e281b35a4129a9 | 
-<<<<<<< HEAD
 | `ENSHelper` | `arbitrum` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xa1143316b6eb5bd3b52eff591535cfe812d3078dd6a5e6b0667126f36bdabb01 | 
 | `ENSHelper` | `arbitrumTest` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x3c52e85bc5a2b1dc7fa920fac8ce726ab5e872082a9a10af5105512a992ea1e5 | 
-=======
->>>>>>> origin/develop
 | `ENSHelper` | `optimism` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xd1fcb1d9d20ecd8535f7fb07f274f90d8aa392e10dc22cf9d2f9bcd41ae86c1c | 
 | `ENSHelper` | `optimismKovan` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xdf34f12112a1b96b10509799c8ca0e4e833e0f750e073b24a269fcffe188d460 | 
 | `ENSHelper` | `etherspot` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x7cf8135b5b04916485a8ec064d304c46cfe871e613ea14e128c51b6616f0d0f0 | 
@@ -93,11 +84,8 @@
 | `ENSRegistry` | `fuji` | [0x3255c5C4d96F310F48356C4822761323074DbcB3](https://testnet.snowtrace.io/address/0x3255c5C4d96F310F48356C4822761323074DbcB3) | [0xe8b63431669cfffe4cdc6a79be4a1c6c82adc336be1e637be8b9e33cd03d48c0](https://testnet.snowtrace.io/tx/0xe8b63431669cfffe4cdc6a79be4a1c6c82adc336be1e637be8b9e33cd03d48c0) | 
 | `ENSRegistry` | `aurora` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x1c154b1451355d7104853c007a8b50f7e3bde3be216aff4c76c0f581a218db9c | 
 | `ENSRegistry` | `auroraTest` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xb029ad6addba011266371a98168c095ac3b7f056bf6337b239d134d6a0e944a3 | 
-<<<<<<< HEAD
 | `ENSRegistry` | `arbitrum` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x64123cfda71b90bd1d12f88ac027f91690f5a7d7f215f07f5f6b439329425473 | 
 | `ENSRegistry` | `arbitrumTest` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xe04e27d943e9a6b950dcc89ed4db62cf0c4abde1ff8e19850e49ca17717e50d9 | 
-=======
->>>>>>> origin/develop
 | `ENSRegistry` | `optimism` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x211746f17e6357b662be68e8f80264e2b4ceeafd3e5e223f6f676cc9ed56fab4 | 
 | `ENSRegistry` | `optimismKovan` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xf3f26bf0faeefe572e813feb66992b277e521585628918dd8eeee6edb0977cc0 | 
 | `ENSRegistry` | `etherspot` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x1b419734e3beb7a4d97e835e3b0f594ddb74290ab7fc940ba3c5a3b37e035775 | 
@@ -117,11 +105,8 @@
 | `ENSReverseRegistrar` | `fuji` | [0x7C68A0e79DE9D6964389760Ec0C9E0ea53F7102a](https://testnet.snowtrace.io/address/0x7C68A0e79DE9D6964389760Ec0C9E0ea53F7102a) | [0x9845156ff3505a80e6edbb44083acdef91f30aedead9ee79758829cc0f91b96e](https://testnet.snowtrace.io/tx/0x9845156ff3505a80e6edbb44083acdef91f30aedead9ee79758829cc0f91b96e) | 
 | `ENSReverseRegistrar` | `aurora` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0xdee0ff5a85e8ef6c2c86741001ce3f97b1d9c15398614f7175bb9d9a01468896 | 
 | `ENSReverseRegistrar` | `auroraTest` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x37a5761719fe76ef3c6f2959716bd8a2c6f8e80f7ad13a769bb0b08eb49c0f91 | 
-<<<<<<< HEAD
 | `ENSReverseRegistrar` | `arbitrum` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x8a53b2ba97e9db345a5fe44c9838a2477f4026c76fde3b4b59f3adc0ea08ea72 | 
 | `ENSReverseRegistrar` | `arbitrumTest` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x2f434301460156229e76f9e71071a41a523df7e21f9b0c1f1a5b7a4fe68e7f48 | 
-=======
->>>>>>> origin/develop
 | `ENSReverseRegistrar` | `optimism` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x86ff6b53349a71efc14b4b911857b68df96de3f4d06b5a632aadb845933f71b1 | 
 | `ENSReverseRegistrar` | `optimismKovan` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x8f1d942feef6e57cf5e0d8e352c1013484f2167e8cd91ec6cb044b44a13eb33d | 
 | `ENSReverseRegistrar` | `etherspot` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3193533de6611dc509866e81e0d955674b8d351a82ca5db095e00b6e40414869 | 
