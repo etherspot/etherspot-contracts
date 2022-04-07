@@ -2,19 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import type { GatewayRecipient } from "../GatewayRecipient";
-
-export class GatewayRecipient__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): GatewayRecipient {
-    return new Contract(address, _abi, signerOrProvider) as GatewayRecipient;
-  }
-}
+import type {
+  GatewayRecipient,
+  GatewayRecipientInterface,
+} from "../GatewayRecipient";
 
 const _abi = [
   {
@@ -31,3 +24,16 @@ const _abi = [
     type: "function",
   },
 ];
+
+export class GatewayRecipient__factory {
+  static readonly abi = _abi;
+  static createInterface(): GatewayRecipientInterface {
+    return new utils.Interface(_abi) as GatewayRecipientInterface;
+  }
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): GatewayRecipient {
+    return new Contract(address, _abi, signerOrProvider) as GatewayRecipient;
+  }
+}

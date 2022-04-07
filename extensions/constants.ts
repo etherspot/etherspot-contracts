@@ -16,6 +16,8 @@ export enum NetworkNames {
   Fuji = 'fuji',
   Aurora = 'aurora',
   AuroraTest = 'auroraTest',
+  Optimism = "optimism",
+  OptimismKovan = "optimismKovan",
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -134,6 +136,16 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.AuroraTest]: {
     chainId: 1313161555,
     defaultProviderUrl: 'https://testnet.aurora.dev/',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.Optimism] : {
+    chainId: 10,
+    defaultProviderUrl: 'https://mainnet.optimism.io',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.OptimismKovan]: {
+    chainId: 69,
+    defaultProviderUrl: 'https://kovan.optimism.io',
     defaultGasPrice: 3,
   },
   [NetworkNames.Etherspot]: {

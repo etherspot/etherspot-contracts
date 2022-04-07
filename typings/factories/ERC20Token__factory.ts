@@ -2,19 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import type { ERC20Token } from "../ERC20Token";
-
-export class ERC20Token__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ERC20Token {
-    return new Contract(address, _abi, signerOrProvider) as ERC20Token;
-  }
-}
+import type { ERC20Token, ERC20TokenInterface } from "../ERC20Token";
 
 const _abi = [
   {
@@ -240,3 +230,16 @@ const _abi = [
     type: "function",
   },
 ];
+
+export class ERC20Token__factory {
+  static readonly abi = _abi;
+  static createInterface(): ERC20TokenInterface {
+    return new utils.Interface(_abi) as ERC20TokenInterface;
+  }
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): ERC20Token {
+    return new Contract(address, _abi, signerOrProvider) as ERC20Token;
+  }
+}

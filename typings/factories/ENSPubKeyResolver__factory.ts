@@ -2,19 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import type { ENSPubKeyResolver } from "../ENSPubKeyResolver";
-
-export class ENSPubKeyResolver__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ENSPubKeyResolver {
-    return new Contract(address, _abi, signerOrProvider) as ENSPubKeyResolver;
-  }
-}
+import type {
+  ENSPubKeyResolver,
+  ENSPubKeyResolverInterface,
+} from "../ENSPubKeyResolver";
 
 const _abi = [
   {
@@ -90,3 +83,16 @@ const _abi = [
     type: "function",
   },
 ];
+
+export class ENSPubKeyResolver__factory {
+  static readonly abi = _abi;
+  static createInterface(): ENSPubKeyResolverInterface {
+    return new utils.Interface(_abi) as ENSPubKeyResolverInterface;
+  }
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): ENSPubKeyResolver {
+    return new Contract(address, _abi, signerOrProvider) as ENSPubKeyResolver;
+  }
+}
