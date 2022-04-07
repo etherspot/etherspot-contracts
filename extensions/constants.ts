@@ -16,6 +16,8 @@ export enum NetworkNames {
   Fuji = 'fuji',
   Aurora = 'aurora',
   AuroraTest = 'auroraTest',
+  Arbitrum = 'arbitrum',
+  ArbitrumTest = 'arbitrumTest',
   Optimism = "optimism",
   OptimismKovan = "optimismKovan",
   Etherspot = 'etherspot',
@@ -137,6 +139,16 @@ export const NETWORK_CONFIGS: {
     chainId: 1313161555,
     defaultProviderUrl: 'https://testnet.aurora.dev/',
     defaultGasPrice: 3,
+  },
+  [NetworkNames.Arbitrum]: {
+    chainId: 42161,
+    defaultProviderUrl: 'https://arb1.arbitrum.io/rpc',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumTest]: {
+    chainId: 421611,
+    defaultProviderUrl : 'https://rinkeby.arbitrum.io/rpc',
+    defaultGasPrice: 1,
   },
   [NetworkNames.Optimism] : {
     chainId: 10,
