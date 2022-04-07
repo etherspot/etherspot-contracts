@@ -16,6 +16,8 @@ export declare enum NetworkNames {
     Fuji = "fuji",
     Aurora = "aurora",
     AuroraTest = "auroraTest",
+    Arbitrum = "arbitrum",
+    ArbitrumTest = "arbitrumTest",
     Optimism = "optimism",
     OptimismKovan = "optimismKovan",
     Etherspot = "etherspot",
