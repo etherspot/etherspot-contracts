@@ -18,6 +18,8 @@ export enum NetworkNames {
   AuroraTest = 'auroraTest',
   Optimism = "optimism",
   OptimismKovan = "optimismKovan",
+  Moonbeam = "moonbeam",
+  Moonbase = "moonbase",
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -147,6 +149,16 @@ export const NETWORK_CONFIGS: {
     chainId: 69,
     defaultProviderUrl: 'https://kovan.optimism.io',
     defaultGasPrice: 3,
+  },
+  [NetworkNames.Moonbeam] : {
+    chainId: 1284,
+    defaultProviderUrl: 'https://rpc.api.moonbeam.network',
+    defaultGasPrice: 100,
+  },
+  [NetworkNames.Moonbase] : {
+    chainId: 1287,
+    defaultProviderUrl: 'https://rpc.api.moonbase.moonbeam.network',
+    defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,

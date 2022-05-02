@@ -22,6 +22,8 @@ var NetworkNames;
     NetworkNames["AuroraTest"] = "auroraTest";
     NetworkNames["Optimism"] = "optimism";
     NetworkNames["OptimismKovan"] = "optimismKovan";
+    NetworkNames["Moonbeam"] = "moonbeam";
+    NetworkNames["Moonbase"] = "moonbase";
     NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
@@ -137,6 +139,16 @@ exports.NETWORK_CONFIGS = {
         chainId: 69,
         defaultProviderUrl: 'https://kovan.optimism.io',
         defaultGasPrice: 3,
+    },
+    [NetworkNames.Moonbeam]: {
+        chainId: 1284,
+        defaultProviderUrl: 'https://rpc.api.moonbeam.network',
+        defaultGasPrice: 100,
+    },
+    [NetworkNames.Moonbase]: {
+        chainId: 1287,
+        defaultProviderUrl: 'https://rpc.api.moonbase.moonbeam.network',
+        defaultGasPrice: 1,
     },
     [NetworkNames.Etherspot]: {
         chainId: 4386,

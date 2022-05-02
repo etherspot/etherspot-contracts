@@ -21,6 +21,8 @@
 | `BalancesHelper` | `auroraTest` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x7a87389696ef27a95857edc847290b8ffa9fb902e3f283b64cb2d97223e6552d | 
 | `BalancesHelper` | `optimism` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x5139864d23ca73059564d0dc0821625d8f80af011a78488945ab13147a18fd10 | 
 | `BalancesHelper` | `optimismKovan` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x77429ac3d85ee908dcc1a08e87270011a4c9a9d33b014489527c987001330064 | 
+| `BalancesHelper` | `moonbeam` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x4b6bbfd5814393a15e2426b19ea38fa9cb8184ef7a76bf1e1c5b4aa4bc6e1b36 | 
+| `BalancesHelper` | `moonbase` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x60c79eeb1b21c83a35cb9d4db244607fefecf66834a021d4b635d40376eb0794 | 
 | `BalancesHelper` | `etherspot` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xac7270105c381ce52e137b815727c88f9f03a0005afa776154de199de41c1d33 | 
 | `ENSController` | `mainnet` | [0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08](https://etherscan.io/address/0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08) | [0xcb245478eb559307f977f2ffdfb3f487af38098f6f7499b2ff438f497107f024](https://etherscan.io/tx/0xcb245478eb559307f977f2ffdfb3f487af38098f6f7499b2ff438f497107f024) | 
 | `ENSController` | `ropsten` | [0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08](https://ropsten.etherscan.io/address/0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08) | [0x8becdf6c4958d945ca128c50a66718e7a900379f344091cac282b89a8d86f5b0](https://ropsten.etherscan.io/tx/0x8becdf6c4958d945ca128c50a66718e7a900379f344091cac282b89a8d86f5b0) | 
@@ -41,6 +43,8 @@
 | `ENSController` | `auroraTest` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x656d2d4a0854418cc7f40446a63cfa9962234ea3cad6e732f4e1e93d03d08912 | 
 | `ENSController` | `optimism` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x1a0e1688a61b31b68acb8b09f532eb6d9dfcabbb2a7aba5dd5ebe0b1592f24ba | 
 | `ENSController` | `optimismKovan` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xf1beabf6fdf7605d23b80072280ffc82249161d85ae7418c546464a8ffcdb2c1 | 
+| `ENSController` | `moonbeam` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x30fa83945e8141e8fa299d2a9906d5f5b7d1125edb0723b1f84cb88377a17ac3 | 
+| `ENSController` | `moonbase` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xa50524fe7057eba0cb1d8b50627ea8be7dc955112a9a6bd2b3a4b16347427c6b | 
 | `ENSController` | `etherspot` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x2dd4c61274c93e97aa5ce56138d7d67d4cc74503a97b0e2af4f2dee9844c7253 | 
 | `ENSHelper` | `mainnet` | [0xF330b17e19474762E6F408D7dCf0327264d4A2C0](https://etherscan.io/address/0xF330b17e19474762E6F408D7dCf0327264d4A2C0) | [0x5bc8f45cdbf67e82bf300831ee55c8e4d3099dfa5227265d0857b297f445c774](https://etherscan.io/tx/0x5bc8f45cdbf67e82bf300831ee55c8e4d3099dfa5227265d0857b297f445c774) | 
 | `ENSHelper` | `ropsten` | [0xF330b17e19474762E6F408D7dCf0327264d4A2C0](https://ropsten.etherscan.io/address/0xF330b17e19474762E6F408D7dCf0327264d4A2C0) | [0x0f407aa4f2281050627dc9175f4038562bd934ebea4a5fadc1346ab6eec2b191](https://ropsten.etherscan.io/tx/0x0f407aa4f2281050627dc9175f4038562bd934ebea4a5fadc1346ab6eec2b191) | 
@@ -61,6 +65,8 @@
 | `ENSHelper` | `auroraTest` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xd68dcce0c3c011dfd7de61e661e53adec77d21b36dfa3c74d2e281b35a4129a9 | 
 | `ENSHelper` | `optimism` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xd1fcb1d9d20ecd8535f7fb07f274f90d8aa392e10dc22cf9d2f9bcd41ae86c1c | 
 | `ENSHelper` | `optimismKovan` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xdf34f12112a1b96b10509799c8ca0e4e833e0f750e073b24a269fcffe188d460 | 
+| `ENSHelper` | `moonbeam` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x56a447d8f97f625e1e373512454c3baa179552d59f806a5e5774e8926b74eb5c | 
+| `ENSHelper` | `moonbase` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x26a08b3bb79383f3b877a8a236a37544213ab9968f591e1c8ddd736c06078ecb | 
 | `ENSHelper` | `etherspot` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x7cf8135b5b04916485a8ec064d304c46cfe871e613ea14e128c51b6616f0d0f0 | 
 | `ENSRegistry` | `ropsten` | [0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688](https://ropsten.etherscan.io/address/0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688) | [0x381bed3c0a4d0d37678448960916507741fcc38407f2e4c20fb21bb217eaeaa3](https://ropsten.etherscan.io/tx/0x381bed3c0a4d0d37678448960916507741fcc38407f2e4c20fb21bb217eaeaa3) | 
 | `ENSRegistry` | `rinkeby` | [0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688](https://rinkeby.etherscan.io/address/0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688) | [0xe225e456c7329522b59dd397020a24685f30e49b1d751c0241a97524618f7280](https://rinkeby.etherscan.io/tx/0xe225e456c7329522b59dd397020a24685f30e49b1d751c0241a97524618f7280) | 
@@ -80,6 +86,8 @@
 | `ENSRegistry` | `auroraTest` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xb029ad6addba011266371a98168c095ac3b7f056bf6337b239d134d6a0e944a3 | 
 | `ENSRegistry` | `optimism` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x211746f17e6357b662be68e8f80264e2b4ceeafd3e5e223f6f676cc9ed56fab4 | 
 | `ENSRegistry` | `optimismKovan` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xf3f26bf0faeefe572e813feb66992b277e521585628918dd8eeee6edb0977cc0 | 
+| `ENSRegistry` | `moonbeam` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x61b6a0baad531bfb535f6b8a205ddd463c9ef0825d18523d16822e826e29826a | 
+| `ENSRegistry` | `moonbase` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xbcd09e5811765686b823300b46c0a00e04b6deb4398da828d336048729312ea1 | 
 | `ENSRegistry` | `etherspot` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x1b419734e3beb7a4d97e835e3b0f594ddb74290ab7fc940ba3c5a3b37e035775 | 
 | `ENSReverseRegistrar` | `ropsten` | [0x523C92966e9d2067ba547f59D51E907c20FD8761](https://ropsten.etherscan.io/address/0x523C92966e9d2067ba547f59D51E907c20FD8761) | [0xc68294e291c66968554fd5bb6ec5cb411d0ed2871d58515921275dc6f681777f](https://ropsten.etherscan.io/tx/0xc68294e291c66968554fd5bb6ec5cb411d0ed2871d58515921275dc6f681777f) | 
 | `ENSReverseRegistrar` | `rinkeby` | [0x523C92966e9d2067ba547f59D51E907c20FD8761](https://rinkeby.etherscan.io/address/0x523C92966e9d2067ba547f59D51E907c20FD8761) | [0x3a0912b8515cd1db08e7328b242f7a54f4318f25485876c0d4bd2ecc974a9835](https://rinkeby.etherscan.io/tx/0x3a0912b8515cd1db08e7328b242f7a54f4318f25485876c0d4bd2ecc974a9835) | 
@@ -99,6 +107,8 @@
 | `ENSReverseRegistrar` | `auroraTest` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x37a5761719fe76ef3c6f2959716bd8a2c6f8e80f7ad13a769bb0b08eb49c0f91 | 
 | `ENSReverseRegistrar` | `optimism` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x86ff6b53349a71efc14b4b911857b68df96de3f4d06b5a632aadb845933f71b1 | 
 | `ENSReverseRegistrar` | `optimismKovan` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x8f1d942feef6e57cf5e0d8e352c1013484f2167e8cd91ec6cb044b44a13eb33d | 
+| `ENSReverseRegistrar` | `moonbeam` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x2ab2107f2ecd6e59dbdddbdc8db0c0b1cd4f32f9c9fecb28c78da1551599481c | 
+| `ENSReverseRegistrar` | `moonbase` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0xe25950acdd86dc94a63ebed4d67b34bdca7ce75822b4e6c0a973932061ab9d49 | 
 | `ENSReverseRegistrar` | `etherspot` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3193533de6611dc509866e81e0d955674b8d351a82ca5db095e00b6e40414869 | 
 | `ExternalAccountRegistry` | `mainnet` | [0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc](https://etherscan.io/address/0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc) | [0x9af00ffb28be6114a6524dea26188caca62b80d69d4ccf9ebefaa417d458a27f](https://etherscan.io/tx/0x9af00ffb28be6114a6524dea26188caca62b80d69d4ccf9ebefaa417d458a27f) | 
 | `ExternalAccountRegistry` | `ropsten` | [0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc](https://ropsten.etherscan.io/address/0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc) | [0xe830124352205c4c5e68ee7053b93ec3c0ee450f1065f76fa27f98d784f54461](https://ropsten.etherscan.io/tx/0xe830124352205c4c5e68ee7053b93ec3c0ee450f1065f76fa27f98d784f54461) | 
@@ -119,6 +129,8 @@
 | `ExternalAccountRegistry` | `auroraTest` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x4bf9a2a555ca962f3276e9851846b7364b3fd8b7e4a3d47d63b5680deeba427c | 
 | `ExternalAccountRegistry` | `optimism` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x444cc978f6d73fa185a88dbffd6bfbbe3327c97731cf3cd0abdd262c9e2e27e1 | 
 | `ExternalAccountRegistry` | `optimismKovan` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x5cb0af3d444eadf42a6e342accf3d7caa2a1614265556edf8129c4828d69f758 | 
+| `ExternalAccountRegistry` | `moonbeam` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x15a329dcfeca14228bba66df5eb73f08af08403ae3ebc191dd93b24afb1361f8 | 
+| `ExternalAccountRegistry` | `moonbase` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x66602f45feb9c4ae4b7eb3a6f0437e881e028b168b296cfba7d8be1e367ea74a | 
 | `ExternalAccountRegistry` | `etherspot` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x0bec371bae9679a3eacab911686c48199f620c9f795d9cc5d5faec6f4ab0c669 | 
 | `Gateway` | `mainnet` | [0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163](https://etherscan.io/address/0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163) | [0x276a91239ac2300ee882129121de5e361ef7e5975247bfca2c9fa2d400eeec42](https://etherscan.io/tx/0x276a91239ac2300ee882129121de5e361ef7e5975247bfca2c9fa2d400eeec42) | 
 | `Gateway` | `ropsten` | [0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163](https://ropsten.etherscan.io/address/0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163) | [0x2ae586892c547a194fd18d64ff5b263c8aff8f988cd2f7e44707258ea75169a4](https://ropsten.etherscan.io/tx/0x2ae586892c547a194fd18d64ff5b263c8aff8f988cd2f7e44707258ea75169a4) | 
@@ -139,6 +151,8 @@
 | `Gateway` | `auroraTest` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x3a2d94a18858e4b4f611a1d856ed42562494601dfb543cbcc468448bc8565c9a | 
 | `Gateway` | `optimism` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xe747240a9a11151e287b9f1a4c24b7d7c35a2e9995c51bb018d9e1e997dd7d50 | 
 | `Gateway` | `optimismKovan` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xc149ec98b3bd4dc2a95d70ce2d614b3c6c937fb40a7d2d789b0a1c9e2452d2f3 | 
+| `Gateway` | `moonbeam` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xad29eff76f794881fe52bab1db90e28139e64b577d2a5e9a3ca667397334efdd | 
+| `Gateway` | `moonbase` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x224372503c160773a2e59a9cea8d1a90f0d0f2b798484aec252acfda2d9bc654 | 
 | `Gateway` | `etherspot` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xba898531d95380c97307201fb1fe773801fb83343d9096c6bc4380402ed4486b | 
 | `PaymentRegistry` | `mainnet` | [0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312](https://etherscan.io/address/0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312) | [0x03172e98a8a14cbec4ce793277552de243df1451eefe8a163bacccd9187b2a4f](https://etherscan.io/tx/0x03172e98a8a14cbec4ce793277552de243df1451eefe8a163bacccd9187b2a4f) | 
 | `PaymentRegistry` | `ropsten` | [0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312](https://ropsten.etherscan.io/address/0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312) | [0xef47e55c32941bb0d794c491d0a1fc25fb98826472fc62df31e6fcd0fad9b162](https://ropsten.etherscan.io/tx/0xef47e55c32941bb0d794c491d0a1fc25fb98826472fc62df31e6fcd0fad9b162) | 
@@ -159,6 +173,8 @@
 | `PaymentRegistry` | `auroraTest` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0xce73adb6e29ccde316a601acd6a897549f5cbca2801c3eab0ab081d837a12405 | 
 | `PaymentRegistry` | `optimism` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x849600ba6db2188b344ba6d419760f155d7a02845c87c8d72a657f603feee42e | 
 | `PaymentRegistry` | `optimismKovan` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0xdc6d4e0f2de454c2b1f2aa66cc13128b940433253aa9b05e6100cece0164476d | 
+| `PaymentRegistry` | `moonbeam` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x8b938eb513535885f17e55a076a14b23fcb8600d53a9468d2b2448a2b52030be | 
+| `PaymentRegistry` | `moonbase` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x9b31b42d325e4adfbdadfe7c2389596907bc6c3ae6551df3fabc4da9a675a9c5 | 
 | `PaymentRegistry` | `etherspot` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x96338b94bbc9fe24b6e5def6ad523983dfd56883620a85ebd4ca35d0be609d0c | 
 | `PersonalAccountImplementationV1` | `mainnet` | [0x0672aF0018fdEbACcc93c7D047D62b72CB12883A](https://etherscan.io/address/0x0672aF0018fdEbACcc93c7D047D62b72CB12883A) | [0xa12aa1e0274308b6b120aad854ff7f10998cb022675d2ceb49d83f39539a98af](https://etherscan.io/tx/0xa12aa1e0274308b6b120aad854ff7f10998cb022675d2ceb49d83f39539a98af) | 
 | `PersonalAccountImplementationV1` | `ropsten` | [0x0672aF0018fdEbACcc93c7D047D62b72CB12883A](https://ropsten.etherscan.io/address/0x0672aF0018fdEbACcc93c7D047D62b72CB12883A) | [0x2452812ca96d4c16b76a8922fde4f99d6e2b44e4204a01ee3938df7a1ac0318d](https://ropsten.etherscan.io/tx/0x2452812ca96d4c16b76a8922fde4f99d6e2b44e4204a01ee3938df7a1ac0318d) | 
@@ -179,6 +195,8 @@
 | `PersonalAccountImplementationV1` | `auroraTest` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x56b6604cee194e882cb4cbf5c30a8803962cfb703584b0435dba131acbb6a0fd | 
 | `PersonalAccountImplementationV1` | `optimism` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x00784f833d6de1acc5fd75797c2e3b236f64e3a1222acd40c2da71d1b0c12353 | 
 | `PersonalAccountImplementationV1` | `optimismKovan` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xb4b3e3b6b81af8db8d8160cfc041e3f9e88e1c3b61264ad7dca2eb99583a4a66 | 
+| `PersonalAccountImplementationV1` | `moonbeam` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xe0e1856fc37aa848176993e95b4e69cf4a11536d26376a82b6ba426cf94a289b | 
+| `PersonalAccountImplementationV1` | `moonbase` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x199c1b6275a99da461bd3cff250e44b859b5af9926adcd74bb0540f51b37a9d0 | 
 | `PersonalAccountImplementationV1` | `etherspot` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x8ddcf689ffc89e45538b31941069088c0a63d34de0f24358cd29f536e8dce3e2 | 
 | `PersonalAccountRegistry` | `mainnet` | [0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa](https://etherscan.io/address/0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa) | [0xa8416e24556258050b31c7de5156defd5133290a3c33379b81efa19a056b1e52](https://etherscan.io/tx/0xa8416e24556258050b31c7de5156defd5133290a3c33379b81efa19a056b1e52) | 
 | `PersonalAccountRegistry` | `ropsten` | [0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa](https://ropsten.etherscan.io/address/0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa) | [0x3c62594ba3e6a2f0b0662fba3f3e6583ee6858a141e999326ee89e8bbfd174ea](https://ropsten.etherscan.io/tx/0x3c62594ba3e6a2f0b0662fba3f3e6583ee6858a141e999326ee89e8bbfd174ea) | 
@@ -199,6 +217,8 @@
 | `PersonalAccountRegistry` | `auroraTest` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x6e7ccf849c4a39460fd9dfb289a006c0ef6e821d239fd3ea6fc11e3199ae1b7d | 
 | `PersonalAccountRegistry` | `optimism` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x2c29a0e264562eb733f9fb4ee1db8c76a52d4f2119a962617152a08df1a55196 | 
 | `PersonalAccountRegistry` | `optimismKovan` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xcd3305c783ec99872f4578a1023d7e78d5a70e28dcb9ee7fe7825e6264e48bed | 
+| `PersonalAccountRegistry` | `moonbeam` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xf1db7faaee5df423f358abcecb1cba7ee75481041b6725f8d93a9cb50731c8b6 | 
+| `PersonalAccountRegistry` | `moonbase` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xb1868deaeb75958e6f2f377ebb2c1d4d119d98d3fc98da8b1223d9ddd30e38e3 | 
 | `PersonalAccountRegistry` | `etherspot` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xd9359a5aa653ba4acab01ad38a2cb644f2140f0d7d1648398414471422448346 | 
 | `WrappedWeiToken` | `mainnet` | [0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616](https://etherscan.io/address/0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616) | [0x628fa2e14dcdfc90c917d83c0b40a65fa5e5e8bc1660a18982877a306bc559d0](https://etherscan.io/tx/0x628fa2e14dcdfc90c917d83c0b40a65fa5e5e8bc1660a18982877a306bc559d0) | 
 | `WrappedWeiToken` | `ropsten` | [0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616](https://ropsten.etherscan.io/address/0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616) | [0x94b0402094d8e48ae4dbb01956154aec69ec3b2fc0b64250d793b29247bc3ae3](https://ropsten.etherscan.io/tx/0x94b0402094d8e48ae4dbb01956154aec69ec3b2fc0b64250d793b29247bc3ae3) | 
@@ -219,5 +239,7 @@
 | `WrappedWeiToken` | `auroraTest` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x3df97d8204e54146ad0df32bac4434aab3b6e8c0f433f04d1fee89e7da24e814 | 
 | `WrappedWeiToken` | `optimism` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x335e52c3f23916b36bf7c0b44a070ab7d731b63f5aa05f1d3c740368554b25a6 | 
 | `WrappedWeiToken` | `optimismKovan` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xd5b4db94a66759e5ca438cd990dcb6ffbfd45f6e899ce6554bff98dfcb6b3963 | 
+| `WrappedWeiToken` | `moonbeam` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x5ee7df66fd2b00adf6eec1789550b2b9f48d957f2aad27e77ea7e64055b33f29 | 
+| `WrappedWeiToken` | `moonbase` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xf0f493befc1914cc2fb85eb83a5a23d0c307fd70bcadf175c288a44fbb7f9d42 | 
 | `WrappedWeiToken` | `etherspot` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x97561b8070bdcb84cc0ef0fc47a1f59ebe56c36e3f7448e90e39cdcd65aefd9d | 
 
