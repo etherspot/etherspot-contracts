@@ -20,6 +20,8 @@ var NetworkNames;
     NetworkNames["Fuji"] = "fuji";
     NetworkNames["Aurora"] = "aurora";
     NetworkNames["AuroraTest"] = "auroraTest";
+    NetworkNames["Arbitrum"] = "arbitrum";
+    NetworkNames["ArbitrumTest"] = "arbitrumTest";
     NetworkNames["Optimism"] = "optimism";
     NetworkNames["OptimismKovan"] = "optimismKovan";
     NetworkNames["Moonbeam"] = "moonbeam";
@@ -129,6 +131,16 @@ exports.NETWORK_CONFIGS = {
         chainId: 1313161555,
         defaultProviderUrl: 'https://testnet.aurora.dev/',
         defaultGasPrice: 3,
+    },
+    [NetworkNames.Arbitrum]: {
+        chainId: 42161,
+        defaultProviderUrl: 'https://arb1.arbitrum.io/rpc',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.ArbitrumTest]: {
+        chainId: 421611,
+        defaultProviderUrl: 'https://rinkeby.arbitrum.io/rpc',
+        defaultGasPrice: 1,
     },
     [NetworkNames.Optimism]: {
         chainId: 10,

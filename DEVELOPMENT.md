@@ -21,6 +21,10 @@
 | `testnets` | FUJI (Avalanche testnet) | `FUJI` | `fuji` |
 | `mainnets` | Aurora | `AURORA` | `aurora` |
 | `testnets` | Aurora Testnet | `AURORA_TEST`| `auroraTest` |
+| `mainnets` | Arbitrum | `ARBITRUM` | `arbitrum` |
+| `testnets` | Arbitrum Testnet | `ARBITRUM_TEST` | `arbitrumTest` |
+| `mainnets` | Optimism | `OPTIMISM` | `optimism` |
+| `testnets` | Optimism Kovan | `OPTIMISM_KOVAN` | `optimismKovan` |
 | `testnets` | Etherspot | `ETHERSPOT` | `etherspot` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localB` |
