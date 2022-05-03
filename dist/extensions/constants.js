@@ -20,6 +20,12 @@ var NetworkNames;
     NetworkNames["Fuji"] = "fuji";
     NetworkNames["Aurora"] = "aurora";
     NetworkNames["AuroraTest"] = "auroraTest";
+    NetworkNames["Arbitrum"] = "arbitrum";
+    NetworkNames["ArbitrumTest"] = "arbitrumTest";
+    NetworkNames["Optimism"] = "optimism";
+    NetworkNames["OptimismKovan"] = "optimismKovan";
+    NetworkNames["Moonbeam"] = "moonbeam";
+    NetworkNames["Moonbase"] = "moonbase";
     NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
@@ -97,13 +103,13 @@ exports.NETWORK_CONFIGS = {
     [NetworkNames.Matic]: {
         chainId: 137,
         defaultProviderUrl: 'https://rpc-mainnet.maticvigil.com',
-        explorer: 'https://explorer-mainnet.maticvigil.com',
+        explorer: 'https://polygonscan.com',
     },
     [NetworkNames.Mumbai]: {
         chainId: 80001,
         defaultProviderUrl: 'https://rpc-mumbai.maticvigil.com',
         defaultGasPrice: 5,
-        explorer: 'https://explorer-mumbai.maticvigil.com',
+        explorer: 'https://mumbai.polygonscan.com',
     },
     [NetworkNames.Avalanche]: {
         chainId: 43114,
@@ -125,6 +131,36 @@ exports.NETWORK_CONFIGS = {
         chainId: 1313161555,
         defaultProviderUrl: 'https://testnet.aurora.dev/',
         defaultGasPrice: 3,
+    },
+    [NetworkNames.Arbitrum]: {
+        chainId: 42161,
+        defaultProviderUrl: 'https://arb1.arbitrum.io/rpc',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.ArbitrumTest]: {
+        chainId: 421611,
+        defaultProviderUrl: 'https://rinkeby.arbitrum.io/rpc',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.Optimism]: {
+        chainId: 10,
+        defaultProviderUrl: 'https://mainnet.optimism.io',
+        defaultGasPrice: 3,
+    },
+    [NetworkNames.OptimismKovan]: {
+        chainId: 69,
+        defaultProviderUrl: 'https://kovan.optimism.io',
+        defaultGasPrice: 3,
+    },
+    [NetworkNames.Moonbeam]: {
+        chainId: 1284,
+        defaultProviderUrl: 'https://rpc.api.moonbeam.network',
+        defaultGasPrice: 100,
+    },
+    [NetworkNames.Moonbase]: {
+        chainId: 1287,
+        defaultProviderUrl: 'https://rpc.api.moonbase.moonbeam.network',
+        defaultGasPrice: 1,
     },
     [NetworkNames.Etherspot]: {
         chainId: 4386,

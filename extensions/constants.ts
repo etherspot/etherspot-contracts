@@ -16,6 +16,12 @@ export enum NetworkNames {
   Fuji = 'fuji',
   Aurora = 'aurora',
   AuroraTest = 'auroraTest',
+  Arbitrum = 'arbitrum',
+  ArbitrumTest = 'arbitrumTest',
+  Optimism = "optimism",
+  OptimismKovan = "optimismKovan",
+  Moonbeam = "moonbeam",
+  Moonbase = "moonbase",
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -107,13 +113,13 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Matic]: {
     chainId: 137,
     defaultProviderUrl: 'https://rpc-mainnet.maticvigil.com',
-    explorer: 'https://explorer-mainnet.maticvigil.com',
+    explorer: 'https://polygonscan.com',
   },
   [NetworkNames.Mumbai]: {
     chainId: 80001,
     defaultProviderUrl: 'https://rpc-mumbai.maticvigil.com',
     defaultGasPrice: 5,
-    explorer: 'https://explorer-mumbai.maticvigil.com',
+    explorer: 'https://mumbai.polygonscan.com',
   },
   [NetworkNames.Avalanche]: {
     chainId: 43114,
@@ -135,6 +141,36 @@ export const NETWORK_CONFIGS: {
     chainId: 1313161555,
     defaultProviderUrl: 'https://testnet.aurora.dev/',
     defaultGasPrice: 3,
+  },
+  [NetworkNames.Arbitrum]: {
+    chainId: 42161,
+    defaultProviderUrl: 'https://arb1.arbitrum.io/rpc',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumTest]: {
+    chainId: 421611,
+    defaultProviderUrl : 'https://rinkeby.arbitrum.io/rpc',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.Optimism] : {
+    chainId: 10,
+    defaultProviderUrl: 'https://mainnet.optimism.io',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.OptimismKovan]: {
+    chainId: 69,
+    defaultProviderUrl: 'https://kovan.optimism.io',
+    defaultGasPrice: 3,
+  },
+  [NetworkNames.Moonbeam] : {
+    chainId: 1284,
+    defaultProviderUrl: 'https://rpc.api.moonbeam.network',
+    defaultGasPrice: 100,
+  },
+  [NetworkNames.Moonbase] : {
+    chainId: 1287,
+    defaultProviderUrl: 'https://rpc.api.moonbase.moonbeam.network',
+    defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,

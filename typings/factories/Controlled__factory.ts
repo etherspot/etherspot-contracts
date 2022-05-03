@@ -2,19 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import type { Controlled } from "../Controlled";
-
-export class Controlled__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): Controlled {
-    return new Contract(address, _abi, signerOrProvider) as Controlled;
-  }
-}
+import type { Controlled, ControlledInterface } from "../Controlled";
 
 const _abi = [
   {
@@ -31,3 +21,16 @@ const _abi = [
     type: "function",
   },
 ];
+
+export class Controlled__factory {
+  static readonly abi = _abi;
+  static createInterface(): ControlledInterface {
+    return new utils.Interface(_abi) as ControlledInterface;
+  }
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): Controlled {
+    return new Contract(address, _abi, signerOrProvider) as Controlled;
+  }
+}

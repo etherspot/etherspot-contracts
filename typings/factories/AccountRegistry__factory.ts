@@ -2,19 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import type { AccountRegistry } from "../AccountRegistry";
-
-export class AccountRegistry__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): AccountRegistry {
-    return new Contract(address, _abi, signerOrProvider) as AccountRegistry;
-  }
-}
+import type {
+  AccountRegistry,
+  AccountRegistryInterface,
+} from "../AccountRegistry";
 
 const _abi = [
   {
@@ -76,3 +69,16 @@ const _abi = [
     type: "function",
   },
 ];
+
+export class AccountRegistry__factory {
+  static readonly abi = _abi;
+  static createInterface(): AccountRegistryInterface {
+    return new utils.Interface(_abi) as AccountRegistryInterface;
+  }
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): AccountRegistry {
+    return new Contract(address, _abi, signerOrProvider) as AccountRegistry;
+  }
+}
