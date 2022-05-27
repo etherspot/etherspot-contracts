@@ -26,6 +26,8 @@ var NetworkNames;
     NetworkNames["OptimismKovan"] = "optimismKovan";
     NetworkNames["Moonbeam"] = "moonbeam";
     NetworkNames["Moonbase"] = "moonbase";
+    NetworkNames["Celo"] = "celo";
+    NetworkNames["CeloTest"] = "celoTest";
     NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
@@ -160,6 +162,16 @@ exports.NETWORK_CONFIGS = {
     [NetworkNames.Moonbase]: {
         chainId: 1287,
         defaultProviderUrl: 'https://rpc.api.moonbase.moonbeam.network',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.Celo]: {
+        chainId: 42220,
+        defaultProviderUrl: 'https://forno.celo.org',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.CeloTest]: {
+        chainId: 44787,
+        defaultProviderUrl: 'https://alfajores-forno.celo-testnet.org',
         defaultGasPrice: 1,
     },
     [NetworkNames.Etherspot]: {
