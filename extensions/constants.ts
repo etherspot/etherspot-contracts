@@ -177,7 +177,7 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Celo] : {
     chainId: 42220,
     defaultProviderUrl: 'https://forno.celo.org',
-    defaultGasPrice: 4,
+    defaultGasPrice: 1,
   },
   [NetworkNames.CeloTest] : {
     chainId: 44787,
