@@ -1,22 +1,23 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// solhint-disable-next-line
+pragma solidity 0.8.4;
 
 /// @title BalancesHelperV2
 /// @author Luke Wickens <luke@pillarproject.io>
 /// @notice Used to get account balances of Pure and Wrapped Super Tokens
 
-import {IConstantFlowAgreementV1} from '@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol';
-import {IInstantDistributionAgreementV1} from '@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IInstantDistributionAgreementV1.sol';
-import {ISuperfluidToken} from '@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol';
-import {ISuperToken} from '@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol';
-import {Address} from '@openzeppelin/contracts/utils/Address.sol';
-
-/// @notice Custom errors to handle address(0)
-error AccountZeroAddress(address account, address token);
-error TokenZeroAddress(address account, address token);
+import {IConstantFlowAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
+import {IInstantDistributionAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IInstantDistributionAgreementV1.sol";
+import {ISuperfluidToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol";
+import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract BalancesHelperV2 {
     using Address for address;
+
+    /// @notice Custom errors to handle address(0)
+    error AccountZeroAddress(address account, address token);
+    error TokenZeroAddress(address account, address token);
 
     constructor() {}
 
