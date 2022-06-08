@@ -1,4 +1,5 @@
 import '@nomiclabs/hardhat-etherscan';
+import "@nomiclabs/hardhat-web3";
 import '@typechain/hardhat';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
@@ -33,13 +34,26 @@ const config: HardhatUserConfig = {
     ...createConfigNetworks(),
   },
   solidity: {
-    version: '0.6.12',
-    settings: {
-      evmVersion: 'istanbul',
-      metadata: {
-        bytecodeHash: 'none',
+    compilers: [
+      {
+      version: '0.6.12',
+      settings: {
+        evmVersion: 'istanbul',
+        metadata: {
+          bytecodeHash: 'none',
+        },
       },
     },
+    {
+      version: '0.8.4',
+        settings: {
+          evmVersion: 'istanbul',
+          metadata: {
+            bytecodeHash: 'none',
+          },
+        },
+      },
+    ],
   },
   paths: {
     sources: 'src',
