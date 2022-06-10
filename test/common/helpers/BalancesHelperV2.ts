@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers";
-import { deployContract } from "../../shared";
-import { BalancesHelperV2 } from "../../../typings";
+import { deployContract, processTx } from "../../shared";
+import { BalancesHelperV2, WrappedWeiToken } from "../../../typings";
 import { Framework } from "@superfluid-finance/sdk-core";
 import daiABI from "./abi/fDAIABI";
 import { ethers, web3 } from "hardhat";
@@ -14,6 +14,7 @@ const provider = web3;
 
 let sf: Framework;
 let balancesHelperV2: BalancesHelperV2;
+let wrappedWeiToken: WrappedWeiToken;
 let dai: daiABI;
 let daix: daiABI;
 let daiAddress: string;
@@ -33,9 +34,16 @@ describe("BalancesHelperV2", () => {
     [owner, alice, bob, charlie, dead] = await ethers.getSigners();
     // deploy BalancesHelperV2 contract
     balancesHelperV2 = await deployContract("BalancesHelperV2");
+    wrappedWeiToken = await deployContract("WrappedWeiToken");
     // deploy the framework
     await deployFramework(errorHandler, { web3, from: owner.address });
     // deploy a fake erc20
+    await processTx(
+      owner.sendTransaction({
+        to: wrappedWeiToken.address,
+        value: 1000,
+      }),
+    );
   });
 
   beforeEach(async () => {
@@ -64,11 +72,24 @@ describe("BalancesHelperV2", () => {
     dai = new ethers.Contract(daiAddress, daiABI, owner);
   });
 
+  describe("ERC20 Token", () => {
+    it("Should be able to read user balance", async () => {
+      const balance: BigNumber[] = await balancesHelperV2.getBalances(
+        [owner.address, alice.address, bob.address],
+        [wrappedWeiToken.address],
+      );
+      console.log("Owner ERC20 Token Balance: ", balance[0].toString());
+      expect(balance[0]).toBeBN(1000);
+      expect(balance[1]).toBeBN(0);
+      expect(balance[2]).toBeBN(0);
+    });
+  });
+
   describe("Pure SuperToken", () => {
     it("Should be able to read user balance", async () => {
       daiAddress = daix.underlyingToken.address;
       // check fDAI balance (should be 0)
-      let balance: BigNumber[] = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      let balance: BigNumber[] = await balancesHelperV2.getBalances(
         [owner.address],
         [daiAddress],
       );
@@ -78,7 +99,7 @@ describe("BalancesHelperV2", () => {
         .connect(owner)
         .mint(owner.address, ethers.utils.parseEther("100"));
       // check fDAI balance (should be 100)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [owner.address],
         [daiAddress],
       );
@@ -92,7 +113,7 @@ describe("BalancesHelperV2", () => {
     it("Should be able to read multiple user balances", async () => {
       daiAddress = daix.underlyingToken.address;
       // check fDAI balances (should all be 0)
-      let balance: BigNumber[] = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      let balance: BigNumber[] = await balancesHelperV2.getBalances(
         [owner.address, alice.address, bob.address, charlie.address],
         [daiAddress],
       );
@@ -112,7 +133,7 @@ describe("BalancesHelperV2", () => {
         .connect(owner)
         .mint(charlie.address, ethers.utils.parseEther("30"));
       // check fDAI balances (should be 100, 10, 20, 30)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [owner.address, alice.address, bob.address, charlie.address],
         [daiAddress],
       );
@@ -138,7 +159,7 @@ describe("BalancesHelperV2", () => {
     it("Should revert if the account address is the zero address", async () => {
       daiAddress = daix.underlyingToken.address;
       await expectRevert(
-        balancesHelperV2.getSuperfluidPureTokenBalances(
+        balancesHelperV2.getBalances(
           [ethers.constants.AddressZero],
           [daiAddress],
         ),
@@ -148,7 +169,7 @@ describe("BalancesHelperV2", () => {
 
     it("Should revert if the token address is the zero address", async () => {
       await expectRevert(
-        balancesHelperV2.getSuperfluidPureTokenBalances(
+        balancesHelperV2.getBalances(
           [owner.address],
           [ethers.constants.AddressZero],
         ),
@@ -185,7 +206,7 @@ describe("BalancesHelperV2", () => {
       );
       expect(balance[0]).toBeBN(ethers.utils.parseEther("50"));
       // check fDAI balance (should be 50)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [owner.address],
         [daiAddress],
       );
@@ -220,7 +241,7 @@ describe("BalancesHelperV2", () => {
       );
       expect(balance[0]).toBeBN(ethers.utils.parseEther("50"));
       // check fDAI balance (should be 50)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [owner.address],
         [daiAddress],
       );
@@ -237,7 +258,7 @@ describe("BalancesHelperV2", () => {
       );
       expect(balance[0]).toBeBN(ethers.utils.parseEther("25"));
       // check fDAI balance (should be 75)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [owner.address],
         [daiAddress],
       );
@@ -285,7 +306,7 @@ describe("BalancesHelperV2", () => {
       expect(balance[1]).toBeBN(ethers.utils.parseEther("14"));
       expect(balance[2]).toBeBN(ethers.utils.parseEther("21"));
       // check fDAI balances (should be 14, 14, 14)
-      balance = await balancesHelperV2.getSuperfluidPureTokenBalances(
+      balance = await balancesHelperV2.getBalances(
         [alice.address, bob.address, charlie.address],
         [daiAddress],
       );
