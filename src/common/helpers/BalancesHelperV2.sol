@@ -4,12 +4,10 @@ pragma solidity 0.8.4;
 
 /// @title BalancesHelperV2
 /// @author Luke Wickens <luke@pillarproject.io>
-/// @notice Used to get account balances of Pure and Wrapped Super Tokens
+/// @notice Used to get account balances of ERC20 tokens and Wrapped Super Tokens
 
-import {IConstantFlowAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
-import {IInstantDistributionAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IInstantDistributionAgreementV1.sol";
 import {ISuperfluidToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol";
-import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract BalancesHelperV2 {
@@ -21,7 +19,7 @@ contract BalancesHelperV2 {
 
     constructor() {}
 
-    /// @notice Returns balances of accounts for multiple Pure Super Tokens (non-wrapped).
+    /// @notice Returns balances of accounts for multiple ERC20 tokens.
     /// @dev Error thrown if: account or token address is address(0),
     /// large arrays of accounts/tokens are passed in could cause gas block limit issue
     /// @param accounts = Array of accounts addresses
@@ -29,10 +27,11 @@ contract BalancesHelperV2 {
     /// @return One-dimensional that's accounts.length * tokens.length long. The
     /// array is ordered by all of accounts[0] token balances, then accounts[1] etc.
 
-    function getSuperfluidPureTokenBalances(
-        address[] calldata accounts,
-        address[] calldata tokens
-    ) external view returns (uint256[] memory) {
+    function getBalances(address[] calldata accounts, address[] calldata tokens)
+        external
+        view
+        returns (uint256[] memory)
+    {
         uint256[] memory result = new uint256[](
             accounts.length * tokens.length
         );
@@ -40,16 +39,13 @@ contract BalancesHelperV2 {
         for (uint256 i; i < accounts.length; i++) {
             for (uint256 j; j < tokens.length; j++) {
                 uint256 index = j + (tokens.length * i);
-                result[index] = _getSuperfluidPureTokenBalance(
-                    accounts[i],
-                    tokens[j]
-                );
+                result[index] = _getBalance(accounts[i], tokens[j]);
             }
         }
         return result;
     }
 
-    /// @notice Returns balances of accounts for multiple Wrapped Super Tokens (non-pure).
+    /// @notice Returns balances of accounts for multiple Wrapped Super Tokens.
     /// @dev Error thrown if: account or token address is address(0),
     /// large arrays of accounts/tokens are passed in could cause gas block limit issue
     /// @param accounts =  Array of accounts addresses
@@ -77,13 +73,13 @@ contract BalancesHelperV2 {
 
     /// Private fuctions
 
-    /// @notice Returns balance of account for a Pure Super Token.
+    /// @notice Returns balance of account for an ERC20 token.
     /// @dev Error thrown if: account or token address is address(0)
     /// @param account = account address
     /// @param token = tokens address
     /// @return balance of account as uint256.
 
-    function _getSuperfluidPureTokenBalance(address account, address token)
+    function _getBalance(address account, address token)
         private
         view
         returns (uint256)
@@ -92,10 +88,7 @@ contract BalancesHelperV2 {
         if (token == address(0)) revert TokenZeroAddress(account, token);
 
         bytes memory returnedData = token.functionStaticCall(
-            abi.encodeWithSelector(
-                ISuperToken(token).balanceOf.selector,
-                account
-            )
+            abi.encodeWithSelector(IERC20(token).balanceOf.selector, account)
         );
 
         return abi.decode(returnedData, (uint256));
@@ -106,6 +99,7 @@ contract BalancesHelperV2 {
     /// @param account = account address
     /// @param token = tokens address
     /// @return available balance of account as int256.
+
     function _getSuperfluidWrappedTokenBalance(address account, address token)
         private
         view

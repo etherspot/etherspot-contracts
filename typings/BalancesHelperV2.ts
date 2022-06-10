@@ -16,12 +16,27 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface BalancesHelperV2Interface extends utils.Interface {
   functions: {
-    "getSuperfluidPureTokenBalances(address[],address[])": FunctionFragment;
+    "c_5ef3a5e5(bytes8)": FunctionFragment;
+    "c_false5ef3a5e5(bytes8)": FunctionFragment;
+    "c_true5ef3a5e5(bytes8)": FunctionFragment;
+    "getBalances(address[],address[])": FunctionFragment;
     "getSuperfluidWrappedTokenBalances(address[],address[])": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "getSuperfluidPureTokenBalances",
+    functionFragment: "c_5ef3a5e5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false5ef3a5e5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true5ef3a5e5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBalances",
     values: [string[], string[]]
   ): string;
   encodeFunctionData(
@@ -29,8 +44,17 @@ export interface BalancesHelperV2Interface extends utils.Interface {
     values: [string[], string[]]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_5ef3a5e5", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getSuperfluidPureTokenBalances",
+    functionFragment: "c_false5ef3a5e5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true5ef3a5e5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBalances",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -68,7 +92,22 @@ export interface BalancesHelperV2 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    getSuperfluidPureTokenBalances(
+    c_5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    getBalances(
       accounts: string[],
       tokens: string[],
       overrides?: CallOverrides
@@ -81,7 +120,19 @@ export interface BalancesHelperV2 extends BaseContract {
     ): Promise<[BigNumber[]]>;
   };
 
-  getSuperfluidPureTokenBalances(
+  c_5ef3a5e5(c__5ef3a5e5: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false5ef3a5e5(
+    c__5ef3a5e5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true5ef3a5e5(
+    c__5ef3a5e5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  getBalances(
     accounts: string[],
     tokens: string[],
     overrides?: CallOverrides
@@ -94,7 +145,22 @@ export interface BalancesHelperV2 extends BaseContract {
   ): Promise<BigNumber[]>;
 
   callStatic: {
-    getSuperfluidPureTokenBalances(
+    c_5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    getBalances(
       accounts: string[],
       tokens: string[],
       overrides?: CallOverrides
@@ -110,7 +176,22 @@ export interface BalancesHelperV2 extends BaseContract {
   filters: {};
 
   estimateGas: {
-    getSuperfluidPureTokenBalances(
+    c_5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getBalances(
       accounts: string[],
       tokens: string[],
       overrides?: CallOverrides
@@ -124,7 +205,22 @@ export interface BalancesHelperV2 extends BaseContract {
   };
 
   populateTransaction: {
-    getSuperfluidPureTokenBalances(
+    c_5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true5ef3a5e5(
+      c__5ef3a5e5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getBalances(
       accounts: string[],
       tokens: string[],
       overrides?: CallOverrides
