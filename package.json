@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Etherspot Solidity contracts",
   "keywords": [
     "ether",
