@@ -100,7 +100,6 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Fantom]: {
     chainId: 250,
     defaultProviderUrl: 'https://rpcapi.fantom.network',
-    defaultGasPrice: 22,
     explorer: 'https://ftmscan.com',
   },
   [NetworkNames.FantomTest]: {
