@@ -202,6 +202,7 @@ export const NETWORK_CONFIGS: {
 
 export enum ContractNames {
   BalancesHelper = 'BalancesHelper',
+  BalancesHelperV2 = 'BalancesHelperV2',
   ENSController = 'ENSController',
   ENSHelper = 'ENSHelper',
   ENSRegistry = 'ENSRegistry',
