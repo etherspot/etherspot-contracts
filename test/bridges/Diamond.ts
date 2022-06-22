@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { addFacets, addOrReplaceFacets, FacetCutAction, getSelectors } from '../../utils/diamond';
+import { addFacets, getSelectors } from '../../utils/diamond';
 import { Diamond, DiamondCutFacet, DiamondLoupeFacet } from '../../typings';
 import {
   SignerWithAddress,
@@ -8,7 +8,7 @@ import {
 
 const { getSigners } = ethers;
 
-describe.only('Diamond', () => {
+describe('Diamond', () => {
   let signers: SignerWithAddress[];
   let diamond: Diamond;
   let diamondCutFacet: DiamondCutFacet;
@@ -32,7 +32,7 @@ describe.only('Diamond', () => {
       [diamondCutFacet.address]: getSelectors(diamondCutFacet),
     };
 
-    for (let facet of facetsToAdd) {
+    for (const facet of facetsToAdd) {
       const facetContract = await deployContract(facet);
       cut[facetContract.address] = getSelectors(facetContract);
       await addFacets([facetContract], diamond.address);
