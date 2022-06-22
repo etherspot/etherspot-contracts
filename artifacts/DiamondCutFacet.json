@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DiamondCutFacet",
-  "sourceName": "src/bridges/facets/DiamonCutFacet.sol",
+  "sourceName": "src/bridges/facets/DiamondCutFacet.sol",
   "abi": [
     {
       "anonymous": false,
