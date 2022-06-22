@@ -29,17 +29,25 @@ const config: HardhatUserConfig = {
       },
       chainId: 3333,
       gasPrice: 20 * 1000000000,
+      initialBaseFeePerGas: 0,
     },
     ...createConfigNetworks(),
   },
   solidity: {
-    version: '0.6.12',
-    settings: {
-      evmVersion: 'istanbul',
-      metadata: {
-        bytecodeHash: 'none',
+    compilers: [
+      {
+        version: '0.6.12',
+        settings: {
+          evmVersion: 'istanbul',
+          metadata: {
+            bytecodeHash: 'none',
+          },
+        },
       },
-    },
+      {
+        version: '0.8.1',
+      },
+    ],
   },
   paths: {
     sources: 'src',
