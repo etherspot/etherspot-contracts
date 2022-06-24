@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity >=0.7.0.0 <0.9.0.0;
 
 /// @title Multi Send Call Only - Allows to batch multiple transactions into one, but only calls
 /// @author Stefan George - <stefan@gnosis.io>
