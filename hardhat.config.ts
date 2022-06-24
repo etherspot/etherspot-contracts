@@ -1,3 +1,4 @@
+import { config as dotenvConfig } from "dotenv-flow";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
@@ -5,6 +6,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "@openzeppelin/hardhat-upgrades";
 import { HardhatUserConfig } from "hardhat/config";
 import { utils } from "ethers";
 import {
@@ -13,15 +15,16 @@ import {
   createConfigNetworks,
   NETWORK_CONFIGS,
 } from "./extensions";
+dotenvConfig();
 
 const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
-
 const config: HardhatUserConfig = {
   namedAccounts: {
     from: 0,
   },
   networks: {
     hardhat: {
+      allowUnlimitedContractSize: true,
       accounts: {
         mnemonic:
           HARDHAT_MNEMONIC ||
@@ -46,6 +49,15 @@ const config: HardhatUserConfig = {
       },
       {
         version: "0.8.4",
+        settings: {
+          evmVersion: "istanbul",
+          metadata: {
+            bytecodeHash: "none",
+          },
+        },
+      },
+      {
+        version: "0.8.7",
         settings: {
           evmVersion: "istanbul",
           metadata: {
