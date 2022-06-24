@@ -30,23 +30,12 @@ let signers: SignerWithAddress[];
 let owner: SignerWithAddress;
 let alice: SignerWithAddress;
 let bob: SignerWithAddress;
-let charlie: SignerWithAddress;
-let dead: SignerWithAddress;
 let deBridgeFacet: DeBridgeFacet;
-let deBridgeGate,
-  debridge,
-  signatureVerifier,
-  weth,
-  callProxy,
-  wethDebridgeId,
-  nativeDebridgeId,
-  mockToken;
+let debridge, signatureVerifier, weth, callProxy, wethDebridgeId, mockToken;
 
 function toBN(number) {
   return BigNumber.from(number.toString());
 }
-
-const BPS = toBN(10000);
 
 describe("DeBridgeFacet", () => {
   before(async () => {
@@ -60,8 +49,6 @@ describe("DeBridgeFacet", () => {
     owner = signers[0];
     alice = signers[1];
     bob = signers[2];
-    charlie = signers[3];
-    dead = signers[4];
 
     // deploy DeBridgeFacet contract
     deBridgeFacet = await deployContract("DeBridgeFacet");
@@ -117,6 +104,7 @@ describe("DeBridgeFacet", () => {
     console.log("adding oracles");
     await signatureVerifier.addOracles(
       initialOracles.map(o => o.address),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       initialOracles.map(o => false),
       {
         from: owner.address,
@@ -215,7 +203,6 @@ describe("DeBridgeFacet", () => {
     await deBridgeTokenDeployer.setDebridgeAddress(debridge.address);
 
     wethDebridgeId = await debridge.getDebridgeId(1, weth.address);
-    nativeDebridgeId = await debridge.getDebridgeId(1, ZERO_ADDRESS);
     await debridge.updateAssetFixedFees(wethDebridgeId, supportedChainIds, [
       fixedNativeFee,
       fixedNativeFee,
