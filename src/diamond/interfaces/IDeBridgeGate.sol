@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 interface IDeBridgeGate {
@@ -70,9 +72,9 @@ interface IDeBridgeGate {
     function isSubmissionUsed(bytes32 submissionId) external returns (bool);
 
     /// @dev Returns native token info by wrapped token address
-    function getNativeInfo(address token) external returns (
-        uint256 nativeChainId,
-        bytes memory nativeAddress);
+    function getNativeInfo(address token)
+        external
+        returns (uint256 nativeChainId, bytes memory nativeAddress);
 
     /* ========== FUNCTIONS ========== */
 
@@ -130,7 +132,10 @@ interface IDeBridgeGate {
 
     /// @dev Get reserves of a token available to use in defi
     /// @param _tokenAddress Token address
-    function getDefiAvaliableReserves(address _tokenAddress) external view returns (uint256);
+    function getDefiAvaliableReserves(address _tokenAddress)
+        external
+        view
+        returns (uint256);
 
     /// @dev Request the assets to be used in DeFi protocol.
     /// @param _tokenAddress Asset address.
@@ -208,12 +213,17 @@ interface IDeBridgeGate {
     );
 
     /// @dev Emitted when the asset is allowed/disallowed to be transferred to the chain.
-    event ChainSupportUpdated(uint256 chainId, bool isSupported, bool isChainFrom);
+    event ChainSupportUpdated(
+        uint256 chainId,
+        bool isSupported,
+        bool isChainFrom
+    );
     /// @dev Emitted when the supported chains are updated.
     event ChainsSupportUpdated(
         uint256 chainIds,
         ChainSupportInfo chainSupportInfo,
-        bool isChainFrom);
+        bool isChainFrom
+    );
 
     /// @dev Emitted when the new call proxy is set.
     event CallProxyUpdated(address callProxy);
@@ -244,7 +254,8 @@ interface IDeBridgeGate {
     /// @dev Emitted when globalFixedNativeFee and globalTransferFeeBps are updated.
     event FixedNativeFeeUpdated(
         uint256 globalFixedNativeFee,
-        uint256 globalTransferFeeBps);
+        uint256 globalTransferFeeBps
+    );
 
     /// @dev Emitted when globalFixedNativeFee is updated by feeContractUpdater
     event FixedNativeFeeAutoUpdated(uint256 globalFixedNativeFee);

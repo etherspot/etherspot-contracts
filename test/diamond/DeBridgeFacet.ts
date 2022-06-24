@@ -52,7 +52,6 @@ describe("DeBridgeFacet", () => {
 
     // deploy DeBridgeFacet contract
     deBridgeFacet = await deployContract("DeBridgeFacet");
-    console.log("deBridgeFacet Address: ", deBridgeFacet.address);
     const Debridge = await ethers.getContractFactory(
       "MockDeBridgeGate",
       owner.address,
@@ -295,26 +294,46 @@ describe("DeBridgeFacet", () => {
         );
 
       const newBalance = toBN(await mockToken.balanceOf(debridge.address));
-      console.log("DeBridgeGate Contract Pre-Balance: ", balance);
 
-      console.log("DeBridgeGate Contract Post-Balance: ", newBalance);
+      // checking balances
+      const dbfBalance = toBN(await mockToken.balanceOf(deBridgeFacet.address));
+      const aliceBalance = toBN(await mockToken.balanceOf(alice.address));
+      const bobBalance = toBN(await mockToken.balanceOf(bob.address));
+
       console.log(
-        "DeBridgeFacet Contract Balance: ",
-        await mockToken.balanceOf(deBridgeFacet.address),
+        `DeBridgeGate Contract Pre-Balance:  ${ethers.utils.parseEther(
+          balance.toString(),
+        )}`,
+      );
+
+      console.log(
+        `DeBridgeGate Contract Post-Balance: ${ethers.utils.parseEther(
+          newBalance.toString(),
+        )}`,
       );
       console.log(
-        "Alice Account Balance: ",
-        await mockToken.balanceOf(alice.address),
+        `DeBridgeFacet Contract Balance: ${ethers.utils.parseEther(
+          dbfBalance.toString(),
+        )}`,
       );
       console.log(
-        "Bob Account Balance: ",
-        await mockToken.balanceOf(bob.address),
+        `Alice Account Balance: ${ethers.utils.parseEther(
+          aliceBalance.toString(),
+        )}`,
       );
+      console.log(
+        `Bob Account Balance: ${ethers.utils.parseEther(
+          bobBalance.toString(),
+        )}`,
+      );
+
+      // checking addresses
       console.log("Alice address: ", alice.address);
       console.log("Bob address: ", bob.address);
       console.log("DeBridgeGate address: ", debridge.address);
       console.log("DeBridgeFacet address: ", deBridgeFacet.address);
 
+      // checking tx receipt
       console.log(tx);
       expect(balance.add(amount).toString()).toEqual(newBalance.toString());
     });

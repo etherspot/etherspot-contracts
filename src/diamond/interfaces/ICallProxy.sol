@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 interface ICallProxy {
-
     /// @dev Chain from which the current submission is received
     function submissionChainIdFrom() external returns (uint256);
+
     /// @dev Native sender of the current submission
     function submissionNativeSender() external returns (bytes memory);
 

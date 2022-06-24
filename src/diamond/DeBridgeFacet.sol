@@ -52,7 +52,7 @@ contract DeBridgeFacet is Ownable {
         // ERC20 approval here?
         IERC20(_tokenAddress).approve(deBridgeGate, _amount);
 
-        bytes memory returnedData = deBridgeGate.functionDelegateCall(
+        deBridgeGate.functionDelegateCall(
             abi.encodeWithSelector(
                 IDeBridgeGate(deBridgeGate).send.selector,
                 _tokenAddress,

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 interface ISignatureVerifier {
-
     /* ========== EVENTS ========== */
 
     /// @dev Emitted once the submission is confirmed by one oracle.
@@ -21,5 +22,4 @@ interface ISignatureVerifier {
         bytes memory _signatures,
         uint8 _excessConfirmations
     ) external;
-
 }
