@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
-// solhint-disable-next-line
-
-pragma solidity 0.8.7;
+pragma solidity 0.8.7.0;
 
 interface IWETH {
     function deposit() external payable;

@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
-// solhint-disable-next-line
-
-pragma solidity 0.8.7;
+pragma solidity 0.8.7.0;
 
 interface IDeBridgeTokenDeployer {
     /// @dev Deploy a deToken(DeBridgeTokenProxy) for an asset

@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
-// solhint-disable-next-line
-
-pragma solidity 0.8.7;
+pragma solidity 0.8.7.0;
 
 interface ICallProxy {
     /// @dev Chain from which the current submission is received
