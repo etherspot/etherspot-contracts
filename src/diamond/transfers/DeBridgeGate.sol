@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -39,7 +41,8 @@ contract DeBridgeGate is
     /// @dev Basis points or bps, set to 10 000 (equal to 1/10000). Used to express relative values (fees)
     uint256 public constant BPS_DENOMINATOR = 10000;
     /// @dev Role allowed to stop transfers
-    bytes32 public constant GOVMONITORING_ROLE = keccak256("GOVMONITORING_ROLE");
+    bytes32 public constant GOVMONITORING_ROLE =
+        keccak256("GOVMONITORING_ROLE");
 
     /// @dev prefix to calculation submissionId
     uint256 public constant SUBMISSION_PREFIX = 1;
@@ -146,7 +149,8 @@ contract DeBridgeGate is
     }
 
     modifier onlyFeeContractUpdater() {
-        if (feeContractUpdater != msg.sender) revert FeeContractUpdaterBadRole();
+        if (feeContractUpdater != msg.sender)
+            revert FeeContractUpdaterBadRole();
         _;
     }
 
@@ -156,7 +160,8 @@ contract DeBridgeGate is
     }
 
     modifier onlyGovMonitoring() {
-        if (!hasRole(GOVMONITORING_ROLE, msg.sender)) revert GovMonitoringBadRole();
+        if (!hasRole(GOVMONITORING_ROLE, msg.sender))
+            revert GovMonitoringBadRole();
         _;
     }
 
@@ -165,10 +170,10 @@ contract DeBridgeGate is
     /// @dev Constructor that initializes the most important configurations.
     /// @param _excessConfirmations minimal required confirmations in case of too many confirmations
     /// @param _weth wrapped native token contract
-    function initialize(
-        uint8 _excessConfirmations,
-        IWETH _weth
-    ) public initializer {
+    function initialize(uint8 _excessConfirmations, IWETH _weth)
+        public
+        initializer
+    {
         excessConfirmations = _excessConfirmations;
         weth = _weth;
 
@@ -206,9 +211,15 @@ contract DeBridgeGate is
         // Validate Auto Params
         if (_autoParams.length > 0) {
             autoParams = abi.decode(_autoParams, (SubmissionAutoParamsTo));
-            autoParams.executionFee = _normalizeTokenAmount(_tokenAddress, autoParams.executionFee);
+            autoParams.executionFee = _normalizeTokenAmount(
+                _tokenAddress,
+                autoParams.executionFee
+            );
             if (autoParams.executionFee > _amount) revert ProposedFeeTooHigh();
-            if (autoParams.data.length > 0 && autoParams.fallbackAddress.length == 0 ) revert WrongAutoArgument();
+            if (
+                autoParams.data.length > 0 &&
+                autoParams.fallbackAddress.length == 0
+            ) revert WrongAutoArgument();
         }
 
         amountAfterFee -= autoParams.executionFee;
@@ -238,7 +249,8 @@ contract DeBridgeGate is
         bytes calldata _signatures,
         bytes calldata _autoParams
     ) external override whenNotPaused {
-        if (!getChainFromConfig[_chainIdFrom].isSupported) revert WrongChainFrom();
+        if (!getChainFromConfig[_chainIdFrom].isSupported)
+            revert WrongChainFrom();
 
         SubmissionAutoParamsFrom memory autoParams;
         if (_autoParams.length > 0) {
@@ -262,7 +274,7 @@ contract DeBridgeGate is
 
         _checkConfirmations(submissionId, _debridgeId, _amount, _signatures);
 
-        bool isNativeToken =_claim(
+        bool isNativeToken = _claim(
             submissionId,
             _debridgeId,
             _receiver,
@@ -289,18 +301,22 @@ contract DeBridgeGate is
         address _receiver,
         uint256 _amount,
         bytes memory _data
-    ) external override nonReentrant whenNotPaused
-    {
+    ) external override nonReentrant whenNotPaused {
         bytes32 debridgeId = getDebridgeId(getChainId(), _tokenAddress);
         if (!getDebridge[debridgeId].exist) revert DebridgeNotFound();
         uint256 currentFlashFee = (_amount * flashFeeBps) / BPS_DENOMINATOR;
-        uint256 balanceBefore = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
+        uint256 balanceBefore = IERC20Upgradeable(_tokenAddress).balanceOf(
+            address(this)
+        );
 
         IERC20Upgradeable(_tokenAddress).safeTransfer(_receiver, _amount);
         IFlashCallback(msg.sender).flashCallback(currentFlashFee, _data);
 
-        uint256 balanceAfter = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
-        if (balanceBefore + currentFlashFee > balanceAfter) revert FlashFeeNotPaid();
+        uint256 balanceAfter = IERC20Upgradeable(_tokenAddress).balanceOf(
+            address(this)
+        );
+        if (balanceBefore + currentFlashFee > balanceAfter)
+            revert FlashFeeNotPaid();
 
         uint256 paid = balanceAfter - balanceBefore;
         getDebridgeFeeInfo[debridgeId].collectedFees += paid;
@@ -321,27 +337,41 @@ contract DeBridgeGate is
         string memory _symbol,
         uint8 _decimals,
         bytes memory _signatures
-    ) external nonReentrant whenNotPaused{
-        bytes32 debridgeId = getbDebridgeId(_nativeChainId, _nativeTokenAddress);
+    ) external nonReentrant whenNotPaused {
+        bytes32 debridgeId = getbDebridgeId(
+            _nativeChainId,
+            _nativeTokenAddress
+        );
 
         if (getDebridge[debridgeId].exist) revert AssetAlreadyExist();
 
         bytes32 deployId = getDeployId(debridgeId, _name, _symbol, _decimals);
 
         // verify signatures
-        ISignatureVerifier(signatureVerifier).submit(deployId, _signatures, excessConfirmations);
+        ISignatureVerifier(signatureVerifier).submit(
+            deployId,
+            _signatures,
+            excessConfirmations
+        );
 
-        address deBridgeTokenAddress = IDeBridgeTokenDeployer(deBridgeTokenDeployer)
-            .deployAsset(debridgeId, _name, _symbol, _decimals);
+        address deBridgeTokenAddress = IDeBridgeTokenDeployer(
+            deBridgeTokenDeployer
+        ).deployAsset(debridgeId, _name, _symbol, _decimals);
 
-        _addAsset(debridgeId, deBridgeTokenAddress, _nativeTokenAddress, _nativeChainId);
+        _addAsset(
+            debridgeId,
+            deBridgeTokenAddress,
+            _nativeTokenAddress,
+            _nativeChainId
+        );
     }
 
     /// @dev Update native fix fee. Called by our fee update contract
     /// @param _globalFixedNativeFee  new value
-    function autoUpdateFixedNativeFee(
-        uint256 _globalFixedNativeFee
-    ) external onlyFeeContractUpdater {
+    function autoUpdateFixedNativeFee(uint256 _globalFixedNativeFee)
+        external
+        onlyFeeContractUpdater
+    {
         globalFixedNativeFee = _globalFixedNativeFee;
         emit FixedNativeFeeAutoUpdated(_globalFixedNativeFee);
     }
@@ -357,15 +387,19 @@ contract DeBridgeGate is
         ChainSupportInfo[] memory _chainSupportInfo,
         bool _isChainFrom
     ) external onlyAdmin {
-        if (_chainIds.length != _chainSupportInfo.length) revert WrongArgument();
+        if (_chainIds.length != _chainSupportInfo.length)
+            revert WrongArgument();
         for (uint256 i = 0; i < _chainIds.length; i++) {
-            if(_isChainFrom){
+            if (_isChainFrom) {
                 getChainFromConfig[_chainIds[i]] = _chainSupportInfo[i];
-            }
-            else {
+            } else {
                 getChainToConfig[_chainIds[i]] = _chainSupportInfo[i];
             }
-            emit ChainsSupportUpdated(_chainIds[i], _chainSupportInfo[i], _isChainFrom);
+            emit ChainsSupportUpdated(
+                _chainIds[i],
+                _chainSupportInfo[i],
+                _isChainFrom
+            );
         }
     }
 
@@ -378,7 +412,10 @@ contract DeBridgeGate is
     ) external onlyAdmin {
         globalFixedNativeFee = _globalFixedNativeFee;
         globalTransferFeeBps = _globalTransferFeeBps;
-        emit FixedNativeFeeUpdated(_globalFixedNativeFee, _globalTransferFeeBps);
+        emit FixedNativeFeeUpdated(
+            _globalFixedNativeFee,
+            _globalTransferFeeBps
+        );
     }
 
     /// @dev Update asset's fees.
@@ -390,7 +427,8 @@ contract DeBridgeGate is
         uint256[] memory _supportedChainIds,
         uint256[] memory _assetFeesInfo
     ) external onlyAdmin {
-        if (_supportedChainIds.length != _assetFeesInfo.length) revert WrongArgument();
+        if (_supportedChainIds.length != _assetFeesInfo.length)
+            revert WrongArgument();
         DebridgeFeeInfo storage debridgeFee = getDebridgeFeeInfo[_debridgeId];
         for (uint256 i = 0; i < _supportedChainIds.length; i++) {
             debridgeFee.getChainFee[_supportedChainIds[i]] = _assetFeesInfo[i];
@@ -399,7 +437,10 @@ contract DeBridgeGate is
 
     /// @dev Update minimal amount of required signatures, must be > SignatureVerifier.minConfirmations to have an effect
     /// @param _excessConfirmations Minimal amount of required signatures
-    function updateExcessConfirmations(uint8 _excessConfirmations) external onlyAdmin {
+    function updateExcessConfirmations(uint8 _excessConfirmations)
+        external
+        onlyAdmin
+    {
         if (_excessConfirmations == 0) revert WrongArgument();
         excessConfirmations = _excessConfirmations;
     }
@@ -408,11 +449,14 @@ contract DeBridgeGate is
     /// @param _chainId Chain id where tokens are sent.
     /// @param _isSupported Whether the token is transferable to the other chain.
     /// @param _isChainFrom is true for editing getChainFromConfig.
-    function setChainSupport(uint256 _chainId, bool _isSupported, bool _isChainFrom) external onlyAdmin {
+    function setChainSupport(
+        uint256 _chainId,
+        bool _isSupported,
+        bool _isChainFrom
+    ) external onlyAdmin {
         if (_isChainFrom) {
             getChainFromConfig[_chainId].isSupported = _isSupported;
-        }
-        else {
+        } else {
             getChainToConfig[_chainId].isSupported = _isSupported;
         }
         emit ChainSupportUpdated(_chainId, _isSupported, _isChainFrom);
@@ -444,7 +488,6 @@ contract DeBridgeGate is
         getAmountThreshold[_debridgeId] = _amountThreshold;
     }
 
-
     /// @dev Set signature verifier address.
     /// @param _verifier Signature verifier address.
     function setSignatureVerifier(address _verifier) external onlyAdmin {
@@ -453,7 +496,10 @@ contract DeBridgeGate is
 
     /// @dev Set asset deployer address.
     /// @param _deBridgeTokenDeployer Asset deployer address.
-    function setDeBridgeTokenDeployer(address _deBridgeTokenDeployer) external onlyAdmin {
+    function setDeBridgeTokenDeployer(address _deBridgeTokenDeployer)
+        external
+        onlyAdmin
+    {
         deBridgeTokenDeployer = _deBridgeTokenDeployer;
     }
 
@@ -486,7 +532,12 @@ contract DeBridgeGate is
     }
 
     /// @inheritdoc IDeBridgeGate
-    function withdrawFee(bytes32 _debridgeId) external override nonReentrant onlyFeeProxy {
+    function withdrawFee(bytes32 _debridgeId)
+        external
+        override
+        nonReentrant
+        onlyFeeProxy
+    {
         DebridgeFeeInfo storage debridgeFee = getDebridgeFeeInfo[_debridgeId];
         // Amount for transfer to treasury
         uint256 amount = debridgeFee.collectedFees - debridgeFee.withdrawnFees;
@@ -500,7 +551,8 @@ contract DeBridgeGate is
         } else {
             // don't need this check as we check that amount is not zero
             // if (!getDebridge[_debridgeId].exist) revert DebridgeNotFound();
-            IERC20Upgradeable(getDebridge[_debridgeId].tokenAddress).safeTransfer(feeProxy, amount);
+            IERC20Upgradeable(getDebridge[_debridgeId].tokenAddress)
+                .safeTransfer(feeProxy, amount);
         }
         emit WithdrawnFee(_debridgeId, amount);
     }
@@ -515,10 +567,13 @@ contract DeBridgeGate is
         bytes32 debridgeId = getDebridgeId(getChainId(), _tokenAddress);
         DebridgeInfo storage debridge = getDebridge[debridgeId];
         if (!debridge.exist) revert DebridgeNotFound();
-        uint256 minReserves = (debridge.balance * debridge.minReservesBps) / BPS_DENOMINATOR;
+        uint256 minReserves = (debridge.balance * debridge.minReservesBps) /
+            BPS_DENOMINATOR;
 
-        if (minReserves + _amount > IERC20Upgradeable(_tokenAddress).balanceOf(address(this)))
-            revert NotEnoughReserves();
+        if (
+            minReserves + _amount >
+            IERC20Upgradeable(_tokenAddress).balanceOf(address(this))
+        ) revert NotEnoughReserves();
 
         debridge.lockedInStrategies += _amount;
         IERC20Upgradeable(_tokenAddress).safeTransfer(defiController, _amount);
@@ -551,7 +606,10 @@ contract DeBridgeGate is
     /// @dev Block or unblock a list of submissions
     /// @param _submissionIds Ids of submissions to block/unblock
     /// @param isBlocked True to block, false to unblock
-    function blockSubmission(bytes32[] memory _submissionIds, bool isBlocked) external onlyAdmin {
+    function blockSubmission(bytes32[] memory _submissionIds, bool isBlocked)
+        external
+        onlyAdmin
+    {
         for (uint256 i = 0; i < _submissionIds.length; i++) {
             isBlockedSubmission[_submissionIds[i]] = isBlocked;
             if (isBlocked) {
@@ -578,7 +636,8 @@ contract DeBridgeGate is
         uint16 _discountFixBps,
         uint16 _discountTransferBps
     ) external onlyAdmin {
-        if (_address == address(0) ||
+        if (
+            _address == address(0) ||
             _discountFixBps > BPS_DENOMINATOR ||
             _discountTransferBps > BPS_DENOMINATOR
         ) revert WrongArgument();
@@ -662,11 +721,14 @@ contract DeBridgeGate is
         uint256 _amount,
         uint256 _chainIdTo,
         bool _useAssetFee
-    ) internal returns (
-        uint256 amountAfterFee,
-        bytes32 debridgeId,
-        FeeParams memory feeParams
-    ) {
+    )
+        internal
+        returns (
+            uint256 amountAfterFee,
+            bytes32 debridgeId,
+            FeeParams memory feeParams
+        )
+    {
         _validateToken(_tokenAddress);
 
         // Run _permit first. Avoid Stack too deep
@@ -681,11 +743,12 @@ contract DeBridgeGate is
                 deadline,
                 v,
                 r,
-                s);
+                s
+            );
         }
 
         TokenInfo memory nativeTokenInfo = getNativeInfo[_tokenAddress];
-        bool isNativeToken = nativeTokenInfo.nativeChainId  == 0
+        bool isNativeToken = nativeTokenInfo.nativeChainId == 0
             ? true // token not in mapping
             : nativeTokenInfo.nativeChainId == getChainId(); // token native chain id the same
 
@@ -695,8 +758,7 @@ contract DeBridgeGate is
                 getChainId(),
                 _tokenAddress == address(0) ? address(weth) : _tokenAddress
             );
-        }
-        else {
+        } else {
             debridgeId = getbDebridgeId(
                 nativeTokenInfo.nativeChainId,
                 nativeTokenInfo.nativeAddress
@@ -707,7 +769,9 @@ contract DeBridgeGate is
         if (!debridge.exist) {
             if (isNativeToken) {
                 // Use WETH as a token address for native tokens
-                address assetAddress = _tokenAddress == address(0) ? address(weth) : _tokenAddress;
+                address assetAddress = _tokenAddress == address(0)
+                    ? address(weth)
+                    : _tokenAddress;
                 _addAsset(
                     debridgeId,
                     assetAddress,
@@ -738,48 +802,69 @@ contract DeBridgeGate is
         //_processFeeForTransfer
         {
             DiscountInfo memory discountInfo = feeDiscount[msg.sender];
-            DebridgeFeeInfo storage debridgeFee = getDebridgeFeeInfo[debridgeId];
+            DebridgeFeeInfo storage debridgeFee = getDebridgeFeeInfo[
+                debridgeId
+            ];
 
             // calculate fixed fee
             uint256 assetsFixedFee;
             if (_useAssetFee) {
                 if (_tokenAddress == address(0)) {
                     // collect asset fixed fee (in weth) for native token transfers
-                    assetsFixedFee = chainFees.fixedNativeFee == 0 ? globalFixedNativeFee : chainFees.fixedNativeFee;
+                    assetsFixedFee = chainFees.fixedNativeFee == 0
+                        ? globalFixedNativeFee
+                        : chainFees.fixedNativeFee;
                 } else {
                     // collect asset fixed fee for non native token transfers
                     assetsFixedFee = debridgeFee.getChainFee[_chainIdTo];
                     if (assetsFixedFee == 0) revert NotSupportedFixedFee();
                 }
                 // Apply discount for a asset fixed fee
-                assetsFixedFee = _applyDiscount(assetsFixedFee, discountInfo.discountFixBps);
-                if (_amount < assetsFixedFee) revert TransferAmountNotCoverFees();
+                assetsFixedFee = _applyDiscount(
+                    assetsFixedFee,
+                    discountInfo.discountFixBps
+                );
+                if (_amount < assetsFixedFee)
+                    revert TransferAmountNotCoverFees();
                 feeParams.fixFee = assetsFixedFee;
             } else {
                 // collect fixed native fee for non native token transfers
 
                 // use globalFixedNativeFee if value for chain is not set
-                uint256 nativeFee = chainFees.fixedNativeFee == 0 ? globalFixedNativeFee : chainFees.fixedNativeFee;
+                uint256 nativeFee = chainFees.fixedNativeFee == 0
+                    ? globalFixedNativeFee
+                    : chainFees.fixedNativeFee;
                 // Apply discount for a native fixed fee
-                nativeFee = _applyDiscount(nativeFee, discountInfo.discountFixBps);
+                nativeFee = _applyDiscount(
+                    nativeFee,
+                    discountInfo.discountFixBps
+                );
 
                 if (msg.value < nativeFee) revert TransferAmountNotCoverFees();
                 else if (msg.value > nativeFee) {
                     // refund extra fee eth
-                     _safeTransferETH(msg.sender, msg.value - nativeFee);
+                    _safeTransferETH(msg.sender, msg.value - nativeFee);
                 }
-                bytes32 nativeDebridgeId = getDebridgeId(getChainId(), address(0));
+                bytes32 nativeDebridgeId = getDebridgeId(
+                    getChainId(),
+                    address(0)
+                );
                 getDebridgeFeeInfo[nativeDebridgeId].collectedFees += nativeFee;
                 feeParams.fixFee = nativeFee;
             }
 
             // Calculate transfer fee
             // use globalTransferFeeBps if value for chain is not set
-            uint256 transferFee = (chainFees.transferFeeBps == 0
-                ? globalTransferFeeBps : chainFees.transferFeeBps)
-                * (_amount - assetsFixedFee) / BPS_DENOMINATOR;
+            uint256 transferFee = ((
+                chainFees.transferFeeBps == 0
+                    ? globalTransferFeeBps
+                    : chainFees.transferFeeBps
+            ) * (_amount - assetsFixedFee)) / BPS_DENOMINATOR;
             // apply discount for a transfer fee
-            transferFee = _applyDiscount(transferFee, discountInfo.discountTransferBps);
+            transferFee = _applyDiscount(
+                transferFee,
+                discountInfo.discountTransferBps
+            );
 
             uint256 totalFee = transferFee + assetsFixedFee;
             if (_amount < totalFee) revert TransferAmountNotCoverFees();
@@ -795,8 +880,7 @@ contract DeBridgeGate is
 
         if (isNativeToken) {
             debridge.balance += amountAfterFee;
-        }
-        else {
+        } else {
             debridge.balance -= amountAfterFee;
             IDeBridgeToken(debridge.tokenAddress).burn(amountAfterFee);
         }
@@ -824,8 +908,11 @@ contract DeBridgeGate is
             nonce
         );
         if (hasAutoParams) {
-            bool isHashedData = autoParams.flags.getFlag(Flags.SEND_HASHED_DATA);
-            if (isHashedData && autoParams.data.length != 32) revert WrongAutoArgument();
+            bool isHashedData = autoParams.flags.getFlag(
+                Flags.SEND_HASHED_DATA
+            );
+            if (isHashedData && autoParams.data.length != 32)
+                revert WrongAutoArgument();
             // auto submission
             submissionId = keccak256(
                 abi.encodePacked(
@@ -833,7 +920,9 @@ contract DeBridgeGate is
                     autoParams.executionFee,
                     autoParams.flags,
                     keccak256(autoParams.fallbackAddress),
-                    isHashedData ? autoParams.data : abi.encodePacked(keccak256(autoParams.data)),
+                    isHashedData
+                        ? autoParams.data
+                        : abi.encodePacked(keccak256(autoParams.data)),
                     keccak256(abi.encodePacked(msg.sender))
                 )
             );
@@ -852,7 +941,7 @@ contract DeBridgeGate is
             _chainIdTo,
             _referralCode,
             feeParams,
-            hasAutoParams ? abi.encode(autoParams): bytes(""),
+            hasAutoParams ? abi.encode(autoParams) : bytes(""),
             msg.sender
         );
 
@@ -861,18 +950,20 @@ contract DeBridgeGate is
                 submissionId,
                 nonce,
                 getDebridge[_debridgeId].balance,
-                IERC20Upgradeable(getDebridge[_debridgeId].tokenAddress).totalSupply()
+                IERC20Upgradeable(getDebridge[_debridgeId].tokenAddress)
+                    .totalSupply()
             );
         }
 
         nonce++;
     }
 
-    function _applyDiscount(
-        uint256 amount,
-        uint16 discountBps
-    ) internal pure returns (uint256) {
-        return amount - amount * discountBps / BPS_DENOMINATOR;
+    function _applyDiscount(uint256 amount, uint16 discountBps)
+        internal
+        pure
+        returns (uint256)
+    {
+        return amount - (amount * discountBps) / BPS_DENOMINATOR;
     }
 
     function _validateToken(address _token) internal {
@@ -889,7 +980,6 @@ contract DeBridgeGate is
         (success, ) = _token.call(abi.encodeWithSignature("symbol()"));
         if (!success) revert InvalidTokenToSend();
     }
-
 
     /// @dev Unlock the asset on the current chain and transfer to receiver.
     /// @param _debridgeId Asset identifier.
@@ -914,12 +1004,17 @@ contract DeBridgeGate is
         }
 
         address _token = debridge.tokenAddress;
-        bool unwrapETH = isNativeToken
-            && _autoParams.flags.getFlag(Flags.UNWRAP_ETH)
-            && _token == address(weth);
+        bool unwrapETH = isNativeToken &&
+            _autoParams.flags.getFlag(Flags.UNWRAP_ETH) &&
+            _token == address(weth);
 
         if (_autoParams.executionFee > 0) {
-            _mintOrTransfer(_token, msg.sender, _autoParams.executionFee, isNativeToken);
+            _mintOrTransfer(
+                _token,
+                msg.sender,
+                _autoParams.executionFee,
+                isNativeToken
+            );
         }
         if (_autoParams.data.length > 0) {
             // use local variable to reduce gas usage
@@ -936,8 +1031,7 @@ contract DeBridgeGate is
                     _autoParams.nativeSender,
                     _chainIdFrom
                 );
-            }
-            else {
+            } else {
                 _mintOrTransfer(_token, _callProxy, _amount, isNativeToken);
 
                 status = ICallProxy(_callProxy).callERC20(
@@ -981,44 +1075,46 @@ contract DeBridgeGate is
     }
 
     /*
-    * @dev transfer ETH to an address, revert if it fails.
-    * @param to recipient of the transfer
-    * @param value the amount to send
-    */
+     * @dev transfer ETH to an address, revert if it fails.
+     * @param to recipient of the transfer
+     * @param value the amount to send
+     */
     function _safeTransferETH(address to, uint256 value) internal {
         (bool success, ) = to.call{value: value}(new bytes(0));
         if (!success) revert EthTransferFailed();
     }
 
-
-    function _withdrawWeth(address _receiver, uint _amount) internal {
+    function _withdrawWeth(address _receiver, uint256 _amount) internal {
         if (address(wethGate) == address(0)) {
             // dealing with weth withdraw affected by EIP1884
             weth.withdraw(_amount);
             _safeTransferETH(_receiver, _amount);
-        }
-        else {
-            IERC20Upgradeable(address(weth)).safeTransfer(address(wethGate), _amount);
+        } else {
+            IERC20Upgradeable(address(weth)).safeTransfer(
+                address(wethGate),
+                _amount
+            );
             wethGate.withdraw(_receiver, _amount);
         }
     }
 
     /*
-    * @dev round down token amount
-    * @param _token address of token, zero for native tokens
-    * @param __amount amount for rounding
-    */
-    function _normalizeTokenAmount(
-        address _token,
-        uint256 _amount
-    ) internal view returns (uint256) {
+     * @dev round down token amount
+     * @param _token address of token, zero for native tokens
+     * @param __amount amount for rounding
+     */
+    function _normalizeTokenAmount(address _token, uint256 _amount)
+        internal
+        view
+        returns (uint256)
+    {
         uint256 decimals = _token == address(0)
             ? 18
             : IERC20Metadata(_token).decimals();
         uint256 maxDecimals = 8;
         if (decimals > maxDecimals) {
-            uint256 multiplier = 10 ** (decimals - maxDecimals);
-            _amount = _amount / multiplier * multiplier;
+            uint256 multiplier = 10**(decimals - maxDecimals);
+            _amount = (_amount / multiplier) * multiplier;
         }
         return _amount;
     }
@@ -1032,21 +1128,33 @@ contract DeBridgeGate is
         override
         returns (uint256)
     {
-        DebridgeInfo storage debridge = getDebridge[getDebridgeId(getChainId(), _tokenAddress)];
-        return (debridge.balance * (BPS_DENOMINATOR - debridge.minReservesBps)) / BPS_DENOMINATOR;
+        DebridgeInfo storage debridge = getDebridge[
+            getDebridgeId(getChainId(), _tokenAddress)
+        ];
+        return
+            (debridge.balance * (BPS_DENOMINATOR - debridge.minReservesBps)) /
+            BPS_DENOMINATOR;
     }
 
     /// @dev Calculates asset identifier.
     /// @param _chainId Current chain id.
     /// @param _tokenAddress Address of the asset on the other chain.
-    function getDebridgeId(uint256 _chainId, address _tokenAddress) public pure returns (bytes32) {
+    function getDebridgeId(uint256 _chainId, address _tokenAddress)
+        public
+        pure
+        returns (bytes32)
+    {
         return keccak256(abi.encodePacked(_chainId, _tokenAddress));
     }
 
     /// @dev Calculates asset identifier.
     /// @param _chainId Current chain id.
     /// @param _tokenAddress Address of the asset on the other chain.
-    function getbDebridgeId(uint256 _chainId, bytes memory _tokenAddress) public pure returns (bytes32) {
+    function getbDebridgeId(uint256 _chainId, bytes memory _tokenAddress)
+        public
+        pure
+        returns (bytes32)
+    {
         return keccak256(abi.encodePacked(_chainId, _tokenAddress));
     }
 
@@ -1089,27 +1197,32 @@ contract DeBridgeGate is
         );
         if (_hasAutoParams) {
             // Needed to let fallback address claim tokens in case user lost call data and can't restore its' hash
-            bool isHashedData = _autoParams.flags.getFlag(Flags.SEND_HASHED_DATA)
-                             && _sender == _autoParams.fallbackAddress
-                             && _autoParams.data.length == 32;
+            bool isHashedData = _autoParams.flags.getFlag(
+                Flags.SEND_HASHED_DATA
+            ) &&
+                _sender == _autoParams.fallbackAddress &&
+                _autoParams.data.length == 32;
 
             // auto submission
-            return keccak256(
-                abi.encodePacked(
-                    packedSubmission,
-                    _autoParams.executionFee,
-                    _autoParams.flags,
-                    keccak256(abi.encodePacked(_autoParams.fallbackAddress)),
-                    isHashedData ? _autoParams.data : abi.encodePacked(keccak256(_autoParams.data)),
-                    keccak256(_autoParams.nativeSender)
-                )
-            );
+            return
+                keccak256(
+                    abi.encodePacked(
+                        packedSubmission,
+                        _autoParams.executionFee,
+                        _autoParams.flags,
+                        keccak256(
+                            abi.encodePacked(_autoParams.fallbackAddress)
+                        ),
+                        isHashedData
+                            ? _autoParams.data
+                            : abi.encodePacked(keccak256(_autoParams.data)),
+                        keccak256(_autoParams.nativeSender)
+                    )
+                );
         }
         // regular submission
         return keccak256(packedSubmission);
     }
-
-
 
     /// @dev Calculates asset identifier for deployment.
     /// @param _debridgeId Id of an asset, see getDebridgeId.
@@ -1122,12 +1235,16 @@ contract DeBridgeGate is
         string memory _symbol,
         uint8 _decimals
     ) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(
-            DEPLOY_PREFIX,
-            _debridgeId,
-            keccak256(abi.encodePacked(_name)),
-            keccak256(abi.encodePacked(_symbol)),
-            _decimals));
+        return
+            keccak256(
+                abi.encodePacked(
+                    DEPLOY_PREFIX,
+                    _debridgeId,
+                    keccak256(abi.encodePacked(_name)),
+                    keccak256(abi.encodePacked(_symbol)),
+                    _decimals
+                )
+            );
     }
 
     /// @dev Get current chain id

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 interface IWethGate {
     /// @dev Transfer assets to a receiver.

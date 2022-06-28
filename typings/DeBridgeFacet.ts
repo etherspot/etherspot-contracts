@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -19,30 +20,23 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface DeBridgeFacetInterface extends utils.Interface {
   functions: {
-    "deBridgeCrossChainSend(address,uint256,uint256,address)": FunctionFragment;
+    "deBridgeBridgeTokens(address,uint256,uint256,address,address,uint256)": FunctionFragment;
     "deBridgeGate()": FunctionFragment;
-    "owner()": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
+    "getChainId()": FunctionFragment;
     "updateGateAddress(address)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "deBridgeCrossChainSend",
-    values: [string, BigNumberish, BigNumberish, string]
+    functionFragment: "deBridgeBridgeTokens",
+    values: [string, BigNumberish, BigNumberish, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "deBridgeGate",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
+    functionFragment: "getChainId",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "updateGateAddress",
@@ -50,60 +44,51 @@ export interface DeBridgeFacetInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "deBridgeCrossChainSend",
+    functionFragment: "deBridgeBridgeTokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "deBridgeGate",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "getChainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateGateAddress",
     data: BytesLike
   ): Result;
 
   events: {
-    "OwnershipTransferred(address,address)": EventFragment;
-    "SentAssets(address,address,address,uint256)": EventFragment;
-    "UpdatedDeBridgeGate(address)": EventFragment;
+    "TransferInitiated(string,address,address,address,uint256,uint256,uint256)": EventFragment;
+    "UpdatedGateAddress(address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SentAssets"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdatedDeBridgeGate"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferInitiated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdatedGateAddress"): EventFragment;
 }
 
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  { previousOwner: string; newOwner: string }
+export type TransferInitiatedEvent = TypedEvent<
+  [string, string, string, string, BigNumber, BigNumber, BigNumber],
+  {
+    bridge: string;
+    tokenAddress: string;
+    from: string;
+    to: string;
+    amount: BigNumber;
+    sendingChain: BigNumber;
+    receivingChain: BigNumber;
+  }
 >;
 
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+export type TransferInitiatedEventFilter =
+  TypedEventFilter<TransferInitiatedEvent>;
 
-export type SentAssetsEvent = TypedEvent<
-  [string, string, string, BigNumber],
-  { to: string; from: string; token: string; amount: BigNumber }
->;
-
-export type SentAssetsEventFilter = TypedEventFilter<SentAssetsEvent>;
-
-export type UpdatedDeBridgeGateEvent = TypedEvent<
+export type UpdatedGateAddressEvent = TypedEvent<
   [string],
   { newAddress: string }
 >;
 
-export type UpdatedDeBridgeGateEventFilter =
-  TypedEventFilter<UpdatedDeBridgeGateEvent>;
+export type UpdatedGateAddressEventFilter =
+  TypedEventFilter<UpdatedGateAddressEvent>;
 
 export interface DeBridgeFacet extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -132,26 +117,21 @@ export interface DeBridgeFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    deBridgeCrossChainSend(
+    deBridgeBridgeTokens(
       _tokenAddress: string,
       _amount: BigNumberish,
       _chainIdTo: BigNumberish,
       _receiver: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _fallback: string,
+      _executionFee: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     deBridgeGate(overrides?: CallOverrides): Promise<[string]>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    getChainId(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { chainId: BigNumber }>;
 
     updateGateAddress(
       _newGate: string,
@@ -159,26 +139,19 @@ export interface DeBridgeFacet extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  deBridgeCrossChainSend(
+  deBridgeBridgeTokens(
     _tokenAddress: string,
     _amount: BigNumberish,
     _chainIdTo: BigNumberish,
     _receiver: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _fallback: string,
+    _executionFee: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   deBridgeGate(overrides?: CallOverrides): Promise<string>;
 
-  owner(overrides?: CallOverrides): Promise<string>;
-
-  renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  transferOwnership(
-    newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   updateGateAddress(
     _newGate: string,
@@ -186,24 +159,19 @@ export interface DeBridgeFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    deBridgeCrossChainSend(
+    deBridgeBridgeTokens(
       _tokenAddress: string,
       _amount: BigNumberish,
       _chainIdTo: BigNumberish,
       _receiver: string,
+      _fallback: string,
+      _executionFee: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     deBridgeGate(overrides?: CallOverrides): Promise<string>;
 
-    owner(overrides?: CallOverrides): Promise<string>;
-
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     updateGateAddress(
       _newGate: string,
@@ -212,55 +180,45 @@ export interface DeBridgeFacet extends BaseContract {
   };
 
   filters: {
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
-    OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
+    "TransferInitiated(string,address,address,address,uint256,uint256,uint256)"(
+      bridge?: null,
+      tokenAddress?: null,
+      from?: null,
+      to?: null,
+      amount?: null,
+      sendingChain?: null,
+      receivingChain?: null
+    ): TransferInitiatedEventFilter;
+    TransferInitiated(
+      bridge?: null,
+      tokenAddress?: null,
+      from?: null,
+      to?: null,
+      amount?: null,
+      sendingChain?: null,
+      receivingChain?: null
+    ): TransferInitiatedEventFilter;
 
-    "SentAssets(address,address,address,uint256)"(
-      to?: string | null,
-      from?: string | null,
-      token?: string | null,
-      amount?: null
-    ): SentAssetsEventFilter;
-    SentAssets(
-      to?: string | null,
-      from?: string | null,
-      token?: string | null,
-      amount?: null
-    ): SentAssetsEventFilter;
-
-    "UpdatedDeBridgeGate(address)"(
+    "UpdatedGateAddress(address)"(
       newAddress?: null
-    ): UpdatedDeBridgeGateEventFilter;
-    UpdatedDeBridgeGate(newAddress?: null): UpdatedDeBridgeGateEventFilter;
+    ): UpdatedGateAddressEventFilter;
+    UpdatedGateAddress(newAddress?: null): UpdatedGateAddressEventFilter;
   };
 
   estimateGas: {
-    deBridgeCrossChainSend(
+    deBridgeBridgeTokens(
       _tokenAddress: string,
       _amount: BigNumberish,
       _chainIdTo: BigNumberish,
       _receiver: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _fallback: string,
+      _executionFee: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     deBridgeGate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     updateGateAddress(
       _newGate: string,
@@ -269,26 +227,19 @@ export interface DeBridgeFacet extends BaseContract {
   };
 
   populateTransaction: {
-    deBridgeCrossChainSend(
+    deBridgeBridgeTokens(
       _tokenAddress: string,
       _amount: BigNumberish,
       _chainIdTo: BigNumberish,
       _receiver: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _fallback: string,
+      _executionFee: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     deBridgeGate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    getChainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     updateGateAddress(
       _newGate: string,

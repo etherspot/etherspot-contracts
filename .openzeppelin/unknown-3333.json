@@ -1,10 +1,25 @@
 {
   "manifestVersion": "3.2",
   "admin": {
-    "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    "txHash": "0xbe4a68cc8bc65be03223bfa61e3b6dbc48d8928f78b806a0c522f57d29163a42"
+    "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    "txHash": "0x1f2cc9fb099c0bc6c8c1abceec785bf2eaf6d1acc332ed5bf41ae5cf6905fdbc"
   },
   "proxies": [
+    {
+      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "txHash": "0x27d13841f3d6f81266ff02e95f556e4e959f61e3e5ca8d50cc7fde7094ef53b8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "txHash": "0xe4536380a7b0d265cf69058ba8bbcd3008a4606143b604487b0dbd39cbdad44f",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      "txHash": "0x0c97bdd16ccb6ac7b0e7d122f0494839006f9be38c76aa87589b87f360b877bc",
+      "kind": "transparent"
+    },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       "txHash": "0x86d2ed504bc4338c316eb455d3e71a74c0e0e9f49ae3d12ba5b084bead5a3dd0",
@@ -41,15 +56,35 @@
       "kind": "transparent"
     },
     {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0x5d1578592ab14f3d7b26d75c45d7494846b6b7589799199f48319e99bac4eb55",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+      "txHash": "0x878d57858c51e7a75ba664f8e5145b39c95006131ac32417ff3fef4e7ae2cebe",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "txHash": "0x6fe235ef36a4c13cb526a35c2c31bd234aad024b7f78bd456ec9cfaea28cc372",
+      "kind": "transparent"
+    },
+    {
       "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      "txHash": "0xbf569e25473458a82ea546e3ae913216ff71d8233770421cd4116f1f7b45285a",
+      "txHash": "0x007fe2746d6d872e7ffb3556302b1953c4ca63a9af9e77efcd10aff82d888003",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0x5096f62a0b763f9efeb498f38ecbf20f5e80f2e2d50acfad5dadee8ccaa825de",
       "kind": "transparent"
     }
   ],
   "impls": {
     "0c0feba41996f515845b6062c5fc89fb25d3850cd6baaa96337eb634f326376d": {
-      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x640305f30b73a650627a6315823457efe9719b057aa79c058fa4bc494399014b",
+      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "txHash": "0x9317fbe86da6b3552398c455afbaca99ba577d1eefc2e2cbc9f4fd9f33ad9b60",
       "layout": {
         "storage": [
           {
@@ -107,7 +142,7 @@
             "slot": "151",
             "type": "t_uint8",
             "contract": "OraclesManager",
-            "src": "src/diamond/transfers/OraclesManager.sol:14"
+            "src": "src/diamond/transfers/OraclesManager.sol:19"
           },
           {
             "label": "excessConfirmations",
@@ -115,7 +150,7 @@
             "slot": "151",
             "type": "t_uint8",
             "contract": "OraclesManager",
-            "src": "src/diamond/transfers/OraclesManager.sol:16"
+            "src": "src/diamond/transfers/OraclesManager.sol:21"
           },
           {
             "label": "requiredOraclesCount",
@@ -123,7 +158,7 @@
             "slot": "151",
             "type": "t_uint8",
             "contract": "OraclesManager",
-            "src": "src/diamond/transfers/OraclesManager.sol:18"
+            "src": "src/diamond/transfers/OraclesManager.sol:23"
           },
           {
             "label": "oracleAddresses",
@@ -131,15 +166,15 @@
             "slot": "152",
             "type": "t_array(t_address)dyn_storage",
             "contract": "OraclesManager",
-            "src": "src/diamond/transfers/OraclesManager.sol:20"
+            "src": "src/diamond/transfers/OraclesManager.sol:25"
           },
           {
             "label": "getOracleInfo",
             "offset": 0,
             "slot": "153",
-            "type": "t_mapping(t_address,t_struct(OracleInfo)4823_storage)",
+            "type": "t_mapping(t_address,t_struct(OracleInfo)5164_storage)",
             "contract": "OraclesManager",
-            "src": "src/diamond/transfers/OraclesManager.sol:22"
+            "src": "src/diamond/transfers/OraclesManager.sol:27"
           },
           {
             "label": "confirmationThreshold",
@@ -147,7 +182,7 @@
             "slot": "154",
             "type": "t_uint8",
             "contract": "SignatureVerifier",
-            "src": "src/diamond/transfers/SignatureVerifier.sol:15"
+            "src": "src/diamond/transfers/SignatureVerifier.sol:17"
           },
           {
             "label": "submissionsInBlock",
@@ -155,7 +190,7 @@
             "slot": "154",
             "type": "t_uint40",
             "contract": "SignatureVerifier",
-            "src": "src/diamond/transfers/SignatureVerifier.sol:17"
+            "src": "src/diamond/transfers/SignatureVerifier.sol:19"
           },
           {
             "label": "currentBlock",
@@ -163,7 +198,7 @@
             "slot": "154",
             "type": "t_uint40",
             "contract": "SignatureVerifier",
-            "src": "src/diamond/transfers/SignatureVerifier.sol:19"
+            "src": "src/diamond/transfers/SignatureVerifier.sol:21"
           },
           {
             "label": "debridgeAddress",
@@ -171,7 +206,7 @@
             "slot": "154",
             "type": "t_address",
             "contract": "SignatureVerifier",
-            "src": "src/diamond/transfers/SignatureVerifier.sol:22"
+            "src": "src/diamond/transfers/SignatureVerifier.sol:24"
           }
         ],
         "types": {
@@ -203,7 +238,7 @@
             "label": "mapping(address => bool)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(OracleInfo)4823_storage)": {
+          "t_mapping(t_address,t_struct(OracleInfo)5164_storage)": {
             "label": "mapping(address => struct IOraclesManager.OracleInfo)",
             "numberOfBytes": "32"
           },
@@ -211,7 +246,7 @@
             "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
             "numberOfBytes": "32"
           },
-          "t_struct(OracleInfo)4823_storage": {
+          "t_struct(OracleInfo)5164_storage": {
             "label": "struct IOraclesManager.OracleInfo",
             "members": [
               {
@@ -269,8 +304,8 @@
       }
     },
     "7b85a70052c6db037f437df0dd503573e6f022cafc5b7f2ce37bb7819e7214a6": {
-      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0x799696a302ba4a1859f1a583600d3bf20ff6c1a8065f9b97516df59c1e5e516a",
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "txHash": "0x7144f53a6d6f409d69ef16fb25559341daf845f47daae330f8117d6e1d31856a",
       "layout": {
         "storage": [
           {
@@ -328,7 +363,7 @@
             "slot": "151",
             "type": "t_uint256",
             "contract": "CallProxy",
-            "src": "src/diamond/periphery/CallProxy.sol:31"
+            "src": "src/diamond/periphery/CallProxy.sol:39"
           },
           {
             "label": "submissionNativeSender",
@@ -336,7 +371,7 @@
             "slot": "152",
             "type": "t_bytes_storage",
             "contract": "CallProxy",
-            "src": "src/diamond/periphery/CallProxy.sol:33"
+            "src": "src/diamond/periphery/CallProxy.sol:41"
           },
           {
             "label": "_lock",
@@ -344,7 +379,7 @@
             "slot": "153",
             "type": "t_uint256",
             "contract": "CallProxy",
-            "src": "src/diamond/periphery/CallProxy.sol:35"
+            "src": "src/diamond/periphery/CallProxy.sol:43"
           }
         ],
         "types": {
@@ -410,8 +445,8 @@
       }
     },
     "acf5adea50899c2732fb4f45bb975c13faf5aadf5fc9a48e9019bee1c101f077": {
-      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
-      "txHash": "0x025416ae808365ed62fdacd17a173df999512a73ea3a29e074a1ede79c2e7f38",
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      "txHash": "0xebb7cf93b89d92e60ec31115e6c3f0ce11118bb471b789c6728192978dc71065",
       "layout": {
         "storage": [
           {
@@ -469,7 +504,7 @@
             "slot": "151",
             "type": "t_address",
             "contract": "DeBridgeTokenDeployer",
-            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:21"
+            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:22"
           },
           {
             "label": "deBridgeTokenAdmin",
@@ -477,7 +512,7 @@
             "slot": "152",
             "type": "t_address",
             "contract": "DeBridgeTokenDeployer",
-            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:23"
+            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:24"
           },
           {
             "label": "debridgeAddress",
@@ -485,7 +520,7 @@
             "slot": "153",
             "type": "t_address",
             "contract": "DeBridgeTokenDeployer",
-            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:25"
+            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:26"
           },
           {
             "label": "getDeployedAssetAddress",
@@ -493,15 +528,15 @@
             "slot": "154",
             "type": "t_mapping(t_bytes32,t_address)",
             "contract": "DeBridgeTokenDeployer",
-            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:27"
+            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:28"
           },
           {
             "label": "overridedTokens",
             "offset": 0,
             "slot": "155",
-            "type": "t_mapping(t_bytes32,t_struct(OverridedTokenInfo)9490_storage)",
+            "type": "t_mapping(t_bytes32,t_struct(OverridedTokenInfo)9906_storage)",
             "contract": "DeBridgeTokenDeployer",
-            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:30"
+            "src": "src/diamond/transfers/DeBridgeTokenDeployer.sol:31"
           }
         ],
         "types": {
@@ -533,7 +568,7 @@
             "label": "mapping(bytes32 => address)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_bytes32,t_struct(OverridedTokenInfo)9490_storage)": {
+          "t_mapping(t_bytes32,t_struct(OverridedTokenInfo)9906_storage)": {
             "label": "mapping(bytes32 => struct DeBridgeTokenDeployer.OverridedTokenInfo)",
             "numberOfBytes": "32"
           },
@@ -545,7 +580,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(OverridedTokenInfo)9490_storage": {
+          "t_struct(OverridedTokenInfo)9906_storage": {
             "label": "struct DeBridgeTokenDeployer.OverridedTokenInfo",
             "members": [
               {
@@ -599,8 +634,8 @@
       }
     },
     "ec9f8f22822a774765bd2fa1593ae071b0af3cf68c998e073a8e6a5a44650edd": {
-      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
-      "txHash": "0x7365b2e63a23f6a9fa30976134429a7e25a8f84bb307b17ba7316c2ff3e6971d",
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      "txHash": "0xee290081ed2bd8ed9c476c631db4beba9ec950abe6749c6259e2838d7a74aa9f",
       "layout": {
         "storage": [
           {
@@ -690,7 +725,7 @@
             "slot": "251",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:50"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:53"
           },
           {
             "label": "signatureVerifier",
@@ -698,7 +733,7 @@
             "slot": "252",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:52"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:55"
           },
           {
             "label": "excessConfirmations",
@@ -706,7 +741,7 @@
             "slot": "252",
             "type": "t_uint8",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:54"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:57"
           },
           {
             "label": "flashFeeBps",
@@ -714,7 +749,7 @@
             "slot": "253",
             "type": "t_uint256",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:56"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:59"
           },
           {
             "label": "nonce",
@@ -722,23 +757,23 @@
             "slot": "254",
             "type": "t_uint256",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:58"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:61"
           },
           {
             "label": "getDebridge",
             "offset": 0,
             "slot": "255",
-            "type": "t_mapping(t_bytes32,t_struct(DebridgeInfo)4417_storage)",
+            "type": "t_mapping(t_bytes32,t_struct(DebridgeInfo)4758_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:61"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:64"
           },
           {
             "label": "getDebridgeFeeInfo",
             "offset": 0,
             "slot": "256",
-            "type": "t_mapping(t_bytes32,t_struct(DebridgeFeeInfo)4426_storage)",
+            "type": "t_mapping(t_bytes32,t_struct(DebridgeFeeInfo)4767_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:63"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:66"
           },
           {
             "label": "isSubmissionUsed",
@@ -746,7 +781,7 @@
             "slot": "257",
             "type": "t_mapping(t_bytes32,t_bool)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:66"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:69"
           },
           {
             "label": "isBlockedSubmission",
@@ -754,7 +789,7 @@
             "slot": "258",
             "type": "t_mapping(t_bytes32,t_bool)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:68"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:71"
           },
           {
             "label": "getAmountThreshold",
@@ -762,39 +797,39 @@
             "slot": "259",
             "type": "t_mapping(t_bytes32,t_uint256)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:72"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:75"
           },
           {
             "label": "getChainToConfig",
             "offset": 0,
             "slot": "260",
-            "type": "t_mapping(t_uint256,t_struct(ChainSupportInfo)4433_storage)",
+            "type": "t_mapping(t_uint256,t_struct(ChainSupportInfo)4774_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:74"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:77"
           },
           {
             "label": "getChainFromConfig",
             "offset": 0,
             "slot": "261",
-            "type": "t_mapping(t_uint256,t_struct(ChainSupportInfo)4433_storage)",
+            "type": "t_mapping(t_uint256,t_struct(ChainSupportInfo)4774_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:76"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:79"
           },
           {
             "label": "feeDiscount",
             "offset": 0,
             "slot": "262",
-            "type": "t_mapping(t_address,t_struct(DiscountInfo)4438_storage)",
+            "type": "t_mapping(t_address,t_struct(DiscountInfo)4779_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:78"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:81"
           },
           {
             "label": "getNativeInfo",
             "offset": 0,
             "slot": "263",
-            "type": "t_mapping(t_address,t_struct(TokenInfo)4402_storage)",
+            "type": "t_mapping(t_address,t_struct(TokenInfo)4743_storage)",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:80"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:83"
           },
           {
             "label": "defiController",
@@ -802,7 +837,7 @@
             "slot": "264",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:83"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:86"
           },
           {
             "label": "feeProxy",
@@ -810,7 +845,7 @@
             "slot": "265",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:85"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:88"
           },
           {
             "label": "callProxy",
@@ -818,15 +853,15 @@
             "slot": "266",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:87"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:90"
           },
           {
             "label": "weth",
             "offset": 0,
             "slot": "267",
-            "type": "t_contract(IWETH)4938",
+            "type": "t_contract(IWETH)5279",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:89"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:92"
           },
           {
             "label": "feeContractUpdater",
@@ -834,7 +869,7 @@
             "slot": "268",
             "type": "t_address",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:92"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:95"
           },
           {
             "label": "globalFixedNativeFee",
@@ -842,7 +877,7 @@
             "slot": "269",
             "type": "t_uint256",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:95"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:98"
           },
           {
             "label": "globalTransferFeeBps",
@@ -850,15 +885,15 @@
             "slot": "270",
             "type": "t_uint16",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:97"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:100"
           },
           {
             "label": "wethGate",
             "offset": 2,
             "slot": "270",
-            "type": "t_contract(IWethGate)4949",
+            "type": "t_contract(IWethGate)5290",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:100"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:103"
           },
           {
             "label": "lockedClaim",
@@ -866,7 +901,7 @@
             "slot": "271",
             "type": "t_uint256",
             "contract": "DeBridgeGate",
-            "src": "src/diamond/transfers/DeBridgeGate.sol:102"
+            "src": "src/diamond/transfers/DeBridgeGate.sol:105"
           },
           {
             "label": "chainId",
@@ -874,7 +909,7 @@
             "slot": "272",
             "type": "t_uint256",
             "contract": "MockDeBridgeGate",
-            "src": "src/diamond/mock/MockDeBridgeGate.sol:7"
+            "src": "src/diamond/mock/MockDeBridgeGate.sol:9"
           }
         ],
         "types": {
@@ -902,11 +937,11 @@
             "label": "bytes",
             "numberOfBytes": "32"
           },
-          "t_contract(IWETH)4938": {
+          "t_contract(IWETH)5279": {
             "label": "contract IWETH",
             "numberOfBytes": "20"
           },
-          "t_contract(IWethGate)4949": {
+          "t_contract(IWethGate)5290": {
             "label": "contract IWethGate",
             "numberOfBytes": "20"
           },
@@ -914,11 +949,11 @@
             "label": "mapping(address => bool)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(DiscountInfo)4438_storage)": {
+          "t_mapping(t_address,t_struct(DiscountInfo)4779_storage)": {
             "label": "mapping(address => struct IDeBridgeGate.DiscountInfo)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(TokenInfo)4402_storage)": {
+          "t_mapping(t_address,t_struct(TokenInfo)4743_storage)": {
             "label": "mapping(address => struct IDeBridgeGate.TokenInfo)",
             "numberOfBytes": "32"
           },
@@ -926,11 +961,11 @@
             "label": "mapping(bytes32 => bool)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_bytes32,t_struct(DebridgeFeeInfo)4426_storage)": {
+          "t_mapping(t_bytes32,t_struct(DebridgeFeeInfo)4767_storage)": {
             "label": "mapping(bytes32 => struct IDeBridgeGate.DebridgeFeeInfo)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_bytes32,t_struct(DebridgeInfo)4417_storage)": {
+          "t_mapping(t_bytes32,t_struct(DebridgeInfo)4758_storage)": {
             "label": "mapping(bytes32 => struct IDeBridgeGate.DebridgeInfo)",
             "numberOfBytes": "32"
           },
@@ -942,7 +977,7 @@
             "label": "mapping(bytes32 => uint256)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(ChainSupportInfo)4433_storage)": {
+          "t_mapping(t_uint256,t_struct(ChainSupportInfo)4774_storage)": {
             "label": "mapping(uint256 => struct IDeBridgeGate.ChainSupportInfo)",
             "numberOfBytes": "32"
           },
@@ -950,7 +985,7 @@
             "label": "mapping(uint256 => uint256)",
             "numberOfBytes": "32"
           },
-          "t_struct(ChainSupportInfo)4433_storage": {
+          "t_struct(ChainSupportInfo)4774_storage": {
             "label": "struct IDeBridgeGate.ChainSupportInfo",
             "members": [
               {
@@ -974,7 +1009,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(DebridgeFeeInfo)4426_storage": {
+          "t_struct(DebridgeFeeInfo)4767_storage": {
             "label": "struct IDeBridgeGate.DebridgeFeeInfo",
             "members": [
               {
@@ -998,7 +1033,7 @@
             ],
             "numberOfBytes": "96"
           },
-          "t_struct(DebridgeInfo)4417_storage": {
+          "t_struct(DebridgeInfo)4758_storage": {
             "label": "struct IDeBridgeGate.DebridgeInfo",
             "members": [
               {
@@ -1046,7 +1081,7 @@
             ],
             "numberOfBytes": "160"
           },
-          "t_struct(DiscountInfo)4438_storage": {
+          "t_struct(DiscountInfo)4779_storage": {
             "label": "struct IDeBridgeGate.DiscountInfo",
             "members": [
               {
@@ -1082,7 +1117,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(TokenInfo)4402_storage": {
+          "t_struct(TokenInfo)4743_storage": {
             "label": "struct IDeBridgeGate.TokenInfo",
             "members": [
               {

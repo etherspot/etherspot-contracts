@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity >=0.7.0.0 <0.9.0.0;
+// solhint-disable-next-line
+
+pragma solidity >=0.7.0 <0.9.0;
 
 /// @title Multi Send Call Only - Allows to batch multiple transactions into one, but only calls
 /// @author Stefan George - <stefan@gnosis.io>
@@ -43,13 +45,13 @@ contract MultiSendCallOnly {
                 let data := add(transactions, add(i, 0x55))
                 let success := 0
                 switch operation
-                    case 0 {
-                        success := call(gas(), to, value, data, dataLength, 0, 0)
-                    }
-                    // This version does not allow delegatecalls
-                    case 1 {
-                        revert(0, 0)
-                    }
+                case 0 {
+                    success := call(gas(), to, value, data, dataLength, 0, 0)
+                }
+                // This version does not allow delegatecalls
+                case 1 {
+                    revert(0, 0)
+                }
                 if eq(success, 0) {
                     revert(0, 0)
                 }

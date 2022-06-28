@@ -17,9 +17,14 @@ import { expectRevert } from "@openzeppelin/test-helpers";
 import { Address } from "hardhat-deploy/types";
 const { toWei } = web3.utils;
 
+function toBN(number) {
+  return BigNumber.from(number.toString());
+}
+
 const oracleKeys = JSON.parse(process.env.TEST_ORACLE_KEYS);
 const ZERO_ADDRESS = ethers.constants.AddressZero;
 const DEBRIDGE_GATE_ADDRESS = "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA";
+const BPS = toBN(10000);
 const transferFeeBps = 50;
 const randomToken = randomAddress();
 const fixedNativeFee = toWei("0.00001");
@@ -31,11 +36,13 @@ let owner: SignerWithAddress;
 let alice: SignerWithAddress;
 let bob: SignerWithAddress;
 let deBridgeFacet: DeBridgeFacet;
-let debridge, signatureVerifier, weth, callProxy, wethDebridgeId, mockToken;
-
-function toBN(number) {
-  return BigNumber.from(number.toString());
-}
+let debridge,
+  signatureVerifier,
+  weth,
+  callProxy,
+  wethDebridgeId,
+  nativeDebridgeId,
+  mockToken;
 
 describe("DeBridgeFacet", () => {
   before(async () => {
@@ -52,6 +59,7 @@ describe("DeBridgeFacet", () => {
 
     // deploy DeBridgeFacet contract
     deBridgeFacet = await deployContract("DeBridgeFacet");
+
     const Debridge = await ethers.getContractFactory(
       "MockDeBridgeGate",
       owner.address,
@@ -72,7 +80,13 @@ describe("DeBridgeFacet", () => {
     );
 
     mockToken = await deployContract("MockToken", ["Link Token", "dLINK", 18]);
-
+    const linkToken = await deployContract("MockLinkToken", [
+      "Link Token",
+      "dLINK",
+      18,
+    ]);
+    const dbrToken = await deployContract("MockLinkToken", ["DBR", "DBR", 18]);
+    const amountThreshold = toWei("1000");
     const minConfirmations = Math.floor(oracleKeys.length / 2) + 2;
     const confirmationThreshold = 5; //Confirmations per block before extra check enabled.
     const excessConfirmations = 7; //Confirmations count in case of excess activity.
@@ -119,6 +133,10 @@ describe("DeBridgeFacet", () => {
     // deploy CallProxy & WETH9 proxy contract
     console.log("deploying CallProxyFactory & WETH9Factory contracts");
     callProxy = await upgrades.deployProxy(CallProxyFactory, []);
+    const maxAmount = toWei("100000000000");
+    const fixedNativeFee = toWei("0.00001");
+    const isSupported = true;
+    const supportedChainIds = [42, 56];
     weth = await WETH9Factory.deploy();
 
     // deploy DeBridgeTokenFactory & DeBridgeTokenDeployerFactory contracts
@@ -200,7 +218,8 @@ describe("DeBridgeFacet", () => {
     await debridge.grantRole(GOVMONITORING_ROLE, owner.address);
     await signatureVerifier.setDebridgeAddress(debridge.address.toString());
     await deBridgeTokenDeployer.setDebridgeAddress(debridge.address);
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    nativeDebridgeId = await debridge.getDebridgeId(1, ZERO_ADDRESS);
     wethDebridgeId = await debridge.getDebridgeId(1, weth.address);
     await debridge.updateAssetFixedFees(wethDebridgeId, supportedChainIds, [
       fixedNativeFee,
@@ -216,28 +235,30 @@ describe("DeBridgeFacet", () => {
   //////////////////////////// TESTS /////////////////////////////////
   ////////////////////////////////////////////////////////////////////
 
-  describe("Updating deBridge gate address", () => {
+  describe("Set up", async () => {
     it("Should be deployed with the current deBridge gate address", async () => {
       const originalGateAddress: Address = await deBridgeFacet.deBridgeGate();
       expect(DEBRIDGE_GATE_ADDRESS).toBe(originalGateAddress);
     });
+  });
 
-    it("Should revert if try to update gate address when not the owner", async () => {
+  describe("Updating deBridge gate address", () => {
+    it("Should revert is new gate address is zero address", async () => {
       await expectRevert(
-        deBridgeFacet.connect(alice).updateGateAddress(bob.address),
-        "Ownable: caller is not the owner",
-      );
-    });
-
-    it("Should revert if new gate address is address(0)", async () => {
-      await expectRevert(
-        deBridgeFacet.connect(owner).updateGateAddress(ZERO_ADDRESS),
+        deBridgeFacet.updateGateAddress(ZERO_ADDRESS),
         "ZeroAddress()",
       );
     });
 
-    it("Should be update the current deBridge gate address", async () => {
-      await deBridgeFacet.updateGateAddress(bob.address);
+    // Will work when integrated with Diamond contract
+    // it("Should revert if non owner try to change", async () => {
+    //   await expectRevert.unspecified(
+    //     deBridgeFacet.connect(bob).updateGateAddress(bob.address),
+    //   );
+    // });
+
+    it("Should update the current deBridge gate address", async () => {
+      await deBridgeFacet.connect(owner).updateGateAddress(bob.address);
       const updatedGateAddress: Address = await deBridgeFacet.deBridgeGate();
       expect(updatedGateAddress).toBe(bob.address);
     });
@@ -245,97 +266,160 @@ describe("DeBridgeFacet", () => {
     // Will only work with chai matchers
     // it("Updating deBridge gate address should emit event", async () => {
     //   await expect(deBridgeFacet.updateGateAddress(alice.address))
-    //     .to.emit(deBridgeFacet, "UpdatedDeBridgeGate")
+    //     .to.emit(deBridgeFacet, "UpdatedGateAddress")
     //     .withArgs(alice.address);
     // });
   });
 
   describe("Sending tokens cross chain", () => {
-    it("Should revert is _amount is zero", async () => {
+    it("Should revert if _amount is zero", async () => {
       await expectRevert(
-        deBridgeFacet.deBridgeCrossChainSend(randomToken, 0, 42, alice.address),
+        deBridgeFacet.deBridgeBridgeTokens(
+          randomToken,
+          0,
+          42,
+          alice.address,
+          deBridgeFacet.address,
+          0,
+        ),
         "ZeroAmount()",
       );
     });
 
-    it("Should revert is _receiver is zero", async () => {
+    it("Should revert if _receiver is zero", async () => {
       await expectRevert(
-        deBridgeFacet.deBridgeCrossChainSend(randomToken, 10, 42, ZERO_ADDRESS),
+        deBridgeFacet.deBridgeBridgeTokens(
+          randomToken,
+          10,
+          42,
+          ZERO_ADDRESS,
+          deBridgeFacet.address,
+          0,
+        ),
         "ZeroAddress()",
       );
     });
 
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    // Possibly issue with safeTransferFrom function in:
-    // _send (DeBridgeGate)
-    // Gets called with contract address which isnt the user ~
-    // Has no balance
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
+    it("Should revert if _chainIdTo is zero", async () => {
+      await expectRevert(
+        deBridgeFacet.deBridgeBridgeTokens(
+          randomToken,
+          10,
+          0,
+          alice.address,
+          deBridgeFacet.address,
+          0,
+        ),
+        "InvalidChainId()",
+      );
+    });
 
-    it("Should send ERC20 tokens from the current chain", async function() {
+    it("Should send ERC20 tokens from the current chain", async () => {
       await deBridgeFacet.updateGateAddress(debridge.address);
       const tokenAddress = mockToken.address;
-      const receiver = bob.address;
       const amount = toBN(toWei("100"));
       const chainIdTo = 42;
+      const chainId = await debridge.getChainId();
+      const receiver = bob.address;
       await mockToken.mint(alice.address, amount);
+      await mockToken.connect(alice).approve(alice.address, amount);
+      await mockToken.connect(alice).approve(deBridgeFacet.address, amount);
       await mockToken.connect(alice).approve(debridge.address, amount);
-      const balance = toBN(await mockToken.balanceOf(debridge.address));
 
-      const tx = await deBridgeFacet
+      const debridgeId = await debridge.getDebridgeId(chainId, tokenAddress);
+      const balance = toBN(await mockToken.balanceOf(debridge.address));
+      const debridgeFeeInfo = await debridge.getDebridgeFeeInfo(debridgeId);
+      const supportedChainInfo = await debridge.getChainToConfig(chainIdTo);
+      const nativeDebridgeFeeInfo = await debridge.getDebridgeFeeInfo(
+        nativeDebridgeId,
+      );
+      const fees = toBN(supportedChainInfo.transferFeeBps)
+        .mul(amount)
+        .div(BPS);
+
+      await deBridgeFacet
         .connect(alice)
-        .deBridgeCrossChainSend(
+        .deBridgeBridgeTokens(
           tokenAddress,
-          toBN(toWei("10")),
+          amount,
           chainIdTo,
           receiver,
+          deBridgeFacet.address,
+          0,
+          {
+            value: supportedChainInfo.fixedNativeFee,
+          },
         );
 
+      const newNativeDebridgeFeeInfo = await debridge.getDebridgeFeeInfo(
+        nativeDebridgeId,
+      );
       const newBalance = toBN(await mockToken.balanceOf(debridge.address));
+      const newDebridgeFeeInfo = await debridge.getDebridgeFeeInfo(debridgeId);
 
-      // checking balances
-      const dbfBalance = toBN(await mockToken.balanceOf(deBridgeFacet.address));
-      const aliceBalance = toBN(await mockToken.balanceOf(alice.address));
-      const bobBalance = toBN(await mockToken.balanceOf(bob.address));
-
-      console.log(
-        `DeBridgeGate Contract Pre-Balance:  ${ethers.utils.parseEther(
-          balance.toString(),
-        )}`,
-      );
-
-      console.log(
-        `DeBridgeGate Contract Post-Balance: ${ethers.utils.parseEther(
-          newBalance.toString(),
-        )}`,
-      );
-      console.log(
-        `DeBridgeFacet Contract Balance: ${ethers.utils.parseEther(
-          dbfBalance.toString(),
-        )}`,
-      );
-      console.log(
-        `Alice Account Balance: ${ethers.utils.parseEther(
-          aliceBalance.toString(),
-        )}`,
-      );
-      console.log(
-        `Bob Account Balance: ${ethers.utils.parseEther(
-          bobBalance.toString(),
-        )}`,
-      );
-
-      // checking addresses
-      console.log("Alice address: ", alice.address);
-      console.log("Bob address: ", bob.address);
-      console.log("DeBridgeGate address: ", debridge.address);
-      console.log("DeBridgeFacet address: ", deBridgeFacet.address);
-
-      // checking tx receipt
-      console.log(tx);
       expect(balance.add(amount).toString()).toEqual(newBalance.toString());
+      expect(debridgeFeeInfo.collectedFees.add(fees).toString()).toEqual(
+        newDebridgeFeeInfo.collectedFees.toString(),
+      );
+      expect(
+        nativeDebridgeFeeInfo.collectedFees
+          .add(toBN(supportedChainInfo.fixedNativeFee))
+          .toString(),
+      ).toEqual(newNativeDebridgeFeeInfo.collectedFees.toString());
     });
+
+    /// ISSUES WITH THIS TEST DUE TO address(0)
+    // it.only("should send native tokens from the current chain", async function() {
+    //   const tokenAddress = ZERO_ADDRESS;
+    //   const chainId = await debridge.getChainId();
+    //   const receiver = bob.address;
+    //   const amount = toBN(toWei("1"));
+    //   const chainIdTo = 42;
+    //   const debridgeWethId = await debridge.getDebridgeId(
+    //     chainId,
+    //     weth.address,
+    //   );
+    //   const balance = toBN(await weth.balanceOf(debridge.address));
+    //   const debridgeFeeInfo = await debridge.getDebridgeFeeInfo(debridgeWethId);
+    //   const supportedChainInfo = await debridge.getChainToConfig(chainIdTo);
+
+    //   const discount = 0;
+    //   const fixedNativeFeeAfterDiscount = toBN(
+    //     supportedChainInfo.fixedNativeFee,
+    //   )
+    //     .mul(BPS.toNumber() - discount)
+    //     .div(BPS);
+    //   let feesWithFix = toBN(supportedChainInfo.transferFeeBps)
+    //     .mul(toBN(amount).sub(fixedNativeFeeAfterDiscount))
+    //     .div(BPS);
+    //   feesWithFix = toBN(feesWithFix).sub(
+    //     toBN(feesWithFix)
+    //       .mul(discount)
+    //       .div(BPS),
+    //   );
+    //   feesWithFix = feesWithFix.add(fixedNativeFeeAfterDiscount);
+
+    //   await deBridgeFacet
+    //     .connect(alice)
+    //     .deBridgeBridgeTokens(
+    //       tokenAddress,
+    //       amount,
+    //       chainIdTo,
+    //       receiver,
+    //       deBridgeFacet.address,
+    //       0,
+    //       {
+    //         value: amount,
+    //       },
+    //     );
+    //   const newBalance = toBN(await weth.balanceOf(debridge.address));
+    //   const newDebridgeFeeInfo = await debridge.getDebridgeFeeInfo(
+    //     debridgeWethId,
+    //   );
+    //   expect(balance.add(amount).toString()).toEqual(newBalance.toString());
+    //   expect(debridgeFeeInfo.collectedFees.add(feesWithFix).toString()).toEqual(
+    //     newDebridgeFeeInfo.collectedFees.toString(),
+    //   );
+    // });
   });
 });

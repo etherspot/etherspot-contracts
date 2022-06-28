@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -13,14 +15,20 @@ import "../libraries/MultiSendCallOnly.sol";
 
 /// @dev Proxy to execute the other contract calls.
 /// This contract is used when a user requests transfer with specific call of other contract.
-contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly, ICallProxy {
+contract CallProxy is
+    Initializable,
+    AccessControlUpgradeable,
+    MultiSendCallOnly,
+    ICallProxy
+{
     using SafeERC20Upgradeable for IERC20Upgradeable;
     using Flags for uint256;
     using AddressUpgradeable for address;
 
     /* ========== STATE VARIABLES ========== */
     /// @dev Role allowed to withdraw fee
-    bytes32 public constant DEBRIDGE_GATE_ROLE = keccak256("DEBRIDGE_GATE_ROLE");
+    bytes32 public constant DEBRIDGE_GATE_ROLE =
+        keccak256("DEBRIDGE_GATE_ROLE");
 
     /// @dev Value for lock variable when function is not entered
     uint256 private constant _NOT_LOCKED = 1;
@@ -46,7 +54,8 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
     /* ========== MODIFIERS ========== */
 
     modifier onlyGateRole() {
-        if (!hasRole(DEBRIDGE_GATE_ROLE, msg.sender)) revert DeBridgeGateBadRole();
+        if (!hasRole(DEBRIDGE_GATE_ROLE, msg.sender))
+            revert DeBridgeGateBadRole();
         _;
     }
 
@@ -92,7 +101,9 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
 
         amount = address(this).balance;
         if (amount > 0) {
-            (bool success, ) = _reserveAddress.call{value: amount}(new bytes(0));
+            (bool success, ) = _reserveAddress.call{value: amount}(
+                new bytes(0)
+            );
             if (!success) revert CallFailed();
         }
     }
@@ -122,7 +133,7 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
 
         amount = IERC20Upgradeable(_token).balanceOf(address(this));
 
-        if (!_result &&_flags.getFlag(Flags.REVERT_IF_EXTERNAL_FAIL)) {
+        if (!_result && _flags.getFlag(Flags.REVERT_IF_EXTERNAL_FAIL)) {
             revert ExternalCallFailed();
         }
         if (amount > 0) {
@@ -151,8 +162,7 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
     }
 
     // we need to accept ETH from deBridgeGate
-    receive() external payable {
-    }
+    receive() external payable {}
 
     /* ========== INTERNAL METHODS ========== */
 
@@ -184,19 +194,35 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
 
         // We require some gas to finish transaction emit the events, approve(0) etc (at least 15000) after the execution and some to perform code until the execution (500)
         // We also include the 1/64 in the check that is not send along with a call to counteract potential shortings because of EIP-150
-        if (gasleft() < safeTxGas * 64 / 63 + 15500) revert NotEnoughSafeTxGas();
+        if (gasleft() < (safeTxGas * 64) / 63 + 15500)
+            revert NotEnoughSafeTxGas();
         // if safeTxGas is zero set gasleft
         safeTxGas = safeTxGas == 0 ? gasleft() : uint256(safeTxGas);
 
         if (multisendFlag) {
             _destination = address(this);
             assembly {
-                result := call(safeTxGas, _destination, _value, add(_data, 0x20), mload(_data), 0, 0)
+                result := call(
+                    safeTxGas,
+                    _destination,
+                    _value,
+                    add(_data, 0x20),
+                    mload(_data),
+                    0,
+                    0
+                )
             }
-        }
-        else {
+        } else {
             assembly {
-                result := call(safeTxGas, _destination, _value, add(_data, 0x20), mload(_data), 0, 0)
+                result := call(
+                    safeTxGas,
+                    _destination,
+                    _value,
+                    add(_data, 0x20),
+                    mload(_data),
+                    0,
+                    0
+                )
             }
         }
         // clear storage variables to get gas refund
@@ -206,20 +232,27 @@ contract CallProxy is Initializable, AccessControlUpgradeable, MultiSendCallOnly
         }
     }
 
-    function _customApprove(IERC20Upgradeable token, address spender, uint value) internal {
+    function _customApprove(
+        IERC20Upgradeable token,
+        address spender,
+        uint256 value
+    ) internal {
         bytes memory returndata = address(token).functionCall(
             abi.encodeWithSelector(token.approve.selector, spender, value),
             "ERC20 approve failed"
         );
         if (returndata.length > 0) {
             // Return data is optional
-            require(abi.decode(returndata, (bool)), "ERC20 operation did not succeed");
+            require(
+                abi.decode(returndata, (bool)),
+                "ERC20 operation did not succeed"
+            );
         }
     }
 
     // ============ Version Control ============
 
-     /// @dev Get this contract's version
+    /// @dev Get this contract's version
     function version() external pure returns (uint256) {
         return 423; // 4.2.3
     }

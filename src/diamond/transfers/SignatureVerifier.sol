@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 import "./OraclesManager.sol";
@@ -53,7 +55,6 @@ contract SignatureVerifier is OraclesManager, ISignatureVerifier {
         debridgeAddress = _debridgeAddress;
     }
 
-
     /// @inheritdoc ISignatureVerifier
     function submit(
         bytes32 _submissionId,
@@ -71,7 +72,9 @@ contract SignatureVerifier is OraclesManager, ISignatureVerifier {
         uint256 signaturesCount = _countSignatures(_signatures);
         address[] memory validators = new address[](signaturesCount);
         for (uint256 i = 0; i < signaturesCount; i++) {
-            (bytes32 r, bytes32 s, uint8 v) = _signatures.parseSignature(i * 65);
+            (bytes32 r, bytes32 s, uint8 v) = _signatures.parseSignature(
+                i * 65
+            );
             address oracle = ecrecover(_submissionId.getUnsignedMsg(), v, r, s);
             if (getOracleInfo[oracle].isValid) {
                 for (uint256 k = 0; k < i; k++) {
@@ -107,7 +110,8 @@ contract SignatureVerifier is OraclesManager, ISignatureVerifier {
         }
 
         if (submissionsInBlock > confirmationThreshold) {
-            if (confirmations < excessConfirmations) revert NotConfirmedThreshold();
+            if (confirmations < excessConfirmations)
+                revert NotConfirmedThreshold();
         }
 
         if (confirmations < needConfirmations) revert SubmissionNotConfirmed();
@@ -145,7 +149,11 @@ contract SignatureVerifier is OraclesManager, ISignatureVerifier {
 
     /* ========== INTERNAL ========== */
 
-    function _countSignatures(bytes memory _signatures) internal pure returns (uint256) {
+    function _countSignatures(bytes memory _signatures)
+        internal
+        pure
+        returns (uint256)
+    {
         return _signatures.length % 65 == 0 ? _signatures.length / 65 : 0;
     }
 

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -59,8 +61,12 @@ contract DeBridgeToken is
         address[] memory minters
     ) public initializer {
         _decimals = decimals_;
-        name_ = string(abi.encodePacked("deBridge ",
-            bytes(name_).length == 0 ? symbol_ : name_));
+        name_ = string(
+            abi.encodePacked(
+                "deBridge ",
+                bytes(name_).length == 0 ? symbol_ : name_
+            )
+        );
         symbol_ = string(abi.encodePacked("de", symbol_));
 
         __ERC20_init_unchained(name_, symbol_);
@@ -90,7 +96,11 @@ contract DeBridgeToken is
     }
 
     /// @inheritdoc IDeBridgeToken
-    function mint(address _receiver, uint256 _amount) external override onlyMinter {
+    function mint(address _receiver, uint256 _amount)
+        external
+        override
+        onlyMinter
+    {
         _mint(_receiver, _amount);
     }
 
@@ -151,7 +161,7 @@ contract DeBridgeToken is
         _pause();
     }
 
-     /// @dev Unpauses all token transfers. The caller must have the `PAUSER_ROLE`.
+    /// @dev Unpauses all token transfers. The caller must have the `PAUSER_ROLE`.
     function unpause() public onlyPauser {
         _unpause();
     }

@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
+// solhint-disable-next-line
+
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -14,7 +16,6 @@ contract DeBridgeTokenDeployer is
     AccessControlUpgradeable,
     IDeBridgeTokenDeployer
 {
-
     /* ========== STATE VARIABLES ========== */
 
     /// @dev Address of deBridgeToken implementation
@@ -45,7 +46,6 @@ contract DeBridgeTokenDeployer is
     error AdminBadRole();
     error DeBridgeGateBadRole();
 
-
     /* ========== MODIFIERS ========== */
 
     modifier onlyAdmin() {
@@ -57,7 +57,6 @@ contract DeBridgeTokenDeployer is
         if (msg.sender != debridgeAddress) revert DeBridgeGateBadRole();
         _;
     }
-
 
     /* ========== CONSTRUCTOR  ========== */
 
@@ -86,13 +85,15 @@ contract DeBridgeTokenDeployer is
         bytes32 _debridgeId,
         string memory _name,
         string memory _symbol,
-        uint8 _decimals)
+        uint8 _decimals
+    )
         external
         override
         onlyDeBridgeGate
         returns (address deBridgeTokenAddress)
     {
-        if (getDeployedAssetAddress[_debridgeId] != address(0)) revert DeployedAlready();
+        if (getDeployedAssetAddress[_debridgeId] != address(0))
+            revert DeployedAlready();
 
         OverridedTokenInfo memory overridedToken = overridedTokens[_debridgeId];
         if (overridedToken.accept) {
@@ -114,14 +115,25 @@ contract DeBridgeTokenDeployer is
         );
 
         // initialize Proxy
-        bytes memory constructorArgs = abi.encode(address(this), initialisationArgs);
+        bytes memory constructorArgs = abi.encode(
+            address(this),
+            initialisationArgs
+        );
 
         // deployment code
-        bytes memory bytecode = abi.encodePacked(type(DeBridgeTokenProxy).creationCode, constructorArgs);
+        bytes memory bytecode = abi.encodePacked(
+            type(DeBridgeTokenProxy).creationCode,
+            constructorArgs
+        );
 
         assembly {
             // debridgeId is a salt
-            deBridgeTokenAddress := create2(0, add(bytecode, 0x20), mload(bytecode), _debridgeId)
+            deBridgeTokenAddress := create2(
+                0,
+                add(bytecode, 0x20),
+                mload(bytecode),
+                _debridgeId
+            )
 
             if iszero(extcodesize(deBridgeTokenAddress)) {
                 revert(0, 0)
@@ -142,7 +154,6 @@ contract DeBridgeTokenDeployer is
         return tokenImplementation;
     }
 
-
     /* ========== ADMIN ========== */
 
     /// @dev Set deBridgeToken implementation contract address
@@ -154,7 +165,10 @@ contract DeBridgeTokenDeployer is
 
     /// @dev Set admin for any deployed deBridgeToken.
     /// @param _deBridgeTokenAdmin Admin address.
-    function setDeBridgeTokenAdmin(address _deBridgeTokenAdmin) external onlyAdmin {
+    function setDeBridgeTokenAdmin(address _deBridgeTokenAdmin)
+        external
+        onlyAdmin
+    {
         if (_deBridgeTokenAdmin == address(0)) revert WrongArgument();
         deBridgeTokenAdmin = _deBridgeTokenAdmin;
     }
@@ -169,7 +183,7 @@ contract DeBridgeTokenDeployer is
     /// @dev Override specific tokens name/symbol
     /// @param _debridgeIds Array of debridgeIds for tokens
     /// @param _tokens Array of new name/symbols for tokens
-    function setOverridedTokenInfo (
+    function setOverridedTokenInfo(
         bytes32[] memory _debridgeIds,
         OverridedTokenInfo[] memory _tokens
     ) external onlyAdmin {

@@ -19,16 +19,9 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface IERC20PermitInterface extends utils.Interface {
   functions: {
-    "DOMAIN_SEPARATOR()": FunctionFragment;
-    "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "DOMAIN_SEPARATOR",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "nonces", values: [string]): string;
   encodeFunctionData(
     functionFragment: "permit",
     values: [
@@ -42,11 +35,6 @@ export interface IERC20PermitInterface extends utils.Interface {
     ]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "DOMAIN_SEPARATOR",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
 
   events: {};
@@ -79,10 +67,6 @@ export interface IERC20Permit extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
-
-    nonces(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
-
     permit(
       owner: string,
       spender: string,
@@ -94,10 +78,6 @@ export interface IERC20Permit extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-  nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   permit(
     owner: string,
@@ -111,10 +91,6 @@ export interface IERC20Permit extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
-
     permit(
       owner: string,
       spender: string,
@@ -130,10 +106,6 @@ export interface IERC20Permit extends BaseContract {
   filters: {};
 
   estimateGas: {
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
-
     permit(
       owner: string,
       spender: string,
@@ -147,13 +119,6 @@ export interface IERC20Permit extends BaseContract {
   };
 
   populateTransaction: {
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    nonces(
-      owner: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     permit(
       owner: string,
       spender: string,

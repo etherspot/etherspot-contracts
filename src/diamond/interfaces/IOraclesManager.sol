@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 interface IOraclesManager {
     /* ========== STRUCTS ========== */

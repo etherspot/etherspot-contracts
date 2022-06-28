@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 library Flags {
-
     /* ========== FLAGS ========== */
 
     /// @dev Flag to unwrap ETH
@@ -21,10 +22,11 @@ library Flags {
     /// @dev Get flag
     /// @param _packedFlags Flags packed to uint256
     /// @param _flag Flag to check
-    function getFlag(
-        uint256 _packedFlags,
-        uint256 _flag
-    ) internal pure returns (bool) {
+    function getFlag(uint256 _packedFlags, uint256 _flag)
+        internal
+        pure
+        returns (bool)
+    {
         uint256 flag = (_packedFlags >> _flag) & uint256(1);
         return flag == 1;
     }
@@ -33,14 +35,12 @@ library Flags {
     /// @param _packedFlags Flags packed to uint256
     /// @param _flag Flag to set
     /// @param _value Is set or not set
-     function setFlag(
-         uint256 _packedFlags,
-         uint256 _flag,
-         bool _value
-     ) internal pure returns (uint256) {
-         if (_value)
-             return _packedFlags | uint256(1) << _flag;
-         else
-             return _packedFlags & ~(uint256(1) << _flag);
-     }
+    function setFlag(
+        uint256 _packedFlags,
+        uint256 _flag,
+        bool _value
+    ) internal pure returns (uint256) {
+        if (_value) return _packedFlags | (uint256(1) << _flag);
+        else return _packedFlags & ~(uint256(1) << _flag);
+    }
 }

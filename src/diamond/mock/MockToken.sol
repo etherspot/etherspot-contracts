@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7,0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -16,9 +18,9 @@ contract MockToken is ERC20 {
         _decimals = _decimal;
     }
 
-    fallback() external payable { }
+    fallback() external payable {}
 
-    receive() external payable { }
+    receive() external payable {}
 
     function mint(address _receiver, uint256 _amount) external {
         _mint(_receiver, _amount);

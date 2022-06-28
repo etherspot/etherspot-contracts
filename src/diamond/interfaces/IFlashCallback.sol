@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7.0;
+// solhint-disable-next-line
+
+pragma solidity 0.8.7;
 
 /// @title Callback for IDeBridgeGate#flash
 /// @notice Any contract that calls IDeBridgeGate#flash must implement this interface

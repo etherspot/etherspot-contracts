@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
+// solhint-disable-next-line
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -7,7 +8,11 @@ import "../interfaces/IOraclesManager.sol";
 
 /// @dev The base contract for oracles management. Allows adding/removing oracles,
 /// managing the minimal required amount of confirmations.
-contract OraclesManager is Initializable, AccessControlUpgradeable, IOraclesManager {
+contract OraclesManager is
+    Initializable,
+    AccessControlUpgradeable,
+    IOraclesManager
+{
     /* ========== STATE VARIABLES ========== */
 
     /// @dev Minimal required confirmations
@@ -32,7 +37,6 @@ contract OraclesManager is Initializable, AccessControlUpgradeable, IOraclesMana
     error WrongArgument();
     error LowMinConfirmations();
 
-
     /* ========== MODIFIERS ========== */
 
     modifier onlyAdmin() {
@@ -49,8 +53,11 @@ contract OraclesManager is Initializable, AccessControlUpgradeable, IOraclesMana
     /// @dev Constructor that initializes the most important configurations.
     /// @param _minConfirmations Minimal required confirmations.
     /// @param _excessConfirmations Minimal required confirmations in case of too many confirmations.
-    function initialize(uint8 _minConfirmations, uint8 _excessConfirmations) internal {
-        if (_minConfirmations == 0 || _excessConfirmations < _minConfirmations) revert LowMinConfirmations();
+    function initialize(uint8 _minConfirmations, uint8 _excessConfirmations)
+        internal
+    {
+        if (_minConfirmations == 0 || _excessConfirmations < _minConfirmations)
+            revert LowMinConfirmations();
         minConfirmations = _minConfirmations;
         excessConfirmations = _excessConfirmations;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -61,26 +68,34 @@ contract OraclesManager is Initializable, AccessControlUpgradeable, IOraclesMana
     /// @dev Sets minimal required confirmations.
     /// @param _minConfirmations Minimal required confirmations.
     function setMinConfirmations(uint8 _minConfirmations) external onlyAdmin {
-        if (_minConfirmations < oracleAddresses.length / 2 + 1) revert LowMinConfirmations();
+        if (_minConfirmations < oracleAddresses.length / 2 + 1)
+            revert LowMinConfirmations();
         minConfirmations = _minConfirmations;
     }
 
     /// @dev Sets minimal required confirmations in case of too many confirmations.
     /// @param _excessConfirmations Minimal required confirmations in case of too many confirmations.
-    function setExcessConfirmations(uint8 _excessConfirmations) external onlyAdmin {
-        if (_excessConfirmations < minConfirmations) revert LowMinConfirmations();
+    function setExcessConfirmations(uint8 _excessConfirmations)
+        external
+        onlyAdmin
+    {
+        if (_excessConfirmations < minConfirmations)
+            revert LowMinConfirmations();
         excessConfirmations = _excessConfirmations;
     }
 
     /// @dev Add oracles.
     /// @param _oracles Oracles' addresses.
     /// @param _required A transfer will not be confirmed without oracles having required set to true,
-    function addOracles(
-        address[] memory _oracles,
-        bool[] memory _required
-    ) external onlyAdmin {
+    function addOracles(address[] memory _oracles, bool[] memory _required)
+        external
+        onlyAdmin
+    {
         if (_oracles.length != _required.length) revert WrongArgument();
-        if (minConfirmations < (oracleAddresses.length +  _oracles.length) / 2 + 1) revert LowMinConfirmations();
+        if (
+            minConfirmations <
+            (oracleAddresses.length + _oracles.length) / 2 + 1
+        ) revert LowMinConfirmations();
 
         for (uint256 i = 0; i < _oracles.length; i++) {
             OracleInfo storage oracleInfo = getOracleInfo[_oracles[i]];
@@ -124,13 +139,16 @@ contract OraclesManager is Initializable, AccessControlUpgradeable, IOraclesMana
             // remove oracle from oracleAddresses array without keeping an order
             for (uint256 i = 0; i < oracleAddresses.length; i++) {
                 if (oracleAddresses[i] == _oracle) {
-                    oracleAddresses[i] = oracleAddresses[oracleAddresses.length - 1];
+                    oracleAddresses[i] = oracleAddresses[
+                        oracleAddresses.length - 1
+                    ];
                     oracleAddresses.pop();
                     break;
                 }
             }
         } else if (!oracleInfo.isValid && _isValid) {
-            if (minConfirmations < (oracleAddresses.length + 1) / 2 + 1) revert LowMinConfirmations();
+            if (minConfirmations < (oracleAddresses.length + 1) / 2 + 1)
+                revert LowMinConfirmations();
             oracleAddresses.push(_oracle);
         }
         oracleInfo.isValid = _isValid;
