@@ -24,6 +24,8 @@ export enum NetworkNames {
   Moonbase = "moonbase",
   Celo = "celo",
   CeloTest = "celoTest",
+  Harmony = "harmony",
+  HarmonyDevnet = "harmonyDevnet",
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -181,6 +183,16 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.CeloTest] : {
     chainId: 44787,
     defaultProviderUrl: 'https://alfajores-forno.celo-testnet.org',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.Harmony]: {
+    chainId: 1666600000,
+    defaultProviderUrl: 'https://api.harmony.one',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.HarmonyDevnet]: {
+    chainId: 1666900000,
+    defaultProviderUrl : 'https://api.s0.ps.hmny.io',
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
