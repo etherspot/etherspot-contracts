@@ -47,9 +47,6 @@ export interface CBridgeFacetInterface extends utils.Interface {
   functions: {
     "bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": FunctionFragment;
     "cBridge()": FunctionFragment;
-    "c_b7c4ddcd(bytes8)": FunctionFragment;
-    "c_falseb7c4ddcd(bytes8)": FunctionFragment;
-    "c_trueb7c4ddcd(bytes8)": FunctionFragment;
     "chainId()": FunctionFragment;
     "initializeCBridge(address,uint256)": FunctionFragment;
     "updateBridgeAddress(address)": FunctionFragment;
@@ -60,18 +57,6 @@ export interface CBridgeFacetInterface extends utils.Interface {
     values: [CBridgeDataStruct]
   ): string;
   encodeFunctionData(functionFragment: "cBridge", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "c_b7c4ddcd",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falseb7c4ddcd",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_trueb7c4ddcd",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initializeCBridge",
@@ -87,15 +72,6 @@ export interface CBridgeFacetInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "cBridge", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_b7c4ddcd", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falseb7c4ddcd",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_trueb7c4ddcd",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "initializeCBridge",
@@ -181,21 +157,6 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<[string]>;
 
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initializeCBridge(
@@ -217,18 +178,6 @@ export interface CBridgeFacet extends BaseContract {
 
   cBridge(overrides?: CallOverrides): Promise<string>;
 
-  c_b7c4ddcd(c__b7c4ddcd: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_falseb7c4ddcd(
-    c__b7c4ddcd: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_trueb7c4ddcd(
-    c__b7c4ddcd: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   initializeCBridge(
@@ -249,21 +198,6 @@ export interface CBridgeFacet extends BaseContract {
     ): Promise<void>;
 
     cBridge(overrides?: CallOverrides): Promise<string>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -320,21 +254,6 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<BigNumber>;
 
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     initializeCBridge(
@@ -356,21 +275,6 @@ export interface CBridgeFacet extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     cBridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

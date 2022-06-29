@@ -25,6 +25,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
+        enabled: false,
         url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
         blockNumber: 13798171,
       },
@@ -52,15 +53,6 @@ const config: HardhatUserConfig = {
       },
       {
         version: "0.8.4",
-        settings: {
-          evmVersion: "istanbul",
-          metadata: {
-            bytecodeHash: "none",
-          },
-        },
-      },
-      {
-        version: "0.8.13",
         settings: {
           evmVersion: "istanbul",
           metadata: {

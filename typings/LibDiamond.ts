@@ -42,9 +42,8 @@ export type OwnershipTransferredEvent = TypedEvent<
   { previousOwner: string; newOwner: string }
 >;
 
-export type OwnershipTransferredEventFilter = TypedEventFilter<
-  OwnershipTransferredEvent
->;
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface LibDiamond extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -56,15 +55,15 @@ export interface LibDiamond extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
+    toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>,
+    eventFilter?: TypedEventFilter<TEvent>
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>,
+    eventFilter: TypedEventFilter<TEvent>
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -80,21 +79,21 @@ export interface LibDiamond extends BaseContract {
     "DiamondCut(tuple[],address,bytes)"(
       _diamondCut?: null,
       _init?: null,
-      _calldata?: null,
+      _calldata?: null
     ): DiamondCutEventFilter;
     DiamondCut(
       _diamondCut?: null,
       _init?: null,
-      _calldata?: null,
+      _calldata?: null
     ): DiamondCutEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
-      newOwner?: string | null,
+      newOwner?: string | null
     ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
-      newOwner?: string | null,
+      newOwner?: string | null
     ): OwnershipTransferredEventFilter;
   };
 

@@ -11,9 +11,7 @@ import {ICBridge} from "../interfaces/ICBridge.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
-
-// TODO: Include this once merged with Diamond
-// import {LibDiamond} from "../libs/LibDiamond.sol";
+import {LibDiamond} from "../libs/LibDiamond.sol";
 
 contract CBridgeFacet is ReentrancyGuard {
     //////////////////////////////////////////////////////////////
@@ -53,8 +51,7 @@ contract CBridgeFacet is ReentrancyGuard {
     /// @param _cBridge address of the canonical CBridge router contract
     /// @param _chainId chainId of this deployed contract
     function initializeCBridge(address _cBridge, uint256 _chainId) external {
-        // TODO: Include this once merged with Diamond
-        // LibDiamond.enforceIsContractOwner();
+        LibDiamond.enforceIsContractOwner();
         if (_cBridge == address(0) || _chainId == 0) revert InvalidConfig();
         cBridge = _cBridge;
         chainId = _chainId;
@@ -83,6 +80,7 @@ contract CBridgeFacet is ReentrancyGuard {
     }
 
     function updateBridgeAddress(address _newAddress) external {
+        LibDiamond.enforceIsContractOwner();
         if (_newAddress == address(0)) revert InvalidConfig();
         cBridge = _newAddress;
         emit UpdatedCBridgeAddress(_newAddress);
