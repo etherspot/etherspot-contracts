@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Collection of functions related to the address type",
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CBridgeFacet_flat.sol": "Address"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CBridgeFacet_flat.sol": {
+			"keccak256": "0x2b4acbc63840dabc76fc908c0bfe4946b203e64618c31508343985cb97521ad0",
+			"urls": [
+				"bzz-raw://7e38a2aff417afa4071b8e372637b867525c34f7ad180a87f5b89f6e24112288",
+				"dweb:/ipfs/QmTtitFtWHn1vbNfZUQbJpWsECDeqrHanVENanyhj8ZVto"
+			]
+		}
+	},
+	"version": 1
+}

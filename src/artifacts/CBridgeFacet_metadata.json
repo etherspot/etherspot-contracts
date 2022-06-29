@@ -1,0 +1,266 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "CannotBridgeToSameNetwork",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidAmount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidConfig",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NativeValueWithERC",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NoTransferToNullAddress",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NullAddrIsNotAValidSpender",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NullAddrIsNotAnERC20Token",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "cBridge",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "chainId",
+						"type": "uint256"
+					}
+				],
+				"name": "CBridgeInitialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "bridgeUsed",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "tokenAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "chainIdTo",
+						"type": "uint256"
+					}
+				],
+				"name": "TransferStarted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newAddress",
+						"type": "address"
+					}
+				],
+				"name": "UpdatedCBridgeAddress",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint32",
+								"name": "maxSlippage",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint64",
+								"name": "dstChainId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "nonce",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "receiver",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "token",
+								"type": "address"
+							}
+						],
+						"internalType": "struct CBridgeFacet.CBridgeData",
+						"name": "_cBridgeData",
+						"type": "tuple"
+					}
+				],
+				"name": "bridgeTokensCBridge",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "cBridge",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "chainId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_cBridge",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_chainId",
+						"type": "uint256"
+					}
+				],
+				"name": "initializeCBridge",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Luke Wickens <luke@pillarproject.io>",
+			"kind": "dev",
+			"methods": {
+				"bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": {
+					"params": {
+						"_cBridgeData": ": provides necessary data for cBridge transfer"
+					}
+				},
+				"initializeCBridge(address,uint256)": {
+					"params": {
+						"_cBridge": "address of the canonical CBridge router contract",
+						"_chainId": "chainId of this deployed contract"
+					}
+				}
+			},
+			"title": "CBridgeFacet",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": {
+					"notice": "initiates token bridging"
+				},
+				"initializeCBridge(address,uint256)": {
+					"notice": "initializes state variables for the cBridge facet"
+				}
+			},
+			"notice": "cBridge intergration for bridging tokens",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CBridgeFacet_flat.sol": "CBridgeFacet"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CBridgeFacet_flat.sol": {
+			"keccak256": "0x2b4acbc63840dabc76fc908c0bfe4946b203e64618c31508343985cb97521ad0",
+			"urls": [
+				"bzz-raw://7e38a2aff417afa4071b8e372637b867525c34f7ad180a87f5b89f6e24112288",
+				"dweb:/ipfs/QmTtitFtWHn1vbNfZUQbJpWsECDeqrHanVENanyhj8ZVto"
+			]
+		}
+	},
+	"version": 1
+}
