@@ -84,7 +84,7 @@ describe("CBridgeFacet", () => {
       );
 
       // Initialize CBridge contract with CBridge address and chain id
-      cBridgeFacet.connect(owner).initializeCBridge(CBRIDGE_ADDRESS, 1, {
+      cBridgeFacet.connect(owner).initializeCBridge(CBRIDGE_ADDRESS, {
         gasLimit: 500000,
       });
 
@@ -117,14 +117,7 @@ describe("CBridgeFacet", () => {
 
   it("should revert if cBridge address is address(0)", async function() {
     await expectRevert(
-      cBridgeFacet.initializeCBridge(ZERO_ADDRESS, 1),
-      "InvalidConfig",
-    );
-  });
-
-  it("should revert if chain id is 0", async function() {
-    await expectRevert(
-      cBridgeFacet.initializeCBridge(CBRIDGE_ADDRESS, 0),
+      cBridgeFacet.initializeCBridge(ZERO_ADDRESS),
       "InvalidConfig",
     );
   });
@@ -132,14 +125,14 @@ describe("CBridgeFacet", () => {
   it("should initialize the cBridge address and chain Id", async function() {
     const tx: ContractTransaction = await cBridgeFacet
       .connect(owner)
-      .initializeCBridge(CBRIDGE_ADDRESS, 1, {
+      .initializeCBridge(CBRIDGE_ADDRESS, {
         gasLimit: 500000,
       });
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
     expect(result[0]).toEqual("CBridgeInitialized");
     expect(result[1]).toEqual(CBRIDGE_ADDRESS);
-    expect(result[2]).toEqual(BigNumber.from(1));
+    expect(result[2]).toEqual(BigNumber.from(3333));
   });
 
   it("should revert if bridging to the same chain", async function() {
@@ -147,7 +140,7 @@ describe("CBridgeFacet", () => {
       receiver: alice.address,
       token: DAI_ADDRESS,
       amount: utils.parseUnits("100000", 10),
-      dstChainId: 1,
+      dstChainId: 3333,
       nonce: 1,
       maxSlippage: 5000,
     };

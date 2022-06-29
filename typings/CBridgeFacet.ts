@@ -47,8 +47,7 @@ export interface CBridgeFacetInterface extends utils.Interface {
   functions: {
     "bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": FunctionFragment;
     "cBridge()": FunctionFragment;
-    "chainId()": FunctionFragment;
-    "initializeCBridge(address,uint256)": FunctionFragment;
+    "initializeCBridge(address)": FunctionFragment;
     "updateBridgeAddress(address)": FunctionFragment;
   };
 
@@ -57,10 +56,9 @@ export interface CBridgeFacetInterface extends utils.Interface {
     values: [CBridgeDataStruct]
   ): string;
   encodeFunctionData(functionFragment: "cBridge", values?: undefined): string;
-  encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initializeCBridge",
-    values: [string, BigNumberish]
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "updateBridgeAddress",
@@ -72,7 +70,6 @@ export interface CBridgeFacetInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "cBridge", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "initializeCBridge",
     data: BytesLike
@@ -157,11 +154,8 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<[string]>;
 
-    chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     initializeCBridge(
       _cBridge: string,
-      _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -178,11 +172,8 @@ export interface CBridgeFacet extends BaseContract {
 
   cBridge(overrides?: CallOverrides): Promise<string>;
 
-  chainId(overrides?: CallOverrides): Promise<BigNumber>;
-
   initializeCBridge(
     _cBridge: string,
-    _chainId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -199,11 +190,8 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<string>;
 
-    chainId(overrides?: CallOverrides): Promise<BigNumber>;
-
     initializeCBridge(
       _cBridge: string,
-      _chainId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -254,11 +242,8 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<BigNumber>;
 
-    chainId(overrides?: CallOverrides): Promise<BigNumber>;
-
     initializeCBridge(
       _cBridge: string,
-      _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -276,11 +261,8 @@ export interface CBridgeFacet extends BaseContract {
 
     cBridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     initializeCBridge(
       _cBridge: string,
-      _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

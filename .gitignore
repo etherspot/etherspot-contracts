@@ -24,6 +24,7 @@ node_modules
 .test*
 coverage
 coverage.json
+deployments
 
 # hardhat
 .hardhat

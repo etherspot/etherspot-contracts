@@ -45,17 +45,14 @@ contract CBridgeFacet is ReentrancyGuard {
     //////////////////////////////////////////////////////////////
 
     address public cBridge;
-    uint256 public chainId;
 
     /// @notice initializes state variables for the cBridge facet
-    /// @param _cBridge address of the canonical CBridge router contract
-    /// @param _chainId chainId of this deployed contract
-    function initializeCBridge(address _cBridge, uint256 _chainId) external {
+    /// @param _cBridge address of the CBridge router contract
+    function initializeCBridge(address _cBridge) external {
         LibDiamond.enforceIsContractOwner();
-        if (_cBridge == address(0) || _chainId == 0) revert InvalidConfig();
+        if (_cBridge == address(0)) revert InvalidConfig();
         cBridge = _cBridge;
-        chainId = _chainId;
-        emit CBridgeInitialized(_cBridge, _chainId);
+        emit CBridgeInitialized(_cBridge, block.chainid);
     }
 
     /// @notice initiates token bridging
@@ -91,7 +88,7 @@ contract CBridgeFacet is ReentrancyGuard {
     //////////////////////////////////////////////////////////////
 
     function _startBridge(CBridgeData memory _cBridgeData) private {
-        if (chainId == _cBridgeData.dstChainId)
+        if (block.chainid == _cBridgeData.dstChainId)
             revert CannotBridgeToSameNetwork();
 
         LibAsset.maxApproveERC20(
