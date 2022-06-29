@@ -1,19 +1,15 @@
 import { ethers, network, deployments } from 'hardhat';
 import { AmarokFacet, Diamond, IERC20, IConnextHandler } from '../../typings';
-import {
-  processTx,
-  randomAddress,
-  SignerWithAddress,
-} from '../shared';
+import * as shared from '../shared';
 import {
   NETWORK_CONFIGS,
   NetworkNames
 } from '../../extensions/constants'
 
-describe('AmarokFacet', () => {
+describe.only('AmarokFacet', () => {
   const RINKEBY_CONNEXT_HANDLER = "0x2307Ed9f152FA9b3DcDfe2385d279D8C2A9DF2b0";
   const RINKEBY_TEST_TOKEN = "0x3FFc03F05D1869f493c7dbf913E636C6280e0ff9";
-  let signer: SignerWithAddress;
+  let signer: shared.SignerWithAddress;
   let amarokFacet: AmarokFacet;
   let token: IERC20;
   let diamond: Diamond;
@@ -51,8 +47,8 @@ describe('AmarokFacet', () => {
       diamond.address,
       ethers.constants.MaxUint256
     );
-    const recipient = randomAddress();
-    const { events } = await processTx(
+    const recipient = shared.randomAddress();
+    const { events } = await shared.processTx(
       amarokFacet.amarokTokenTransfer(
         RINKEBY_TEST_TOKEN,
         recipient,
@@ -101,7 +97,7 @@ describe('AmarokFacet', () => {
       ethers.constants.MaxUint256
     );
     const callData = await token.populateTransaction.totalSupply();
-    let { events } = await processTx(
+    let { events } = await shared.processTx(
       amarokFacet.amarokCall(
         RINKEBY_TEST_TOKEN,
         callData.data,
