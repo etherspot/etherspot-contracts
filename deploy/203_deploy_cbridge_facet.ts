@@ -14,7 +14,6 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const { from } = await getNamedAccounts();
 
   let bridgeAddr = "0xc578cbaf5a411dfa9f0d227f97dadaa4074ad062";
-  let chainId = 1;
 
   await deploy("CBridgeFacet", {
     from,
