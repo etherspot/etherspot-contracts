@@ -13,7 +13,6 @@ describe.only('AmarokFacet', () => {
   let amarokFacet: AmarokFacet;
   let token: IERC20;
   let diamond: Diamond;
-  let handler: IConnextHandler;
 
   before(async function () {
     await network.provider.request({
@@ -35,7 +34,6 @@ describe.only('AmarokFacet', () => {
       '0x1a258f501e1e36e0a7f7b8f3d75042ab1172a028'
     )
     token = (await ethers.getContractAt<IERC20>("IERC20", RINKEBY_TEST_TOKEN)).connect(signer);
-    handler = await ethers.getContractAt<IConnextHandler>("IConnextHandler", RINKEBY_CONNEXT_HANDLER);
 
     await deployments.fixture(['bridges', 'amarok']);
     diamond = await ethers.getContract('Diamond');
@@ -97,7 +95,7 @@ describe.only('AmarokFacet', () => {
       ethers.constants.MaxUint256
     );
     const callData = await token.populateTransaction.totalSupply();
-    let { events } = await shared.processTx(
+    const { events } = await shared.processTx(
       amarokFacet.amarokCall(
         RINKEBY_TEST_TOKEN,
         callData.data,

@@ -1,7 +1,6 @@
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { addOrReplaceFacets } from '../utils/diamond';
-import { AmarokFacet } from '../typings';
 import { ConnextConfig } from '../extensions/bridges-config';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
