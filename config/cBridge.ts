@@ -59,6 +59,18 @@ const config: cBridgeConfig = {
     cBridge: "0xBB7684Cc5408F4DD0921E5c2Cadd547b8f1AD573",
     chainId: 42220,
   },
+  goerli: {
+    cBridge: "0xd9145CCE52D386f254917e481eB44e9943F39138",
+    chainId: 5,
+  },
+  optimismKovan: {
+    cBridge: "0x6D5862a18C6a169D44d02a8B726a02A5B707B484",
+    chainId: 69,
+  },
+  arbitrumTest: {
+    cBridge: "0x8314Af54080dF4d05768c5D3f097f59f170d9564",
+    chainId: 421611,
+  },
 };
 
 export default config;
