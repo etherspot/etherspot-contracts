@@ -3,7 +3,11 @@ import { Provider } from "@ethersproject/providers";
 import type { Controlled, ControlledInterface } from "../Controlled";
 export declare class Controlled__factory {
     static readonly abi: {
-        inputs: any[];
+        inputs: {
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
         name: string;
         outputs: {
             internalType: string;

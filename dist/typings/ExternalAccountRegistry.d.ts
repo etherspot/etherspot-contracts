@@ -6,6 +6,9 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
     functions: {
         "addAccountOwner(address)": FunctionFragment;
         "addAccountProof(bytes32)": FunctionFragment;
+        "c_67f73f84(bytes8)": FunctionFragment;
+        "c_false67f73f84(bytes8)": FunctionFragment;
+        "c_true67f73f84(bytes8)": FunctionFragment;
         "removeAccountOwner(address)": FunctionFragment;
         "removeAccountProof(bytes32)": FunctionFragment;
         "verifyAccountOwner(address,address)": FunctionFragment;
@@ -15,6 +18,9 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
     };
     encodeFunctionData(functionFragment: "addAccountOwner", values: [string]): string;
     encodeFunctionData(functionFragment: "addAccountProof", values: [BytesLike]): string;
+    encodeFunctionData(functionFragment: "c_67f73f84", values: [BytesLike]): string;
+    encodeFunctionData(functionFragment: "c_false67f73f84", values: [BytesLike]): string;
+    encodeFunctionData(functionFragment: "c_true67f73f84", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "removeAccountOwner", values: [string]): string;
     encodeFunctionData(functionFragment: "removeAccountProof", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "verifyAccountOwner", values: [string, string]): string;
@@ -23,6 +29,9 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "verifyAccountProofAtBlock", values: [string, BytesLike, BigNumberish]): string;
     decodeFunctionResult(functionFragment: "addAccountOwner", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "addAccountProof", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "c_67f73f84", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "c_false67f73f84", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "c_true67f73f84", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "removeAccountOwner", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "removeAccountProof", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "verifyAccountOwner", data: BytesLike): Result;
@@ -93,6 +102,9 @@ export interface ExternalAccountRegistry extends BaseContract {
         addAccountProof(hash: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
+        c_67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<[void]>;
+        c_false67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
+        c_true67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
         removeAccountOwner(owner: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
@@ -110,6 +122,9 @@ export interface ExternalAccountRegistry extends BaseContract {
     addAccountProof(hash: BytesLike, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
+    c_67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<void>;
+    c_false67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<boolean>;
+    c_true67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     removeAccountOwner(owner: string, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
@@ -123,6 +138,9 @@ export interface ExternalAccountRegistry extends BaseContract {
     callStatic: {
         addAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
         addAccountProof(hash: BytesLike, overrides?: CallOverrides): Promise<void>;
+        c_67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<void>;
+        c_false67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<boolean>;
+        c_true67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<boolean>;
         removeAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
         removeAccountProof(hash: BytesLike, overrides?: CallOverrides): Promise<void>;
         verifyAccountOwner(account: string, owner: string, overrides?: CallOverrides): Promise<boolean>;
@@ -147,6 +165,9 @@ export interface ExternalAccountRegistry extends BaseContract {
         addAccountProof(hash: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
+        c_67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+        c_false67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+        c_true67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         removeAccountOwner(owner: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
@@ -165,6 +186,9 @@ export interface ExternalAccountRegistry extends BaseContract {
         addAccountProof(hash: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
+        c_67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        c_false67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        c_true67f73f84(c__67f73f84: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         removeAccountOwner(owner: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;

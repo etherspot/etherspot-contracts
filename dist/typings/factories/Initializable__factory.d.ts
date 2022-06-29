@@ -15,7 +15,11 @@ export declare class Initializable__factory {
         outputs?: undefined;
         stateMutability?: undefined;
     } | {
-        inputs: any[];
+        inputs: {
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
         name: string;
         outputs: {
             internalType: string;

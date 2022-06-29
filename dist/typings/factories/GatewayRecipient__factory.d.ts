@@ -3,7 +3,11 @@ import { Provider } from "@ethersproject/providers";
 import type { GatewayRecipient, GatewayRecipientInterface } from "../GatewayRecipient";
 export declare class GatewayRecipient__factory {
     static readonly abi: {
-        inputs: any[];
+        inputs: {
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
         name: string;
         outputs: {
             internalType: string;
