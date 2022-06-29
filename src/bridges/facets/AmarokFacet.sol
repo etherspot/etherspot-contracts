@@ -14,14 +14,12 @@ import { LibDiamond } from "../libs/LibDiamond.sol";
  */
 contract AmarokFacet {
   // storage
-
+  
   bytes32 internal constant NAMESPACE = hex"a4cabcf91d6212ba2873e2f19de6e26ae65fd3280b9eaa6d8bc38c5fba52ec9d"; //keccak256("io.etherspot.facets.amarok");
   struct Storage {
     address connext;
     uint32 chainId;
   }
-
-  // types
 
   // events
 
@@ -85,8 +83,6 @@ contract AmarokFacet {
     bytes32 _transferId
   );
 
-
-
   // init
 
   /**
@@ -120,8 +116,6 @@ contract AmarokFacet {
     uint256 _amount,
     uint256 _relayerFee
   ) external payable {
-    depositAsset(_asset, _amount);
-    IERC20(_asset).approve(getConnext(), _amount);
     bytes32 transferId = xcall(
       _to,
       "",
@@ -201,10 +195,6 @@ contract AmarokFacet {
     address _callback,
     uint256 _callbackFee
   ) external payable {
-    depositAsset(_asset, _amount);
-    if (_asset != address(0)) {
-      IERC20(_asset).approve(getConnext(), _amount);
-    }
     bytes32 transferId = xcall(
       _to,
       _callData,
@@ -248,7 +238,7 @@ contract AmarokFacet {
     address _to,
     bytes memory _callData,
     uint32 _originDomain,
-    uint32 _destinationDomain, 
+    uint32 _destinationDomain,
     address _asset,
     uint256 _amount,
     uint256 _relayerFee,
@@ -257,6 +247,10 @@ contract AmarokFacet {
     uint256 _callbackFee,
     bool _forceSlow
   ) internal returns (bytes32 transferId) {
+    depositAssetAndFees(_asset, _amount, _relayerFee, _callbackFee);
+    if (_asset != address(0)) {
+      IERC20(_asset).approve(getConnext(), _amount);
+    }
     IConnextHandler connext = IConnextHandler(getConnext());
     CallParams memory callParams = CallParams({
       to: _to,
@@ -275,8 +269,7 @@ contract AmarokFacet {
       amount: _amount,
       relayerFee: _relayerFee
     });
-    uint256 value = _asset == address(0) ? msg.value : 0;
-    transferId = connext.xcall{value: value}(xcallArgs);
+    transferId = connext.xcall{value: msg.value}(xcallArgs);
   }
 
   /**
@@ -284,18 +277,18 @@ contract AmarokFacet {
    * @param _asset asset address, 0 for native asset
    * @param _amount amount of asset
    */
-  function depositAsset(
+  function depositAssetAndFees(
     address _asset,
-    uint256 _amount
+    uint256 _amount,
+    uint256 _relayerFee,
+    uint256 _callbackFee
   )
     private
   {
-    if (_amount == 0) {
-      return;
-    }
     if (_asset == address(0)) {
-      require(msg.value == _amount, "Amarok: Invalid value");
+      require(msg.value == _amount + _relayerFee + _callbackFee, "Amarok: Invalid value");
     } else {
+      require(msg.value == _relayerFee + _callbackFee, "Amarok: Invalid value");
       uint256 _tokenBalanceBefore = IERC20(_asset).balanceOf(address(this));
       IERC20(_asset).transferFrom(msg.sender, address(this), _amount);
       uint256 _tokenBalanceAfter = IERC20(_asset).balanceOf(address(this));
