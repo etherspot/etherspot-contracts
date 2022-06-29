@@ -53,6 +53,15 @@ const config: HardhatUserConfig = {
           },
         },
       },
+      {
+        version: '0.8.11',
+        settings: {
+          evmVersion: "istanbul",
+          metadata: {
+            bytecodeHash: "none",
+          },
+        },
+      },
     ],
   },
   paths: {

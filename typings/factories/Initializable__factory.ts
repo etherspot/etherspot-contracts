@@ -12,26 +12,13 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "initializer",
-        type: "address",
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
       },
     ],
     name: "Initialized",
     type: "event",
-  },
-  {
-    inputs: [],
-    name: "isInitialized",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
   },
 ];
 
