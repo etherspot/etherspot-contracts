@@ -8,7 +8,7 @@ pragma solidity 0.8.4;
 
 import {LibAsset} from "../libs/LibAsset.sol";
 import {ICBridge} from "../interfaces/ICBridge.sol";
-import {IERC20} from "../interfaces/IERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuard} from "../helpers/ReentrancyGuard.sol";
 import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
