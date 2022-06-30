@@ -1,4 +1,4 @@
-import { NetworkNames } from "./constants"
+import { NetworkNames } from "../extensions/constants";
 
 export const ConnextConfig = {
   [NetworkNames.Rinkeby]: {
@@ -12,5 +12,5 @@ export const ConnextConfig = {
   'hardhat': { // goerli fork for testing
     domainId: 3331,
     handler: "0xEC3A723DE47a644b901DC269829bf8718F175EBF",
-  }
-}
+  },
+};

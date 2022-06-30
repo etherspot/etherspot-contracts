@@ -1,7 +1,7 @@
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { addOrReplaceFacets } from '../utils/diamond';
-import { ConnextConfig } from '../extensions/bridges-config';
+import { ConnextConfig } from '../config/connext';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
