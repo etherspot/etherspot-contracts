@@ -178,20 +178,18 @@ describe("CBridgeFacet", () => {
   });
 
   it("should update cBridge address", async function() {
-    expect(await cBridgeFacet.cBridge()).toEqual(CBRIDGE_ADDRESS);
-    const tx: ContractTransaction = await cBridgeFacet.updateBridgeAddress(
+    const tx: ContractTransaction = await cBridgeFacet.updateCBridgeAddress(
       dummy.address,
     );
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(await cBridgeFacet.cBridge()).toEqual(dummy.address);
     expect(result[0]).toEqual("UpdatedCBridgeAddress");
     expect(result[1]).toEqual(dummy.address);
   });
 
   it("should revert if updating cBridge address to address(0)", async function() {
     await expectRevert(
-      cBridgeFacet.updateBridgeAddress(ZERO_ADDRESS),
+      cBridgeFacet.updateCBridgeAddress(ZERO_ADDRESS),
       "InvalidConfig",
     );
   });

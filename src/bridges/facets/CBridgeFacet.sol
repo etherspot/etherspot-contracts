@@ -29,6 +29,17 @@ contract CBridgeFacet is ReentrancyGuard {
     event UpdatedCBridgeAddress(address newAddress);
 
     //////////////////////////////////////////////////////////////
+    ////////////////////////// Storage ///////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    bytes32 internal constant NAMESPACE =
+        keccak256("io.etherspot.facets.cbridge");
+    struct Storage {
+        address cBridge;
+        uint256 cBridgeChainId;
+    }
+
+    //////////////////////////////////////////////////////////////
     ////////////////////////// Structs ///////////////////////////
     //////////////////////////////////////////////////////////////
 
@@ -40,18 +51,15 @@ contract CBridgeFacet is ReentrancyGuard {
         address receiver;
         address token;
     }
-    //////////////////////////////////////////////////////////////
-    ////////////////////// State Variables ///////////////////////
-    //////////////////////////////////////////////////////////////
-
-    address public cBridge;
 
     /// @notice initializes state variables for the cBridge facet
     /// @param _cBridge address of the CBridge router contract
     function initializeCBridge(address _cBridge) external {
         LibDiamond.enforceIsContractOwner();
         if (_cBridge == address(0)) revert InvalidConfig();
-        cBridge = _cBridge;
+        Storage storage s = getStorage();
+        s.cBridge = _cBridge;
+        s.cBridgeChainId = block.chainid;
         emit CBridgeInitialized(_cBridge, block.chainid);
     }
 
@@ -76,10 +84,11 @@ contract CBridgeFacet is ReentrancyGuard {
         );
     }
 
-    function updateBridgeAddress(address _newAddress) external {
+    function updateCBridgeAddress(address _newAddress) external {
         LibDiamond.enforceIsContractOwner();
         if (_newAddress == address(0)) revert InvalidConfig();
-        cBridge = _newAddress;
+        Storage storage s = getStorage();
+        s.cBridge = _newAddress;
         emit UpdatedCBridgeAddress(_newAddress);
     }
 
@@ -87,17 +96,21 @@ contract CBridgeFacet is ReentrancyGuard {
     ////////////////////// Private Functions /////////////////////
     //////////////////////////////////////////////////////////////
 
+    /// @dev approve bridge to spend tokens and send via cBridge router
     function _startBridge(CBridgeData memory _cBridgeData) private {
+        Storage storage s = getStorage();
+        address bridge = s.cBridge;
+
         if (block.chainid == _cBridgeData.dstChainId)
             revert CannotBridgeToSameNetwork();
 
         LibAsset.maxApproveERC20(
             IERC20(_cBridgeData.token),
-            cBridge,
+            bridge,
             _cBridgeData.amount
         );
         // solhint-disable check-send-result
-        ICBridge(cBridge).send(
+        ICBridge(bridge).send(
             _cBridgeData.receiver,
             _cBridgeData.token,
             _cBridgeData.amount,
@@ -105,5 +118,14 @@ contract CBridgeFacet is ReentrancyGuard {
             _cBridgeData.nonce,
             _cBridgeData.maxSlippage
         );
+    }
+
+    /// @dev fetch local storage
+    function getStorage() private pure returns (Storage storage s) {
+        bytes32 namespace = NAMESPACE;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            s.slot := namespace
+        }
     }
 }

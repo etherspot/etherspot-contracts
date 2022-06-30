@@ -46,22 +46,20 @@ export type CBridgeDataStructOutput = [
 export interface CBridgeFacetInterface extends utils.Interface {
   functions: {
     "bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": FunctionFragment;
-    "cBridge()": FunctionFragment;
     "initializeCBridge(address)": FunctionFragment;
-    "updateBridgeAddress(address)": FunctionFragment;
+    "updateCBridgeAddress(address)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "bridgeTokensCBridge",
     values: [CBridgeDataStruct]
   ): string;
-  encodeFunctionData(functionFragment: "cBridge", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initializeCBridge",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateBridgeAddress",
+    functionFragment: "updateCBridgeAddress",
     values: [string]
   ): string;
 
@@ -69,13 +67,12 @@ export interface CBridgeFacetInterface extends utils.Interface {
     functionFragment: "bridgeTokensCBridge",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "cBridge", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "initializeCBridge",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateBridgeAddress",
+    functionFragment: "updateCBridgeAddress",
     data: BytesLike
   ): Result;
 
@@ -152,14 +149,12 @@ export interface CBridgeFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    cBridge(overrides?: CallOverrides): Promise<[string]>;
-
     initializeCBridge(
       _cBridge: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    updateBridgeAddress(
+    updateCBridgeAddress(
       _newAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -170,14 +165,12 @@ export interface CBridgeFacet extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  cBridge(overrides?: CallOverrides): Promise<string>;
-
   initializeCBridge(
     _cBridge: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  updateBridgeAddress(
+  updateCBridgeAddress(
     _newAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -188,14 +181,12 @@ export interface CBridgeFacet extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    cBridge(overrides?: CallOverrides): Promise<string>;
-
     initializeCBridge(
       _cBridge: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateBridgeAddress(
+    updateCBridgeAddress(
       _newAddress: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -240,14 +231,12 @@ export interface CBridgeFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    cBridge(overrides?: CallOverrides): Promise<BigNumber>;
-
     initializeCBridge(
       _cBridge: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    updateBridgeAddress(
+    updateCBridgeAddress(
       _newAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -259,14 +248,12 @@ export interface CBridgeFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    cBridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     initializeCBridge(
       _cBridge: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    updateBridgeAddress(
+    updateCBridgeAddress(
       _newAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
