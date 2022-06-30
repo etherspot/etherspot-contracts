@@ -50,6 +50,8 @@
     "deploy:moonbase": "hardhat deploy --network moonbase",
     "deploy:celo": "hardhat deploy --network celo",
     "deploy:celoTest": "hardhat deploy --network celoTest",
+    "deploy:fuse": "hardhat deploy --network fuse",
+    "deploy:fuseSparknet": "hardhat deploy --network fuseSparknet",
     "deploy:etherspot": "hardhat deploy --network etherspot",
     "deploy:localA": "hardhat deploy --network localA",
     "deploy:localB": "hardhat deploy --network localB",
