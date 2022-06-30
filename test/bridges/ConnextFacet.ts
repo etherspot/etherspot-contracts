@@ -13,7 +13,7 @@ import {
 describe('ConnextFacet', () => {
   const TEST_TOKEN_ADDRESS = "0x3FFc03F05D1869f493c7dbf913E636C6280e0ff9";
   let signer: SignerWithAddress;
-  let ConnextFacet: ConnextFacet;
+  let connextFacet: ConnextFacet;
   let token: IERC20;
   let diamond: Diamond;
 
@@ -40,7 +40,7 @@ describe('ConnextFacet', () => {
 
     await deployments.fixture(['bridges', 'connext']);
     diamond = await ethers.getContract('Diamond');
-    ConnextFacet = (
+    connextFacet = (
       await ethers.getContractAt<ConnextFacet>(
           'ConnextFacet',
           diamond.address
@@ -55,7 +55,7 @@ describe('ConnextFacet', () => {
     );
     const recipient = randomAddress();
     const { events } = await processTx(
-      ConnextFacet.connextTokenTransfer(
+      connextFacet.connextTokenTransfer(
         TEST_TOKEN_ADDRESS,
         recipient,
         1111,
@@ -82,7 +82,7 @@ describe('ConnextFacet', () => {
     );
     const recipient = randomAddress();
     const { events } = await processTx(
-      ConnextFacet.connextTokenTransfer(
+      connextFacet.connextTokenTransfer(
         TEST_TOKEN_ADDRESS,
         recipient,
         1111,
@@ -111,7 +111,7 @@ describe('ConnextFacet', () => {
       ethers.constants.MaxUint256
     );
     const recipient = randomAddress();
-    await expect(ConnextFacet.connextTokenTransfer(
+    await expect(connextFacet.connextTokenTransfer(
       TEST_TOKEN_ADDRESS,
       recipient,
       1111,
@@ -151,7 +151,7 @@ describe('ConnextFacet', () => {
     );
     const callData = await token.populateTransaction.totalSupply();
     const { events } = await processTx(
-      ConnextFacet.connextCall(
+      connextFacet.connextCall(
         TEST_TOKEN_ADDRESS,
         callData.data,
         1111,
@@ -176,7 +176,7 @@ describe('ConnextFacet', () => {
   it("performs crosschain call with fee", async () => {
     const callData = await token.populateTransaction.totalSupply();
     const { events } = await processTx(
-      ConnextFacet.connextCall(
+      connextFacet.connextCall(
         TEST_TOKEN_ADDRESS,
         callData.data,
         1111,

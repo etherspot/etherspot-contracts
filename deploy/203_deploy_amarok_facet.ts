@@ -22,7 +22,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   const diamond = await ethers.getContract('Diamond');
-  const ConnextFacet = await ethers.getContract("ConnextFacet");
+  const connextFacet = await ethers.getContract("ConnextFacet");
 
   const ABI = ['function initConnext(address, uint32)'];
   const iface = new hre.ethers.utils.Interface(ABI)
@@ -33,9 +33,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   ]);
 
   await addOrReplaceFacets(
-    [ConnextFacet],
+    [connextFacet],
     diamond.address,
-    ConnextFacet.address,
+    connextFacet.address,
     initData
   );
 }
