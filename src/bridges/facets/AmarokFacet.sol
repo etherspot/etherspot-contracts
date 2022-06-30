@@ -7,7 +7,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { LibDiamond } from "../libs/LibDiamond.sol";
 
 /**
- * @title Connext Connext Integration
+ * @title Connext Amarok Integration
  *
  * @notice Contract which provides bridging functionality through Connext
  *
