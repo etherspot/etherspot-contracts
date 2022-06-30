@@ -1,5 +1,5 @@
 import { ethers, network, deployments } from 'hardhat';
-import { AmarokFacet, Diamond, IERC20 } from '../../typings';
+import { ConnextFacet, Diamond, IERC20 } from '../../typings';
 import {
   NETWORK_CONFIGS,
   NetworkNames
@@ -10,10 +10,10 @@ import {
   SignerWithAddress
 } from '../shared';
 
-describe('AmarokFacet', () => {
+describe('ConnextFacet', () => {
   const TEST_TOKEN_ADDRESS = "0x3FFc03F05D1869f493c7dbf913E636C6280e0ff9";
   let signer: SignerWithAddress;
-  let amarokFacet: AmarokFacet;
+  let ConnextFacet: ConnextFacet;
   let token: IERC20;
   let diamond: Diamond;
 
@@ -38,11 +38,11 @@ describe('AmarokFacet', () => {
     )
     token = (await ethers.getContractAt<IERC20>("IERC20", TEST_TOKEN_ADDRESS)).connect(signer);
 
-    await deployments.fixture(['bridges', 'amarok']);
+    await deployments.fixture(['bridges', 'connext']);
     diamond = await ethers.getContract('Diamond');
-    amarokFacet = (
-      await ethers.getContractAt<AmarokFacet>(
-          'AmarokFacet',
+    ConnextFacet = (
+      await ethers.getContractAt<ConnextFacet>(
+          'ConnextFacet',
           diamond.address
         )
     ).connect(signer);
@@ -55,7 +55,7 @@ describe('AmarokFacet', () => {
     );
     const recipient = randomAddress();
     const { events } = await processTx(
-      amarokFacet.amarokTokenTransfer(
+      ConnextFacet.connextTokenTransfer(
         TEST_TOKEN_ADDRESS,
         recipient,
         1111,
@@ -64,7 +64,7 @@ describe('AmarokFacet', () => {
       )
     );
 
-    const event = events.find(({ event }) => event === 'AmarokTokenSwap');
+    const event = events.find(({ event }) => event === 'ConnextTokenSwap');
     expect(event).toBeDefined();
     expect(event.args._destination).toEqual(1111);
     expect(event.args._recipient).toEqual(recipient);
@@ -82,7 +82,7 @@ describe('AmarokFacet', () => {
     );
     const recipient = randomAddress();
     const { events } = await processTx(
-      amarokFacet.amarokTokenTransfer(
+      ConnextFacet.connextTokenTransfer(
         TEST_TOKEN_ADDRESS,
         recipient,
         1111,
@@ -94,7 +94,7 @@ describe('AmarokFacet', () => {
       )
     );
 
-    const event = events.find(({ event }) => event === 'AmarokTokenSwap');
+    const event = events.find(({ event }) => event === 'ConnextTokenSwap');
     expect(event).toBeDefined();
     expect(event.args._destination).toEqual(1111);
     expect(event.args._recipient).toEqual(recipient);
@@ -111,7 +111,7 @@ describe('AmarokFacet', () => {
       ethers.constants.MaxUint256
     );
     const recipient = randomAddress();
-    await expect(amarokFacet.amarokTokenTransfer(
+    await expect(ConnextFacet.connextTokenTransfer(
       TEST_TOKEN_ADDRESS,
       recipient,
       1111,
@@ -126,14 +126,14 @@ describe('AmarokFacet', () => {
   // it("performs native asset swap", async () => {
   //   const recipient = randomAddress();
   //   const { events } = await processTx(
-  //     amarokFacet.amarokNativeAssetTransfer(
+  //     ConnextFacet.connextNativeAssetTransfer(
   //       randomAddress(),
   //       1111,
   //       0,
   //       { value: ethers.utils.parseEther("0.05") }
   //     )
   //   );
-  //   const event = events.find(({ event }) => event === 'AmarokTokenSwap');
+  //   const event = events.find(({ event }) => event === 'ConnextTokenSwap');
   //   expect(event).toBeDefined();
   //   expect(event.args._destination).toEqual(1111);
   //   expect(event.args._recipient).toEqual(recipient);
@@ -151,7 +151,7 @@ describe('AmarokFacet', () => {
     );
     const callData = await token.populateTransaction.totalSupply();
     const { events } = await processTx(
-      amarokFacet.amarokCall(
+      ConnextFacet.connextCall(
         TEST_TOKEN_ADDRESS,
         callData.data,
         1111,
@@ -163,7 +163,7 @@ describe('AmarokFacet', () => {
         0
       )
     );
-    const event = events.find(({ event }) => event === 'AmarokXCall');
+    const event = events.find(({ event }) => event === 'ConnextXCall');
     expect(event).toBeDefined();
     expect(event.args._destination).toEqual(1111);
     expect(event.args._recipient).toEqual(TEST_TOKEN_ADDRESS);
@@ -176,7 +176,7 @@ describe('AmarokFacet', () => {
   it("performs crosschain call with fee", async () => {
     const callData = await token.populateTransaction.totalSupply();
     const { events } = await processTx(
-      amarokFacet.amarokCall(
+      ConnextFacet.connextCall(
         TEST_TOKEN_ADDRESS,
         callData.data,
         1111,
@@ -191,7 +191,7 @@ describe('AmarokFacet', () => {
         }
       )
     );
-    const event = events.find(({ event }) => event === 'AmarokXCall');
+    const event = events.find(({ event }) => event === 'ConnextXCall');
     expect(event).toBeDefined();
     expect(event.args._destination).toEqual(1111);
     expect(event.args._recipient).toEqual(TEST_TOKEN_ADDRESS);

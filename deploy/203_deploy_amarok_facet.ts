@@ -16,31 +16,31 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     throw new Error("No connext config for this network available: " + network.name);
   }
 
-  await deploy('AmarokFacet', {
+  await deploy('ConnextFacet', {
     from,
     log: true,
   });
 
   const diamond = await ethers.getContract('Diamond');
-  const amarokFacet = await ethers.getContract("AmarokFacet");
+  const ConnextFacet = await ethers.getContract("ConnextFacet");
 
-  const ABI = ['function initAmarok(address, uint32)'];
+  const ABI = ['function initConnext(address, uint32)'];
   const iface = new hre.ethers.utils.Interface(ABI)
 
-  const initData = iface.encodeFunctionData('initAmarok', [
+  const initData = iface.encodeFunctionData('initConnext', [
     ConnextConfig[network.name].handler,
     ConnextConfig[network.name].domainId
   ]);
 
   await addOrReplaceFacets(
-    [amarokFacet],
+    [ConnextFacet],
     diamond.address,
-    amarokFacet.address,
+    ConnextFacet.address,
     initData
   );
 }
 
-func.tags = ['bridges', 'amarok'];
+func.tags = ['bridges', 'connext'];
 func.dependencies = ['init-facets'];
 
 export default func;

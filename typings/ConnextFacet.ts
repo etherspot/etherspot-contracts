@@ -18,16 +18,16 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface AmarokFacetInterface extends utils.Interface {
+export interface ConnextFacetInterface extends utils.Interface {
   functions: {
-    "amarokCall(address,bytes,uint32,address,uint256,uint256,address,address,uint256)": FunctionFragment;
-    "amarokNativeAssetTransfer(address,uint32,uint256)": FunctionFragment;
-    "amarokTokenTransfer(address,address,uint32,uint256,uint256)": FunctionFragment;
-    "initAmarok(address,uint32)": FunctionFragment;
+    "connextCall(address,bytes,uint32,address,uint256,uint256,address,address,uint256)": FunctionFragment;
+    "connextNativeAssetTransfer(address,uint32,uint256)": FunctionFragment;
+    "connextTokenTransfer(address,address,uint32,uint256,uint256)": FunctionFragment;
+    "initConnext(address,uint32)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "amarokCall",
+    functionFragment: "connextCall",
     values: [
       string,
       BytesLike,
@@ -41,48 +41,57 @@ export interface AmarokFacetInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "amarokNativeAssetTransfer",
+    functionFragment: "connextNativeAssetTransfer",
     values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "amarokTokenTransfer",
+    functionFragment: "connextTokenTransfer",
     values: [string, string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "initAmarok",
+    functionFragment: "initConnext",
     values: [string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "amarokCall", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "amarokNativeAssetTransfer",
+    functionFragment: "connextCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "amarokTokenTransfer",
+    functionFragment: "connextNativeAssetTransfer",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "initAmarok", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "connextTokenTransfer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "initConnext",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "AmarokInitialized(address)": EventFragment;
-    "AmarokNativeSwap(uint32,address,uint256,uint256,bytes32)": EventFragment;
-    "AmarokTokenSwap(uint32,address,address,uint256,uint256,bytes32)": EventFragment;
-    "AmarokXCall(uint32,address,address,uint256,bytes,uint256,bytes32)": EventFragment;
+    "ConnextInitialized(address)": EventFragment;
+    "ConnextNativeSwap(uint32,address,uint256,uint256,bytes32)": EventFragment;
+    "ConnextTokenSwap(uint32,address,address,uint256,uint256,bytes32)": EventFragment;
+    "ConnextXCall(uint32,address,address,uint256,bytes,uint256,bytes32)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AmarokInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AmarokNativeSwap"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AmarokTokenSwap"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AmarokXCall"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ConnextInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ConnextNativeSwap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ConnextTokenSwap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ConnextXCall"): EventFragment;
 }
 
-export type AmarokInitializedEvent = TypedEvent<[string], { _connext: string }>;
+export type ConnextInitializedEvent = TypedEvent<
+  [string],
+  { _connext: string }
+>;
 
-export type AmarokInitializedEventFilter =
-  TypedEventFilter<AmarokInitializedEvent>;
+export type ConnextInitializedEventFilter =
+  TypedEventFilter<ConnextInitializedEvent>;
 
-export type AmarokNativeSwapEvent = TypedEvent<
+export type ConnextNativeSwapEvent = TypedEvent<
   [number, string, BigNumber, BigNumber, string],
   {
     _destination: number;
@@ -93,10 +102,10 @@ export type AmarokNativeSwapEvent = TypedEvent<
   }
 >;
 
-export type AmarokNativeSwapEventFilter =
-  TypedEventFilter<AmarokNativeSwapEvent>;
+export type ConnextNativeSwapEventFilter =
+  TypedEventFilter<ConnextNativeSwapEvent>;
 
-export type AmarokTokenSwapEvent = TypedEvent<
+export type ConnextTokenSwapEvent = TypedEvent<
   [number, string, string, BigNumber, BigNumber, string],
   {
     _destination: number;
@@ -108,9 +117,10 @@ export type AmarokTokenSwapEvent = TypedEvent<
   }
 >;
 
-export type AmarokTokenSwapEventFilter = TypedEventFilter<AmarokTokenSwapEvent>;
+export type ConnextTokenSwapEventFilter =
+  TypedEventFilter<ConnextTokenSwapEvent>;
 
-export type AmarokXCallEvent = TypedEvent<
+export type ConnextXCallEvent = TypedEvent<
   [number, string, string, BigNumber, string, BigNumber, string],
   {
     _destination: number;
@@ -123,14 +133,14 @@ export type AmarokXCallEvent = TypedEvent<
   }
 >;
 
-export type AmarokXCallEventFilter = TypedEventFilter<AmarokXCallEvent>;
+export type ConnextXCallEventFilter = TypedEventFilter<ConnextXCallEvent>;
 
-export interface AmarokFacet extends BaseContract {
+export interface ConnextFacet extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: AmarokFacetInterface;
+  interface: ConnextFacetInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -152,7 +162,7 @@ export interface AmarokFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    amarokCall(
+    connextCall(
       _to: string,
       _callData: BytesLike,
       _destinationDomain: BigNumberish,
@@ -165,14 +175,14 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    amarokNativeAssetTransfer(
+    connextNativeAssetTransfer(
       _to: string,
       _destinationDomain: BigNumberish,
       _relayerFee: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    amarokTokenTransfer(
+    connextTokenTransfer(
       _asset: string,
       _to: string,
       _destinationDomain: BigNumberish,
@@ -181,14 +191,14 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    initAmarok(
+    initConnext(
       _connext: string,
-      _chainId: BigNumberish,
+      _domainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  amarokCall(
+  connextCall(
     _to: string,
     _callData: BytesLike,
     _destinationDomain: BigNumberish,
@@ -201,14 +211,14 @@ export interface AmarokFacet extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  amarokNativeAssetTransfer(
+  connextNativeAssetTransfer(
     _to: string,
     _destinationDomain: BigNumberish,
     _relayerFee: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  amarokTokenTransfer(
+  connextTokenTransfer(
     _asset: string,
     _to: string,
     _destinationDomain: BigNumberish,
@@ -217,14 +227,14 @@ export interface AmarokFacet extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  initAmarok(
+  initConnext(
     _connext: string,
-    _chainId: BigNumberish,
+    _domainId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    amarokCall(
+    connextCall(
       _to: string,
       _callData: BytesLike,
       _destinationDomain: BigNumberish,
@@ -237,14 +247,14 @@ export interface AmarokFacet extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    amarokNativeAssetTransfer(
+    connextNativeAssetTransfer(
       _to: string,
       _destinationDomain: BigNumberish,
       _relayerFee: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    amarokTokenTransfer(
+    connextTokenTransfer(
       _asset: string,
       _to: string,
       _destinationDomain: BigNumberish,
@@ -253,50 +263,52 @@ export interface AmarokFacet extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    initAmarok(
+    initConnext(
       _connext: string,
-      _chainId: BigNumberish,
+      _domainId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    "AmarokInitialized(address)"(_connext?: null): AmarokInitializedEventFilter;
-    AmarokInitialized(_connext?: null): AmarokInitializedEventFilter;
+    "ConnextInitialized(address)"(
+      _connext?: null
+    ): ConnextInitializedEventFilter;
+    ConnextInitialized(_connext?: null): ConnextInitializedEventFilter;
 
-    "AmarokNativeSwap(uint32,address,uint256,uint256,bytes32)"(
+    "ConnextNativeSwap(uint32,address,uint256,uint256,bytes32)"(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _amount?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokNativeSwapEventFilter;
-    AmarokNativeSwap(
+    ): ConnextNativeSwapEventFilter;
+    ConnextNativeSwap(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _amount?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokNativeSwapEventFilter;
+    ): ConnextNativeSwapEventFilter;
 
-    "AmarokTokenSwap(uint32,address,address,uint256,uint256,bytes32)"(
+    "ConnextTokenSwap(uint32,address,address,uint256,uint256,bytes32)"(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _asset?: string | null,
       _amount?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokTokenSwapEventFilter;
-    AmarokTokenSwap(
+    ): ConnextTokenSwapEventFilter;
+    ConnextTokenSwap(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _asset?: string | null,
       _amount?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokTokenSwapEventFilter;
+    ): ConnextTokenSwapEventFilter;
 
-    "AmarokXCall(uint32,address,address,uint256,bytes,uint256,bytes32)"(
+    "ConnextXCall(uint32,address,address,uint256,bytes,uint256,bytes32)"(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _asset?: null,
@@ -304,8 +316,8 @@ export interface AmarokFacet extends BaseContract {
       _callData?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokXCallEventFilter;
-    AmarokXCall(
+    ): ConnextXCallEventFilter;
+    ConnextXCall(
       _destination?: BigNumberish | null,
       _recipient?: string | null,
       _asset?: null,
@@ -313,11 +325,11 @@ export interface AmarokFacet extends BaseContract {
       _callData?: null,
       _relayerFee?: null,
       _transferId?: null
-    ): AmarokXCallEventFilter;
+    ): ConnextXCallEventFilter;
   };
 
   estimateGas: {
-    amarokCall(
+    connextCall(
       _to: string,
       _callData: BytesLike,
       _destinationDomain: BigNumberish,
@@ -330,14 +342,14 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    amarokNativeAssetTransfer(
+    connextNativeAssetTransfer(
       _to: string,
       _destinationDomain: BigNumberish,
       _relayerFee: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    amarokTokenTransfer(
+    connextTokenTransfer(
       _asset: string,
       _to: string,
       _destinationDomain: BigNumberish,
@@ -346,15 +358,15 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    initAmarok(
+    initConnext(
       _connext: string,
-      _chainId: BigNumberish,
+      _domainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    amarokCall(
+    connextCall(
       _to: string,
       _callData: BytesLike,
       _destinationDomain: BigNumberish,
@@ -367,14 +379,14 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    amarokNativeAssetTransfer(
+    connextNativeAssetTransfer(
       _to: string,
       _destinationDomain: BigNumberish,
       _relayerFee: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    amarokTokenTransfer(
+    connextTokenTransfer(
       _asset: string,
       _to: string,
       _destinationDomain: BigNumberish,
@@ -383,9 +395,9 @@ export interface AmarokFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    initAmarok(
+    initConnext(
       _connext: string,
-      _chainId: BigNumberish,
+      _domainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

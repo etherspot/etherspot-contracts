@@ -7,18 +7,18 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { LibDiamond } from "../libs/LibDiamond.sol";
 
 /**
- * @title Connext Amarok Integration
+ * @title Connext Connext Integration
  *
  * @notice Contract which provides bridging functionality through Connext
  *
  */
-contract AmarokFacet {
+contract ConnextFacet {
   // storage
   
-  bytes32 internal constant NAMESPACE = hex"a4cabcf91d6212ba2873e2f19de6e26ae65fd3280b9eaa6d8bc38c5fba52ec9d"; //keccak256("io.etherspot.facets.amarok");
+  bytes32 internal constant NAMESPACE = hex"a4cabcf91d6212ba2873e2f19de6e26ae65fd3280b9eaa6d8bc38c5fba52ec9d"; //keccak256("io.etherspot.facets.connext");
   struct Storage {
     address connext;
-    uint32 chainId;
+    uint32 domainId;
   }
 
   // events
@@ -27,7 +27,7 @@ contract AmarokFacet {
    * @dev Emitted when facet initializes
    * @param _connext connext handler address
    */
-  event AmarokInitialized(address _connext);
+  event ConnextInitialized(address _connext);
 
   /**
    * @dev Emitted on erc20 token swap
@@ -38,7 +38,7 @@ contract AmarokFacet {
    * @param _relayerFee fee
    * @param _transferId transfer ID of created crosschain transfer
    */
-  event AmarokTokenSwap(
+  event ConnextTokenSwap(
     uint32 indexed _destination,
     address indexed _recipient,
     address indexed _asset,
@@ -55,7 +55,7 @@ contract AmarokFacet {
    * @param _relayerFee fee
    * @param _transferId transfer ID of created crosschain transfer
    */
-  event AmarokNativeSwap(
+  event ConnextNativeSwap(
     uint32 indexed _destination,
     address indexed _recipient,
     uint256 _amount,
@@ -64,7 +64,7 @@ contract AmarokFacet {
   );
 
   /**
-   * @dev Emitted on amarok crosschain call
+   * @dev Emitted on connext crosschain call
    * @param _destination destination domain
    * @param _recipient recipient of a call
    * @param _asset asset being sent / traded
@@ -73,7 +73,7 @@ contract AmarokFacet {
    * @param _relayerFee fee
    * @param _transferId transfer ID of created crosschain transfer
    */
-  event AmarokXCall(
+  event ConnextXCall(
     uint32 indexed _destination,
     address indexed _recipient,
     address _asset,
@@ -86,19 +86,19 @@ contract AmarokFacet {
   // init
 
   /**
-   * @notice Initializes local variables for the Amarok facet
+   * @notice Initializes local variables for the Connext facet
    * @param _connext connext handler address
    */
-  function initAmarok(address _connext, uint32 _chainId) external {
+  function initConnext(address _connext, uint32 _domainId) external {
     LibDiamond.enforceIsContractOwner();
     require(
       _connext != address(0),
-      "Amarok: invalid address"
+      "Connext: invalid address"
     );
     Storage storage s = getStorage();
     s.connext = _connext;
-    s.chainId = _chainId;
-    emit AmarokInitialized(_connext);
+    s.domainId = _domainId;
+    emit ConnextInitialized(_connext);
   }
 
   /**
@@ -109,7 +109,7 @@ contract AmarokFacet {
     * @param _amount - The amount of transferring asset the tx called xcall with
     * @param _relayerFee - The amount of relayer fee the tx called xcall with
     */
-  function amarokTokenTransfer(
+  function connextTokenTransfer(
     address _asset,
     address _to,
     uint32 _destinationDomain,
@@ -119,7 +119,7 @@ contract AmarokFacet {
     bytes32 transferId = xcall(
       _to,
       "",
-      getChainId(),
+      getDomainId(),
       _destinationDomain,
       _asset,
       _amount,
@@ -129,7 +129,7 @@ contract AmarokFacet {
       0,
       false
     );
-    emit AmarokTokenSwap(
+    emit ConnextTokenSwap(
       _destinationDomain,
       _to,
       _asset,
@@ -145,7 +145,7 @@ contract AmarokFacet {
     * @param _destinationDomain - The final domain (i.e. where `execute` / `reconcile` are called)
     * @param _relayerFee - The amount of relayer fee the tx called xcall with
     */
-  function amarokNativeAssetTransfer(
+  function connextNativeAssetTransfer(
     address _to,
     uint32 _destinationDomain,
     uint256 _relayerFee
@@ -153,7 +153,7 @@ contract AmarokFacet {
     bytes32 transferId = xcall(
       _to,
       "",
-      getChainId(),
+      getDomainId(),
       _destinationDomain,
       address(0),
       msg.value,
@@ -163,7 +163,7 @@ contract AmarokFacet {
       0,
       false
     );
-    emit AmarokNativeSwap(
+    emit ConnextNativeSwap(
       _destinationDomain,
       _to,
       msg.value,
@@ -184,7 +184,7 @@ contract AmarokFacet {
     * @param _callback - The address on the origin domain of the callback contract
     * @param _callbackFee - The relayer fee to execute the callback
     */
-  function amarokCall(
+  function connextCall(
     address _to,
     bytes memory _callData,
     uint32 _destinationDomain,
@@ -198,7 +198,7 @@ contract AmarokFacet {
     bytes32 transferId = xcall(
       _to,
       _callData,
-      getChainId(),
+      getDomainId(),
       _destinationDomain,
       _asset,
       _amount,
@@ -208,7 +208,7 @@ contract AmarokFacet {
       _callbackFee,
       false
     );
-    emit AmarokXCall(
+    emit ConnextXCall(
       _destinationDomain,
       _to,
       _asset,
@@ -286,13 +286,13 @@ contract AmarokFacet {
     private
   {
     if (_asset == address(0)) {
-      require(msg.value == _amount + _relayerFee + _callbackFee, "Amarok: Invalid value");
+      require(msg.value == _amount + _relayerFee + _callbackFee, "Connext: Invalid value");
     } else {
-      require(msg.value == _relayerFee + _callbackFee, "Amarok: Invalid value");
+      require(msg.value == _relayerFee + _callbackFee, "Connext: Invalid value");
       uint256 _tokenBalanceBefore = IERC20(_asset).balanceOf(address(this));
       IERC20(_asset).transferFrom(msg.sender, address(this), _amount);
       uint256 _tokenBalanceAfter = IERC20(_asset).balanceOf(address(this));
-      require(_tokenBalanceAfter - _tokenBalanceBefore == _amount, "Amarok: Invalid value");
+      require(_tokenBalanceAfter - _tokenBalanceBefore == _amount, "Connext: Invalid value");
     }
   }
 
@@ -310,9 +310,9 @@ contract AmarokFacet {
    * @dev returns chain id
    * @return uint32 chain id
    */
-  function getChainId() private view returns (uint32) {
+  function getDomainId() private view returns (uint32) {
     Storage storage s = getStorage();
-    return s.chainId;
+    return s.domainId;
   }
 
   /**
