@@ -60,6 +60,24 @@ jobs:
           failure_message: "Triggered by: *${CIRCLE_USERNAME}* \n\n Ooops! The *$CIRCLE_JOB* job has failed! :circleci-fail:"
           only_for_branches: master
           webhook: "${SLACK_WEBHOOK_URL}"
+  bump-package-version:
+    working_directory: ~/etherspot-contracts
+    docker:
+      - image: circleci/node:14.17.0
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+    - checkout
+    - run:
+        name: Bump package version
+        command: |
+            npm --no-git-tag-version version patch
+            git config credential.helper 'cache --timeout=120'
+            git config user.email $GIT_USER_EMAIL
+            git config user.name "Deployment Bot"
+            git add package.json package-lock.json
+            git commit -m "Bumped package version [skip ci]"
+            git push -q https://${ETHERSPOT_GITHUB_TOKEN}@github.com/etherspot/etherspot-contracts.git feature/pipeline-bump-version        
   publish-github-release:
     docker:
       - image: ardd97/ghr
@@ -88,7 +106,15 @@ workflows:
                   - master
       - publish-github-release:
           context: general-vars
+          requires:
+            - install
           filters:
             branches:
               only:
                   - master
+      - bump-package-version:
+          context: general-vars
+          filters:
+            branches:
+              only:
+                  - feature/pipeline-bump-version  
