@@ -26,6 +26,159 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes8",
+        name: "c__305923d6",
+        type: "bytes8",
+      },
+    ],
+    name: "c_305923d6",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__3add61c5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_3add61c5",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__c0828b70",
+        type: "bytes8",
+      },
+    ],
+    name: "c_c0828b70",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__305923d6",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false305923d6",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__3add61c5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false3add61c5",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__c0828b70",
+        type: "bytes8",
+      },
+    ],
+    name: "c_falsec0828b70",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__305923d6",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true305923d6",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__3add61c5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true3add61c5",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__c0828b70",
+        type: "bytes8",
+      },
+    ],
+    name: "c_truec0828b70",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes32",
         name: "interfaceHash",
         type: "bytes32",

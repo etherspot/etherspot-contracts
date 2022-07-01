@@ -16,14 +16,38 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface InitializableInterface extends utils.Interface {
   functions: {
+    "c_c0828b70(bytes8)": FunctionFragment;
+    "c_falsec0828b70(bytes8)": FunctionFragment;
+    "c_truec0828b70(bytes8)": FunctionFragment;
     "isInitialized()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_c0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsec0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truec0828b70",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_c0828b70", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsec0828b70",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truec0828b70",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
     data: BytesLike
@@ -67,12 +91,54 @@ export interface Initializable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     isInitialized(overrides?: CallOverrides): Promise<[boolean]>;
   };
+
+  c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_falsec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     isInitialized(overrides?: CallOverrides): Promise<boolean>;
   };
 
@@ -82,10 +148,40 @@ export interface Initializable extends BaseContract {
   };
 
   estimateGas: {
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isInitialized(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isInitialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

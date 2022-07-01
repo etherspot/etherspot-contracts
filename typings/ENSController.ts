@@ -33,6 +33,36 @@ export interface ENSControllerInterface extends utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
     "addr(bytes32)": FunctionFragment;
+    "c_0ffe16b4(bytes8)": FunctionFragment;
+    "c_1b54acf3(bytes8)": FunctionFragment;
+    "c_3880312f(bytes8)": FunctionFragment;
+    "c_4f849103(bytes8)": FunctionFragment;
+    "c_53f45729(bytes8)": FunctionFragment;
+    "c_a2a35eda(bytes8)": FunctionFragment;
+    "c_ac93193e(bytes8)": FunctionFragment;
+    "c_c0828b70(bytes8)": FunctionFragment;
+    "c_d5c463c2(bytes8)": FunctionFragment;
+    "c_e1dc25ce(bytes8)": FunctionFragment;
+    "c_false0ffe16b4(bytes8)": FunctionFragment;
+    "c_false1b54acf3(bytes8)": FunctionFragment;
+    "c_false3880312f(bytes8)": FunctionFragment;
+    "c_false4f849103(bytes8)": FunctionFragment;
+    "c_false53f45729(bytes8)": FunctionFragment;
+    "c_falsea2a35eda(bytes8)": FunctionFragment;
+    "c_falseac93193e(bytes8)": FunctionFragment;
+    "c_falsec0828b70(bytes8)": FunctionFragment;
+    "c_falsed5c463c2(bytes8)": FunctionFragment;
+    "c_falsee1dc25ce(bytes8)": FunctionFragment;
+    "c_true0ffe16b4(bytes8)": FunctionFragment;
+    "c_true1b54acf3(bytes8)": FunctionFragment;
+    "c_true3880312f(bytes8)": FunctionFragment;
+    "c_true4f849103(bytes8)": FunctionFragment;
+    "c_true53f45729(bytes8)": FunctionFragment;
+    "c_truea2a35eda(bytes8)": FunctionFragment;
+    "c_trueac93193e(bytes8)": FunctionFragment;
+    "c_truec0828b70(bytes8)": FunctionFragment;
+    "c_trued5c463c2(bytes8)": FunctionFragment;
+    "c_truee1dc25ce(bytes8)": FunctionFragment;
     "chainId()": FunctionFragment;
     "gateway()": FunctionFragment;
     "hashSubNodeRegistration((address,bytes32,bytes32))": FunctionFragment;
@@ -61,6 +91,126 @@ export interface ENSControllerInterface extends utils.Interface {
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "c_0ffe16b4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_1b54acf3",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_3880312f",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_4f849103",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_53f45729",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_a2a35eda",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_ac93193e",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_c0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_d5c463c2",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_e1dc25ce",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false0ffe16b4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false1b54acf3",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false3880312f",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false4f849103",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false53f45729",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsea2a35eda",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falseac93193e",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsec0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsed5c463c2",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsee1dc25ce",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true0ffe16b4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true1b54acf3",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true3880312f",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true4f849103",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true53f45729",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truea2a35eda",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_trueac93193e",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truec0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_trued5c463c2",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truee1dc25ce",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
@@ -139,6 +289,96 @@ export interface ENSControllerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_0ffe16b4", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_1b54acf3", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_3880312f", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_4f849103", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_53f45729", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_a2a35eda", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_ac93193e", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_c0828b70", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_d5c463c2", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_e1dc25ce", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false0ffe16b4",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false1b54acf3",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false3880312f",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false4f849103",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false53f45729",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsea2a35eda",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falseac93193e",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsec0828b70",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsed5c463c2",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsee1dc25ce",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true0ffe16b4",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true1b54acf3",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true3880312f",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true4f849103",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true53f45729",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truea2a35eda",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_trueac93193e",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truec0828b70",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_trued5c463c2",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truee1dc25ce",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
@@ -335,6 +575,156 @@ export interface ENSController extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    c_0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_a2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_ac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_d5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_e1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falseac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsed5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_trueac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_trued5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     gateway(overrides?: CallOverrides): Promise<[string]>;
@@ -467,6 +857,126 @@ export interface ENSController extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_3880312f(c__3880312f: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_4f849103(c__4f849103: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_53f45729(c__53f45729: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_a2a35eda(c__a2a35eda: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_ac93193e(c__ac93193e: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_e1dc25ce(c__e1dc25ce: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false0ffe16b4(
+    c__0ffe16b4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false1b54acf3(
+    c__1b54acf3: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false3880312f(
+    c__3880312f: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false4f849103(
+    c__4f849103: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false53f45729(
+    c__53f45729: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsea2a35eda(
+    c__a2a35eda: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falseac93193e(
+    c__ac93193e: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsed5c463c2(
+    c__d5c463c2: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsee1dc25ce(
+    c__e1dc25ce: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true0ffe16b4(
+    c__0ffe16b4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true1b54acf3(
+    c__1b54acf3: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true3880312f(
+    c__3880312f: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true4f849103(
+    c__4f849103: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true53f45729(
+    c__53f45729: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truea2a35eda(
+    c__a2a35eda: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_trueac93193e(
+    c__ac93193e: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_trued5c463c2(
+    c__d5c463c2: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truee1dc25ce(
+    c__e1dc25ce: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
@@ -598,6 +1108,156 @@ export interface ENSController extends BaseContract {
       coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    c_0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_a2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_ac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_d5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_e1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falseac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsed5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_trueac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_trued5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -797,6 +1457,156 @@ export interface ENSController extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    c_0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_a2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_ac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_d5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_e1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falseac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsed5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_trueac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_trued5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
@@ -927,6 +1737,156 @@ export interface ENSController extends BaseContract {
     "addr(bytes32,uint256)"(
       node: BytesLike,
       coinType: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_a2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_ac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_d5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_e1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falseac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsed5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsee1dc25ce(
+      c__e1dc25ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true0ffe16b4(
+      c__0ffe16b4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true1b54acf3(
+      c__1b54acf3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true3880312f(
+      c__3880312f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true4f849103(
+      c__4f849103: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true53f45729(
+      c__53f45729: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truea2a35eda(
+      c__a2a35eda: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_trueac93193e(
+      c__ac93193e: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_trued5c463c2(
+      c__d5c463c2: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truee1dc25ce(
+      c__e1dc25ce: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
