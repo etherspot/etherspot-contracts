@@ -25,6 +25,7 @@
 | `BalancesHelper` | `optimismKovan` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x77429ac3d85ee908dcc1a08e87270011a4c9a9d33b014489527c987001330064 | 
 | `BalancesHelper` | `moonbeam` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x4b6bbfd5814393a15e2426b19ea38fa9cb8184ef7a76bf1e1c5b4aa4bc6e1b36 | 
 | `BalancesHelper` | `moonbase` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x60c79eeb1b21c83a35cb9d4db244607fefecf66834a021d4b635d40376eb0794 | 
+| `BalancesHelper` | `fuse` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x64b505015e713e0a03825ab347fff4e9d164ba3b1f0c80b8698de2933ce0046d | 
 | `BalancesHelper` | `fuseSparknet` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x17eca87186670f812655a315ee26a3f8a118accde1369e1a14e85e7f748ca63f | 
 | `BalancesHelper` | `celo` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xfc0dc010dd2df5473efc9e99d884818145c485de11993612ee8873680eed7b76 | 
 | `BalancesHelper` | `celoTest` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x6b910a25366bfda341b56258532d882579db1de46ace8e7457cc8da90cf9877b | 
@@ -44,10 +45,14 @@
 | `BalancesHelperV2` | `arbitrum` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x79d8b685ddc42564227581bdf9f53cd44f8ca3fb2a97187ed1c43c831b091d0f | 
 | `BalancesHelperV2` | `optimism` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xb5916d6b2475a15802fd20274bcc82751ffaf6757d504f664fce079edbd8fd72 | 
 | `BalancesHelperV2` | `moonbeam` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xf1b01798e9062f8ec03d1423b2c5350a24c4613b4f8178e72047fde6aee15324 | 
+| `BalancesHelperV2` | `fuse` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xc2647efac011deb1cdd2ad539cbbb606cfa84106b7bea2e387f964ea2f5a288a | 
 | `BalancesHelperV2` | `fuseSparknet` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x794c538975130b41812df708b2174c971ab7af6fa1e19bb5d2b4301c7071c893 | 
 | `BalancesHelperV2` | `celo` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xfdc0e0d89733dfb237e8b3f4fa36810b84d079d6ecf0b50e435e9542d8b8cdbc | 
+| `Diamond` | `fuse` | 0xF1447514368fCC942279862a8B5D6Ed7beDFf431 | 0x5931e70b172dc87726ad99af59018ccf9b8cfc9671a6c277f584dcd6871a9487 | 
 | `Diamond` | `fuseSparknet` | 0xF1447514368fCC942279862a8B5D6Ed7beDFf431 | 0xb04462e8680ede04a12a3dfa9c2b9df35c6ae2f28ec7ea1a15a400e92a722995 | 
+| `DiamondCutFacet` | `fuse` | 0xf859F683a47b3D0E2A964eFDdf7392972700a101 | 0x02bb6e8045d5d9b7c69dea3802d5e7a6d33a4844dd6f6263dc0c444604ecc450 | 
 | `DiamondCutFacet` | `fuseSparknet` | 0xf859F683a47b3D0E2A964eFDdf7392972700a101 | 0x5e65bab5b380676f95b76498d68642e6e86894c08089c072b952f6aa1bf8451b | 
+| `DiamondLoupeFacet` | `fuse` | 0x8BFbB21683e21DC4B11af352117d6D4F2bc62f8e | 0x8710442a64820abbf2a0d69c611eda0beb5fc8b17db31da5e6c08d571f7a32b2 | 
 | `DiamondLoupeFacet` | `fuseSparknet` | 0x8BFbB21683e21DC4B11af352117d6D4F2bc62f8e | 0xc4224d5b19ec685dcb17b0ab862ec9968dc1ab25dd63b6145b1a01b3ac3a1e70 | 
 | `ENSController` | `mainnet` | [0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08](https://etherscan.io/address/0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08) | [0xcb245478eb559307f977f2ffdfb3f487af38098f6f7499b2ff438f497107f024](https://etherscan.io/tx/0xcb245478eb559307f977f2ffdfb3f487af38098f6f7499b2ff438f497107f024) | 
 | `ENSController` | `ropsten` | [0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08](https://ropsten.etherscan.io/address/0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08) | [0x8becdf6c4958d945ca128c50a66718e7a900379f344091cac282b89a8d86f5b0](https://ropsten.etherscan.io/tx/0x8becdf6c4958d945ca128c50a66718e7a900379f344091cac282b89a8d86f5b0) | 
@@ -72,6 +77,7 @@
 | `ENSController` | `optimismKovan` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xf1beabf6fdf7605d23b80072280ffc82249161d85ae7418c546464a8ffcdb2c1 | 
 | `ENSController` | `moonbeam` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x30fa83945e8141e8fa299d2a9906d5f5b7d1125edb0723b1f84cb88377a17ac3 | 
 | `ENSController` | `moonbase` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xa50524fe7057eba0cb1d8b50627ea8be7dc955112a9a6bd2b3a4b16347427c6b | 
+| `ENSController` | `fuse` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x7eaed2685e2334a5c7c8cb3fc1b85dec0aadaca705bc1872fde5b2fb2dfb6728 | 
 | `ENSController` | `fuseSparknet` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xf73f44af58c7d1d4c28d2d86e8151d9df4afaa2577eb0699557abc16968dbd53 | 
 | `ENSController` | `celo` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x506af71c933202ab4deb3de6599c0c5ec5f07af0750837ffa38216fddd1af7eb | 
 | `ENSController` | `celoTest` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xc45d57662670d6ab754683f4a030859fa8d1b0fad29a6dd335b768f259665ecd | 
@@ -99,6 +105,7 @@
 | `ENSHelper` | `optimismKovan` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0xdf34f12112a1b96b10509799c8ca0e4e833e0f750e073b24a269fcffe188d460 | 
 | `ENSHelper` | `moonbeam` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x56a447d8f97f625e1e373512454c3baa179552d59f806a5e5774e8926b74eb5c | 
 | `ENSHelper` | `moonbase` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x26a08b3bb79383f3b877a8a236a37544213ab9968f591e1c8ddd736c06078ecb | 
+| `ENSHelper` | `fuse` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x1878a82e9754f951494ecd386dcc132f93f9d934f6b7ac250d1972f57d43d141 | 
 | `ENSHelper` | `fuseSparknet` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x6db86ba1be399c574ea44d3ce3b36f9759d97db6875c1e2519667ab946b6e240 | 
 | `ENSHelper` | `celo` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x396ec3c9f1f3a8625402798581ae2cb925d2ae1d6743ad9e7b498e814c570057 | 
 | `ENSHelper` | `celoTest` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x42c9dce6afca7bd38dee552c2b8724061e01bf9a47ecff91f3094e730bd80caf | 
@@ -125,6 +132,7 @@
 | `ENSRegistry` | `optimismKovan` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xf3f26bf0faeefe572e813feb66992b277e521585628918dd8eeee6edb0977cc0 | 
 | `ENSRegistry` | `moonbeam` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x61b6a0baad531bfb535f6b8a205ddd463c9ef0825d18523d16822e826e29826a | 
 | `ENSRegistry` | `moonbase` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xbcd09e5811765686b823300b46c0a00e04b6deb4398da828d336048729312ea1 | 
+| `ENSRegistry` | `fuse` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x1df7af5250f555b5ed8dc77728ca7dbf77ad6179f851d4fe80b788b83a8f7257 | 
 | `ENSRegistry` | `fuseSparknet` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x9c446bb44fa6e652f05391ccf363679d32237782495f7384d1a04214c40c7536 | 
 | `ENSRegistry` | `celo` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xfbd52c01cc283b000acfe5679ec13cd4956991d14ef2d9d899cc9cc4a30566aa | 
 | `ENSRegistry` | `celoTest` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x6361fb53ae0e03f60f5886aa101620f050d2ca0a94765e45dd0be8fabe3e1f5a | 
@@ -151,6 +159,7 @@
 | `ENSReverseRegistrar` | `optimismKovan` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x8f1d942feef6e57cf5e0d8e352c1013484f2167e8cd91ec6cb044b44a13eb33d | 
 | `ENSReverseRegistrar` | `moonbeam` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x2ab2107f2ecd6e59dbdddbdc8db0c0b1cd4f32f9c9fecb28c78da1551599481c | 
 | `ENSReverseRegistrar` | `moonbase` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0xe25950acdd86dc94a63ebed4d67b34bdca7ce75822b4e6c0a973932061ab9d49 | 
+| `ENSReverseRegistrar` | `fuse` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3cfe6c47907a333dd546f569cbed2b9b67515d8ae4f48e0a816c247ef0c2a050 | 
 | `ENSReverseRegistrar` | `fuseSparknet` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x9d18868bf5babb156cc0551acc2874b85543f5168b89e0326473cd3e6630eca3 | 
 | `ENSReverseRegistrar` | `celo` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3fda2be4237a4ca2103d46d8755edb14c5ea4bef154eabfc4aa91280d9f16836 | 
 | `ENSReverseRegistrar` | `celoTest` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x178149172d88aa3d6b00fde5ba0d0bc120924349c5fb5030f43136d86cbb7383 | 
@@ -178,6 +187,7 @@
 | `ExternalAccountRegistry` | `optimismKovan` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x5cb0af3d444eadf42a6e342accf3d7caa2a1614265556edf8129c4828d69f758 | 
 | `ExternalAccountRegistry` | `moonbeam` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x15a329dcfeca14228bba66df5eb73f08af08403ae3ebc191dd93b24afb1361f8 | 
 | `ExternalAccountRegistry` | `moonbase` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x66602f45feb9c4ae4b7eb3a6f0437e881e028b168b296cfba7d8be1e367ea74a | 
+| `ExternalAccountRegistry` | `fuse` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x1fcd9f8ad01d7a72c8eaceab3a92abcadb3e0c785ffdee0f78567ec7137e5549 | 
 | `ExternalAccountRegistry` | `fuseSparknet` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0xaf97cd55f19b04f6aad22bfb1757d7c92346e5b9ebdb88d68bde2998ed2cafc2 | 
 | `ExternalAccountRegistry` | `celo` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x01dbf81a93f634c4352e223da76269ade120e638386bfdb5e6850989ffd7e9d1 | 
 | `ExternalAccountRegistry` | `celoTest` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0xdec39d8ca0dc8bfdc627a7c1f97d9dd3697c53c6f39ed4824e2a199fb987c8fe | 
@@ -205,10 +215,12 @@
 | `Gateway` | `optimismKovan` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xc149ec98b3bd4dc2a95d70ce2d614b3c6c937fb40a7d2d789b0a1c9e2452d2f3 | 
 | `Gateway` | `moonbeam` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xad29eff76f794881fe52bab1db90e28139e64b577d2a5e9a3ca667397334efdd | 
 | `Gateway` | `moonbase` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x224372503c160773a2e59a9cea8d1a90f0d0f2b798484aec252acfda2d9bc654 | 
+| `Gateway` | `fuse` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x0b883fff9db01129ea63519e9338f462bb945e3011dcdc67ab1e579ac82f1672 | 
 | `Gateway` | `fuseSparknet` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x814795f50ab1bd03fa7eae4d28f70e85e24138ed8af01cab3ea0f98c98e81235 | 
 | `Gateway` | `celo` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x9f0a37c40e438898b92eb3404726cf7e3ab0566e3bd97453153d4502255f15d3 | 
 | `Gateway` | `celoTest` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x017b93cfff9bef60d74ed3f678617e31bce472a62c16e4170d27833d265295a6 | 
 | `Gateway` | `etherspot` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xba898531d95380c97307201fb1fe773801fb83343d9096c6bc4380402ed4486b | 
+| `OwnershipFacet` | `fuse` | 0xdd43fA3fCB57F9F075F48F0FA564162a0eE7fa70 | 0x6b077186eb6861290fb7f38c0d53e93b5e83f4e9e217b8d7dee5ab837c2cf4e8 | 
 | `OwnershipFacet` | `fuseSparknet` | 0xdd43fA3fCB57F9F075F48F0FA564162a0eE7fa70 | 0xb65d9d8fa6bb8390d70c2dfd7341b91077ae8eec4fe4513d53ce61e636d12185 | 
 | `PaymentRegistry` | `mainnet` | [0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312](https://etherscan.io/address/0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312) | [0x03172e98a8a14cbec4ce793277552de243df1451eefe8a163bacccd9187b2a4f](https://etherscan.io/tx/0x03172e98a8a14cbec4ce793277552de243df1451eefe8a163bacccd9187b2a4f) | 
 | `PaymentRegistry` | `ropsten` | [0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312](https://ropsten.etherscan.io/address/0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312) | [0xef47e55c32941bb0d794c491d0a1fc25fb98826472fc62df31e6fcd0fad9b162](https://ropsten.etherscan.io/tx/0xef47e55c32941bb0d794c491d0a1fc25fb98826472fc62df31e6fcd0fad9b162) | 
@@ -233,6 +245,7 @@
 | `PaymentRegistry` | `optimismKovan` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0xdc6d4e0f2de454c2b1f2aa66cc13128b940433253aa9b05e6100cece0164476d | 
 | `PaymentRegistry` | `moonbeam` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x8b938eb513535885f17e55a076a14b23fcb8600d53a9468d2b2448a2b52030be | 
 | `PaymentRegistry` | `moonbase` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x9b31b42d325e4adfbdadfe7c2389596907bc6c3ae6551df3fabc4da9a675a9c5 | 
+| `PaymentRegistry` | `fuse` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x865afeb8d3433b53d27f54b124fc03593bc00abd4249c096cac3240764d15023 | 
 | `PaymentRegistry` | `fuseSparknet` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x6c5375420adb40244862d193177f1bcb3bf6cf18bb53fd0693bca73d3693ca48 | 
 | `PaymentRegistry` | `celo` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x70b6d0b59d9ca6cfc0a02f04742a91177f87166cfe4c287edd08170519390479 | 
 | `PaymentRegistry` | `celoTest` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x82b9aa071e80bfb8521d76e0867035116153ee3f9e6d2ba49fd6ac2953d130bb | 
@@ -260,6 +273,7 @@
 | `PersonalAccountImplementationV1` | `optimismKovan` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xb4b3e3b6b81af8db8d8160cfc041e3f9e88e1c3b61264ad7dca2eb99583a4a66 | 
 | `PersonalAccountImplementationV1` | `moonbeam` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xe0e1856fc37aa848176993e95b4e69cf4a11536d26376a82b6ba426cf94a289b | 
 | `PersonalAccountImplementationV1` | `moonbase` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x199c1b6275a99da461bd3cff250e44b859b5af9926adcd74bb0540f51b37a9d0 | 
+| `PersonalAccountImplementationV1` | `fuse` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x197b5bf90ae186f7e6773dcea88ea5ee4218c2faa8abeb8baf1bfcba8af13ce2 | 
 | `PersonalAccountImplementationV1` | `fuseSparknet` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x3fded149d1fa752a031943332ec16600ba871bb13aa6c7e4fd4c90b0c78a501f | 
 | `PersonalAccountImplementationV1` | `celo` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x0816d1e8803abb1a638e1aba5ec7395e5cd8228d2883cc3d7c1ea2af19fc0926 | 
 | `PersonalAccountImplementationV1` | `celoTest` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xbf4e974badd253ba96904e2281d01ac7e00ac798763568581b3674cf3e6df5df | 
@@ -287,6 +301,7 @@
 | `PersonalAccountRegistry` | `optimismKovan` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xcd3305c783ec99872f4578a1023d7e78d5a70e28dcb9ee7fe7825e6264e48bed | 
 | `PersonalAccountRegistry` | `moonbeam` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xf1db7faaee5df423f358abcecb1cba7ee75481041b6725f8d93a9cb50731c8b6 | 
 | `PersonalAccountRegistry` | `moonbase` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xb1868deaeb75958e6f2f377ebb2c1d4d119d98d3fc98da8b1223d9ddd30e38e3 | 
+| `PersonalAccountRegistry` | `fuse` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xde64b23f59348247db1d8ac7f4c7377cd8555dfd39a2d35f718f0a1db78a6210 | 
 | `PersonalAccountRegistry` | `fuseSparknet` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xfbd74ec51c1c57acba61bc69f83923a3dc5f913524e8bbbfd00f97c9031d28dd | 
 | `PersonalAccountRegistry` | `celo` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x2a601f05cdc7d98281ce20575ba214505f325a9bc3a938c5255fa7a44fab39c5 | 
 | `PersonalAccountRegistry` | `celoTest` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x1462730017894782a39811340aa50ec65a2a9ad710f6a38de578ed7fc44e4b73 | 
@@ -314,6 +329,7 @@
 | `WrappedWeiToken` | `optimismKovan` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xd5b4db94a66759e5ca438cd990dcb6ffbfd45f6e899ce6554bff98dfcb6b3963 | 
 | `WrappedWeiToken` | `moonbeam` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x5ee7df66fd2b00adf6eec1789550b2b9f48d957f2aad27e77ea7e64055b33f29 | 
 | `WrappedWeiToken` | `moonbase` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xf0f493befc1914cc2fb85eb83a5a23d0c307fd70bcadf175c288a44fbb7f9d42 | 
+| `WrappedWeiToken` | `fuse` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x72d998bc58dec925507fda0b52185fdc6af01094e12f67758f9e2d9231f34a05 | 
 | `WrappedWeiToken` | `fuseSparknet` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x892803ea55222c0ba1f2143063ab79df1ee42ce2bf2e65385c80f8a8c842d067 | 
 | `WrappedWeiToken` | `celo` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x81141ef3b78568d3c8889b4f4443868dd3766cd08b9eac34a5b8030c29636321 | 
 | `WrappedWeiToken` | `celoTest` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xda0092889e56a998075e66d89d03e6f0f54382e43780adb837dc0ffac6f56b16 | 
