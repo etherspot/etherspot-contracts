@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
@@ -5,6 +6,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "hardhat-tracer";
 import { HardhatUserConfig } from "hardhat/config";
 import { utils } from "ethers";
 import {
@@ -22,6 +24,11 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
+      forking: {
+        enabled: false,
+        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        blockNumber: 13798171,
+      },
       accounts: {
         mnemonic:
           HARDHAT_MNEMONIC ||
@@ -29,7 +36,7 @@ const config: HardhatUserConfig = {
         count: 256,
       },
       chainId: 3333,
-      gasPrice: 20 * 1000000000,
+      gasPrice: 100 * 1000000000,
     },
     ...createConfigNetworks(),
   },

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IERC165",
-  "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+  "contractName": "ERC165",
+  "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
   "abi": [
     {
       "inputs": [
