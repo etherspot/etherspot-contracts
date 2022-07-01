@@ -1,4 +1,8 @@
 version: 2.1
+parameters:
+  package-version:
+    type: string
+    default: "patch"
 
 orbs:
   slack: circleci/slack@3.4.2
@@ -72,7 +76,7 @@ jobs:
       - run:
           name: Bump package version
           command: |
-            npm --no-git-tag-version version patch
+            npm --no-git-tag-version version << pipeline.parameters.image-tag >>
             git config credential.helper 'cache --timeout=120'
             git config user.email $GIT_USER_EMAIL
             git config user.name "Deployment Bot"
@@ -97,6 +101,10 @@ workflows:
     jobs:
       - install:
           context: general-vars
+          filters:
+            branches:
+              only:
+                  - master
       - publish:
           context: general-vars
           requires:
