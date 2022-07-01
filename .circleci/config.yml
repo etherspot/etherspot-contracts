@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Bump package version
           command: |
-            npm --no-git-tag-version version << pipeline.parameters.image-tag >>
+            npm --no-git-tag-version version << pipeline.parameters.package-version >>
             git config credential.helper 'cache --timeout=120'
             git config user.email $GIT_USER_EMAIL
             git config user.name "Deployment Bot"
