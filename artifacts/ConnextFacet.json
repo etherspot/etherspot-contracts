@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ConnextFacet",
-  "sourceName": "src/bridges/facets/AmarokFacet.sol",
+  "sourceName": "src/bridges/facets/ConnextFacet.sol",
   "abi": [
     {
       "anonymous": false,
