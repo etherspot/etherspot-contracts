@@ -19,6 +19,12 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface ENSReverseRegistrarInterface extends utils.Interface {
   functions: {
     "ADDR_REVERSE_NODE()": FunctionFragment;
+    "c_29e7a9c7(bytes8)": FunctionFragment;
+    "c_c0828b70(bytes8)": FunctionFragment;
+    "c_false29e7a9c7(bytes8)": FunctionFragment;
+    "c_falsec0828b70(bytes8)": FunctionFragment;
+    "c_true29e7a9c7(bytes8)": FunctionFragment;
+    "c_truec0828b70(bytes8)": FunctionFragment;
     "claim(address)": FunctionFragment;
     "claimWithResolver(address,address)": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
@@ -32,6 +38,30 @@ export interface ENSReverseRegistrarInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "ADDR_REVERSE_NODE",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_29e7a9c7",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_c0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false29e7a9c7",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsec0828b70",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true29e7a9c7",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truec0828b70",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "claim", values: [string]): string;
   encodeFunctionData(
@@ -53,6 +83,24 @@ export interface ENSReverseRegistrarInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "ADDR_REVERSE_NODE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "c_29e7a9c7", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_c0828b70", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false29e7a9c7",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsec0828b70",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true29e7a9c7",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truec0828b70",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
@@ -110,6 +158,36 @@ export interface ENSReverseRegistrar extends BaseContract {
   functions: {
     ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<[string]>;
 
+    c_29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     claim(
       owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -142,6 +220,30 @@ export interface ENSReverseRegistrar extends BaseContract {
   };
 
   ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<string>;
+
+  c_29e7a9c7(c__29e7a9c7: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false29e7a9c7(
+    c__29e7a9c7: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true29e7a9c7(
+    c__29e7a9c7: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truec0828b70(
+    c__c0828b70: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   claim(
     owner: string,
@@ -176,6 +278,36 @@ export interface ENSReverseRegistrar extends BaseContract {
   callStatic: {
     ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<string>;
 
+    c_29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     claim(owner: string, overrides?: CallOverrides): Promise<string>;
 
     claimWithResolver(
@@ -208,6 +340,36 @@ export interface ENSReverseRegistrar extends BaseContract {
 
   estimateGas: {
     ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    c_29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     claim(
       owner: string,
@@ -242,6 +404,36 @@ export interface ENSReverseRegistrar extends BaseContract {
 
   populateTransaction: {
     ADDR_REVERSE_NODE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    c_29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_c0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true29e7a9c7(
+      c__29e7a9c7: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truec0828b70(
+      c__c0828b70: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     claim(
       owner: string,

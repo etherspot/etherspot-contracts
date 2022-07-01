@@ -25,6 +25,8 @@
 | `testnets` | Arbitrum Testnet | `ARBITRUM_TEST` | `arbitrumTest` |
 | `mainnets` | Optimism | `OPTIMISM` | `optimism` |
 | `testnets` | Optimism Kovan | `OPTIMISM_KOVAN` | `optimismKovan` |
+| `mainnets` | Fuse | `FUSE` | `fuse` |
+| `testnets` | Fuse Sparknet | `FUSE_SPARKNET` | `fuseSparknet` |
 | `testnets` | Etherspot | `ETHERSPOT` | `etherspot` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localB` |

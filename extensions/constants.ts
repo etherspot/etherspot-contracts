@@ -22,6 +22,8 @@ export enum NetworkNames {
   OptimismKovan = "optimismKovan",
   Moonbeam = "moonbeam",
   Moonbase = "moonbase",
+  Fuse = 'fuse',
+  FuseSparknet = 'fuseSparknet',
   Celo = "celo",
   CeloTest = "celoTest",
   Etherspot = 'etherspot',
@@ -181,6 +183,16 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.CeloTest] : {
     chainId: 44787,
     defaultProviderUrl: 'https://alfajores-forno.celo-testnet.org',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.Fuse]: {
+    chainId: 122,
+    defaultProviderUrl: 'https://rpc.fuse.io',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.FuseSparknet]: {
+    chainId: 123,
+    defaultProviderUrl : 'https://rpc.fusespark.io',
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
