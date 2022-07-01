@@ -21,6 +21,12 @@ export interface AccountControllerMockInterface extends utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
     "accountRegistry()": FunctionFragment;
+    "c_19d98a43(bytes8)": FunctionFragment;
+    "c_9c0e30ce(bytes8)": FunctionFragment;
+    "c_false19d98a43(bytes8)": FunctionFragment;
+    "c_false9c0e30ce(bytes8)": FunctionFragment;
+    "c_true19d98a43(bytes8)": FunctionFragment;
+    "c_true9c0e30ce(bytes8)": FunctionFragment;
     "computeAccountAddress(bytes32)": FunctionFragment;
     "deployAccount(bytes32)": FunctionFragment;
     "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
@@ -36,6 +42,30 @@ export interface AccountControllerMockInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "accountRegistry",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_19d98a43",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_9c0e30ce",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false19d98a43",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9c0e30ce",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true19d98a43",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9c0e30ce",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "computeAccountAddress",
@@ -68,6 +98,24 @@ export interface AccountControllerMockInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "accountRegistry",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "c_19d98a43", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_9c0e30ce", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false19d98a43",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9c0e30ce",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true19d98a43",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9c0e30ce",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -187,6 +235,36 @@ export interface AccountControllerMock extends BaseContract {
 
     accountRegistry(overrides?: CallOverrides): Promise<[string]>;
 
+    c_19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     computeAccountAddress(
       salt: BytesLike,
       overrides?: CallOverrides
@@ -225,6 +303,30 @@ export interface AccountControllerMock extends BaseContract {
 
   accountRegistry(overrides?: CallOverrides): Promise<string>;
 
+  c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false19d98a43(
+    c__19d98a43: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false9c0e30ce(
+    c__9c0e30ce: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true19d98a43(
+    c__19d98a43: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9c0e30ce(
+    c__9c0e30ce: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   computeAccountAddress(
     salt: BytesLike,
     overrides?: CallOverrides
@@ -262,6 +364,36 @@ export interface AccountControllerMock extends BaseContract {
     accountImplementation(overrides?: CallOverrides): Promise<string>;
 
     accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+    c_19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     computeAccountAddress(
       salt: BytesLike,
@@ -345,6 +477,36 @@ export interface AccountControllerMock extends BaseContract {
 
     accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
+    c_19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     computeAccountAddress(
       salt: BytesLike,
       overrides?: CallOverrides
@@ -385,6 +547,36 @@ export interface AccountControllerMock extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    c_19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true19d98a43(
+      c__19d98a43: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9c0e30ce(
+      c__9c0e30ce: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     computeAccountAddress(
       salt: BytesLike,
