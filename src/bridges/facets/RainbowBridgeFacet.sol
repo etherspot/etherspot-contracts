@@ -4,14 +4,16 @@ pragma solidity 0.8.4;
 
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {IEthCustodian} from "../interfaces/IEthCustodian.sol";
 import {ReentrancyGuard} from "../helpers/ReentrancyGuard.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
 import {LibAsset} from "../libs/LibAsset.sol";
-import {InvalidConfig} from "../errors/GenericErrors.sol";
+import {AmountShouldBeGreaterThanFee, InvalidAmount, InvalidConfig, NoTransferToNullAddress, TokenAddressIsZero} from "../errors/GenericErrors.sol";
 
 contract RainbowBridgeFacet is ReentrancyGuard {
     using Address for address;
+    using Strings for string;
     //////////////////////////////////////////////////////////////
     /////////////////////////// Events ///////////////////////////
     //////////////////////////////////////////////////////////////
@@ -20,7 +22,7 @@ contract RainbowBridgeFacet is ReentrancyGuard {
         string bridgeUsed,
         address tokenAddress,
         address from,
-        string to,
+        address to,
         uint256 amount,
         uint256 fee
     );
@@ -42,7 +44,7 @@ contract RainbowBridgeFacet is ReentrancyGuard {
 
     struct RainbowBridgeData {
         address token;
-        string recipient;
+        address recipient;
         uint256 amount;
         uint256 transferFee;
     }
@@ -66,17 +68,32 @@ contract RainbowBridgeFacet is ReentrancyGuard {
     {
         Storage storage s = getStorage();
         address ethCustodian = s.ethCustodian;
-        // Transfer ETH to address(this) as msg.value required
-        LibAsset.transferFromERC20(
-            _rainbowData.token,
-            msg.sender,
+        if (_rainbowData.token == address(0)) revert TokenAddressIsZero();
+        if (_rainbowData.amount == 0) revert InvalidAmount();
+        if (_rainbowData.recipient == address(0))
+            revert NoTransferToNullAddress();
+        if (_rainbowData.amount < _rainbowData.transferFee)
+            revert AmountShouldBeGreaterThanFee();
+
+        // Convert receipient address to string to satisfy depositToEVM param
+        string memory stringifiedAddress = Strings.toHexString(
+            uint256(uint160(_rainbowData.recipient)),
+            20
+        );
+
+        // Approve contract
+        LibAsset.maxApproveERC20(
+            IERC20(_rainbowData.token),
             address(this),
             _rainbowData.amount
         );
+        // Transfer ETH to address(this) as msg.value required
+        bool sent = payable(address(this)).send(_rainbowData.amount);
+        require(sent, "Transfer from user to contract has failed");
         // call depositToEVM fn in EthCustodian
 
         IEthCustodian(ethCustodian).depositToEVM{value: _rainbowData.amount}(
-            _rainbowData.recipient,
+            stringifiedAddress,
             _rainbowData.transferFee
         );
 

@@ -40,7 +40,7 @@ export type RainbowBridgeDataStructOutput = [
 export interface RainbowBridgeFacetInterface extends utils.Interface {
   functions: {
     "initializeRainbowBridge(address)": FunctionFragment;
-    "rainbowBridgeTokensToAurora((address,string,uint256,uint256))": FunctionFragment;
+    "rainbowBridgeTokensToAurora((address,address,uint256,uint256))": FunctionFragment;
     "updateEthCustodianAddress(address)": FunctionFragment;
   };
 
@@ -72,7 +72,7 @@ export interface RainbowBridgeFacetInterface extends utils.Interface {
 
   events: {
     "RainbowBridgeInitialized(address)": EventFragment;
-    "TransferStarted(string,address,address,string,uint256,uint256)": EventFragment;
+    "TransferStarted(string,address,address,address,uint256,uint256)": EventFragment;
     "UpdatedEthCustodianAddress(address)": EventFragment;
   };
 
@@ -194,7 +194,7 @@ export interface RainbowBridgeFacet extends BaseContract {
       ethCustodian?: null
     ): RainbowBridgeInitializedEventFilter;
 
-    "TransferStarted(string,address,address,string,uint256,uint256)"(
+    "TransferStarted(string,address,address,address,uint256,uint256)"(
       bridgeUsed?: null,
       tokenAddress?: null,
       from?: null,

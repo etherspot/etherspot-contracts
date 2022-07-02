@@ -21,6 +21,8 @@ import WETH_ABI from "./abi/WETH_ABI.js";
 const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const ETH_CUSTODIAN_ADDRESS = "0x6BFaD42cFC4EfC96f529D786D643Ff4A8B89FA52";
 const ZERO_ADDRESS = ethers.constants.AddressZero;
+const TX_AMOUNT: BigNumber = utils.parseUnits("100000", 10);
+const TX_FEE: BigNumber = utils.parseUnits("100", 10);
 
 describe("RainbowBridgeFacet", () => {
   let diamond: Diamond;
@@ -36,7 +38,7 @@ describe("RainbowBridgeFacet", () => {
   const wethContract: Contract = new ethers.Contract(
     WETH_ADDRESS,
     WETH_ABI,
-    alice,
+    owner,
   );
 
   /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -142,18 +144,89 @@ describe("RainbowBridgeFacet", () => {
   });
 
   describe("rainbowBridgeTokensToAurora", async function() {
+    it("should revert if recipient is address(0)", async function() {
+      RainbowBridgeData = {
+        token: ZERO_ADDRESS,
+        recipient: bob.address,
+        amount: TX_AMOUNT,
+        transferFee: TX_FEE,
+      };
+      await expectRevert(
+        rainbowBridgeFacet
+          .connect(alice)
+          .rainbowBridgeTokensToAurora(RainbowBridgeData, {
+            value: TX_AMOUNT,
+            gasLimit: 500000,
+          }),
+        "TokenAddressIsZero",
+      );
+    });
+
+    it("should revert if amount to transfer is zero", async function() {
+      RainbowBridgeData = {
+        token: WETH_ADDRESS,
+        recipient: bob.address,
+        amount: 0,
+        transferFee: TX_FEE,
+      };
+      await expectRevert(
+        rainbowBridgeFacet
+          .connect(alice)
+          .rainbowBridgeTokensToAurora(RainbowBridgeData, {
+            value: TX_AMOUNT,
+            gasLimit: 500000,
+          }),
+        "InvalidAmount",
+      );
+    });
+
+    it("should revert if recipient is address(0)", async function() {
+      RainbowBridgeData = {
+        token: WETH_ADDRESS,
+        recipient: ZERO_ADDRESS,
+        amount: TX_AMOUNT,
+        transferFee: TX_FEE,
+      };
+      await expectRevert(
+        rainbowBridgeFacet
+          .connect(alice)
+          .rainbowBridgeTokensToAurora(RainbowBridgeData, {
+            value: TX_AMOUNT,
+            gasLimit: 500000,
+          }),
+        "NoTransferToNullAddress",
+      );
+    });
+
+    it("should revert if amount to transfer is less than transfer fee", async function() {
+      RainbowBridgeData = {
+        token: WETH_ADDRESS,
+        recipient: bob.address,
+        amount: TX_FEE,
+        transferFee: TX_AMOUNT,
+      };
+      await expectRevert(
+        rainbowBridgeFacet
+          .connect(alice)
+          .rainbowBridgeTokensToAurora(RainbowBridgeData, {
+            value: TX_AMOUNT,
+            gasLimit: 500000,
+          }),
+        "AmountShouldBeGreaterThanFee",
+      );
+    });
+
     it("should emit event on bridging of tokens", async function() {
-      const txAmount: BigNumber = utils.parseUnits("100000", 10),
-        RainbowBridgeData = {
-          token: WETH_ADDRESS,
-          recipient: bob.address,
-          amount: txAmount,
-          transferFee: utils.parseUnits("10", 10),
-        };
+      RainbowBridgeData = {
+        token: WETH_ADDRESS,
+        recipient: bob.address,
+        amount: TX_AMOUNT,
+        transferFee: TX_FEE,
+      };
       const tx: ContractTransaction = await rainbowBridgeFacet
         .connect(alice)
         .rainbowBridgeTokensToAurora(RainbowBridgeData, {
-          value: txAmount,
+          value: TX_AMOUNT,
           gasLimit: 500000,
         });
       const receipt: ContractReceipt = await tx.wait();
@@ -163,8 +236,33 @@ describe("RainbowBridgeFacet", () => {
       expect(result[2]).toEqual(WETH_ADDRESS);
       expect(result[3]).toEqual(alice.address);
       expect(result[4]).toEqual(bob.address);
-      expect(result[5]).toEqual(utils.parseUnits("100000", 10));
-      expect(result[6]).toEqual(utils.parseUnits("10", 10));
+      expect(result[5]).toEqual(TX_AMOUNT);
+      expect(result[6]).toEqual(TX_FEE);
+    });
+
+    it("should reduce the transferors balance by transfer amount + gas and return tx hash", async function() {
+      const alicePreBalance = await alice.getBalance();
+      RainbowBridgeData = {
+        token: WETH_ADDRESS,
+        recipient: bob.address,
+        amount: TX_AMOUNT,
+        transferFee: TX_FEE,
+      };
+      const tx = await rainbowBridgeFacet
+        .connect(alice)
+        .rainbowBridgeTokensToAurora(RainbowBridgeData, {
+          value: TX_AMOUNT,
+          gasLimit: 500000,
+        });
+      const receipt = await tx.wait();
+      const gasUsed = receipt.cumulativeGasUsed.mul(receipt.effectiveGasPrice);
+      const alicePostBalance = await alice.getBalance();
+      const total: BigNumber = gasUsed.add(TX_AMOUNT);
+      expect(alicePreBalance.toString()).toEqual(
+        alicePostBalance.add(total).toString(),
+      );
+      const txRegex = /^0x([A-Fa-f0-9]{64})$/;
+      expect(txRegex.test(tx.hash)).toBeTruthy;
     });
   });
 
@@ -179,7 +277,7 @@ describe("RainbowBridgeFacet", () => {
       expect(result[1]).toEqual(dummy.address);
     });
 
-    it("should revert if updating cBridge address to address(0)", async function() {
+    it("should revert if updating EthCustodian address to address(0)", async function() {
       await expectRevert(
         rainbowBridgeFacet.updateEthCustodianAddress(ZERO_ADDRESS),
         "InvalidConfig",
