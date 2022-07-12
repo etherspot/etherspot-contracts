@@ -70,9 +70,11 @@
     "test": "hardhat test"
   },
   "devDependencies": {
+    "@connext/nxtp-contracts": "0.2.0-beta.10",
     "@nomiclabs/hardhat-etherscan": "2.1.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.6.0",
+    "@openzeppelin/contracts-upgradeable": "4.6.0",
     "@openzeppelin/test-helpers": "0.5.15",
     "@superfluid-finance/ethereum-contracts": "1.2.2",
     "@superfluid-finance/sdk-core": "0.4.2",
@@ -90,7 +92,7 @@
     "expect": "26.6.2",
     "fs-extra": "9.0.0",
     "graphql": "16.5.0",
-    "hardhat": "2.6.8",
+    "hardhat": "2.9.8",
     "hardhat-deploy": "0.9.8",
     "hardhat-deploy-ethers": "0.3.0-beta.11",
     "hardhat-gas-reporter": "1.0.3",
