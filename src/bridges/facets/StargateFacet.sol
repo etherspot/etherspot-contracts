@@ -125,15 +125,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit UpdatedSlippageTolerance(_newSlippage);
     }
 
-    /// @dev fetch local storage
-    function getStorage() private pure returns (Storage storage s) {
-        bytes32 namespace = NAMESPACE;
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            s.slot := namespace
-        }
-    }
-
     //////////////////////////////////////////////////////////////
     ////////////////////// Private Functions /////////////////////
     //////////////////////////////////////////////////////////////
@@ -206,5 +197,14 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         Storage storage s = getStorage();
         // equates to 1% slippage
         return (_amount * (uint256(10000) - (s.bridgeSlippage))) / (10000);
+    }
+
+    /// @dev fetch local storage
+    function getStorage() private pure returns (Storage storage s) {
+        bytes32 namespace = NAMESPACE;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            s.slot := namespace
+        }
     }
 }
