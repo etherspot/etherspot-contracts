@@ -1,11 +1,18 @@
-import { ethers } from 'hardhat';
-import { utils, providers, Contract, BigNumberish, BigNumber } from 'ethers';
-import { CHAIN_ID, ENS_REVERSED_NAME } from './constants';
+import { ethers, network } from "hardhat";
+import {
+  utils,
+  providers,
+  Contract,
+  BigNumberish,
+  BigNumber,
+  ContractReceipt,
+} from "ethers";
+import { CHAIN_ID, ENS_REVERSED_NAME } from "./constants";
 import {
   SignerWithAddress,
   ProcessedTx,
   MessagePayloadFactory,
-} from './interfaces';
+} from "./interfaces";
 
 const { provider } = ethers;
 
@@ -20,7 +27,7 @@ export function concatHex(...items: string[]): string {
   return items
     .filter(item => utils.isHexString(item))
     .map((item, index) => (index ? item.slice(2) : item))
-    .join('')
+    .join("")
     .toLowerCase();
 }
 
@@ -57,15 +64,15 @@ export function createMessagePayloadFactory<M extends {} = any>(
 ): MessagePayloadFactory<M> {
   const prefix = `${structName}(${structFields
     .map(({ type, name }) => `${type} ${name}`)
-    .join(',')})`;
+    .join(",")})`;
 
   const prefixHash = utils.id(prefix);
 
   const buildMessagePayload = (message: M) => {
     const types = [
-      'uint256', //
-      'address',
-      'bytes32',
+      "uint256", //
+      "address",
+      "bytes32",
       ...structFields.map(({ type }) => type),
     ];
 
@@ -105,7 +112,7 @@ export async function processTx(
 
 export async function computeAccountAddress(
   deployer: Contract,
-  accountContract: 'Account' | 'PaymentDepositAccount',
+  accountContract: "Account" | "PaymentDepositAccount",
   salt: string,
   ...args: string[]
 ): Promise<string> {
@@ -118,20 +125,20 @@ export async function computeAccountAddress(
   salt = salt.toLowerCase();
 
   if (!utils.isHexString(salt, 32)) {
-    salt = utils.solidityKeccak256(['bytes'], [salt]);
+    salt = utils.solidityKeccak256(["bytes"], [salt]);
   }
 
   return utils.getCreate2Address(
     deployer.address,
     salt,
-    utils.solidityKeccak256(['bytes'], [bytecode]),
+    utils.solidityKeccak256(["bytes"], [bytecode]),
   );
 }
 
 export async function increaseTime(seconds: BigNumberish = 0): Promise<void> {
   const value = BigNumber.from(seconds);
 
-  await provider.send('evm_increaseTime', [value.toNumber()]);
+  await provider.send("evm_increaseTime", [value.toNumber()]);
 }
 
 export async function deployContract<T extends Contract = Contract>(
@@ -150,7 +157,7 @@ export async function deployContract<T extends Contract = Contract>(
 
 export async function isContract(address: string): Promise<boolean> {
   const code = await provider.getCode(address);
-  return code !== '0x';
+  return code !== "0x";
 }
 
 export function getNow(additionalSeconds: BigNumberish = 0) {
@@ -174,3 +181,44 @@ export function buildENSReversedNode(
     nameHash: utils.namehash(name),
   };
 }
+
+export function checkEvent(receipt: ContractReceipt): any[] {
+  const args: any[] = [];
+  for (const event of receipt.events) {
+    args.push(event.event);
+    for (const arg of event.args) {
+      args.push(arg);
+    }
+    return args;
+  }
+}
+
+export function multiCallCheckLastEventEmitted(
+  receipt: ContractReceipt,
+): any[] {
+  const args: any[] = [];
+  const length = receipt.events.length;
+  const lastEvent = receipt.events[length - 1];
+  args.push(lastEvent.event);
+  for (const arg of lastEvent.args) {
+    args.push(arg);
+  }
+  return args;
+}
+
+export const moveBlocks = async (amount: number) => {
+  // in blocks
+  for (let i = 0; i < amount; i++) {
+    await network.provider.request({
+      method: "evm_mine",
+      params: [],
+    });
+  }
+  console.log(`Moved ${amount} blocks`);
+};
+
+export const moveTime = async (amount: number) => {
+  // in seconds
+  await network.provider.send("evm_increaseTime", [amount]);
+  console.log(`Moved ${amount} seconds`);
+};

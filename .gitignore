@@ -19,6 +19,7 @@
 node_modules
 
 # develop
+.env
 .envrc
 .test*
 coverage
