@@ -22,6 +22,7 @@ const MAINNET_STARGATE_ROUTER_ADDRESS =
 const MAINNET_USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 const POLYGON_STARGATE_ROUTER_ADDRESS =
   "0x45A01E4e04F14f7A4a6702c74187c5F6222033cd";
+const ETH_CHAIN_ID = 1;
 const POLYGON_CHAIN_ID = 9;
 const ZERO_ADDRESS = ethers.constants.AddressZero;
 const AMOUNT = utils.parseUnits("1000", 10);
@@ -35,6 +36,9 @@ describe("StargateFacet", () => {
   let alice: SignerWithAddress;
   let bob: SignerWithAddress;
   let dummy: SignerWithAddress;
+  let usdc, StargateData;
+
+  let messageFee = ethers.utils.parseEther("0.025");
 
   /* eslint-enable @typescript-eslint/no-explicit-any */
   const setupTest = deployments.createFixture(
@@ -85,30 +89,28 @@ describe("StargateFacet", () => {
       // Initialize StargateFacet contract with Stargate Router address and chain id
       stargateFacet
         .connect(owner)
-        .initializeStargate(MAINNET_STARGATE_ROUTER_ADDRESS, 3333, {
+        .sgInitialize(MAINNET_STARGATE_ROUTER_ADDRESS, ETH_CHAIN_ID, {
           gasLimit: 500000,
         });
 
-      // add Polygon router address to mapping
-      stargateFacet
-        .connect(owner)
-        .setCrossChainRouter(POLYGON_CHAIN_ID, POLYGON_STARGATE_ROUTER_ADDRESS);
-
       // get USDC contract instance
-      const usdc = new ethers.Contract(MAINNET_USDC_ADDRESS, USDC_ABI);
+      usdc = new ethers.Contract(MAINNET_USDC_ADDRESS, USDC_ABI);
 
       // Alice approve CBridgeFacet to use ERC20 tokens
       await usdc
         .connect(alice)
-        .approve(stargateFacet.address, utils.parseUnits("100000", 10));
+        .approve(stargateFacet.address, utils.parseUnits("1000000", 10));
 
-      // check USDC hooked up correctly
-      const sanityCheckUSDC = await usdc
-        .connect(alice)
-        .allowance(alice.address, stargateFacet.address);
-      console.log(
-        `Check USDC allowance for StargateFacet: ${sanityCheckUSDC.toString()}`,
-      );
+      // send some eth to contract and alice
+      await owner.sendTransaction({
+        to: stargateFacet.address,
+        value: ethers.utils.parseEther("5"),
+      });
+
+      await owner.sendTransaction({
+        to: alice.address,
+        value: ethers.utils.parseEther("5"),
+      });
     },
   );
 
@@ -135,7 +137,7 @@ describe("StargateFacet", () => {
 
   it("should revert if stargate router address is address(0)", async function() {
     await expectRevert(
-      stargateFacet.initializeStargate(ZERO_ADDRESS, 3333),
+      stargateFacet.sgInitialize(ZERO_ADDRESS, ETH_CHAIN_ID),
       "InvalidConfig",
     );
   });
@@ -143,43 +145,37 @@ describe("StargateFacet", () => {
   it("should initialize the stargate router address and chain id", async function() {
     const tx: ContractTransaction = await stargateFacet
       .connect(owner)
-      .initializeStargate(MAINNET_STARGATE_ROUTER_ADDRESS, 3333, {
+      .sgInitialize(MAINNET_STARGATE_ROUTER_ADDRESS, ETH_CHAIN_ID, {
         gasLimit: 500000,
       });
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(result[0]).toEqual("StargateInitialized");
+    expect(result[0]).toEqual("SGInitialized");
     expect(result[1]).toEqual(MAINNET_STARGATE_ROUTER_ADDRESS);
-    expect(result[2]).toEqual(3333);
-  });
-
-  it("should revert if bridging to the same chain", async function() {
-    await expectRevert(
-      stargateFacet.connect(alice).bridgeTokensStargate(
-        MAINNET_USDC_ADDRESS,
-        bob.address,
-        AMOUNT,
-        3333,
-
-        {
-          gasLimit: 500000,
-        },
-      ),
-      "CannotBridgeToSameNetwork",
-    );
+    expect(result[2]).toEqual(ETH_CHAIN_ID);
   });
 
   it("should start a token bridge transaction on the sending chain", async function() {
+    const StargateData = {
+      qty: AMOUNT,
+      token: MAINNET_USDC_ADDRESS,
+      dstChainId: POLYGON_CHAIN_ID,
+      srcPoolId: 1,
+      dstPoolId: 1,
+      to: bob.address,
+      destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    };
+    const feeWei = await stargateFacet.sgCalculateFees(
+      POLYGON_CHAIN_ID,
+      bob.address,
+      MAINNET_STARGATE_ROUTER_ADDRESS,
+    );
     const tx: ContractTransaction = await stargateFacet
       .connect(alice)
-      .bridgeTokensStargate(
-        MAINNET_USDC_ADDRESS,
-        bob.address,
-        AMOUNT,
-        POLYGON_CHAIN_ID,
-
+      .sgBridgeTokens(
+        StargateData, // TODO: Not sure if this receiver contract can be used
         {
-          gasLimit: 500000,
+          value: feeWei,
         },
       );
     const receipt: ContractReceipt = await tx.wait();
@@ -193,23 +189,109 @@ describe("StargateFacet", () => {
     expect(result[6]).toEqual(POLYGON_CHAIN_ID);
   });
 
+  it("should get calculate fee amount in wei for making swap", async function() {
+    const feeWei = await stargateFacet.sgCalculateFees(
+      POLYGON_CHAIN_ID,
+      bob.address,
+      MAINNET_STARGATE_ROUTER_ADDRESS,
+    );
+    expect(feeWei).toBeGreaterThanBN(BigNumber.from(10000000));
+  });
+
+  it("should revert if updating stargate router address and not owner", async function() {
+    await expectRevert(
+      stargateFacet.connect(bob).sgUpdateRouter(bob.address),
+      "LibDiamond: Must be contract owner",
+    );
+  });
+
+  it("should revert if updating stargate router address with zero address", async function() {
+    await expectRevert(
+      stargateFacet.connect(owner).sgUpdateRouter(ZERO_ADDRESS),
+      "StargateRouterAddressZero()",
+    );
+  });
+
   it("should update stargate router address", async function() {
-    const tx: ContractTransaction = await stargateFacet.updateStargateAddress(
+    const tx: ContractTransaction = await stargateFacet.sgUpdateRouter(
       dummy.address,
     );
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(result[0]).toEqual("UpdatedStargateAddress");
+    expect(result[0]).toEqual("SGUpdatedRouter");
     expect(result[1]).toEqual(dummy.address);
   });
 
+  it("should revert if updating slippage tolerance amount and not owner", async function() {
+    await expectRevert(
+      stargateFacet.connect(bob).sgUpdateSlippageTolerance(200),
+      "LibDiamond: Must be contract owner",
+    );
+  });
+
   it("should update slippage tolerance amount", async function() {
-    const tx: ContractTransaction = await stargateFacet.updateSlippageTolerance(
+    const tx: ContractTransaction = await stargateFacet.sgUpdateSlippageTolerance(
       200,
     );
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(result[0]).toEqual("UpdatedSlippageTolerance");
+    expect(result[0]).toEqual("SGUpdatedSlippageTolerance");
     expect(result[1]).toEqual(BigNumber.from(200));
+  });
+
+  it("should return 0.5% of amount for default minimum slippage", async function() {
+    const minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
+    const expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
+    expect(BigNumber.from(minAmount)).toEqual(BigNumber.from(expectAmountOut));
+  });
+
+  it("should return 2% of amount for minimum slippage after slippage updated", async function() {
+    // perform slippage calc for default 0.5% tolerance
+    let minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
+    let expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
+    expect(BigNumber.from(minAmount)).toEqual(BigNumber.from(expectAmountOut));
+
+    // change slippage tolerance to 2%
+    await stargateFacet.sgUpdateSlippageTolerance(200);
+
+    // perform slippage calc for default 2% tolerance
+    minAmount = await stargateFacet.sgMinAmountOut(1000);
+    expectAmountOut = (1000 * (10000 - 200)) / 10000;
+    expect(BigNumber.from(minAmount)).toEqual(BigNumber.from(expectAmountOut));
+  });
+
+  it("should revert trying to withdraw stuck tokens in the contract if not the owner", async function() {
+    await expectRevert(
+      stargateFacet
+        .connect(bob)
+        .sgWithdraw(MAINNET_USDC_ADDRESS, bob.address, 10),
+      "LibDiamond: Must be contract owner",
+    );
+  });
+
+  it("should withdraw stuck tokens in the contract", async function() {
+    // check pre-test balance of USDC for dummy and stargate facet accounts
+    let dummyUSDCBalance = await usdc.connect(dummy).balanceOf(dummy.address);
+    let sgFacetUSDCBalance = await usdc
+      .connect(dummy)
+      .balanceOf(stargateFacet.address);
+    expect(dummyUSDCBalance).toEqual(BigNumber.from(0));
+    expect(sgFacetUSDCBalance).toEqual(BigNumber.from(0));
+
+    // transfer USDC from alice to stargate facet and check balance of stargate facet
+    await usdc.connect(alice).transfer(stargateFacet.address, 20);
+    sgFacetUSDCBalance = await usdc
+      .connect(dummy)
+      .balanceOf(stargateFacet.address);
+    expect(sgFacetUSDCBalance).toEqual(BigNumber.from(20));
+
+    // check post-withdraw balance of USDC for dummy and stargate facet accounts
+    await stargateFacet.sgWithdraw(MAINNET_USDC_ADDRESS, dummy.address, 20);
+    dummyUSDCBalance = await usdc.connect(dummy).balanceOf(dummy.address);
+    sgFacetUSDCBalance = await usdc
+      .connect(dummy)
+      .balanceOf(stargateFacet.address);
+    expect(dummyUSDCBalance).toEqual(BigNumber.from(20));
+    expect(sgFacetUSDCBalance).toEqual(BigNumber.from(0));
   });
 });
