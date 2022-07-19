@@ -19,6 +19,7 @@
 node_modules
 
 # develop
+.local.env
 .env
 .envrc
 .test*

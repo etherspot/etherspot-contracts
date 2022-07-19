@@ -84,7 +84,7 @@ describe("CBridgeFacet", () => {
       );
 
       // Initialize CBridge contract with CBridge address and chain id
-      cBridgeFacet.connect(owner).initializeCBridge(CBRIDGE_ADDRESS, {
+      cBridgeFacet.connect(owner).cbInitialize(CBRIDGE_ADDRESS, {
         gasLimit: 500000,
       });
 
@@ -117,7 +117,7 @@ describe("CBridgeFacet", () => {
 
   it("should revert if cBridge address is address(0)", async function() {
     await expectRevert(
-      cBridgeFacet.initializeCBridge(ZERO_ADDRESS),
+      cBridgeFacet.cbInitialize(ZERO_ADDRESS),
       "InvalidConfig",
     );
   });
@@ -125,27 +125,26 @@ describe("CBridgeFacet", () => {
   it("should initialize the cBridge address and chain Id", async function() {
     const tx: ContractTransaction = await cBridgeFacet
       .connect(owner)
-      .initializeCBridge(CBRIDGE_ADDRESS, {
+      .cbInitialize(CBRIDGE_ADDRESS, {
         gasLimit: 500000,
       });
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(result[0]).toEqual("CBridgeInitialized");
+    expect(result[0]).toEqual("CBInitialized");
     expect(result[1]).toEqual(CBRIDGE_ADDRESS);
     expect(result[2]).toEqual(BigNumber.from(3333));
   });
 
   it("should revert if bridging to the same chain", async function() {
     CBridgeData = {
-      receiver: alice.address,
+      to: alice.address,
       token: DAI_ADDRESS,
-      amount: utils.parseUnits("100000", 10),
+      qty: utils.parseUnits("100000", 10),
       dstChainId: 3333,
       nonce: 1,
-      maxSlippage: 5000,
     };
     await expectRevert(
-      cBridgeFacet.connect(alice).bridgeTokensCBridge(CBridgeData, {
+      cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
         gasLimit: 500000,
       }),
       "CannotBridgeToSameNetwork",
@@ -154,22 +153,21 @@ describe("CBridgeFacet", () => {
 
   it("should start a token bridge transaction on the sending chain", async function() {
     CBridgeData = {
-      receiver: alice.address,
+      to: alice.address,
       token: DAI_ADDRESS,
-      amount: utils.parseUnits("100000", 10),
+      qty: utils.parseUnits("100000", 10),
       dstChainId: 137,
       nonce: 1,
-      maxSlippage: 5000,
     };
     const tx: ContractTransaction = await cBridgeFacet
       .connect(alice)
-      .bridgeTokensCBridge(CBridgeData, {
+      .cbBridgeTokens(CBridgeData, {
         gasLimit: 500000,
       });
     const receipt: ContractReceipt = await tx.wait();
     const result = multiCallCheckLastEventEmitted(receipt);
-    expect(result[0]).toEqual("TransferStarted");
-    expect(result[1]).toEqual("cBridge");
+    expect(result[0]).toEqual("CBTransferStarted");
+    expect(result[1]).toEqual("cbridge");
     expect(result[2]).toEqual(DAI_ADDRESS);
     expect(result[3]).toEqual(alice.address);
     expect(result[4]).toEqual(alice.address);
@@ -178,19 +176,50 @@ describe("CBridgeFacet", () => {
   });
 
   it("should update cBridge address", async function() {
-    const tx: ContractTransaction = await cBridgeFacet.updateCBridgeAddress(
+    const tx: ContractTransaction = await cBridgeFacet.cbUpdateBridge(
       dummy.address,
     );
     const receipt: ContractReceipt = await tx.wait();
     const result = checkEvent(receipt);
-    expect(result[0]).toEqual("UpdatedCBridgeAddress");
+    expect(result[0]).toEqual("CBUpdatedBridge");
     expect(result[1]).toEqual(dummy.address);
+  });
+
+  it("should revert if updating cBridge address and not owner", async function() {
+    await expectRevert(
+      cBridgeFacet.connect(dummy).cbUpdateBridge(dummy.address),
+      "LibDiamond: Must be contract owner",
+    );
   });
 
   it("should revert if updating cBridge address to address(0)", async function() {
     await expectRevert(
-      cBridgeFacet.updateCBridgeAddress(ZERO_ADDRESS),
+      cBridgeFacet.cbUpdateBridge(ZERO_ADDRESS),
       "InvalidConfig",
+    );
+  });
+
+  it("should update slippage tolerance", async function() {
+    const tx: ContractTransaction = await cBridgeFacet.cbUpdateSlippageTolerance(
+      15000,
+    );
+    const receipt: ContractReceipt = await tx.wait();
+    const result = checkEvent(receipt);
+    expect(result[0]).toEqual("CBUpdatedSlippageTolerance");
+    expect(result[1]).toEqual(BigNumber.from(15000));
+  });
+
+  it("should revert if updating slippage tolerance and not owner", async function() {
+    await expectRevert(
+      cBridgeFacet.connect(dummy).cbUpdateSlippageTolerance(6000),
+      "LibDiamond: Must be contract owner",
+    );
+  });
+
+  it("should revert if updating slippage tolerance to <= 0.5%", async function() {
+    await expectRevert(
+      cBridgeFacet.cbUpdateSlippageTolerance(5000),
+      "CBSlippageTooLow",
     );
   });
 });
