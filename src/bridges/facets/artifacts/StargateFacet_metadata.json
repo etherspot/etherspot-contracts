@@ -1,0 +1,618 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "InvalidAmount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidConfig",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidDestinationPoolId",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidSourcePoolId",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NoMsgValueForCrossChainMessage",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyError",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "SenderNotStargateRouter",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "StargateRouterAddressZero",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainId",
+						"type": "uint16"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "poolId",
+						"type": "uint256"
+					}
+				],
+				"name": "SGAddedPool",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "stargate",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainId",
+						"type": "uint16"
+					}
+				],
+				"name": "SGInitialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "SGReceivedOnDestination",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "bridgeUsed",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "fromToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "toToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainIdTo",
+						"type": "uint16"
+					}
+				],
+				"name": "SGTransferStarted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newAddress",
+						"type": "address"
+					}
+				],
+				"name": "SGUpdatedRouter",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newSlippage",
+						"type": "uint256"
+					}
+				],
+				"name": "SGUpdatedSlippageTolerance",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_poolId",
+						"type": "uint256"
+					}
+				],
+				"name": "sgAddPool",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "qty",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "fromToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "toToken",
+								"type": "address"
+							},
+							{
+								"internalType": "uint16",
+								"name": "dstChainId",
+								"type": "uint16"
+							},
+							{
+								"internalType": "uint16",
+								"name": "srcPoolId",
+								"type": "uint16"
+							},
+							{
+								"internalType": "uint16",
+								"name": "dstPoolId",
+								"type": "uint16"
+							},
+							{
+								"internalType": "address payable",
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "destStargateComposed",
+								"type": "address"
+							}
+						],
+						"internalType": "struct StargateFacet.StargateData",
+						"name": "_sgData",
+						"type": "tuple"
+					}
+				],
+				"name": "sgBridgeTokens",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_destChain",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_router",
+						"type": "address"
+					}
+				],
+				"name": "sgCalculateFees",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_poolId",
+						"type": "uint256"
+					}
+				],
+				"name": "sgCheckPoolId",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_stargateRouter",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					}
+				],
+				"name": "sgInitialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "sgMinAmountOut",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_srcAddress",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_nonce",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amountLD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "sgReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newAddress",
+						"type": "address"
+					}
+				],
+				"name": "sgUpdateRouter",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_newSlippage",
+						"type": "uint256"
+					}
+				],
+				"name": "sgUpdateSlippageTolerance",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "sgWithdraw",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"author": "Luke Wickens <luke@pillarproject.io>",
+			"kind": "dev",
+			"methods": {
+				"sgBridgeTokens((uint256,address,address,uint16,uint16,uint16,address,address))": {
+					"params": {
+						"_sgData": "- struct containing information required to execute bridge"
+					}
+				},
+				"sgInitialize(address,uint16)": {
+					"params": {
+						"_chainId": "- current chain id",
+						"_stargateRouter": "- address of the Stargate router contract"
+					}
+				},
+				"sgReceive(uint16,bytes,uint256,address,uint256,bytes)": {
+					"params": {
+						"_chainId": "The remote chainId sending the tokens",
+						"_nonce": "The message ordering nonce",
+						"_payload": "The bytes containing the toAddress",
+						"_srcAddress": "The remote Bridge address",
+						"_token": "The token contract on the local chain",
+						"amountLD": "The qty of local _token contract tokens"
+					}
+				}
+			},
+			"title": "StargateFacet",
+			"version": 1
+		},
+		"userdoc": {
+			"errors": {
+				"ReentrancyError()": [
+					{
+						"notice": "Errors ///"
+					}
+				]
+			},
+			"kind": "user",
+			"methods": {
+				"sgInitialize(address,uint16)": {
+					"notice": "initializes state variables for the Stargate facet"
+				}
+			},
+			"notice": "Stargate/LayerZero intergration for bridging tokens",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"bridges/facets/StargateFacet.sol": "StargateFacet"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+			"keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+				"dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+			"keccak256": "0x032807210d1d7d218963d7355d62e021a84bf1b3339f4f50be2f63b53cccaf29",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://11756f42121f6541a35a8339ea899ee7514cfaa2e6d740625fcc844419296aa6",
+				"dweb:/ipfs/QmekMuk6BY4DAjzeXr4MSbKdgoqqsZnA8JPtuyWc6CwXHf"
+			]
+		},
+		"@openzeppelin/contracts/utils/Address.sol": {
+			"keccak256": "0xd6153ce99bcdcce22b124f755e72553295be6abcd63804cfdffceb188b8bef10",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://35c47bece3c03caaa07fab37dd2bb3413bfbca20db7bd9895024390e0a469487",
+				"dweb:/ipfs/QmPGWT2x3QHcKxqe6gRmAkdakhbaRgx3DLzcakHz5M4eXG"
+			]
+		},
+		"bridges/errors/GenericErrors.sol": {
+			"keccak256": "0x428005532c28e5c7ab8caf0683f3df926d36d9e4c4d2d84ada50961bbbafc946",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c6c8c43e7ff4ed53a714221d42c73aebc8b9bb617f83c6fa39cb0f84ee85ed48",
+				"dweb:/ipfs/QmRHpwL8iZVmykWEzbqhF6Are4duCKy4fp66JQgtrPnoUT"
+			]
+		},
+		"bridges/errors/StargateErrors.sol": {
+			"keccak256": "0xc5c2c151907a2b71761be3cb2c1e4dcb65e29f6ef67ed8056a7f3845a770dde5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6a5964bdd4c309a86bbce8050e3cb944a3bbfa38b326d43f441652d55557f5f7",
+				"dweb:/ipfs/QmRXp3hJAFMMdJEw3nX9yNNwdoF35X7nFP1MRB3NCqiVA8"
+			]
+		},
+		"bridges/facets/StargateFacet.sol": {
+			"keccak256": "0x0dc20307567f20c64ee6628b111e794406669489079cd3a0e0ddee5e835247f6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d0b792b1c557fa1cc7bafa19e92c989b77f46fda9b33a85b7eb70e9ad5dd21e8",
+				"dweb:/ipfs/QmSceD8MATtmDEj2RgV7qkQpdANVn8A2vJdtcPkwSqV6R5"
+			]
+		},
+		"bridges/helpers/ReentrancyGuard.sol": {
+			"keccak256": "0x63437a01c734b65679c405ae011ea5290a5a1c220c8b9854319b2595d3ac02d2",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://4d2026bf9202befef764f0512b9cb1071e5b107b1b78de5987324fb783bfe7ce",
+				"dweb:/ipfs/QmceFBuJ3hM7KwA195vxXkTcZVvZd27NvFWnmCyLzo5Rwg"
+			]
+		},
+		"bridges/interfaces/IDiamondCut.sol": {
+			"keccak256": "0x895069af98e2df3257996711d1f870eff1d97a445c952d5f89621ea508dafbd6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://97f085c1d787a64ec56dcb4c6d03dc84bb457006bf2e2761c69f3b2873fc1d71",
+				"dweb:/ipfs/Qmd8JyuZNP6icA9HqzpRSzQhFHP6CQvHbGEp7AhfGLEmP4"
+			]
+		},
+		"bridges/interfaces/IStargateReceiver.sol": {
+			"keccak256": "0x667379c5980740888b48e9db4d340402c049c131c182c29b50820519f18d74cc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://cc4e7697aa186e644a2ca2ff9d605849c9a61d212a0a07746f8d5cf06a925c90",
+				"dweb:/ipfs/QmVLJX9wEKJk3RxWHA2MTU9AbjJuFhFhFv4hAfif8WqVfg"
+			]
+		},
+		"bridges/interfaces/IStargateRouter.sol": {
+			"keccak256": "0x9d11f889b2915d08282cb4787091858bfb72f811e4fb92f43d1fef8ae64394d7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bcf1285a378e2d6ad43db50a62d004532e0d4a43917fdf943b38cb2f133e328e",
+				"dweb:/ipfs/QmeS9zA4GzdUrNZiEdrpcUENuVGHVYPJ4iUJ2aRcYxiYub"
+			]
+		},
+		"bridges/libs/LibDiamond.sol": {
+			"keccak256": "0xf27658fee344f2b02d6881ee6c3b853868ecceafe72867256b9cb94d75888c52",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://409c3f67362abba3c74f31ef99f2f3692b5a4ca0c1fc025c62da1b8251d90df5",
+				"dweb:/ipfs/QmPryPC22UfHNj6xNp3B1CcB4nFan32iDc4jsM16EMiTuG"
+			]
+		}
+	},
+	"version": 1
+}

@@ -20,7 +20,8 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export type StargateDataStruct = {
   qty: BigNumberish;
-  token: string;
+  fromToken: string;
+  toToken: string;
   dstChainId: BigNumberish;
   srcPoolId: BigNumberish;
   dstPoolId: BigNumberish;
@@ -31,6 +32,7 @@ export type StargateDataStruct = {
 export type StargateDataStructOutput = [
   BigNumber,
   string,
+  string,
   number,
   number,
   number,
@@ -38,7 +40,8 @@ export type StargateDataStructOutput = [
   string
 ] & {
   qty: BigNumber;
-  token: string;
+  fromToken: string;
+  toToken: string;
   dstChainId: number;
   srcPoolId: number;
   dstPoolId: number;
@@ -48,8 +51,10 @@ export type StargateDataStructOutput = [
 
 export interface StargateFacetInterface extends utils.Interface {
   functions: {
-    "sgBridgeTokens((uint256,address,uint16,uint16,uint16,address,address))": FunctionFragment;
+    "sgAddPool(uint16,address,uint256)": FunctionFragment;
+    "sgBridgeTokens((uint256,address,address,uint16,uint16,uint16,address,address))": FunctionFragment;
     "sgCalculateFees(uint16,address,address)": FunctionFragment;
+    "sgCheckPoolId(uint16,address,uint256)": FunctionFragment;
     "sgInitialize(address,uint16)": FunctionFragment;
     "sgMinAmountOut(uint256)": FunctionFragment;
     "sgReceive(uint16,bytes,uint256,address,uint256,bytes)": FunctionFragment;
@@ -59,12 +64,20 @@ export interface StargateFacetInterface extends utils.Interface {
   };
 
   encodeFunctionData(
+    functionFragment: "sgAddPool",
+    values: [BigNumberish, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "sgBridgeTokens",
     values: [StargateDataStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "sgCalculateFees",
     values: [BigNumberish, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sgCheckPoolId",
+    values: [BigNumberish, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "sgInitialize",
@@ -98,12 +111,17 @@ export interface StargateFacetInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "sgAddPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "sgBridgeTokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "sgCalculateFees",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sgCheckPoolId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -126,19 +144,28 @@ export interface StargateFacetInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "sgWithdraw", data: BytesLike): Result;
 
   events: {
+    "SGAddedPool(uint16,address,uint256)": EventFragment;
     "SGInitialized(address,uint16)": EventFragment;
     "SGReceivedOnDestination(address,uint256)": EventFragment;
-    "SGTransferStarted(string,address,address,address,uint256,uint16)": EventFragment;
+    "SGTransferStarted(string,address,address,address,address,uint256,uint16)": EventFragment;
     "SGUpdatedRouter(address)": EventFragment;
     "SGUpdatedSlippageTolerance(uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "SGAddedPool"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SGInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SGReceivedOnDestination"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SGTransferStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SGUpdatedRouter"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SGUpdatedSlippageTolerance"): EventFragment;
 }
+
+export type SGAddedPoolEvent = TypedEvent<
+  [number, string, BigNumber],
+  { chainId: number; token: string; poolId: BigNumber }
+>;
+
+export type SGAddedPoolEventFilter = TypedEventFilter<SGAddedPoolEvent>;
 
 export type SGInitializedEvent = TypedEvent<
   [string, number],
@@ -156,10 +183,11 @@ export type SGReceivedOnDestinationEventFilter =
   TypedEventFilter<SGReceivedOnDestinationEvent>;
 
 export type SGTransferStartedEvent = TypedEvent<
-  [string, string, string, string, BigNumber, number],
+  [string, string, string, string, string, BigNumber, number],
   {
     bridgeUsed: string;
-    tokenAddress: string;
+    fromToken: string;
+    toToken: string;
     from: string;
     to: string;
     amount: BigNumber;
@@ -209,6 +237,13 @@ export interface StargateFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    sgAddPool(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     sgBridgeTokens(
       _sgData: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -220,6 +255,13 @@ export interface StargateFacet extends BaseContract {
       _router: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    sgCheckPoolId(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     sgInitialize(
       _stargateRouter: string,
@@ -260,6 +302,13 @@ export interface StargateFacet extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  sgAddPool(
+    _chainId: BigNumberish,
+    _token: string,
+    _poolId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   sgBridgeTokens(
     _sgData: StargateDataStruct,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -271,6 +320,13 @@ export interface StargateFacet extends BaseContract {
     _router: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  sgCheckPoolId(
+    _chainId: BigNumberish,
+    _token: string,
+    _poolId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   sgInitialize(
     _stargateRouter: string,
@@ -311,6 +367,13 @@ export interface StargateFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    sgAddPool(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     sgBridgeTokens(
       _sgData: StargateDataStruct,
       overrides?: CallOverrides
@@ -322,6 +385,13 @@ export interface StargateFacet extends BaseContract {
       _router: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    sgCheckPoolId(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     sgInitialize(
       _stargateRouter: string,
@@ -363,6 +433,17 @@ export interface StargateFacet extends BaseContract {
   };
 
   filters: {
+    "SGAddedPool(uint16,address,uint256)"(
+      chainId?: null,
+      token?: null,
+      poolId?: null
+    ): SGAddedPoolEventFilter;
+    SGAddedPool(
+      chainId?: null,
+      token?: null,
+      poolId?: null
+    ): SGAddedPoolEventFilter;
+
     "SGInitialized(address,uint16)"(
       stargate?: null,
       chainId?: null
@@ -378,9 +459,10 @@ export interface StargateFacet extends BaseContract {
       amount?: null
     ): SGReceivedOnDestinationEventFilter;
 
-    "SGTransferStarted(string,address,address,address,uint256,uint16)"(
+    "SGTransferStarted(string,address,address,address,address,uint256,uint16)"(
       bridgeUsed?: null,
-      tokenAddress?: null,
+      fromToken?: null,
+      toToken?: null,
       from?: null,
       to?: null,
       amount?: null,
@@ -388,7 +470,8 @@ export interface StargateFacet extends BaseContract {
     ): SGTransferStartedEventFilter;
     SGTransferStarted(
       bridgeUsed?: null,
-      tokenAddress?: null,
+      fromToken?: null,
+      toToken?: null,
       from?: null,
       to?: null,
       amount?: null,
@@ -407,6 +490,13 @@ export interface StargateFacet extends BaseContract {
   };
 
   estimateGas: {
+    sgAddPool(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     sgBridgeTokens(
       _sgData: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -416,6 +506,13 @@ export interface StargateFacet extends BaseContract {
       _destChain: BigNumberish,
       _receiver: string,
       _router: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sgCheckPoolId(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -459,6 +556,13 @@ export interface StargateFacet extends BaseContract {
   };
 
   populateTransaction: {
+    sgAddPool(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     sgBridgeTokens(
       _sgData: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -468,6 +572,13 @@ export interface StargateFacet extends BaseContract {
       _destChain: BigNumberish,
       _receiver: string,
       _router: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    sgCheckPoolId(
+      _chainId: BigNumberish,
+      _token: string,
+      _poolId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
