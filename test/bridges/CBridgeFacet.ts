@@ -115,111 +115,206 @@ describe("CBridgeFacet", () => {
     await setupTest();
   });
 
-  it("should revert if cBridge address is address(0)", async function() {
-    await expectRevert(
-      cBridgeFacet.cbInitialize(ZERO_ADDRESS),
-      "InvalidConfig",
-    );
+  describe("cbInitialize()", async function() {
+    it("should revert if cBridge address is zero address)", async function() {
+      await expectRevert(
+        cBridgeFacet.cbInitialize(ZERO_ADDRESS),
+        "ZeroAddressProvided()",
+      );
+    });
+
+    it("should initialize the cBridge address and chain Id", async function() {
+      const tx: ContractTransaction = await cBridgeFacet
+        .connect(owner)
+        .cbInitialize(CBRIDGE_ADDRESS, {
+          gasLimit: 500000,
+        });
+      const receipt: ContractReceipt = await tx.wait();
+      const result = checkEvent(receipt);
+      expect(result[0]).toEqual("CBInitialized");
+      expect(result[1]).toEqual(CBRIDGE_ADDRESS);
+      expect(result[2]).toEqual(BigNumber.from(3333));
+    });
   });
 
-  it("should initialize the cBridge address and chain Id", async function() {
-    const tx: ContractTransaction = await cBridgeFacet
-      .connect(owner)
-      .cbInitialize(CBRIDGE_ADDRESS, {
-        gasLimit: 500000,
-      });
-    const receipt: ContractReceipt = await tx.wait();
-    const result = checkEvent(receipt);
-    expect(result[0]).toEqual("CBInitialized");
-    expect(result[1]).toEqual(CBRIDGE_ADDRESS);
-    expect(result[2]).toEqual(BigNumber.from(3333));
+  describe("cbBridgeTokens()", async function() {
+    it("should revert if bridging to the same chain", async function() {
+      CBridgeData = {
+        to: alice.address,
+        token: DAI_ADDRESS,
+        qty: utils.parseUnits("100000", 10),
+        dstChainId: 3333,
+        nonce: 1,
+      };
+      await expectRevert(
+        cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
+          gasLimit: 500000,
+        }),
+        "CannotBridgeToSameNetwork",
+      );
+    });
+
+    it("should revert if bridging tokens and token is zero address)", async function() {
+      CBridgeData = {
+        to: alice.address,
+        token: ZERO_ADDRESS,
+        qty: utils.parseUnits("100000", 10),
+        dstChainId: 137,
+        nonce: 1,
+      };
+      await expectRevert(
+        cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
+          gasLimit: 500000,
+        }),
+        "TokenAddressIsZero()",
+      );
+    });
+
+    it("should revert if bridging tokens and amount is zero)", async function() {
+      CBridgeData = {
+        to: alice.address,
+        token: DAI_ADDRESS,
+        qty: 0,
+        dstChainId: 137,
+        nonce: 1,
+      };
+      await expectRevert(
+        cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
+          gasLimit: 500000,
+        }),
+        "InvalidAmount()",
+      );
+    });
+
+    it("should revert if bridging tokens and receiver of tokens is zero address)", async function() {
+      CBridgeData = {
+        to: ZERO_ADDRESS,
+        token: DAI_ADDRESS,
+        qty: utils.parseUnits("100000", 10),
+        dstChainId: 137,
+        nonce: 1,
+      };
+      await expectRevert(
+        cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
+          gasLimit: 500000,
+        }),
+        "ZeroAddressProvided()",
+      );
+    });
+
+    it("should start a token bridge transaction on the sending chain", async function() {
+      CBridgeData = {
+        to: alice.address,
+        token: DAI_ADDRESS,
+        qty: utils.parseUnits("100000", 10),
+        dstChainId: 137,
+        nonce: 1,
+      };
+      const tx: ContractTransaction = await cBridgeFacet
+        .connect(alice)
+        .cbBridgeTokens(CBridgeData, {
+          gasLimit: 500000,
+        });
+      const receipt: ContractReceipt = await tx.wait();
+      const result = multiCallCheckLastEventEmitted(receipt);
+      expect(result[0]).toEqual("CBTransferStarted");
+      expect(result[1]).toEqual("cbridge");
+      expect(result[2]).toEqual(DAI_ADDRESS);
+      expect(result[3]).toEqual(alice.address);
+      expect(result[4]).toEqual(alice.address);
+      expect(result[5]).toEqual(utils.parseUnits("100000", 10));
+      expect(result[6]).toEqual(BigNumber.from(137));
+    });
   });
 
-  it("should revert if bridging to the same chain", async function() {
-    CBridgeData = {
-      to: alice.address,
-      token: DAI_ADDRESS,
-      qty: utils.parseUnits("100000", 10),
-      dstChainId: 3333,
-      nonce: 1,
-    };
-    await expectRevert(
-      cBridgeFacet.connect(alice).cbBridgeTokens(CBridgeData, {
-        gasLimit: 500000,
-      }),
-      "CannotBridgeToSameNetwork",
-    );
+  describe("cbUpdateBridge()", async function() {
+    it("should revert if updating cBridge address and not owner", async function() {
+      await expectRevert(
+        cBridgeFacet.connect(dummy).cbUpdateBridge(dummy.address),
+        "LibDiamond: Must be contract owner",
+      );
+    });
+
+    it("should revert if updating cBridge address to zero address)", async function() {
+      await expectRevert(
+        cBridgeFacet.cbUpdateBridge(ZERO_ADDRESS),
+        "ZeroAddressProvided()",
+      );
+    });
+
+    it("should update cBridge address", async function() {
+      const tx: ContractTransaction = await cBridgeFacet.cbUpdateBridge(
+        dummy.address,
+      );
+      const receipt: ContractReceipt = await tx.wait();
+      const result = checkEvent(receipt);
+      expect(result[0]).toEqual("CBUpdatedBridge");
+      expect(result[1]).toEqual(dummy.address);
+    });
   });
 
-  it("should start a token bridge transaction on the sending chain", async function() {
-    CBridgeData = {
-      to: alice.address,
-      token: DAI_ADDRESS,
-      qty: utils.parseUnits("100000", 10),
-      dstChainId: 137,
-      nonce: 1,
-    };
-    const tx: ContractTransaction = await cBridgeFacet
-      .connect(alice)
-      .cbBridgeTokens(CBridgeData, {
-        gasLimit: 500000,
-      });
-    const receipt: ContractReceipt = await tx.wait();
-    const result = multiCallCheckLastEventEmitted(receipt);
-    expect(result[0]).toEqual("CBTransferStarted");
-    expect(result[1]).toEqual("cbridge");
-    expect(result[2]).toEqual(DAI_ADDRESS);
-    expect(result[3]).toEqual(alice.address);
-    expect(result[4]).toEqual(alice.address);
-    expect(result[5]).toEqual(utils.parseUnits("100000", 10));
-    expect(result[6]).toEqual(BigNumber.from(137));
+  describe("cbUpdateSlippageTolerance()", async function() {
+    it("should revert if updating slippage tolerance and not owner", async function() {
+      await expectRevert(
+        cBridgeFacet.connect(dummy).cbUpdateSlippageTolerance(6000),
+        "LibDiamond: Must be contract owner",
+      );
+    });
+
+    it("should revert if updating slippage tolerance to <= 0.5%", async function() {
+      await expectRevert(
+        cBridgeFacet.cbUpdateSlippageTolerance(5000),
+        "CBSlippageTooLow",
+      );
+    });
+
+    it("should update slippage tolerance", async function() {
+      const tx: ContractTransaction = await cBridgeFacet.cbUpdateSlippageTolerance(
+        15000,
+      );
+      const receipt: ContractReceipt = await tx.wait();
+      const result = checkEvent(receipt);
+      expect(result[0]).toEqual("CBUpdatedSlippageTolerance");
+      expect(result[1]).toEqual(BigNumber.from(15000));
+    });
   });
 
-  it("should update cBridge address", async function() {
-    const tx: ContractTransaction = await cBridgeFacet.cbUpdateBridge(
-      dummy.address,
-    );
-    const receipt: ContractReceipt = await tx.wait();
-    const result = checkEvent(receipt);
-    expect(result[0]).toEqual("CBUpdatedBridge");
-    expect(result[1]).toEqual(dummy.address);
-  });
+  describe("cbWithdraw()", async function() {
+    it("should revert trying to withdraw stuck tokens in the contract if not the owner", async function() {
+      await expectRevert(
+        cBridgeFacet.connect(dummy).cbWithdraw(DAI_ADDRESS, dummy.address, 10),
+        "LibDiamond: Must be contract owner",
+      );
+    });
 
-  it("should revert if updating cBridge address and not owner", async function() {
-    await expectRevert(
-      cBridgeFacet.connect(dummy).cbUpdateBridge(dummy.address),
-      "LibDiamond: Must be contract owner",
-    );
-  });
+    it("should withdraw stuck tokens in the contract", async function() {
+      // check pre-test balance of DAI for dummy and cbridge facet accounts
+      let dummyDAIBalance = await daiContract
+        .connect(dummy)
+        .balanceOf(dummy.address);
+      let cbFacetDAIBalance = await daiContract
+        .connect(dummy)
+        .balanceOf(cBridgeFacet.address);
+      expect(dummyDAIBalance).toEqual(BigNumber.from(0));
+      expect(cbFacetDAIBalance).toEqual(BigNumber.from(0));
 
-  it("should revert if updating cBridge address to address(0)", async function() {
-    await expectRevert(
-      cBridgeFacet.cbUpdateBridge(ZERO_ADDRESS),
-      "InvalidConfig",
-    );
-  });
+      // transfer DAI from alice to cbridge facet and check balance of stargate facet
+      await daiContract.connect(alice).transfer(cBridgeFacet.address, 20);
+      cbFacetDAIBalance = await daiContract
+        .connect(dummy)
+        .balanceOf(cBridgeFacet.address);
+      expect(cbFacetDAIBalance).toEqual(BigNumber.from(20));
 
-  it("should update slippage tolerance", async function() {
-    const tx: ContractTransaction = await cBridgeFacet.cbUpdateSlippageTolerance(
-      15000,
-    );
-    const receipt: ContractReceipt = await tx.wait();
-    const result = checkEvent(receipt);
-    expect(result[0]).toEqual("CBUpdatedSlippageTolerance");
-    expect(result[1]).toEqual(BigNumber.from(15000));
-  });
-
-  it("should revert if updating slippage tolerance and not owner", async function() {
-    await expectRevert(
-      cBridgeFacet.connect(dummy).cbUpdateSlippageTolerance(6000),
-      "LibDiamond: Must be contract owner",
-    );
-  });
-
-  it("should revert if updating slippage tolerance to <= 0.5%", async function() {
-    await expectRevert(
-      cBridgeFacet.cbUpdateSlippageTolerance(5000),
-      "CBSlippageTooLow",
-    );
+      // check post-withdraw balance of USDC for dummy and stargate facet accounts
+      await cBridgeFacet.cbWithdraw(DAI_ADDRESS, dummy.address, 20);
+      dummyDAIBalance = await daiContract
+        .connect(dummy)
+        .balanceOf(dummy.address);
+      cbFacetDAIBalance = await daiContract
+        .connect(dummy)
+        .balanceOf(cBridgeFacet.address);
+      expect(dummyDAIBalance).toEqual(BigNumber.from(20));
+      expect(cbFacetDAIBalance).toEqual(BigNumber.from(0));
+    });
   });
 });

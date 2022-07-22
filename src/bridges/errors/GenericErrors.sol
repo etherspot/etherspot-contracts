@@ -16,3 +16,4 @@ error NoTransferToNullAddress();
 error NativeAssetTransferFailed();
 error InvalidContract();
 error InvalidConfig();
+error ZeroAddressProvided();

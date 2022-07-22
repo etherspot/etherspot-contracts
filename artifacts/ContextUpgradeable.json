@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "Initializable",
-  "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+  "contractName": "ContextUpgradeable",
+  "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
   "abi": [
     {
       "anonymous": false,

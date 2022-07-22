@@ -10,7 +10,7 @@ import {ICBridge} from "../interfaces/ICBridge.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ReentrancyGuard} from "../helpers/ReentrancyGuard.sol";
-import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
+import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig, TokenAddressIsZero, ZeroAddressProvided} from "../errors/GenericErrors.sol";
 import {CBSlippageTooLow} from "../errors/CBridgeErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
 
@@ -58,7 +58,7 @@ contract CBridgeFacet is ReentrancyGuard {
     /// @param _cbBridge address of the CBridge router contract
     function cbInitialize(address _cbBridge) external {
         LibDiamond.enforceIsContractOwner();
-        if (_cbBridge == address(0)) revert InvalidConfig();
+        if (_cbBridge == address(0)) revert ZeroAddressProvided();
         Storage storage s = getStorage();
         s.cbBridge = _cbBridge;
         s.cbChainId = block.chainid;
@@ -76,6 +76,10 @@ contract CBridgeFacet is ReentrancyGuard {
     {
         if (block.chainid == _cbData.dstChainId)
             revert CannotBridgeToSameNetwork();
+        if (_cbData.to == address(0)) revert ZeroAddressProvided();
+        if (_cbData.qty <= 0) revert InvalidAmount();
+        if (_cbData.token == address(0)) revert TokenAddressIsZero();
+
         Storage storage s = getStorage();
         address bridge = s.cbBridge;
 
@@ -117,7 +121,7 @@ contract CBridgeFacet is ReentrancyGuard {
 
     function cbUpdateBridge(address _newAddress) external {
         LibDiamond.enforceIsContractOwner();
-        if (_newAddress == address(0)) revert InvalidConfig();
+        if (_newAddress == address(0)) revert ZeroAddressProvided();
         Storage storage s = getStorage();
         s.cbBridge = _newAddress;
         emit CBUpdatedBridge(_newAddress);

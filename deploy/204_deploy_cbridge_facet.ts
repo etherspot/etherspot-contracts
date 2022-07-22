@@ -24,14 +24,14 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const cBridgeFacet = await ethers.getContract("CBridgeFacet");
   const diamond = await ethers.getContract("Diamond");
 
-  const ABI = ["function initializeCBridge(address)"];
+  const ABI = ["function cbInitialize(address)"];
   const iface = new utils.Interface(ABI);
 
   if (config[network.name].cBridge != "") {
     bridgeAddr = config[network.name].cBridge;
   }
 
-  const initData = iface.encodeFunctionData("initializeCBridge", [bridgeAddr]);
+  const initData = iface.encodeFunctionData("cbInitialize", [bridgeAddr]);
 
   await addOrReplaceFacets(
     [cBridgeFacet],
