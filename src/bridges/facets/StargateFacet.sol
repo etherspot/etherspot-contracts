@@ -67,7 +67,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     /// @notice initializes state variables for the Stargate facet
     /// @param _stargateRouter - address of the Stargate router contract
     /// @param _chainId - current chain id
-
     function sgInitialize(address _stargateRouter, uint16 _chainId) external {
         if (_stargateRouter == address(0)) revert InvalidConfig();
         LibDiamond.enforceIsContractOwner();
@@ -91,6 +90,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGInitialized(_stargateRouter, _chainId);
     }
 
+    /// @notice initializes state variables for the stargate facet
     /// @param _sgData - struct containing information required to execute bridge
     function sgBridgeTokens(StargateData memory _sgData)
         external
@@ -164,6 +164,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         return true;
     }
 
+    /// @notice required to receive tokens on destination chain
     /// @param _chainId The remote chainId sending the tokens
     /// @param _srcAddress The remote Bridge address
     /// @param _nonce The message ordering nonce
@@ -187,6 +188,10 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGReceivedOnDestination(_token, amountLD);
     }
 
+    /// @notice Calculates cross chain fee
+    /// @param _destChain Destination chain id
+    /// @param _receiver Receiver on destination chain
+    /// @param _router Address of stargate router
     function sgCalculateFees(
         uint16 _destChain,
         address _receiver,
@@ -202,12 +207,16 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         return nativeFee;
     }
 
+    /// @notice Calculates the minimum amount out using slippage tolerance
+    /// @param _amount Transfer amount
     function sgMinAmountOut(uint256 _amount) public view returns (uint256) {
         Storage storage s = getStorage();
         // equates to 0.5% slippage
         return (_amount * (10000 - s.slippage)) / (10000);
     }
 
+    /// @notice Updates stargate router address for deployed chain
+    /// @param _newAddress Address of the new router
     function sgUpdateRouter(address _newAddress) external {
         LibDiamond.enforceIsContractOwner();
         if (_newAddress == address(0)) revert StargateRouterAddressZero();
@@ -216,6 +225,8 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGUpdatedRouter(_newAddress);
     }
 
+    /// @notice Updates slippage tolerance amount
+    /// @param _newSlippage New slippage amount
     function sgUpdateSlippageTolerance(uint256 _newSlippage) external {
         LibDiamond.enforceIsContractOwner();
         Storage storage s = getStorage();
@@ -223,6 +234,10 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGUpdatedSlippageTolerance(_newSlippage);
     }
 
+    /// @notice Withdraws tokens on contract
+    /// @param _token Address of token
+    /// @param _user Address of receiver of tokens
+    /// @param _amount Amount to withdraw
     function sgWithdraw(
         address _token,
         address _user,
@@ -233,6 +248,10 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         IERC20(_token).safeTransferFrom(address(this), _user, _amount);
     }
 
+    /// @notice Adds a new pool for a specific token and chain
+    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
+    /// @param _token Address of token
+    /// @param _poolId Pool id (check stargate pool ids docs)
     function sgAddPool(
         uint16 _chainId,
         address _token,
@@ -244,6 +263,10 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGAddedPool(_chainId, _token, _poolId);
     }
 
+    /// @notice Checks for a valid token pool on specific chain
+    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
+    /// @param _token Address of token
+    /// @param _poolId Pool id (check stargate pool ids docs)
     function sgCheckPoolId(
         uint16 _chainId,
         address _token,
