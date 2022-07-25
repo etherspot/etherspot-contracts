@@ -160,8 +160,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -186,8 +184,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -207,8 +203,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -234,8 +228,6 @@ describe("StargateFacet", () => {
         fromToken: ZERO_ADDRESS,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -261,8 +253,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: ZERO_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -282,41 +272,12 @@ describe("StargateFacet", () => {
       );
     });
 
-    it("should revert if starting a token bridge transaction and source pool id is invalid", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 0,
-        dstPoolId: 1,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
-
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
-        }),
-        "InvalidSourcePoolId()",
-      );
-    });
-
     it("should revert if starting a token bridge transaction and source token is invalid", async function() {
       StargateData = {
         qty: AMOUNT,
         fromToken: "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -333,33 +294,6 @@ describe("StargateFacet", () => {
           value: feeWei,
         }),
         "InvalidSourcePoolId()",
-      );
-    });
-
-    it("should revert if starting a token bridge transaction and destination pool id is invalid", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 0,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
-
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
-        }),
-        "InvalidDestinationPoolId()",
       );
     });
 
@@ -369,8 +303,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: "0x0000000000000000000000000000000000001010", // MATIC address
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -386,7 +318,7 @@ describe("StargateFacet", () => {
           gasLimit: ethers.utils.hexlify(2000000),
           value: feeWei,
         }),
-        "InvalidDestinationPoolId()",
+        "Stargate: local chainPath does not exist",
       );
     });
 
@@ -396,8 +328,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: ZERO_ADDRESS,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -423,8 +353,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: ZERO_ADDRESS,
       };
@@ -450,8 +378,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
@@ -486,8 +412,6 @@ describe("StargateFacet", () => {
         fromToken: usdc.address,
         toToken: ARBITRUM_USDC_ADDRESS,
         dstChainId: ARBITRUM_CHAIN_ID,
-        srcPoolId: 1,
-        dstPoolId: 1,
         to: bob.address,
         destStargateComposed: ARBITRUM_STARGATE_ROUTER_ADDRESS,
       };
@@ -665,7 +589,7 @@ describe("StargateFacet", () => {
       expect(result[0]).toEqual("SGAddedPool");
       expect(result[1]).toEqual(15);
       expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
-      expect(result[3]).toEqual(BigNumber.from(3));
+      expect(result[3]).toEqual(3);
     });
   });
 
@@ -686,6 +610,24 @@ describe("StargateFacet", () => {
         1,
       );
       expect(isValidPool).toEqual(false);
+    });
+  });
+
+  describe("sgRetrievePoolId()", async function() {
+    it("should retrieve pool for a valid token in mapping", async function() {
+      const poolId = await stargateFacet.sgRetrievePoolId(
+        2, // BSC
+        "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", //BUSD address
+      );
+      expect(poolId).toEqual(5);
+    });
+
+    it("should return zero if token is not in mapping", async function() {
+      const poolId = await stargateFacet.sgRetrievePoolId(
+        ETH_CHAIN_ID,
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
+      );
+      expect(poolId).toEqual(0);
     });
   });
 });

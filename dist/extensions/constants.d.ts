@@ -22,6 +22,8 @@ export declare enum NetworkNames {
     OptimismKovan = "optimismKovan",
     Moonbeam = "moonbeam",
     Moonbase = "moonbase",
+    Fuse = "fuse",
+    FuseSparknet = "fuseSparknet",
     Celo = "celo",
     CeloTest = "celoTest",
     Etherspot = "etherspot",

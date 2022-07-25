@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-web3");
 require("@typechain/hardhat");
@@ -7,6 +8,7 @@ require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
+require("hardhat-tracer");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
 const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
@@ -18,10 +20,10 @@ const config = {
             accounts: {
                 mnemonic: HARDHAT_MNEMONIC ||
                     "test test test test test test test test test test test junk",
-                count: 256,
+                count: 20,
             },
             chainId: 3333,
-            gasPrice: 20 * 1000000000,
+            gasPrice: 100 * 1000000000,
         } }, (0, extensions_1.createConfigNetworks)()),
     solidity: {
         compilers: [
@@ -36,6 +38,15 @@ const config = {
             },
             {
                 version: "0.8.4",
+                settings: {
+                    evmVersion: "istanbul",
+                    metadata: {
+                        bytecodeHash: "none",
+                    },
+                },
+            },
+            {
+                version: "0.8.11",
                 settings: {
                     evmVersion: "istanbul",
                     metadata: {

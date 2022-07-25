@@ -9,6 +9,7 @@ import {ReentrancyGuard} from "../helpers/ReentrancyGuard.sol";
 import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
 import {SenderNotStargateRouter, NoMsgValueForCrossChainMessage, StargateRouterAddressZero, InvalidSourcePoolId, InvalidDestinationPoolId} from "../errors/StargateErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
+import "hardhat/console.sol";
 
 /// @title StargateFacet
 /// @author Luke Wickens <luke@pillarproject.io>
@@ -33,7 +34,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     event SGReceivedOnDestination(address token, uint256 amount);
     event SGUpdatedRouter(address newAddress);
     event SGUpdatedSlippageTolerance(uint256 newSlippage);
-    event SGAddedPool(uint16 chainId, address token, uint256 poolId);
+    event SGAddedPool(uint16 chainId, address token, uint16 poolId);
 
     //////////////////////////////////////////////////////////////
     ////////////////////////// Storage ///////////////////////////
@@ -46,7 +47,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         uint16 chainId;
         uint256 dstGas;
         uint256 slippage;
-        mapping(uint16 => mapping(address => uint256)) poolIds;
+        mapping(uint16 => mapping(address => uint16)) poolIds;
     }
 
     //////////////////////////////////////////////////////////////
@@ -58,8 +59,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         address fromToken;
         address toToken;
         uint16 dstChainId;
-        uint16 srcPoolId;
-        uint16 dstPoolId;
         address payable to;
         address destStargateComposed;
     }
@@ -96,7 +95,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         external
         payable
         nonReentrant
-        returns (bool)
     {
         if (msg.value <= 0) revert NoMsgValueForCrossChainMessage();
         if (_sgData.qty <= 0) revert InvalidAmount();
@@ -109,19 +107,20 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
 
         // access storage
         Storage storage s = getStorage();
-
-        if (!sgCheckPoolId(s.chainId, _sgData.fromToken, _sgData.srcPoolId))
-            revert InvalidSourcePoolId();
-        if (
-            !sgCheckPoolId(
-                _sgData.dstChainId,
-                _sgData.toToken,
-                _sgData.dstPoolId
-            )
-        ) revert InvalidDestinationPoolId();
+        uint16 srcPoolId = sgRetrievePoolId(s.chainId, _sgData.fromToken);
+        if (srcPoolId == 0) revert InvalidSourcePoolId();
+        uint16 dstPoolId = sgRetrievePoolId(
+            _sgData.dstChainId,
+            _sgData.toToken
+        );
 
         // calculate slippage
         uint256 minAmountOut = sgMinAmountOut(_sgData.qty);
+
+        // encode sgReceive implemented
+        bytes memory destination = abi.encodePacked(
+            _sgData.destStargateComposed
+        );
 
         // encode payload data to send to destination contract, which it will handle with sgReceive()
         bytes memory payload = abi.encode(_sgData.to);
@@ -141,13 +140,13 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         // Stargate's Router.swap() function sends the tokens to the destination chain.
         IStargateRouter(s.stargateRouter).swap{value: msg.value}(
             _sgData.dstChainId, // the destination chain id
-            _sgData.srcPoolId, // the source Stargate poolId
-            _sgData.dstPoolId, // the destination Stargate poolId
+            srcPoolId, // the source Stargate poolId
+            dstPoolId, // the destination Stargate poolId
             payable(msg.sender), // refund adddress. if msg.sender pays too much gas, return extra eth
             _sgData.qty, // total tokens to send to destination chain
             minAmountOut, // min amount allowed out
             IStargateRouter.lzTxObj(200000, 0, "0x"), // default lzTxObj
-            abi.encodePacked(_sgData.destStargateComposed), // destination address, the sgReceive() implementer
+            destination, // destination address, the sgReceive() implementer
             payload // bytes payload
         );
 
@@ -160,8 +159,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
             _sgData.qty,
             _sgData.dstChainId
         );
-
-        return true;
     }
 
     /// @notice required to receive tokens on destination chain
@@ -255,7 +252,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     function sgAddPool(
         uint16 _chainId,
         address _token,
-        uint256 _poolId
+        uint16 _poolId
     ) public {
         LibDiamond.enforceIsContractOwner();
         Storage storage s = getStorage();
@@ -270,10 +267,22 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     function sgCheckPoolId(
         uint16 _chainId,
         address _token,
-        uint256 _poolId
+        uint16 _poolId
     ) public view returns (bool) {
         Storage storage s = getStorage();
         return s.poolIds[_chainId][_token] == _poolId ? true : false;
+    }
+
+    /// @notice Retrieves pool id for a token on a specified chain
+    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
+    /// @param _token Address of token
+    function sgRetrievePoolId(uint16 _chainId, address _token)
+        public
+        view
+        returns (uint16)
+    {
+        Storage storage s = getStorage();
+        return s.poolIds[_chainId][_token];
     }
 
     receive() external payable {}
