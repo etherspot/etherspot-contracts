@@ -164,36 +164,11 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "Stargate: not enough balance",
-      );
-    });
-
-    it("should revert if starting a token bridge transaction and no msg.value", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
-
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-          value: 0,
-        }),
-        "NoMsgValueForCrossChainMessage()",
       );
     });
 
@@ -207,16 +182,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidAmount()",
       );
@@ -232,16 +200,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidConfig()",
       );
@@ -257,16 +218,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidConfig()",
       );
@@ -282,16 +236,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidSourcePoolId()",
       );
@@ -307,16 +254,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "Stargate: local chainPath does not exist",
       );
@@ -332,16 +272,9 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidConfig()",
       );
@@ -357,16 +290,9 @@ describe("StargateFacet", () => {
         destStargateComposed: ZERO_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
-
       await expectRevert(
         stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         }),
         "InvalidConfig()",
       );
@@ -382,16 +308,10 @@ describe("StargateFacet", () => {
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
       const tx: ContractTransaction = await stargateFacet
         .connect(alice)
         .sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         });
 
       const receipt: ContractReceipt = await tx.wait();
@@ -416,16 +336,10 @@ describe("StargateFacet", () => {
         destStargateComposed: ARBITRUM_STARGATE_ROUTER_ADDRESS,
       };
 
-      const feeWei = await stargateFacet.sgCalculateFees(
-        ARBITRUM_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-      );
       const tx: ContractTransaction = await stargateFacet
         .connect(alice)
         .sgBridgeTokens(StargateData, {
           gasLimit: ethers.utils.hexlify(2000000),
-          value: feeWei,
         });
 
       const receipt: ContractReceipt = await tx.wait();

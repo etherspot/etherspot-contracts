@@ -95,7 +95,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         payable
         nonReentrant
     {
-        if (msg.value <= 0) revert NoMsgValueForCrossChainMessage();
+        // if (msg.value <= 0) revert NoMsgValueForCrossChainMessage();
         if (_sgData.qty <= 0) revert InvalidAmount();
         if (
             _sgData.fromToken == address(0) ||
@@ -106,11 +106,20 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
 
         // access storage
         Storage storage s = getStorage();
+
+        // check pool ids are valid
         uint16 srcPoolId = sgRetrievePoolId(s.chainId, _sgData.fromToken);
         if (srcPoolId == 0) revert InvalidSourcePoolId();
         uint16 dstPoolId = sgRetrievePoolId(
             _sgData.dstChainId,
             _sgData.toToken
+        );
+
+        // calculate cross chain fees
+        uint256 fees = sgCalculateFees(
+            _sgData.dstChainId,
+            _sgData.to,
+            s.stargateRouter
         );
 
         // calculate slippage
@@ -137,7 +146,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         );
 
         // Stargate's Router.swap() function sends the tokens to the destination chain.
-        IStargateRouter(s.stargateRouter).swap{value: msg.value}(
+        IStargateRouter(s.stargateRouter).swap{value: fees}(
             _sgData.dstChainId, // the destination chain id
             srcPoolId, // the source Stargate poolId
             dstPoolId, // the destination Stargate poolId
