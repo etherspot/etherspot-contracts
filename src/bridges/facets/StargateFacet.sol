@@ -5,10 +5,69 @@ import {IStargateRouter} from "../interfaces/IStargateRouter.sol";
 import {IStargateReceiver} from "../interfaces/IStargateReceiver.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ReentrancyGuard} from "../../common/helpers/DiamondReentrancyGuard.sol";
+// import {ReentrancyGuard} from "../../common/helpers/DiamondReentrancyGuard.sol";
 import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
 import {SenderNotStargateRouter, NoMsgValueForCrossChainMessage, StargateRouterAddressZero, InvalidSourcePoolId, InvalidDestinationPoolId} from "../errors/StargateErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
+
+abstract contract ReentrancyGuard {
+    //////////////////////////////////////////////////////////////
+    ////////////////////////// Storage ///////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    bytes32 private constant NAMESPACE =
+        keccak256("io.etherspot.helpers.reentrancyguard");
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////////// Structs ///////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    struct ReentrancyStorage {
+        uint256 status;
+    }
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////////// Errors ////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    error ReentrancyError();
+
+    //////////////////////////////////////////////////////////////
+    ///////////////////////// Constants //////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    uint256 private constant _NOT_ENTERED = 0;
+    uint256 private constant _ENTERED = 1;
+
+    //////////////////////////////////////////////////////////////
+    ///////////////////////// Modifiers ///////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    modifier nonReentrant() {
+        ReentrancyStorage storage s = reentrancyStorage();
+        if (s.status == _ENTERED) revert ReentrancyError();
+        s.status = _ENTERED;
+        _;
+        s.status = _NOT_ENTERED;
+    }
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////// Private Functions /////////////////////
+    //////////////////////////////////////////////////////////////
+
+    /// @dev fetch local storage
+    function reentrancyStorage()
+        private
+        pure
+        returns (ReentrancyStorage storage data)
+    {
+        bytes32 position = NAMESPACE;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            data.slot := position
+        }
+    }
+}
 
 /// @title StargateFacet
 /// @author Luke Wickens <luke@pillarproject.io>
