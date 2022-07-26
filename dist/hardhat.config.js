@@ -18,6 +18,7 @@ const config = {
     },
     networks: Object.assign({ hardhat: {
             forking: {
+                enabled: false,
                 url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
                 blockNumber: 13798171,
             },
@@ -42,6 +43,15 @@ const config = {
             },
             {
                 version: "0.8.4",
+                settings: {
+                    evmVersion: "istanbul",
+                    metadata: {
+                        bytecodeHash: "none",
+                    },
+                },
+            },
+            {
+                version: '0.8.11',
                 settings: {
                     evmVersion: "istanbul",
                     metadata: {

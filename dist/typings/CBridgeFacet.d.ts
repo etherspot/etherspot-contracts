@@ -3,64 +3,63 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export declare type CBridgeDataStruct = {
-    maxSlippage: BigNumberish;
     dstChainId: BigNumberish;
     nonce: BigNumberish;
-    amount: BigNumberish;
-    receiver: string;
+    qty: BigNumberish;
+    to: string;
     token: string;
 };
 export declare type CBridgeDataStructOutput = [
-    number,
     BigNumber,
     BigNumber,
     BigNumber,
     string,
     string
 ] & {
-    maxSlippage: number;
     dstChainId: BigNumber;
     nonce: BigNumber;
-    amount: BigNumber;
-    receiver: string;
+    qty: BigNumber;
+    to: string;
     token: string;
 };
 export interface CBridgeFacetInterface extends utils.Interface {
     functions: {
-        "bridgeTokensCBridge((uint32,uint64,uint64,uint256,address,address))": FunctionFragment;
-        "cBridge()": FunctionFragment;
-        "chainId()": FunctionFragment;
-        "initializeCBridge(address,uint256)": FunctionFragment;
-        "updateBridgeAddress(address)": FunctionFragment;
+        "cbBridgeTokens((uint64,uint64,uint256,address,address))": FunctionFragment;
+        "cbInitialize(address)": FunctionFragment;
+        "cbUpdateBridge(address)": FunctionFragment;
+        "cbUpdateSlippageTolerance(uint32)": FunctionFragment;
+        "cbWithdraw(address,address,uint256)": FunctionFragment;
     };
-    encodeFunctionData(functionFragment: "bridgeTokensCBridge", values: [CBridgeDataStruct]): string;
-    encodeFunctionData(functionFragment: "cBridge", values?: undefined): string;
-    encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
-    encodeFunctionData(functionFragment: "initializeCBridge", values: [string, BigNumberish]): string;
-    encodeFunctionData(functionFragment: "updateBridgeAddress", values: [string]): string;
-    decodeFunctionResult(functionFragment: "bridgeTokensCBridge", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "cBridge", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "initializeCBridge", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "updateBridgeAddress", data: BytesLike): Result;
+    encodeFunctionData(functionFragment: "cbBridgeTokens", values: [CBridgeDataStruct]): string;
+    encodeFunctionData(functionFragment: "cbInitialize", values: [string]): string;
+    encodeFunctionData(functionFragment: "cbUpdateBridge", values: [string]): string;
+    encodeFunctionData(functionFragment: "cbUpdateSlippageTolerance", values: [BigNumberish]): string;
+    encodeFunctionData(functionFragment: "cbWithdraw", values: [string, string, BigNumberish]): string;
+    decodeFunctionResult(functionFragment: "cbBridgeTokens", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "cbInitialize", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "cbUpdateBridge", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "cbUpdateSlippageTolerance", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "cbWithdraw", data: BytesLike): Result;
     events: {
-        "CBridgeInitialized(address,uint256)": EventFragment;
-        "TransferStarted(string,address,address,address,uint256,uint256)": EventFragment;
-        "UpdatedCBridgeAddress(address)": EventFragment;
+        "CBInitialized(address,uint256)": EventFragment;
+        "CBTransferStarted(string,address,address,address,uint256,uint256)": EventFragment;
+        "CBUpdatedBridge(address)": EventFragment;
+        "CBUpdatedSlippageTolerance(uint256)": EventFragment;
     };
-    getEvent(nameOrSignatureOrTopic: "CBridgeInitialized"): EventFragment;
-    getEvent(nameOrSignatureOrTopic: "TransferStarted"): EventFragment;
-    getEvent(nameOrSignatureOrTopic: "UpdatedCBridgeAddress"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "CBInitialized"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "CBTransferStarted"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "CBUpdatedBridge"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: "CBUpdatedSlippageTolerance"): EventFragment;
 }
-export declare type CBridgeInitializedEvent = TypedEvent<[
+export declare type CBInitializedEvent = TypedEvent<[
     string,
     BigNumber
 ], {
     cBridge: string;
     chainId: BigNumber;
 }>;
-export declare type CBridgeInitializedEventFilter = TypedEventFilter<CBridgeInitializedEvent>;
-export declare type TransferStartedEvent = TypedEvent<[
+export declare type CBInitializedEventFilter = TypedEventFilter<CBInitializedEvent>;
+export declare type CBTransferStartedEvent = TypedEvent<[
     string,
     string,
     string,
@@ -69,19 +68,23 @@ export declare type TransferStartedEvent = TypedEvent<[
     BigNumber
 ], {
     bridgeUsed: string;
-    tokenAddress: string;
+    token: string;
     from: string;
     to: string;
-    amount: BigNumber;
+    qty: BigNumber;
     chainIdTo: BigNumber;
 }>;
-export declare type TransferStartedEventFilter = TypedEventFilter<TransferStartedEvent>;
-export declare type UpdatedCBridgeAddressEvent = TypedEvent<[
-    string
-], {
+export declare type CBTransferStartedEventFilter = TypedEventFilter<CBTransferStartedEvent>;
+export declare type CBUpdatedBridgeEvent = TypedEvent<[string], {
     newAddress: string;
 }>;
-export declare type UpdatedCBridgeAddressEventFilter = TypedEventFilter<UpdatedCBridgeAddressEvent>;
+export declare type CBUpdatedBridgeEventFilter = TypedEventFilter<CBUpdatedBridgeEvent>;
+export declare type CBUpdatedSlippageToleranceEvent = TypedEvent<[
+    BigNumber
+], {
+    newSlippage: BigNumber;
+}>;
+export declare type CBUpdatedSlippageToleranceEventFilter = TypedEventFilter<CBUpdatedSlippageToleranceEvent>;
 export interface CBridgeFacet extends BaseContract {
     connect(signerOrProvider: Signer | Provider | string): this;
     attach(addressOrName: string): this;
@@ -97,67 +100,85 @@ export interface CBridgeFacet extends BaseContract {
     once: OnEvent<this>;
     removeListener: OnEvent<this>;
     functions: {
-        bridgeTokensCBridge(_cBridgeData: CBridgeDataStruct, overrides?: PayableOverrides & {
+        cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        cBridge(overrides?: CallOverrides): Promise<[string]>;
-        chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
-        initializeCBridge(_cBridge: string, _chainId: BigNumberish, overrides?: Overrides & {
+        cbInitialize(_cbBridge: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        updateBridgeAddress(_newAddress: string, overrides?: Overrides & {
+        cbUpdateBridge(_newAddress: string, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<ContractTransaction>;
+        cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<ContractTransaction>;
+        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
     };
-    bridgeTokensCBridge(_cBridgeData: CBridgeDataStruct, overrides?: PayableOverrides & {
+    cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    cBridge(overrides?: CallOverrides): Promise<string>;
-    chainId(overrides?: CallOverrides): Promise<BigNumber>;
-    initializeCBridge(_cBridge: string, _chainId: BigNumberish, overrides?: Overrides & {
+    cbInitialize(_cbBridge: string, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    updateBridgeAddress(_newAddress: string, overrides?: Overrides & {
+    cbUpdateBridge(_newAddress: string, overrides?: Overrides & {
+        from?: string | Promise<string>;
+    }): Promise<ContractTransaction>;
+    cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
+        from?: string | Promise<string>;
+    }): Promise<ContractTransaction>;
+    cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
     callStatic: {
-        bridgeTokensCBridge(_cBridgeData: CBridgeDataStruct, overrides?: CallOverrides): Promise<void>;
-        cBridge(overrides?: CallOverrides): Promise<string>;
-        chainId(overrides?: CallOverrides): Promise<BigNumber>;
-        initializeCBridge(_cBridge: string, _chainId: BigNumberish, overrides?: CallOverrides): Promise<void>;
-        updateBridgeAddress(_newAddress: string, overrides?: CallOverrides): Promise<void>;
+        cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: CallOverrides): Promise<void>;
+        cbInitialize(_cbBridge: string, overrides?: CallOverrides): Promise<void>;
+        cbUpdateBridge(_newAddress: string, overrides?: CallOverrides): Promise<void>;
+        cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: CallOverrides): Promise<void>;
+        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
     };
     filters: {
-        "CBridgeInitialized(address,uint256)"(cBridge?: null, chainId?: null): CBridgeInitializedEventFilter;
-        CBridgeInitialized(cBridge?: null, chainId?: null): CBridgeInitializedEventFilter;
-        "TransferStarted(string,address,address,address,uint256,uint256)"(bridgeUsed?: null, tokenAddress?: null, from?: null, to?: null, amount?: null, chainIdTo?: null): TransferStartedEventFilter;
-        TransferStarted(bridgeUsed?: null, tokenAddress?: null, from?: null, to?: null, amount?: null, chainIdTo?: null): TransferStartedEventFilter;
-        "UpdatedCBridgeAddress(address)"(newAddress?: null): UpdatedCBridgeAddressEventFilter;
-        UpdatedCBridgeAddress(newAddress?: null): UpdatedCBridgeAddressEventFilter;
+        "CBInitialized(address,uint256)"(cBridge?: null, chainId?: null): CBInitializedEventFilter;
+        CBInitialized(cBridge?: null, chainId?: null): CBInitializedEventFilter;
+        "CBTransferStarted(string,address,address,address,uint256,uint256)"(bridgeUsed?: null, token?: null, from?: null, to?: null, qty?: null, chainIdTo?: null): CBTransferStartedEventFilter;
+        CBTransferStarted(bridgeUsed?: null, token?: null, from?: null, to?: null, qty?: null, chainIdTo?: null): CBTransferStartedEventFilter;
+        "CBUpdatedBridge(address)"(newAddress?: null): CBUpdatedBridgeEventFilter;
+        CBUpdatedBridge(newAddress?: null): CBUpdatedBridgeEventFilter;
+        "CBUpdatedSlippageTolerance(uint256)"(newSlippage?: null): CBUpdatedSlippageToleranceEventFilter;
+        CBUpdatedSlippageTolerance(newSlippage?: null): CBUpdatedSlippageToleranceEventFilter;
     };
     estimateGas: {
-        bridgeTokensCBridge(_cBridgeData: CBridgeDataStruct, overrides?: PayableOverrides & {
+        cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        cBridge(overrides?: CallOverrides): Promise<BigNumber>;
-        chainId(overrides?: CallOverrides): Promise<BigNumber>;
-        initializeCBridge(_cBridge: string, _chainId: BigNumberish, overrides?: Overrides & {
+        cbInitialize(_cbBridge: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        updateBridgeAddress(_newAddress: string, overrides?: Overrides & {
+        cbUpdateBridge(_newAddress: string, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<BigNumber>;
+        cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<BigNumber>;
+        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
     };
     populateTransaction: {
-        bridgeTokensCBridge(_cBridgeData: CBridgeDataStruct, overrides?: PayableOverrides & {
+        cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
-        cBridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        initializeCBridge(_cBridge: string, _chainId: BigNumberish, overrides?: Overrides & {
+        cbInitialize(_cbBridge: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
-        updateBridgeAddress(_newAddress: string, overrides?: Overrides & {
+        cbUpdateBridge(_newAddress: string, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<PopulatedTransaction>;
+        cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
+            from?: string | Promise<string>;
+        }): Promise<PopulatedTransaction>;
+        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
     };
