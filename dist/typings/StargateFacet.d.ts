@@ -7,8 +7,6 @@ export declare type StargateDataStruct = {
     fromToken: string;
     toToken: string;
     dstChainId: BigNumberish;
-    srcPoolId: BigNumberish;
-    dstPoolId: BigNumberish;
     to: string;
     destStargateComposed: string;
 };
@@ -17,8 +15,6 @@ export declare type StargateDataStructOutput = [
     string,
     string,
     number,
-    number,
-    number,
     string,
     string
 ] & {
@@ -26,20 +22,19 @@ export declare type StargateDataStructOutput = [
     fromToken: string;
     toToken: string;
     dstChainId: number;
-    srcPoolId: number;
-    dstPoolId: number;
     to: string;
     destStargateComposed: string;
 };
 export interface StargateFacetInterface extends utils.Interface {
     functions: {
-        "sgAddPool(uint16,address,uint256)": FunctionFragment;
-        "sgBridgeTokens((uint256,address,address,uint16,uint16,uint16,address,address))": FunctionFragment;
+        "sgAddPool(uint16,address,uint16)": FunctionFragment;
+        "sgBridgeTokens((uint256,address,address,uint16,address,address))": FunctionFragment;
         "sgCalculateFees(uint16,address,address)": FunctionFragment;
-        "sgCheckPoolId(uint16,address,uint256)": FunctionFragment;
+        "sgCheckPoolId(uint16,address,uint16)": FunctionFragment;
         "sgInitialize(address,uint16)": FunctionFragment;
         "sgMinAmountOut(uint256)": FunctionFragment;
         "sgReceive(uint16,bytes,uint256,address,uint256,bytes)": FunctionFragment;
+        "sgRetrievePoolId(uint16,address)": FunctionFragment;
         "sgUpdateRouter(address)": FunctionFragment;
         "sgUpdateSlippageTolerance(uint256)": FunctionFragment;
         "sgWithdraw(address,address,uint256)": FunctionFragment;
@@ -58,6 +53,7 @@ export interface StargateFacetInterface extends utils.Interface {
         BigNumberish,
         BytesLike
     ]): string;
+    encodeFunctionData(functionFragment: "sgRetrievePoolId", values: [BigNumberish, string]): string;
     encodeFunctionData(functionFragment: "sgUpdateRouter", values: [string]): string;
     encodeFunctionData(functionFragment: "sgUpdateSlippageTolerance", values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: "sgWithdraw", values: [string, string, BigNumberish]): string;
@@ -68,11 +64,12 @@ export interface StargateFacetInterface extends utils.Interface {
     decodeFunctionResult(functionFragment: "sgInitialize", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgMinAmountOut", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgReceive", data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: "sgRetrievePoolId", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgUpdateRouter", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgUpdateSlippageTolerance", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgWithdraw", data: BytesLike): Result;
     events: {
-        "SGAddedPool(uint16,address,uint256)": EventFragment;
+        "SGAddedPool(uint16,address,uint16)": EventFragment;
         "SGInitialized(address,uint16)": EventFragment;
         "SGReceivedOnDestination(address,uint256)": EventFragment;
         "SGTransferStarted(string,address,address,address,address,uint256,uint16)": EventFragment;
@@ -89,11 +86,11 @@ export interface StargateFacetInterface extends utils.Interface {
 export declare type SGAddedPoolEvent = TypedEvent<[
     number,
     string,
-    BigNumber
+    number
 ], {
     chainId: number;
     token: string;
-    poolId: BigNumber;
+    poolId: number;
 }>;
 export declare type SGAddedPoolEventFilter = TypedEventFilter<SGAddedPoolEvent>;
 export declare type SGInitializedEvent = TypedEvent<[
@@ -170,6 +167,7 @@ export interface StargateFacet extends BaseContract {
         sgReceive(_chainId: BigNumberish, _srcAddress: BytesLike, _nonce: BigNumberish, _token: string, amountLD: BigNumberish, _payload: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
+        sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<[number]>;
         sgUpdateRouter(_newAddress: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
@@ -195,6 +193,7 @@ export interface StargateFacet extends BaseContract {
     sgReceive(_chainId: BigNumberish, _srcAddress: BytesLike, _nonce: BigNumberish, _token: string, amountLD: BigNumberish, _payload: BytesLike, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
+    sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<number>;
     sgUpdateRouter(_newAddress: string, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
@@ -206,18 +205,19 @@ export interface StargateFacet extends BaseContract {
     }): Promise<ContractTransaction>;
     callStatic: {
         sgAddPool(_chainId: BigNumberish, _token: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<void>;
-        sgBridgeTokens(_sgData: StargateDataStruct, overrides?: CallOverrides): Promise<boolean>;
+        sgBridgeTokens(_sgData: StargateDataStruct, overrides?: CallOverrides): Promise<void>;
         sgCalculateFees(_destChain: BigNumberish, _receiver: string, _router: string, overrides?: CallOverrides): Promise<BigNumber>;
         sgCheckPoolId(_chainId: BigNumberish, _token: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         sgInitialize(_stargateRouter: string, _chainId: BigNumberish, overrides?: CallOverrides): Promise<void>;
         sgMinAmountOut(_amount: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         sgReceive(_chainId: BigNumberish, _srcAddress: BytesLike, _nonce: BigNumberish, _token: string, amountLD: BigNumberish, _payload: BytesLike, overrides?: CallOverrides): Promise<void>;
+        sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<number>;
         sgUpdateRouter(_newAddress: string, overrides?: CallOverrides): Promise<void>;
         sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: CallOverrides): Promise<void>;
         sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
     };
     filters: {
-        "SGAddedPool(uint16,address,uint256)"(chainId?: null, token?: null, poolId?: null): SGAddedPoolEventFilter;
+        "SGAddedPool(uint16,address,uint16)"(chainId?: null, token?: null, poolId?: null): SGAddedPoolEventFilter;
         SGAddedPool(chainId?: null, token?: null, poolId?: null): SGAddedPoolEventFilter;
         "SGInitialized(address,uint16)"(stargate?: null, chainId?: null): SGInitializedEventFilter;
         SGInitialized(stargate?: null, chainId?: null): SGInitializedEventFilter;
@@ -246,6 +246,7 @@ export interface StargateFacet extends BaseContract {
         sgReceive(_chainId: BigNumberish, _srcAddress: BytesLike, _nonce: BigNumberish, _token: string, amountLD: BigNumberish, _payload: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
+        sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<BigNumber>;
         sgUpdateRouter(_newAddress: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
@@ -272,6 +273,7 @@ export interface StargateFacet extends BaseContract {
         sgReceive(_chainId: BigNumberish, _srcAddress: BytesLike, _nonce: BigNumberish, _token: string, amountLD: BigNumberish, _payload: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
+        sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         sgUpdateRouter(_newAddress: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
