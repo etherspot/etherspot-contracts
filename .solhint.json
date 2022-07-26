@@ -3,7 +3,7 @@
   "rules": {
     "compiler-version": [
       "error",
-      "^0.6.0 || 0.8.4"
+      "^0.6.0 || ^0.8.4 || 0.8.11"
     ],
     "no-empty-blocks": "off",
     "mark-callable-contracts": "off",
