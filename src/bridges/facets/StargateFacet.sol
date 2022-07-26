@@ -9,7 +9,6 @@ import {ReentrancyGuard} from "../helpers/ReentrancyGuard.sol";
 import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
 import {SenderNotStargateRouter, NoMsgValueForCrossChainMessage, StargateRouterAddressZero, InvalidSourcePoolId, InvalidDestinationPoolId} from "../errors/StargateErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
-import "hardhat/console.sol";
 
 /// @title StargateFacet
 /// @author Luke Wickens <luke@pillarproject.io>
