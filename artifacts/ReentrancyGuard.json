@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ReentrancyGuard",
-  "sourceName": "src/bridges/helpers/ReentrancyGuard.sol",
+  "sourceName": "src/common/helpers/DiamondReentrancyGuard.sol",
   "abi": [
     {
       "inputs": [],
