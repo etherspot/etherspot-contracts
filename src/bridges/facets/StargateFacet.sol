@@ -58,7 +58,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         address fromToken;
         address toToken;
         uint16 dstChainId;
-        address payable to;
+        address to;
         address destStargateComposed;
     }
 
