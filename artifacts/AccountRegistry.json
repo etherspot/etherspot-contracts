@@ -6,6 +6,57 @@
     {
       "inputs": [
         {
+          "internalType": "bytes8",
+          "name": "c__203cf0ac",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_203cf0ac",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__203cf0ac",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false203cf0ac",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__203cf0ac",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true203cf0ac",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "account",
           "type": "address"

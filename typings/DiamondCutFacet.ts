@@ -31,14 +31,38 @@ export type FacetCutStructOutput = [string, number, string[]] & {
 
 export interface DiamondCutFacetInterface extends utils.Interface {
   functions: {
+    "c_54ef5488(bytes8)": FunctionFragment;
+    "c_false54ef5488(bytes8)": FunctionFragment;
+    "c_true54ef5488(bytes8)": FunctionFragment;
     "diamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_54ef5488",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false54ef5488",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true54ef5488",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "diamondCut",
     values: [FacetCutStruct[], string, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_54ef5488", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false54ef5488",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true54ef5488",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "diamondCut", data: BytesLike): Result;
 
   events: {
@@ -82,6 +106,21 @@ export interface DiamondCutFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     diamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,
@@ -89,6 +128,18 @@ export interface DiamondCutFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_54ef5488(c__54ef5488: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false54ef5488(
+    c__54ef5488: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true54ef5488(
+    c__54ef5488: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   diamondCut(
     _diamondCut: FacetCutStruct[],
@@ -98,6 +149,21 @@ export interface DiamondCutFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     diamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,
@@ -120,6 +186,21 @@ export interface DiamondCutFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     diamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,
@@ -129,6 +210,21 @@ export interface DiamondCutFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true54ef5488(
+      c__54ef5488: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     diamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,

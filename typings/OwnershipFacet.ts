@@ -18,16 +18,40 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface OwnershipFacetInterface extends utils.Interface {
   functions: {
+    "c_6313cdc3(bytes8)": FunctionFragment;
+    "c_false6313cdc3(bytes8)": FunctionFragment;
+    "c_true6313cdc3(bytes8)": FunctionFragment;
     "owner()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_6313cdc3",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false6313cdc3",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true6313cdc3",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_6313cdc3", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false6313cdc3",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true6313cdc3",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -64,6 +88,21 @@ export interface OwnershipFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     owner(overrides?: CallOverrides): Promise<[string] & { owner_: string }>;
 
     transferOwnership(
@@ -71,6 +110,18 @@ export interface OwnershipFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_6313cdc3(c__6313cdc3: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false6313cdc3(
+    c__6313cdc3: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true6313cdc3(
+    c__6313cdc3: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -80,6 +131,21 @@ export interface OwnershipFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
@@ -91,6 +157,21 @@ export interface OwnershipFacet extends BaseContract {
   filters: {};
 
   estimateGas: {
+    c_6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
@@ -100,6 +181,21 @@ export interface OwnershipFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true6313cdc3(
+      c__6313cdc3: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
