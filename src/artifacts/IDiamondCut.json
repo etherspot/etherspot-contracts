@@ -1,93 +1,137 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "IDiamondCut",
-  "sourceName": "src/bridges/interfaces/IDiamondCut.sol",
-  "abi": [
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "facetAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "enum IDiamondCut.FacetCutAction",
-              "name": "action",
-              "type": "uint8"
-            },
-            {
-              "internalType": "bytes4[]",
-              "name": "functionSelectors",
-              "type": "bytes4[]"
-            }
-          ],
-          "indexed": false,
-          "internalType": "struct IDiamondCut.FacetCut[]",
-          "name": "_diamondCut",
-          "type": "tuple[]"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_init",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes",
-          "name": "_calldata",
-          "type": "bytes"
-        }
-      ],
-      "name": "DiamondCut",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "facetAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "enum IDiamondCut.FacetCutAction",
-              "name": "action",
-              "type": "uint8"
-            },
-            {
-              "internalType": "bytes4[]",
-              "name": "functionSelectors",
-              "type": "bytes4[]"
-            }
-          ],
-          "internalType": "struct IDiamondCut.FacetCut[]",
-          "name": "_diamondCut",
-          "type": "tuple[]"
-        },
-        {
-          "internalType": "address",
-          "name": "_init",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes",
-          "name": "_calldata",
-          "type": "bytes"
-        }
-      ],
-      "name": "diamondCut",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ],
-  "bytecode": "0x",
-  "deployedBytecode": "0x",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"görli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"diamondCut((address,uint8,bytes4[])[],address,bytes)": "1f931c1c"
+		}
+	},
+	"abi": [
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"components": [
+						{
+							"internalType": "address",
+							"name": "facetAddress",
+							"type": "address"
+						},
+						{
+							"internalType": "enum IDiamondCut.FacetCutAction",
+							"name": "action",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bytes4[]",
+							"name": "functionSelectors",
+							"type": "bytes4[]"
+						}
+					],
+					"indexed": false,
+					"internalType": "struct IDiamondCut.FacetCut[]",
+					"name": "_diamondCut",
+					"type": "tuple[]"
+				},
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "_init",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "bytes",
+					"name": "_calldata",
+					"type": "bytes"
+				}
+			],
+			"name": "DiamondCut",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"components": [
+						{
+							"internalType": "address",
+							"name": "facetAddress",
+							"type": "address"
+						},
+						{
+							"internalType": "enum IDiamondCut.FacetCutAction",
+							"name": "action",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bytes4[]",
+							"name": "functionSelectors",
+							"type": "bytes4[]"
+						}
+					],
+					"internalType": "struct IDiamondCut.FacetCut[]",
+					"name": "_diamondCut",
+					"type": "tuple[]"
+				},
+				{
+					"internalType": "address",
+					"name": "_init",
+					"type": "address"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_calldata",
+					"type": "bytes"
+				}
+			],
+			"name": "diamondCut",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
 }

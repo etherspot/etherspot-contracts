@@ -276,7 +276,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         uint16 _chainId,
         address _token,
         uint16 _poolId
-    ) public view returns (bool) {
+    ) external view returns (bool) {
         Storage storage s = getStorage();
         return s.poolIds[_chainId][_token] == _poolId ? true : false;
     }

@@ -353,6 +353,30 @@ describe("StargateFacet", () => {
       expect(result[6]).toEqual(BigNumber.from(AMOUNT));
       expect(result[7]).toEqual(ARBITRUM_CHAIN_ID);
     });
+
+    it("should deduct users tokens from balance on successful bridge", async function() {
+      StargateData = {
+        qty: AMOUNT,
+        fromToken: usdc.address,
+        toToken: POLYGON_USDC_ADDRESS,
+        dstChainId: POLYGON_CHAIN_ID,
+        to: bob.address,
+        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+      };
+
+      const preBalance = await usdc.connect(alice).balanceOf(alice.address);
+
+      const tx = await stargateFacet
+        .connect(alice)
+        .sgBridgeTokens(StargateData, {
+          gasLimit: ethers.utils.hexlify(2000000),
+        });
+
+      await tx.wait();
+
+      const postBalance = await usdc.connect(alice).balanceOf(alice.address);
+      expect(postBalance.toNumber()).toEqual(preBalance.toNumber() - 100000000);
+    });
   });
 
   describe("sgUpdateRouter()", async function() {

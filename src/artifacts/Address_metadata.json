@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Collection of functions related to the address type",
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"StargateFacet_flat.sol": "Address"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"StargateFacet_flat.sol": {
+			"keccak256": "0xe6074dd92720c8e9ee8399f4f13732bb39b8666d6dde23a53d9f8a32c18f2af6",
+			"urls": [
+				"bzz-raw://72a66b5e882fee4723fef9a1c8e5df550677b3e26fc458ae887b942028651037",
+				"dweb:/ipfs/QmX8wLfPkUcBp1p8GyzDnM7SdGXr8dD4eoFEiBGbL7TD7V"
+			]
+		}
+	},
+	"version": 1
+}
