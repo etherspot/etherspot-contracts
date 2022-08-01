@@ -23,18 +23,6 @@ export interface WrappedWeiTokenInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "c_230891fc(bytes8)": FunctionFragment;
-    "c_5838cc23(bytes8)": FunctionFragment;
-    "c_c0828b70(bytes8)": FunctionFragment;
-    "c_d5c463c2(bytes8)": FunctionFragment;
-    "c_false230891fc(bytes8)": FunctionFragment;
-    "c_false5838cc23(bytes8)": FunctionFragment;
-    "c_falsec0828b70(bytes8)": FunctionFragment;
-    "c_falsed5c463c2(bytes8)": FunctionFragment;
-    "c_true230891fc(bytes8)": FunctionFragment;
-    "c_true5838cc23(bytes8)": FunctionFragment;
-    "c_truec0828b70(bytes8)": FunctionFragment;
-    "c_trued5c463c2(bytes8)": FunctionFragment;
     "decimals()": FunctionFragment;
     "depositTo(address)": FunctionFragment;
     "gateway()": FunctionFragment;
@@ -63,54 +51,6 @@ export interface WrappedWeiTokenInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "c_230891fc",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_5838cc23",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_c0828b70",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_d5c463c2",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false230891fc",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false5838cc23",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falsec0828b70",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falsed5c463c2",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true230891fc",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true5838cc23",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_truec0828b70",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_trued5c463c2",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "depositTo", values: [string]): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
@@ -165,42 +105,6 @@ export interface WrappedWeiTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_230891fc", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_5838cc23", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_c0828b70", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_d5c463c2", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false230891fc",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false5838cc23",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falsec0828b70",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falsed5c463c2",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true230891fc",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true5838cc23",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_truec0828b70",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_trued5c463c2",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "depositTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
@@ -322,66 +226,6 @@ export interface WrappedWeiToken extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    c_230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_c0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_d5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_false230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_false5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_falsec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_falsed5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_truec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_trued5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     depositTo(
@@ -463,54 +307,6 @@ export interface WrappedWeiToken extends BaseContract {
 
   balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  c_230891fc(c__230891fc: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_5838cc23(c__5838cc23: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_false230891fc(
-    c__230891fc: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_false5838cc23(
-    c__5838cc23: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_falsec0828b70(
-    c__c0828b70: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_falsed5c463c2(
-    c__d5c463c2: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true230891fc(
-    c__230891fc: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true5838cc23(
-    c__5838cc23: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_truec0828b70(
-    c__c0828b70: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_trued5c463c2(
-    c__d5c463c2: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   decimals(overrides?: CallOverrides): Promise<number>;
 
   depositTo(
@@ -591,66 +387,6 @@ export interface WrappedWeiToken extends BaseContract {
     ): Promise<boolean>;
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    c_230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_c0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_d5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_false230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_false5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_falsec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_falsed5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_truec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_trued5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -752,66 +488,6 @@ export interface WrappedWeiToken extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    c_230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_c0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_d5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falsec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falsed5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_truec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_trued5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     depositTo(
@@ -894,66 +570,6 @@ export interface WrappedWeiToken extends BaseContract {
 
     balanceOf(
       owner: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_c0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_d5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falsec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falsed5c463c2(
-      c__d5c463c2: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true230891fc(
-      c__230891fc: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true5838cc23(
-      c__5838cc23: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_truec0828b70(
-      c__c0828b70: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_trued5c463c2(
-      c__d5c463c2: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
