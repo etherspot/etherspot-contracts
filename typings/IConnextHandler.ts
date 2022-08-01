@@ -25,16 +25,31 @@ export type TokenIdStructOutput = [number, string] & {
   id: string;
 };
 
+export type FacetCutStruct = {
+  facetAddress: string;
+  action: BigNumberish;
+  functionSelectors: BytesLike[];
+};
+
+export type FacetCutStructOutput = [string, number, string[]] & {
+  facetAddress: string;
+  action: number;
+  functionSelectors: string[];
+};
+
 export type CallParamsStruct = {
   to: string;
   callData: BytesLike;
   originDomain: BigNumberish;
   destinationDomain: BigNumberish;
+  agent: string;
   recovery: string;
-  callback: string;
-  callbackFee: BigNumberish;
   forceSlow: boolean;
   receiveLocal: boolean;
+  callback: string;
+  callbackFee: BigNumberish;
+  relayerFee: BigNumberish;
+  slippageTol: BigNumberish;
 };
 
 export type CallParamsStructOutput = [
@@ -44,19 +59,25 @@ export type CallParamsStructOutput = [
   number,
   string,
   string,
-  BigNumber,
   boolean,
-  boolean
+  boolean,
+  string,
+  BigNumber,
+  BigNumber,
+  BigNumber
 ] & {
   to: string;
   callData: string;
   originDomain: number;
   destinationDomain: number;
+  agent: string;
   recovery: string;
-  callback: string;
-  callbackFee: BigNumber;
   forceSlow: boolean;
   receiveLocal: boolean;
+  callback: string;
+  callbackFee: BigNumber;
+  relayerFee: BigNumber;
+  slippageTol: BigNumber;
 };
 
 export type ExecuteArgsStruct = {
@@ -64,7 +85,6 @@ export type ExecuteArgsStruct = {
   local: string;
   routers: string[];
   routerSignatures: BytesLike[];
-  relayerFee: BigNumberish;
   amount: BigNumberish;
   nonce: BigNumberish;
   originSender: string;
@@ -77,14 +97,12 @@ export type ExecuteArgsStructOutput = [
   string[],
   BigNumber,
   BigNumber,
-  BigNumber,
   string
 ] & {
   params: CallParamsStructOutput;
   local: string;
   routers: string[];
   routerSignatures: string[];
-  relayerFee: BigNumber;
   amount: BigNumber;
   nonce: BigNumber;
   originSender: string;
@@ -101,6 +119,7 @@ export type SwapStruct = {
   pooledTokens: string[];
   tokenPrecisionMultipliers: BigNumberish[];
   balances: BigNumberish[];
+  adminFees: BigNumberish[];
 };
 
 export type SwapStructOutput = [
@@ -112,6 +131,7 @@ export type SwapStructOutput = [
   BigNumber,
   string,
   string[],
+  BigNumber[],
   BigNumber[],
   BigNumber[]
 ] & {
@@ -125,31 +145,32 @@ export type SwapStructOutput = [
   pooledTokens: string[];
   tokenPrecisionMultipliers: BigNumber[];
   balances: BigNumber[];
+  adminFees: BigNumber[];
 };
 
 export type XCallArgsStruct = {
   params: CallParamsStruct;
   transactingAssetId: string;
   amount: BigNumberish;
-  relayerFee: BigNumberish;
 };
 
 export type XCallArgsStructOutput = [
   CallParamsStructOutput,
   string,
-  BigNumber,
   BigNumber
 ] & {
   params: CallParamsStructOutput;
   transactingAssetId: string;
   amount: BigNumber;
-  relayerFee: BigNumber;
 };
 
 export interface IConnextHandlerInterface extends utils.Interface {
   functions: {
     "LIQUIDITY_FEE_DENOMINATOR()": FunctionFragment;
     "LIQUIDITY_FEE_NUMERATOR()": FunctionFragment;
+    "VERSION()": FunctionFragment;
+    "aavePool()": FunctionFragment;
+    "aavePortalFee()": FunctionFragment;
     "acceptProposedOwner()": FunctionFragment;
     "acceptProposedRouterOwner(address)": FunctionFragment;
     "addRelayer(address)": FunctionFragment;
@@ -159,6 +180,7 @@ export interface IConnextHandlerInterface extends utils.Interface {
     "addSwapLiquidity(bytes32,uint256[],uint256,uint256)": FunctionFragment;
     "adoptedToCanonical(address)": FunctionFragment;
     "adoptedToLocalPools(bytes32)": FunctionFragment;
+    "approveRouterForPortal(address)": FunctionFragment;
     "approvedAssets(bytes32)": FunctionFragment;
     "approvedRelayers(address)": FunctionFragment;
     "assetOwnershipRenounced()": FunctionFragment;
@@ -171,13 +193,18 @@ export interface IConnextHandlerInterface extends utils.Interface {
     "canonicalToAdopted(bytes32)": FunctionFragment;
     "claim(address,bytes32[])": FunctionFragment;
     "delay()": FunctionFragment;
+    "diamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
     "domain()": FunctionFragment;
     "enrollRemoteRouter(uint32,bytes32)": FunctionFragment;
-    "execute(((address,bytes,uint32,uint32,address,address,uint256,bool,bool),address,address[],bytes[],uint256,uint256,uint256,address))": FunctionFragment;
+    "execute(((address,bytes,uint32,uint32,address,address,bool,bool,address,uint256,uint256,uint256),address,address[],bytes[],uint256,uint256,address))": FunctionFragment;
     "executor()": FunctionFragment;
+    "forceReceiveLocal((address,bytes,uint32,uint32,address,address,bool,bool,address,uint256,uint256,uint256),uint256,uint256,bytes32,uint32,address)": FunctionFragment;
+    "getAavePortalDebt(bytes32)": FunctionFragment;
+    "getAavePortalFeeDebt(bytes32)": FunctionFragment;
     "getProposedRouterOwner(address)": FunctionFragment;
     "getProposedRouterOwnerTimestamp(address)": FunctionFragment;
     "getRouterApproval(address)": FunctionFragment;
+    "getRouterApprovalForPortal(address)": FunctionFragment;
     "getRouterOwner(address)": FunctionFragment;
     "getRouterRecipient(address)": FunctionFragment;
     "getSwapA(bytes32)": FunctionFragment;
@@ -196,8 +223,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
     "isRouterOwnershipRenounced()": FunctionFragment;
     "maxRoutersPerTransfer()": FunctionFragment;
     "nonce()": FunctionFragment;
+    "pause()": FunctionFragment;
     "promiseRouter()": FunctionFragment;
     "proposeAssetOwnershipRenunciation()": FunctionFragment;
+    "proposeDiamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
     "proposeNewOwner(address)": FunctionFragment;
     "proposeRouterOwner(address,address)": FunctionFragment;
     "proposeRouterOwnershipRenunciation()": FunctionFragment;
@@ -222,10 +251,15 @@ export interface IConnextHandlerInterface extends utils.Interface {
     "renounceOwnership()": FunctionFragment;
     "renounceRouterOwnership()": FunctionFragment;
     "renounced()": FunctionFragment;
+    "repayAavePortal(address,uint256,uint256,uint256,bytes32)": FunctionFragment;
+    "repayAavePortalFor(address,address,uint256,uint256,bytes32)": FunctionFragment;
+    "rescindDiamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
     "routedTransfers(bytes32)": FunctionFragment;
     "routerBalances(address,address)": FunctionFragment;
     "routerOwnershipRenounced()": FunctionFragment;
     "routerOwnershipTimestamp()": FunctionFragment;
+    "setAavePool(address)": FunctionFragment;
+    "setAavePortalFee(uint256)": FunctionFragment;
     "setExecutor(address)": FunctionFragment;
     "setLiquidityFeeNumerator(uint256)": FunctionFragment;
     "setMaxRoutersPerTransfer(uint256)": FunctionFragment;
@@ -244,12 +278,15 @@ export interface IConnextHandlerInterface extends utils.Interface {
     "stopRampA(bytes32)": FunctionFragment;
     "swap(bytes32,uint8,uint8,uint256,uint256,uint256)": FunctionFragment;
     "swapExact(bytes32,uint256,address,address,uint256,uint256)": FunctionFragment;
+    "swapExactOut(bytes32,uint256,address,address,uint256,uint256)": FunctionFragment;
     "tokenRegistry()": FunctionFragment;
     "transferRelayer(bytes32)": FunctionFragment;
+    "unapproveRouterForPortal(address)": FunctionFragment;
+    "unpause()": FunctionFragment;
     "withdrawSwapAdminFees(bytes32)": FunctionFragment;
     "wrapper()": FunctionFragment;
     "xAppConnectionManager()": FunctionFragment;
-    "xcall(((address,bytes,uint32,uint32,address,address,uint256,bool,bool),address,uint256,uint256))": FunctionFragment;
+    "xcall(((address,bytes,uint32,uint32,address,address,bool,bool,address,uint256,uint256,uint256),address,uint256))": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -258,6 +295,12 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "LIQUIDITY_FEE_NUMERATOR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
+  encodeFunctionData(functionFragment: "aavePool", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "aavePortalFee",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -292,6 +335,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "adoptedToLocalPools",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "approveRouterForPortal",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "approvedAssets",
@@ -338,6 +385,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
     values: [string, BytesLike[]]
   ): string;
   encodeFunctionData(functionFragment: "delay", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "diamondCut",
+    values: [FacetCutStruct[], string, BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "domain", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "enrollRemoteRouter",
@@ -349,6 +400,25 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "executor", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "forceReceiveLocal",
+    values: [
+      CallParamsStruct,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      BigNumberish,
+      string
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAavePortalDebt",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAavePortalFeeDebt",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getProposedRouterOwner",
     values: [string]
   ): string;
@@ -358,6 +428,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getRouterApproval",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRouterApprovalForPortal",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -436,6 +510,7 @@ export interface IConnextHandlerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "nonce", values?: undefined): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "promiseRouter",
     values?: undefined
@@ -443,6 +518,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "proposeAssetOwnershipRenunciation",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "proposeDiamondCut",
+    values: [FacetCutStruct[], string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "proposeNewOwner",
@@ -535,6 +614,18 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "renounced", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "repayAavePortal",
+    values: [string, BigNumberish, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "repayAavePortalFor",
+    values: [string, string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rescindDiamondCut",
+    values: [FacetCutStruct[], string, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "routedTransfers",
     values: [BytesLike]
   ): string;
@@ -549,6 +640,11 @@ export interface IConnextHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "routerOwnershipTimestamp",
     values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "setAavePool", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setAavePortalFee",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "setExecutor", values: [string]): string;
   encodeFunctionData(
@@ -631,6 +727,17 @@ export interface IConnextHandlerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "swapExactOut",
+    values: [
+      BytesLike,
+      BigNumberish,
+      string,
+      string,
+      BigNumberish,
+      BigNumberish
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "tokenRegistry",
     values?: undefined
   ): string;
@@ -638,6 +745,11 @@ export interface IConnextHandlerInterface extends utils.Interface {
     functionFragment: "transferRelayer",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "unapproveRouterForPortal",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdrawSwapAdminFees",
     values: [BytesLike]
@@ -658,6 +770,12 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "LIQUIDITY_FEE_NUMERATOR",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "aavePool", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "aavePortalFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -691,6 +809,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "adoptedToLocalPools",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "approveRouterForPortal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -735,6 +857,7 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "delay", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "diamondCut", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "domain", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "enrollRemoteRouter",
@@ -742,6 +865,18 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "executor", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "forceReceiveLocal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAavePortalDebt",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAavePortalFeeDebt",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getProposedRouterOwner",
     data: BytesLike
@@ -752,6 +887,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getRouterApproval",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRouterApprovalForPortal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -817,12 +956,17 @@ export interface IConnextHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "nonce", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "promiseRouter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "proposeAssetOwnershipRenunciation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "proposeDiamondCut",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -910,6 +1054,18 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "renounced", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "repayAavePortal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "repayAavePortalFor",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rescindDiamondCut",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "routedTransfers",
     data: BytesLike
   ): Result;
@@ -923,6 +1079,14 @@ export interface IConnextHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "routerOwnershipTimestamp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAavePool",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAavePortalFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -980,6 +1144,10 @@ export interface IConnextHandlerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "swap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "swapExact", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "swapExactOut",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "tokenRegistry",
     data: BytesLike
   ): Result;
@@ -987,6 +1155,11 @@ export interface IConnextHandlerInterface extends utils.Interface {
     functionFragment: "transferRelayer",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "unapproveRouterForPortal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawSwapAdminFees",
     data: BytesLike
@@ -1031,6 +1204,12 @@ export interface IConnextHandler extends BaseContract {
     LIQUIDITY_FEE_DENOMINATOR(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     LIQUIDITY_FEE_NUMERATOR(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    VERSION(overrides?: CallOverrides): Promise<[number]>;
+
+    aavePool(overrides?: CallOverrides): Promise<[string]>;
+
+    aavePortalFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     acceptProposedOwner(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1082,6 +1261,11 @@ export interface IConnextHandler extends BaseContract {
       _adopted: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    approveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     approvedAssets(
       _asset: BytesLike,
@@ -1143,6 +1327,13 @@ export interface IConnextHandler extends BaseContract {
 
     delay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     domain(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     enrollRemoteRouter(
@@ -1158,6 +1349,26 @@ export interface IConnextHandler extends BaseContract {
 
     executor(overrides?: CallOverrides): Promise<[string]>;
 
+    forceReceiveLocal(
+      _params: CallParamsStruct,
+      _amount: BigNumberish,
+      _nonce: BigNumberish,
+      _canonicalId: BytesLike,
+      _canonicalDomain: BigNumberish,
+      _originSender: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    getAavePortalDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getAavePortalFeeDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getProposedRouterOwner(
       _router: string,
       overrides?: CallOverrides
@@ -1169,6 +1380,11 @@ export interface IConnextHandler extends BaseContract {
     ): Promise<[BigNumber]>;
 
     getRouterApproval(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    getRouterApprovalForPortal(
       _router: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
@@ -1268,9 +1484,20 @@ export interface IConnextHandler extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     promiseRouter(overrides?: CallOverrides): Promise<[string]>;
 
     proposeAssetOwnershipRenunciation(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1391,6 +1618,31 @@ export interface IConnextHandler extends BaseContract {
 
     renounced(overrides?: CallOverrides): Promise<[boolean]>;
 
+    repayAavePortal(
+      _asset: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _maxIn: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    repayAavePortalFor(
+      _router: string,
+      _adopted: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     routedTransfers(
       _transferId: BytesLike,
       overrides?: CallOverrides
@@ -1405,6 +1657,16 @@ export interface IConnextHandler extends BaseContract {
     routerOwnershipRenounced(overrides?: CallOverrides): Promise<[boolean]>;
 
     routerOwnershipTimestamp(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setAavePool(
+      _aavePool: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setAavePortalFee(
+      _aavePortalFeeNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     setExecutor(
       _executor: string,
@@ -1510,12 +1772,31 @@ export interface IConnextHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    swapExactOut(
+      canonicalId: BytesLike,
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     tokenRegistry(overrides?: CallOverrides): Promise<[string]>;
 
     transferRelayer(
       _transferId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    unapproveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     withdrawSwapAdminFees(
       canonicalId: BytesLike,
@@ -1535,6 +1816,12 @@ export interface IConnextHandler extends BaseContract {
   LIQUIDITY_FEE_DENOMINATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
   LIQUIDITY_FEE_NUMERATOR(overrides?: CallOverrides): Promise<BigNumber>;
+
+  VERSION(overrides?: CallOverrides): Promise<number>;
+
+  aavePool(overrides?: CallOverrides): Promise<string>;
+
+  aavePortalFee(overrides?: CallOverrides): Promise<BigNumber>;
 
   acceptProposedOwner(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1586,6 +1873,11 @@ export interface IConnextHandler extends BaseContract {
     _adopted: BytesLike,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  approveRouterForPortal(
+    _router: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   approvedAssets(
     _asset: BytesLike,
@@ -1647,6 +1939,13 @@ export interface IConnextHandler extends BaseContract {
 
   delay(overrides?: CallOverrides): Promise<BigNumber>;
 
+  diamondCut(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   domain(overrides?: CallOverrides): Promise<BigNumber>;
 
   enrollRemoteRouter(
@@ -1662,6 +1961,26 @@ export interface IConnextHandler extends BaseContract {
 
   executor(overrides?: CallOverrides): Promise<string>;
 
+  forceReceiveLocal(
+    _params: CallParamsStruct,
+    _amount: BigNumberish,
+    _nonce: BigNumberish,
+    _canonicalId: BytesLike,
+    _canonicalDomain: BigNumberish,
+    _originSender: string,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getAavePortalDebt(
+    _transferId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getAavePortalFeeDebt(
+    _transferId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getProposedRouterOwner(
     _router: string,
     overrides?: CallOverrides
@@ -1673,6 +1992,11 @@ export interface IConnextHandler extends BaseContract {
   ): Promise<BigNumber>;
 
   getRouterApproval(
+    _router: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  getRouterApprovalForPortal(
     _router: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
@@ -1769,9 +2093,20 @@ export interface IConnextHandler extends BaseContract {
 
   nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
+  pause(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   promiseRouter(overrides?: CallOverrides): Promise<string>;
 
   proposeAssetOwnershipRenunciation(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  proposeDiamondCut(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1889,6 +2224,31 @@ export interface IConnextHandler extends BaseContract {
 
   renounced(overrides?: CallOverrides): Promise<boolean>;
 
+  repayAavePortal(
+    _asset: string,
+    _backingAmount: BigNumberish,
+    _feeAmount: BigNumberish,
+    _maxIn: BigNumberish,
+    _transferId: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  repayAavePortalFor(
+    _router: string,
+    _adopted: string,
+    _backingAmount: BigNumberish,
+    _feeAmount: BigNumberish,
+    _transferId: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  rescindDiamondCut(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   routedTransfers(
     _transferId: BytesLike,
     overrides?: CallOverrides
@@ -1903,6 +2263,16 @@ export interface IConnextHandler extends BaseContract {
   routerOwnershipRenounced(overrides?: CallOverrides): Promise<boolean>;
 
   routerOwnershipTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setAavePool(
+    _aavePool: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setAavePortalFee(
+    _aavePortalFeeNumerator: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   setExecutor(
     _executor: string,
@@ -2008,12 +2378,31 @@ export interface IConnextHandler extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  swapExactOut(
+    canonicalId: BytesLike,
+    amountOut: BigNumberish,
+    assetIn: string,
+    assetOut: string,
+    maxAmountIn: BigNumberish,
+    deadline: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   tokenRegistry(overrides?: CallOverrides): Promise<string>;
 
   transferRelayer(
     _transferId: BytesLike,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  unapproveRouterForPortal(
+    _router: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  unpause(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   withdrawSwapAdminFees(
     canonicalId: BytesLike,
@@ -2033,6 +2422,12 @@ export interface IConnextHandler extends BaseContract {
     LIQUIDITY_FEE_DENOMINATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
     LIQUIDITY_FEE_NUMERATOR(overrides?: CallOverrides): Promise<BigNumber>;
+
+    VERSION(overrides?: CallOverrides): Promise<number>;
+
+    aavePool(overrides?: CallOverrides): Promise<string>;
+
+    aavePortalFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptProposedOwner(overrides?: CallOverrides): Promise<void>;
 
@@ -2079,6 +2474,11 @@ export interface IConnextHandler extends BaseContract {
       _adopted: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    approveRouterForPortal(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     approvedAssets(
       _asset: BytesLike,
@@ -2140,6 +2540,13 @@ export interface IConnextHandler extends BaseContract {
 
     delay(overrides?: CallOverrides): Promise<BigNumber>;
 
+    diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     domain(overrides?: CallOverrides): Promise<BigNumber>;
 
     enrollRemoteRouter(
@@ -2155,6 +2562,26 @@ export interface IConnextHandler extends BaseContract {
 
     executor(overrides?: CallOverrides): Promise<string>;
 
+    forceReceiveLocal(
+      _params: CallParamsStruct,
+      _amount: BigNumberish,
+      _nonce: BigNumberish,
+      _canonicalId: BytesLike,
+      _canonicalDomain: BigNumberish,
+      _originSender: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getAavePortalDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAavePortalFeeDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getProposedRouterOwner(
       _router: string,
       overrides?: CallOverrides
@@ -2166,6 +2593,11 @@ export interface IConnextHandler extends BaseContract {
     ): Promise<BigNumber>;
 
     getRouterApproval(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    getRouterApprovalForPortal(
       _router: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -2262,9 +2694,18 @@ export interface IConnextHandler extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
+    pause(overrides?: CallOverrides): Promise<void>;
+
     promiseRouter(overrides?: CallOverrides): Promise<string>;
 
     proposeAssetOwnershipRenunciation(overrides?: CallOverrides): Promise<void>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     proposeNewOwner(
       newlyProposed: string,
@@ -2368,6 +2809,31 @@ export interface IConnextHandler extends BaseContract {
 
     renounced(overrides?: CallOverrides): Promise<boolean>;
 
+    repayAavePortal(
+      _asset: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _maxIn: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    repayAavePortalFor(
+      _router: string,
+      _adopted: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     routedTransfers(
       _transferId: BytesLike,
       overrides?: CallOverrides
@@ -2382,6 +2848,13 @@ export interface IConnextHandler extends BaseContract {
     routerOwnershipRenounced(overrides?: CallOverrides): Promise<boolean>;
 
     routerOwnershipTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setAavePool(_aavePool: string, overrides?: CallOverrides): Promise<void>;
+
+    setAavePortalFee(
+      _aavePortalFeeNumerator: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setExecutor(_executor: string, overrides?: CallOverrides): Promise<void>;
 
@@ -2478,12 +2951,29 @@ export interface IConnextHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    swapExactOut(
+      canonicalId: BytesLike,
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     tokenRegistry(overrides?: CallOverrides): Promise<string>;
 
     transferRelayer(
       _transferId: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    unapproveRouterForPortal(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    unpause(overrides?: CallOverrides): Promise<void>;
 
     withdrawSwapAdminFees(
       canonicalId: BytesLike,
@@ -2503,6 +2993,12 @@ export interface IConnextHandler extends BaseContract {
     LIQUIDITY_FEE_DENOMINATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
     LIQUIDITY_FEE_NUMERATOR(overrides?: CallOverrides): Promise<BigNumber>;
+
+    VERSION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    aavePool(overrides?: CallOverrides): Promise<BigNumber>;
+
+    aavePortalFee(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptProposedOwner(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2553,6 +3049,11 @@ export interface IConnextHandler extends BaseContract {
     adoptedToLocalPools(
       _adopted: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    approveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     approvedAssets(
@@ -2615,6 +3116,13 @@ export interface IConnextHandler extends BaseContract {
 
     delay(overrides?: CallOverrides): Promise<BigNumber>;
 
+    diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     domain(overrides?: CallOverrides): Promise<BigNumber>;
 
     enrollRemoteRouter(
@@ -2630,6 +3138,26 @@ export interface IConnextHandler extends BaseContract {
 
     executor(overrides?: CallOverrides): Promise<BigNumber>;
 
+    forceReceiveLocal(
+      _params: CallParamsStruct,
+      _amount: BigNumberish,
+      _nonce: BigNumberish,
+      _canonicalId: BytesLike,
+      _canonicalDomain: BigNumberish,
+      _originSender: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    getAavePortalDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAavePortalFeeDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getProposedRouterOwner(
       _router: string,
       overrides?: CallOverrides
@@ -2641,6 +3169,11 @@ export interface IConnextHandler extends BaseContract {
     ): Promise<BigNumber>;
 
     getRouterApproval(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getRouterApprovalForPortal(
       _router: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -2740,9 +3273,20 @@ export interface IConnextHandler extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     promiseRouter(overrides?: CallOverrides): Promise<BigNumber>;
 
     proposeAssetOwnershipRenunciation(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2863,6 +3407,31 @@ export interface IConnextHandler extends BaseContract {
 
     renounced(overrides?: CallOverrides): Promise<BigNumber>;
 
+    repayAavePortal(
+      _asset: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _maxIn: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    repayAavePortalFor(
+      _router: string,
+      _adopted: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     routedTransfers(
       _transferId: BytesLike,
       overrides?: CallOverrides
@@ -2877,6 +3446,16 @@ export interface IConnextHandler extends BaseContract {
     routerOwnershipRenounced(overrides?: CallOverrides): Promise<BigNumber>;
 
     routerOwnershipTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setAavePool(
+      _aavePool: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setAavePortalFee(
+      _aavePortalFeeNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     setExecutor(
       _executor: string,
@@ -2982,11 +3561,30 @@ export interface IConnextHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    swapExactOut(
+      canonicalId: BytesLike,
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     tokenRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferRelayer(
       _transferId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    unapproveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     withdrawSwapAdminFees(
@@ -3012,6 +3610,12 @@ export interface IConnextHandler extends BaseContract {
     LIQUIDITY_FEE_NUMERATOR(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    aavePool(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    aavePortalFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     acceptProposedOwner(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -3062,6 +3666,11 @@ export interface IConnextHandler extends BaseContract {
     adoptedToLocalPools(
       _adopted: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    approveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     approvedAssets(
@@ -3128,6 +3737,13 @@ export interface IConnextHandler extends BaseContract {
 
     delay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     domain(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     enrollRemoteRouter(
@@ -3143,6 +3759,26 @@ export interface IConnextHandler extends BaseContract {
 
     executor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    forceReceiveLocal(
+      _params: CallParamsStruct,
+      _amount: BigNumberish,
+      _nonce: BigNumberish,
+      _canonicalId: BytesLike,
+      _canonicalDomain: BigNumberish,
+      _originSender: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAavePortalDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAavePortalFeeDebt(
+      _transferId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getProposedRouterOwner(
       _router: string,
       overrides?: CallOverrides
@@ -3154,6 +3790,11 @@ export interface IConnextHandler extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getRouterApproval(
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getRouterApprovalForPortal(
       _router: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -3259,9 +3900,20 @@ export interface IConnextHandler extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     promiseRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proposeAssetOwnershipRenunciation(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -3384,6 +4036,31 @@ export interface IConnextHandler extends BaseContract {
 
     renounced(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    repayAavePortal(
+      _asset: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _maxIn: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    repayAavePortalFor(
+      _router: string,
+      _adopted: string,
+      _backingAmount: BigNumberish,
+      _feeAmount: BigNumberish,
+      _transferId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     routedTransfers(
       _transferId: BytesLike,
       overrides?: CallOverrides
@@ -3401,6 +4078,16 @@ export interface IConnextHandler extends BaseContract {
 
     routerOwnershipTimestamp(
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setAavePool(
+      _aavePool: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setAavePortalFee(
+      _aavePortalFeeNumerator: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     setExecutor(
@@ -3507,11 +4194,30 @@ export interface IConnextHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    swapExactOut(
+      canonicalId: BytesLike,
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     tokenRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferRelayer(
       _transferId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    unapproveRouterForPortal(
+      _router: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     withdrawSwapAdminFees(

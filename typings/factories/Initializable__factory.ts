@@ -12,77 +12,13 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "initializer",
-        type: "address",
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
       },
     ],
     name: "Initialized",
     type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__c0828b70",
-        type: "bytes8",
-      },
-    ],
-    name: "c_c0828b70",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__c0828b70",
-        type: "bytes8",
-      },
-    ],
-    name: "c_falsec0828b70",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__c0828b70",
-        type: "bytes8",
-      },
-    ],
-    name: "c_truec0828b70",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "isInitialized",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
   },
 ];
 

@@ -77,7 +77,7 @@ export async function addOrReplaceFacets(
   }
 
   const cutter = <IDiamondCut>(
-    await ethers.getContractAt('IDiamondCut', diamondAddress)
+    await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   )
 
   console.log('Adding/Replacing facets...')
@@ -115,7 +115,7 @@ export async function addFacets(
   }
 
   const cutter = <IDiamondCut>(
-    await ethers.getContractAt('IDiamondCut', diamondAddress)
+    await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   )
 
   console.log('Adding facets...')
@@ -143,7 +143,7 @@ export async function removeFacet(
   ]
 
   const cutter = <IDiamondCut>(
-    await ethers.getContractAt('IDiamondCut', diamondAddress)
+    await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   )
 
   console.log('Removing facet...')
@@ -175,7 +175,7 @@ export async function replaceFacet(
   ]
 
   const cutter = <IDiamondCut>(
-    await ethers.getContractAt('IDiamondCut', diamondAddress)
+    await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   )
 
   console.log('Replacing facet...')

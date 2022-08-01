@@ -7,7 +7,7 @@ extendEnvironment(hre => {
     deployments,
   } = hre;
 
-  const { deploy, deterministic } = deployments;
+  const { deploy, deterministic, run } = deployments;
 
   deployments.deploy = async (name, options) => {
     let result: DeployResult;

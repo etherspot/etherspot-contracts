@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "Version0",
-  "sourceName": "@connext/nxtp-contracts/contracts/nomad-core/contracts/Version0.sol",
+  "contractName": "Version",
+  "sourceName": "@connext/nxtp-contracts/contracts/core/shared/Version.sol",
   "abi": [
     {
       "inputs": [],
