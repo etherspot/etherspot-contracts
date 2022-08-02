@@ -42,5 +42,5 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
 };
 export default func;
 func.id = "cbridge_facet_deploy";
-func.tags = ["bridging-facet", "cbridge"];
+func.tags = ["bridges", "cbridge"];
 func.dependencies = ["init-facets"];
