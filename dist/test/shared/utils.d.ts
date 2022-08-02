@@ -22,3 +22,5 @@ export declare function buildENSReversedNode(address: string): {
 };
 export declare function checkEvent(receipt: ContractReceipt): any[];
 export declare function multiCallCheckLastEventEmitted(receipt: ContractReceipt): any[];
+export declare const moveBlocks: (amount: number) => Promise<void>;
+export declare const moveTime: (amount: number) => Promise<void>;

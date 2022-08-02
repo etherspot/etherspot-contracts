@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.multiCallCheckLastEventEmitted = exports.checkEvent = exports.buildENSReversedNode = exports.getMethodSignature = exports.getNow = exports.isContract = exports.deployContract = exports.increaseTime = exports.computeAccountAddress = exports.processTx = exports.createMessagePayloadFactory = exports.randomHex32 = exports.randomName = exports.randomAddress = exports.concatHex = exports.getNextNonce = void 0;
+exports.moveTime = exports.moveBlocks = exports.multiCallCheckLastEventEmitted = exports.checkEvent = exports.buildENSReversedNode = exports.getMethodSignature = exports.getNow = exports.isContract = exports.deployContract = exports.increaseTime = exports.computeAccountAddress = exports.processTx = exports.createMessagePayloadFactory = exports.randomHex32 = exports.randomName = exports.randomAddress = exports.concatHex = exports.getNextNonce = void 0;
 const hardhat_1 = require("hardhat");
 const ethers_1 = require("ethers");
 const constants_1 = require("./constants");
@@ -147,3 +148,18 @@ function multiCallCheckLastEventEmitted(receipt) {
     return args;
 }
 exports.multiCallCheckLastEventEmitted = multiCallCheckLastEventEmitted;
+const moveBlocks = async (amount) => {
+    for (let i = 0; i < amount; i++) {
+        await hardhat_1.network.provider.request({
+            method: "evm_mine",
+            params: [],
+        });
+    }
+    console.log(`Moved ${amount} blocks`);
+};
+exports.moveBlocks = moveBlocks;
+const moveTime = async (amount) => {
+    await hardhat_1.network.provider.send("evm_increaseTime", [amount]);
+    console.log(`Moved ${amount} seconds`);
+};
+exports.moveTime = moveTime;

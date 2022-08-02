@@ -1,0 +1,381 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_poolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amountLD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "addLiquidity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_srcPoolId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amountLP",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "instantRedeemLocal",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint8",
+						"name": "_functionType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_toAddress",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_transferAndCallPayload",
+						"type": "bytes"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "dstGasForCall",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstNativeAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes",
+								"name": "dstNativeAddr",
+								"type": "bytes"
+							}
+						],
+						"internalType": "struct IStargateRouter.lzTxObj",
+						"name": "_lzTxParams",
+						"type": "tuple"
+					}
+				],
+				"name": "quoteLayerZeroFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_srcPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dstPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_refundAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amountLP",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_to",
+						"type": "bytes"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "dstGasForCall",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstNativeAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes",
+								"name": "dstNativeAddr",
+								"type": "bytes"
+							}
+						],
+						"internalType": "struct IStargateRouter.lzTxObj",
+						"name": "_lzTxParams",
+						"type": "tuple"
+					}
+				],
+				"name": "redeemLocal",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_srcPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dstPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_refundAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amountLP",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_minAmountLD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_to",
+						"type": "bytes"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "dstGasForCall",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstNativeAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes",
+								"name": "dstNativeAddr",
+								"type": "bytes"
+							}
+						],
+						"internalType": "struct IStargateRouter.lzTxObj",
+						"name": "_lzTxParams",
+						"type": "tuple"
+					}
+				],
+				"name": "redeemRemote",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_srcPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dstPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_refundAddress",
+						"type": "address"
+					}
+				],
+				"name": "sendCredits",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_srcPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dstPoolId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_refundAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amountLD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_minAmountLD",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "dstGasForCall",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstNativeAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes",
+								"name": "dstNativeAddr",
+								"type": "bytes"
+							}
+						],
+						"internalType": "struct IStargateRouter.lzTxObj",
+						"name": "_lzTxParams",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_to",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "swap",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"StargateFacet_flat.sol": "IStargateRouter"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"StargateFacet_flat.sol": {
+			"keccak256": "0xe6074dd92720c8e9ee8399f4f13732bb39b8666d6dde23a53d9f8a32c18f2af6",
+			"urls": [
+				"bzz-raw://72a66b5e882fee4723fef9a1c8e5df550677b3e26fc458ae887b942028651037",
+				"dweb:/ipfs/QmX8wLfPkUcBp1p8GyzDnM7SdGXr8dD4eoFEiBGbL7TD7V"
+			]
+		}
+	},
+	"version": 1
+}

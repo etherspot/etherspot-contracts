@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
         mnemonic:
           HARDHAT_MNEMONIC ||
           "test test test test test test test test test test test junk",
-        count: 256,
+        count: 20,
       },
       chainId: 3333,
       gasPrice: 100 * 1000000000,
@@ -61,7 +61,7 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        version: '0.8.11',
+        version: "0.8.11",
         settings: {
           evmVersion: "istanbul",
           metadata: {

@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
 import {
   utils,
   providers,
@@ -205,3 +205,20 @@ export function multiCallCheckLastEventEmitted(
   }
   return args;
 }
+
+export const moveBlocks = async (amount: number) => {
+  // in blocks
+  for (let i = 0; i < amount; i++) {
+    await network.provider.request({
+      method: "evm_mine",
+      params: [],
+    });
+  }
+  console.log(`Moved ${amount} blocks`);
+};
+
+export const moveTime = async (amount: number) => {
+  // in seconds
+  await network.provider.send("evm_increaseTime", [amount]);
+  console.log(`Moved ${amount} seconds`);
+};

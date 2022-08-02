@@ -19,8 +19,8 @@
 node_modules
 
 # develop
-.local.env
 .env
+.local.env
 .envrc
 .test*
 coverage
