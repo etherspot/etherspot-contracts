@@ -20,12 +20,27 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ConnextFacetInterface extends utils.Interface {
   functions: {
+    "c_9fd86305(bytes8)": FunctionFragment;
+    "c_false9fd86305(bytes8)": FunctionFragment;
+    "c_true9fd86305(bytes8)": FunctionFragment;
     "connextCall(address,bytes,uint32,address,uint256,uint256,address,address,uint256)": FunctionFragment;
     "connextNativeAssetTransfer(address,uint32,uint256)": FunctionFragment;
     "connextTokenTransfer(address,address,uint32,uint256,uint256)": FunctionFragment;
     "initConnext(address,uint32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_9fd86305",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9fd86305",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9fd86305",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "connextCall",
     values: [
@@ -53,6 +68,15 @@ export interface ConnextFacetInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_9fd86305", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9fd86305",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9fd86305",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "connextCall",
     data: BytesLike
@@ -162,6 +186,21 @@ export interface ConnextFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     connextCall(
       _to: string,
       _callData: BytesLike,
@@ -197,6 +236,18 @@ export interface ConnextFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_9fd86305(c__9fd86305: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false9fd86305(
+    c__9fd86305: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9fd86305(
+    c__9fd86305: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   connextCall(
     _to: string,
@@ -234,6 +285,21 @@ export interface ConnextFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     connextCall(
       _to: string,
       _callData: BytesLike,
@@ -329,6 +395,21 @@ export interface ConnextFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     connextCall(
       _to: string,
       _callData: BytesLike,
@@ -366,6 +447,21 @@ export interface ConnextFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9fd86305(
+      c__9fd86305: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     connextCall(
       _to: string,
       _callData: BytesLike,
