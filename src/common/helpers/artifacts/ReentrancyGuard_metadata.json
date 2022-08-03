@@ -1,0 +1,53 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "ReentrancyError",
+				"type": "error"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"title": "Reentrancy Guard",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "Abstract contract to provide protection against reentrancy",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"common/helpers/DiamondReentrancyGuard.sol": "ReentrancyGuard"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"common/helpers/DiamondReentrancyGuard.sol": {
+			"keccak256": "0x80669f5e1b6d50ad0b4020e8caeb447f515e3b904b14cad5d03cc32e345753d5",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://5411c17875ae78dc626ca80fb00a2f57f8b1652234ba16d2bfa0c0d7822447a5",
+				"dweb:/ipfs/QmeY92iGRP7T7eNz7avJRwcA7AETSDNMhwujjEHarHJxY2"
+			]
+		}
+	},
+	"version": 1
+}

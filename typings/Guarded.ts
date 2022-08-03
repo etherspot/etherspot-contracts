@@ -19,27 +19,12 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface GuardedInterface extends utils.Interface {
   functions: {
     "addGuardian(address)": FunctionFragment;
-    "c_0ffe16b4(bytes8)": FunctionFragment;
-    "c_false0ffe16b4(bytes8)": FunctionFragment;
-    "c_true0ffe16b4(bytes8)": FunctionFragment;
     "isGuardian(address)": FunctionFragment;
     "removeGuardian(address)": FunctionFragment;
     "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "c_0ffe16b4",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false0ffe16b4",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true0ffe16b4",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "isGuardian", values: [string]): string;
   encodeFunctionData(
     functionFragment: "removeGuardian",
@@ -52,15 +37,6 @@ export interface GuardedInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addGuardian",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "c_0ffe16b4", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false0ffe16b4",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true0ffe16b4",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "isGuardian", data: BytesLike): Result;
@@ -128,21 +104,6 @@ export interface Guarded extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    c_0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_false0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     isGuardian(guardian: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     removeGuardian(
@@ -162,18 +123,6 @@ export interface Guarded extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_false0ffe16b4(
-    c__0ffe16b4: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true0ffe16b4(
-    c__0ffe16b4: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   isGuardian(guardian: string, overrides?: CallOverrides): Promise<boolean>;
 
   removeGuardian(
@@ -189,21 +138,6 @@ export interface Guarded extends BaseContract {
 
   callStatic: {
     addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
-
-    c_0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_false0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     isGuardian(guardian: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -236,21 +170,6 @@ export interface Guarded extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    c_0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     isGuardian(guardian: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     removeGuardian(
@@ -269,21 +188,6 @@ export interface Guarded extends BaseContract {
     addGuardian(
       guardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    c_0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true0ffe16b4(
-      c__0ffe16b4: BytesLike,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isGuardian(

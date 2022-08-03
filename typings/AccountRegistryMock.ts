@@ -18,40 +18,10 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface AccountRegistryMockInterface extends utils.Interface {
   functions: {
-    "c_203cf0ac(bytes8)": FunctionFragment;
-    "c_5dbd0fc3(bytes8)": FunctionFragment;
-    "c_false203cf0ac(bytes8)": FunctionFragment;
-    "c_false5dbd0fc3(bytes8)": FunctionFragment;
-    "c_true203cf0ac(bytes8)": FunctionFragment;
-    "c_true5dbd0fc3(bytes8)": FunctionFragment;
     "isValidAccountSignature(address,bytes,bytes)": FunctionFragment;
     "mockAccountOwners(address,address[])": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_203cf0ac",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_5dbd0fc3",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false203cf0ac",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false5dbd0fc3",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true203cf0ac",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true5dbd0fc3",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "isValidAccountSignature",
     values: [string, BytesLike, BytesLike]
@@ -61,24 +31,6 @@ export interface AccountRegistryMockInterface extends utils.Interface {
     values: [string, string[]]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_203cf0ac", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_5dbd0fc3", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false203cf0ac",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false5dbd0fc3",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true203cf0ac",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true5dbd0fc3",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "isValidAccountSignature",
     data: BytesLike
@@ -118,36 +70,6 @@ export interface AccountRegistryMock extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_false203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_false5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -168,30 +90,6 @@ export interface AccountRegistryMock extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  c_203cf0ac(c__203cf0ac: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_5dbd0fc3(c__5dbd0fc3: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_false203cf0ac(
-    c__203cf0ac: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_false5dbd0fc3(
-    c__5dbd0fc3: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true203cf0ac(
-    c__203cf0ac: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true5dbd0fc3(
-    c__5dbd0fc3: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   "isValidAccountSignature(address,bytes,bytes)"(
     account: string,
@@ -214,36 +112,6 @@ export interface AccountRegistryMock extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    c_203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_false203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_false5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -268,36 +136,6 @@ export interface AccountRegistryMock extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -320,36 +158,6 @@ export interface AccountRegistryMock extends BaseContract {
   };
 
   populateTransaction: {
-    c_203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true203cf0ac(
-      c__203cf0ac: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true5dbd0fc3(
-      c__5dbd0fc3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,

@@ -1,0 +1,599 @@
+{
+	"compiler": {
+		"version": "0.8.4+commit.c7e474f2"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "InvalidAmount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidConfig",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidSourcePoolId",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyError",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "SenderNotStargateRouter",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "StargateRouterAddressZero",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainId",
+						"type": "uint16"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "poolId",
+						"type": "uint16"
+					}
+				],
+				"name": "SGAddedPool",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "stargate",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainId",
+						"type": "uint16"
+					}
+				],
+				"name": "SGInitialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "SGReceivedOnDestination",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "bridgeUsed",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "fromToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "toToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "chainIdTo",
+						"type": "uint16"
+					}
+				],
+				"name": "SGTransferStarted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newAddress",
+						"type": "address"
+					}
+				],
+				"name": "SGUpdatedRouter",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newSlippage",
+						"type": "uint256"
+					}
+				],
+				"name": "SGUpdatedSlippageTolerance",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_poolId",
+						"type": "uint16"
+					}
+				],
+				"name": "sgAddPool",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "qty",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "fromToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "toToken",
+								"type": "address"
+							},
+							{
+								"internalType": "uint16",
+								"name": "dstChainId",
+								"type": "uint16"
+							},
+							{
+								"internalType": "address",
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "destStargateComposed",
+								"type": "address"
+							}
+						],
+						"internalType": "struct StargateFacet.StargateData",
+						"name": "_sgData",
+						"type": "tuple"
+					}
+				],
+				"name": "sgBridgeTokens",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_destChain",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_router",
+						"type": "address"
+					}
+				],
+				"name": "sgCalculateFees",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_poolId",
+						"type": "uint16"
+					}
+				],
+				"name": "sgCheckPoolId",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_stargateRouter",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					}
+				],
+				"name": "sgInitialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "sgMinAmountOut",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_srcAddress",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_nonce",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amountLD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "sgReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "sgRetrievePoolId",
+				"outputs": [
+					{
+						"internalType": "uint16",
+						"name": "",
+						"type": "uint16"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newAddress",
+						"type": "address"
+					}
+				],
+				"name": "sgUpdateRouter",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_newSlippage",
+						"type": "uint256"
+					}
+				],
+				"name": "sgUpdateSlippageTolerance",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "sgWithdraw",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"author": "Luke Wickens <luke@pillarproject.io>",
+			"kind": "dev",
+			"methods": {
+				"sgAddPool(uint16,address,uint16)": {
+					"params": {
+						"_chainId": "Chain id of new pool (NOT actual chain id - check stargate pool ids docs)",
+						"_poolId": "Pool id (check stargate pool ids docs)",
+						"_token": "Address of token"
+					}
+				},
+				"sgBridgeTokens((uint256,address,address,uint16,address,address))": {
+					"params": {
+						"_sgData": "- struct containing information required to execute bridge"
+					}
+				},
+				"sgCalculateFees(uint16,address,address)": {
+					"params": {
+						"_destChain": "Destination chain id",
+						"_receiver": "Receiver on destination chain",
+						"_router": "Address of stargate router"
+					}
+				},
+				"sgCheckPoolId(uint16,address,uint16)": {
+					"params": {
+						"_chainId": "Chain id of new pool (NOT actual chain id - check stargate pool ids docs)",
+						"_poolId": "Pool id (check stargate pool ids docs)",
+						"_token": "Address of token"
+					}
+				},
+				"sgInitialize(address,uint16)": {
+					"params": {
+						"_chainId": "- current chain id",
+						"_stargateRouter": "- address of the Stargate router contract"
+					}
+				},
+				"sgMinAmountOut(uint256)": {
+					"params": {
+						"_amount": "Transfer amount"
+					}
+				},
+				"sgReceive(uint16,bytes,uint256,address,uint256,bytes)": {
+					"params": {
+						"_chainId": "The remote chainId sending the tokens",
+						"_nonce": "The message ordering nonce",
+						"_payload": "The bytes containing the toAddress",
+						"_srcAddress": "The remote Bridge address",
+						"_token": "The token contract on the local chain",
+						"amountLD": "The qty of local _token contract tokens"
+					}
+				},
+				"sgRetrievePoolId(uint16,address)": {
+					"params": {
+						"_chainId": "Chain id of new pool (NOT actual chain id - check stargate pool ids docs)",
+						"_token": "Address of token"
+					}
+				},
+				"sgUpdateRouter(address)": {
+					"params": {
+						"_newAddress": "Address of the new router"
+					}
+				},
+				"sgUpdateSlippageTolerance(uint256)": {
+					"params": {
+						"_newSlippage": "New slippage amount"
+					}
+				},
+				"sgWithdraw(address,address,uint256)": {
+					"params": {
+						"_amount": "Amount to withdraw",
+						"_token": "Address of token",
+						"_user": "Address of receiver of tokens"
+					}
+				}
+			},
+			"title": "StargateFacet",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"sgAddPool(uint16,address,uint16)": {
+					"notice": "Adds a new pool for a specific token and chain"
+				},
+				"sgBridgeTokens((uint256,address,address,uint16,address,address))": {
+					"notice": "initializes state variables for the stargate facet"
+				},
+				"sgCalculateFees(uint16,address,address)": {
+					"notice": "Calculates cross chain fee"
+				},
+				"sgCheckPoolId(uint16,address,uint16)": {
+					"notice": "Checks for a valid token pool on specific chain"
+				},
+				"sgInitialize(address,uint16)": {
+					"notice": "initializes state variables for the Stargate facet"
+				},
+				"sgMinAmountOut(uint256)": {
+					"notice": "Calculates the minimum amount out using slippage tolerance"
+				},
+				"sgReceive(uint16,bytes,uint256,address,uint256,bytes)": {
+					"notice": "required to receive tokens on destination chain"
+				},
+				"sgRetrievePoolId(uint16,address)": {
+					"notice": "Retrieves pool id for a token on a specified chain"
+				},
+				"sgUpdateRouter(address)": {
+					"notice": "Updates stargate router address for deployed chain"
+				},
+				"sgUpdateSlippageTolerance(uint256)": {
+					"notice": "Updates slippage tolerance amount"
+				},
+				"sgWithdraw(address,address,uint256)": {
+					"notice": "Withdraws tokens on contract"
+				}
+			},
+			"notice": "Stargate/LayerZero intergration for bridging tokens",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"StargateFacet_flat.sol": "StargateFacet"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"StargateFacet_flat.sol": {
+			"keccak256": "0xe6074dd92720c8e9ee8399f4f13732bb39b8666d6dde23a53d9f8a32c18f2af6",
+			"urls": [
+				"bzz-raw://72a66b5e882fee4723fef9a1c8e5df550677b3e26fc458ae887b942028651037",
+				"dweb:/ipfs/QmX8wLfPkUcBp1p8GyzDnM7SdGXr8dD4eoFEiBGbL7TD7V"
+			]
+		}
+	},
+	"version": 1
+}

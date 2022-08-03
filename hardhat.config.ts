@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
@@ -5,6 +6,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "hardhat-tracer";
 import { HardhatUserConfig } from "hardhat/config";
 import { utils } from "ethers";
 import {
@@ -26,10 +28,10 @@ const config: HardhatUserConfig = {
         mnemonic:
           HARDHAT_MNEMONIC ||
           "test test test test test test test test test test test junk",
-        count: 256,
+        count: 20,
       },
       chainId: 3333,
-      gasPrice: 20 * 1000000000,
+      gasPrice: 100 * 1000000000,
     },
     ...createConfigNetworks(),
   },

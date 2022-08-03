@@ -26,6 +26,8 @@ var NetworkNames;
     NetworkNames["OptimismKovan"] = "optimismKovan";
     NetworkNames["Moonbeam"] = "moonbeam";
     NetworkNames["Moonbase"] = "moonbase";
+    NetworkNames["Fuse"] = "fuse";
+    NetworkNames["FuseSparknet"] = "fuseSparknet";
     NetworkNames["Celo"] = "celo";
     NetworkNames["CeloTest"] = "celoTest";
     NetworkNames["Etherspot"] = "etherspot";
@@ -171,6 +173,16 @@ exports.NETWORK_CONFIGS = {
     [NetworkNames.CeloTest]: {
         chainId: 44787,
         defaultProviderUrl: 'https://alfajores-forno.celo-testnet.org',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.Fuse]: {
+        chainId: 122,
+        defaultProviderUrl: 'https://rpc.fuse.io',
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.FuseSparknet]: {
+        chainId: 123,
+        defaultProviderUrl: 'https://rpc.fusespark.io',
         defaultGasPrice: 1,
     },
     [NetworkNames.Etherspot]: {
