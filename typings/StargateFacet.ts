@@ -45,12 +45,6 @@ export type StargateDataStructOutput = [
 
 export interface StargateFacetInterface extends utils.Interface {
   functions: {
-    "c_2ea48871(bytes8)": FunctionFragment;
-    "c_58fae2aa(bytes8)": FunctionFragment;
-    "c_false2ea48871(bytes8)": FunctionFragment;
-    "c_false58fae2aa(bytes8)": FunctionFragment;
-    "c_true2ea48871(bytes8)": FunctionFragment;
-    "c_true58fae2aa(bytes8)": FunctionFragment;
     "sgAddPool(uint16,address,uint16)": FunctionFragment;
     "sgBridgeTokens((uint256,address,address,uint16,address,address))": FunctionFragment;
     "sgCalculateFees(uint16,address,address)": FunctionFragment;
@@ -64,30 +58,6 @@ export interface StargateFacetInterface extends utils.Interface {
     "sgWithdraw(address,address,uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_2ea48871",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_58fae2aa",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false2ea48871",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false58fae2aa",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true2ea48871",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true58fae2aa",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "sgAddPool",
     values: [BigNumberish, string, BigNumberish]
@@ -140,24 +110,6 @@ export interface StargateFacetInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_2ea48871", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_58fae2aa", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false2ea48871",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false58fae2aa",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true2ea48871",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true58fae2aa",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "sgAddPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "sgBridgeTokens",
@@ -288,36 +240,6 @@ export interface StargateFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_false2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     sgAddPool(
       _chainId: BigNumberish,
       _token: string,
@@ -388,30 +310,6 @@ export interface StargateFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  c_2ea48871(c__2ea48871: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_58fae2aa(c__58fae2aa: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_false2ea48871(
-    c__2ea48871: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_false58fae2aa(
-    c__58fae2aa: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true2ea48871(
-    c__2ea48871: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true58fae2aa(
-    c__58fae2aa: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   sgAddPool(
     _chainId: BigNumberish,
@@ -484,36 +382,6 @@ export interface StargateFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    c_2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_false2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     sgAddPool(
       _chainId: BigNumberish,
       _token: string,
@@ -643,36 +511,6 @@ export interface StargateFacet extends BaseContract {
   };
 
   estimateGas: {
-    c_2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     sgAddPool(
       _chainId: BigNumberish,
       _token: string,
@@ -745,36 +583,6 @@ export interface StargateFacet extends BaseContract {
   };
 
   populateTransaction: {
-    c_2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true2ea48871(
-      c__2ea48871: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     sgAddPool(
       _chainId: BigNumberish,
       _token: string,

@@ -14,24 +14,24 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface SignatureValidatorInterface extends utils.Interface {
+export interface VersionInterface extends utils.Interface {
   functions: {
-    "chainId()": FunctionFragment;
+    "VERSION()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
+  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
 
   events: {};
 }
 
-export interface SignatureValidator extends BaseContract {
+export interface Version extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SignatureValidatorInterface;
+  interface: VersionInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -53,22 +53,22 @@ export interface SignatureValidator extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
+    VERSION(overrides?: CallOverrides): Promise<[number]>;
   };
 
-  chainId(overrides?: CallOverrides): Promise<BigNumber>;
+  VERSION(overrides?: CallOverrides): Promise<number>;
 
   callStatic: {
-    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+    VERSION(overrides?: CallOverrides): Promise<number>;
   };
 
   filters: {};
 
   estimateGas: {
-    chainId(overrides?: CallOverrides): Promise<BigNumber>;
+    VERSION(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

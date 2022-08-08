@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.11;
+pragma solidity 0.8.15;
 
 import { IConnextHandler } from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnextHandler.sol";
 import { CallParams, XCallArgs } from "@connext/nxtp-contracts/contracts/core/connext/libraries/LibConnextStorage.sol";
@@ -15,7 +15,7 @@ import { LibDiamond } from "../libs/LibDiamond.sol";
 contract ConnextFacet {
   // storage
   
-  bytes32 internal constant NAMESPACE = hex"a4cabcf91d6212ba2873e2f19de6e26ae65fd3280b9eaa6d8bc38c5fba52ec9d"; //keccak256("io.etherspot.facets.connext");
+  bytes32 internal constant NAMESPACE = keccak256("io.etherspot.facets.connext");
   struct Storage {
     address connext;
     uint32 domainId;
@@ -261,13 +261,15 @@ contract ConnextFacet {
       callback: _callback,
       callbackFee: _callbackFee,
       forceSlow: _forceSlow,
-      receiveLocal: false
+      receiveLocal: false,
+      relayerFee: _relayerFee,
+      slippageTol: 9995, // .05% slippage
+      agent: _to
     });
     XCallArgs memory xcallArgs = XCallArgs({
       params: callParams,
       transactingAssetId: _asset,
-      amount: _amount,
-      relayerFee: _relayerFee
+      amount: _amount
     });
     transferId = connext.xcall{value: msg.value}(xcallArgs);
   }
