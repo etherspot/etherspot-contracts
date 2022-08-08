@@ -15,57 +15,6 @@ const _abi = [
     name: "ReentrancyError",
     type: "error",
   },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__58fae2aa",
-        type: "bytes8",
-      },
-    ],
-    name: "c_58fae2aa",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__58fae2aa",
-        type: "bytes8",
-      },
-    ],
-    name: "c_false58fae2aa",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__58fae2aa",
-        type: "bytes8",
-      },
-    ],
-    name: "c_true58fae2aa",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
 ];
 
 export class ReentrancyGuard__factory {
