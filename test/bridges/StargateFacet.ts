@@ -463,43 +463,6 @@ describe("StargateFacet", () => {
     });
   });
 
-  describe("sgWithdraw()", async function() {
-    it("should revert trying to withdraw stuck tokens in the contract if not the owner", async function() {
-      await expectRevert(
-        stargateFacet
-          .connect(bob)
-          .sgWithdraw(MAINNET_USDC_ADDRESS, bob.address, 10),
-        "LibDiamond: Must be contract owner",
-      );
-    });
-
-    it("should withdraw stuck tokens in the contract", async function() {
-      // check pre-test balance of USDC for dummy and stargate facet accounts
-      let dummyUSDCBalance = await usdc.connect(dummy).balanceOf(dummy.address);
-      let sgFacetUSDCBalance = await usdc
-        .connect(dummy)
-        .balanceOf(stargateFacet.address);
-      expect(dummyUSDCBalance).toEqual(BigNumber.from(0));
-      expect(sgFacetUSDCBalance).toEqual(BigNumber.from(0));
-
-      // transfer USDC from alice to stargate facet and check balance of stargate facet
-      await usdc.connect(alice).transfer(stargateFacet.address, 20);
-      sgFacetUSDCBalance = await usdc
-        .connect(dummy)
-        .balanceOf(stargateFacet.address);
-      expect(sgFacetUSDCBalance).toEqual(BigNumber.from(20));
-
-      // check post-withdraw balance of USDC for dummy and stargate facet accounts
-      await stargateFacet.sgWithdraw(MAINNET_USDC_ADDRESS, dummy.address, 20);
-      dummyUSDCBalance = await usdc.connect(dummy).balanceOf(dummy.address);
-      sgFacetUSDCBalance = await usdc
-        .connect(dummy)
-        .balanceOf(stargateFacet.address);
-      expect(dummyUSDCBalance).toEqual(BigNumber.from(20));
-      expect(sgFacetUSDCBalance).toEqual(BigNumber.from(0));
-    });
-  });
-
   describe("sgAddPool()", async function() {
     it("should revert if adding pool to mapping and not owner", async function() {
       await expectRevert(

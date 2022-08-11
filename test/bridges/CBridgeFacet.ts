@@ -278,43 +278,4 @@ describe("CBridgeFacet", () => {
       expect(result[1]).toEqual(BigNumber.from(15000));
     });
   });
-
-  describe("cbWithdraw()", async function() {
-    it("should revert trying to withdraw stuck tokens in the contract if not the owner", async function() {
-      await expectRevert(
-        cBridgeFacet.connect(dummy).cbWithdraw(DAI_ADDRESS, dummy.address, 10),
-        "LibDiamond: Must be contract owner",
-      );
-    });
-
-    it("should withdraw stuck tokens in the contract", async function() {
-      // check pre-test balance of DAI for dummy and cbridge facet accounts
-      let dummyDAIBalance = await daiContract
-        .connect(dummy)
-        .balanceOf(dummy.address);
-      let cbFacetDAIBalance = await daiContract
-        .connect(dummy)
-        .balanceOf(cBridgeFacet.address);
-      expect(dummyDAIBalance).toEqual(BigNumber.from(0));
-      expect(cbFacetDAIBalance).toEqual(BigNumber.from(0));
-
-      // transfer DAI from alice to cbridge facet and check balance of stargate facet
-      await daiContract.connect(alice).transfer(cBridgeFacet.address, 20);
-      cbFacetDAIBalance = await daiContract
-        .connect(dummy)
-        .balanceOf(cBridgeFacet.address);
-      expect(cbFacetDAIBalance).toEqual(BigNumber.from(20));
-
-      // check post-withdraw balance of USDC for dummy and stargate facet accounts
-      await cBridgeFacet.cbWithdraw(DAI_ADDRESS, dummy.address, 20);
-      dummyDAIBalance = await daiContract
-        .connect(dummy)
-        .balanceOf(dummy.address);
-      cbFacetDAIBalance = await daiContract
-        .connect(dummy)
-        .balanceOf(cBridgeFacet.address);
-      expect(dummyDAIBalance).toEqual(BigNumber.from(20));
-      expect(cbFacetDAIBalance).toEqual(BigNumber.from(0));
-    });
-  });
 });

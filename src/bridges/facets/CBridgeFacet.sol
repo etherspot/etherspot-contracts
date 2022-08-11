@@ -127,16 +127,6 @@ contract CBridgeFacet is ReentrancyGuard {
         emit CBUpdatedBridge(_newAddress);
     }
 
-    function cbWithdraw(
-        address _token,
-        address _user,
-        uint256 _amount
-    ) external payable nonReentrant {
-        LibDiamond.enforceIsContractOwner();
-        IERC20(_token).safeApprove(address(this), _amount);
-        IERC20(_token).safeTransferFrom(address(this), _user, _amount);
-    }
-
     //////////////////////////////////////////////////////////////
     ////////////////////// Private Functions /////////////////////
     //////////////////////////////////////////////////////////////
