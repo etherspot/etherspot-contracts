@@ -61,7 +61,16 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        version: '0.8.15',
+        version: "0.8.11",
+        settings: {
+          evmVersion: "istanbul",
+          metadata: {
+            bytecodeHash: "none",
+          },
+        },
+      },
+      {
+        version: "0.8.15",
         settings: {
           evmVersion: "istanbul",
           metadata: {
