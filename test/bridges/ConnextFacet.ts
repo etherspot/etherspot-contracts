@@ -1,9 +1,5 @@
-import { ethers, network, deployments } from 'hardhat';
+import { ethers, network, deployments, config } from 'hardhat';
 import { ConnextFacet, Diamond, IERC20 } from '../../typings';
-import {
-  NETWORK_CONFIGS,
-  NetworkNames
-} from '../../extensions/constants'
 import {
   processTx,
   randomAddress,
@@ -11,30 +7,31 @@ import {
 } from '../shared';
 
 describe('ConnextFacet', () => {
-  const TEST_TOKEN_ADDRESS = "0x3FFc03F05D1869f493c7dbf913E636C6280e0ff9";
+  const TEST_TOKEN_ADDRESS = "0x26FE8a8f86511d678d031a022E48FfF41c6a3e3b";
   let signer: SignerWithAddress;
   let connextFacet: ConnextFacet;
   let token: IERC20;
   let diamond: Diamond;
 
   before(async function () {
+    const networkConfig: any = config.networks['goerli'];
     await network.provider.request({
       method: 'hardhat_reset',
       params: [
         {
           forking: {
-            jsonRpcUrl: NETWORK_CONFIGS[NetworkNames.Goerli].defaultProviderUrl,
-            blockNumber: 7139113,
+            jsonRpcUrl: networkConfig.url,
+            blockNumber: 7328367,
           },
         },
       ],
     });
     await network.provider.request({
       method: 'hardhat_impersonateAccount',
-      params: ['0x1a258f501e1e36e0a7f7b8f3d75042ab1172a028'], // has lots of test tokens and some ether
+      params: ['0xf06aa54d07693d28d00d6704212dd49dbad1e722'], // has lots of test tokens and some ether
     })
     signer = await ethers.getSigner(
-      '0x1a258f501e1e36e0a7f7b8f3d75042ab1172a028'
+      '0xf06aa54d07693d28d00d6704212dd49dbad1e722'
     )
     token = (await ethers.getContractAt<IERC20>("IERC20", TEST_TOKEN_ADDRESS)).connect(signer);
 

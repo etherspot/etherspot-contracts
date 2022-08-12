@@ -33,57 +33,6 @@ const _abi = [
     type: "fallback",
   },
   {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__a0861d79",
-        type: "bytes8",
-      },
-    ],
-    name: "c_a0861d79",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__a0861d79",
-        type: "bytes8",
-      },
-    ],
-    name: "c_falsea0861d79",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__a0861d79",
-        type: "bytes8",
-      },
-    ],
-    name: "c_truea0861d79",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
     stateMutability: "payable",
     type: "receive",
   },

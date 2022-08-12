@@ -129,57 +129,6 @@
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes8",
-          "name": "c__19d98a43",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_19d98a43",
-      "outputs": [],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes8",
-          "name": "c__19d98a43",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_false19d98a43",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes8",
-          "name": "c__19d98a43",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_true19d98a43",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
     }
   ],
   "bytecode": "0x",

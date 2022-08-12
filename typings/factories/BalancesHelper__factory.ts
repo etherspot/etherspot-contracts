@@ -12,57 +12,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "bytes8",
-        name: "c__053a243a",
-        type: "bytes8",
-      },
-    ],
-    name: "c_053a243a",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__053a243a",
-        type: "bytes8",
-      },
-    ],
-    name: "c_false053a243a",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes8",
-        name: "c__053a243a",
-        type: "bytes8",
-      },
-    ],
-    name: "c_true053a243a",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address[]",
         name: "accounts",
         type: "address[]",

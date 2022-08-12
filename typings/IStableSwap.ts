@@ -24,6 +24,9 @@ export interface IStableSwapInterface extends utils.Interface {
     "calculateRemoveLiquidity(uint256)": FunctionFragment;
     "calculateRemoveLiquidityOneToken(uint256,uint8)": FunctionFragment;
     "calculateSwap(uint8,uint8,uint256)": FunctionFragment;
+    "calculateSwapFromAddress(address,address,uint256)": FunctionFragment;
+    "calculateSwapOut(uint8,uint8,uint256)": FunctionFragment;
+    "calculateSwapOutFromAddress(address,address,uint256)": FunctionFragment;
     "calculateTokenAmount(uint256[],bool)": FunctionFragment;
     "getA()": FunctionFragment;
     "getToken(uint8)": FunctionFragment;
@@ -35,7 +38,8 @@ export interface IStableSwapInterface extends utils.Interface {
     "removeLiquidityImbalance(uint256[],uint256,uint256)": FunctionFragment;
     "removeLiquidityOneToken(uint256,uint8,uint256,uint256)": FunctionFragment;
     "swap(uint8,uint8,uint256,uint256,uint256)": FunctionFragment;
-    "swapExact(uint256,address,address)": FunctionFragment;
+    "swapExact(uint256,address,address,uint256)": FunctionFragment;
+    "swapExactOut(uint256,address,address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -53,6 +57,18 @@ export interface IStableSwapInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "calculateSwap",
     values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "calculateSwapFromAddress",
+    values: [string, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "calculateSwapOut",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "calculateSwapOutFromAddress",
+    values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "calculateTokenAmount",
@@ -112,7 +128,11 @@ export interface IStableSwapInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "swapExact",
-    values: [BigNumberish, string, string]
+    values: [BigNumberish, string, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "swapExactOut",
+    values: [BigNumberish, string, string, BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -129,6 +149,18 @@ export interface IStableSwapInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "calculateSwap",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateSwapFromAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateSwapOut",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateSwapOutFromAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -164,6 +196,10 @@ export interface IStableSwapInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "swap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "swapExact", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "swapExactOut",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AddLiquidity(address,uint256[],uint256[],uint256,uint256)": EventFragment;
@@ -343,6 +379,27 @@ export interface IStableSwap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    calculateSwapFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountIn: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    calculateSwapOut(
+      tokenIndexFrom: BigNumberish,
+      tokenIndexTo: BigNumberish,
+      dy: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    calculateSwapOutFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountOut: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     calculateTokenAmount(
       amounts: BigNumberish[],
       deposit: boolean,
@@ -412,6 +469,15 @@ export interface IStableSwap extends BaseContract {
       amountIn: BigNumberish,
       assetIn: string,
       assetOut: string,
+      minAmountOut: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    swapExactOut(
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -438,6 +504,27 @@ export interface IStableSwap extends BaseContract {
     tokenIndexFrom: BigNumberish,
     tokenIndexTo: BigNumberish,
     dx: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  calculateSwapFromAddress(
+    assetIn: string,
+    assetOut: string,
+    amountIn: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  calculateSwapOut(
+    tokenIndexFrom: BigNumberish,
+    tokenIndexTo: BigNumberish,
+    dy: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  calculateSwapOutFromAddress(
+    assetIn: string,
+    assetOut: string,
+    amountOut: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -510,6 +597,15 @@ export interface IStableSwap extends BaseContract {
     amountIn: BigNumberish,
     assetIn: string,
     assetOut: string,
+    minAmountOut: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  swapExactOut(
+    amountOut: BigNumberish,
+    assetIn: string,
+    assetOut: string,
+    maxAmountIn: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -536,6 +632,27 @@ export interface IStableSwap extends BaseContract {
       tokenIndexFrom: BigNumberish,
       tokenIndexTo: BigNumberish,
       dx: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calculateSwapFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountIn: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calculateSwapOut(
+      tokenIndexFrom: BigNumberish,
+      tokenIndexTo: BigNumberish,
+      dy: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calculateSwapOutFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountOut: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -608,6 +725,15 @@ export interface IStableSwap extends BaseContract {
       amountIn: BigNumberish,
       assetIn: string,
       assetOut: string,
+      minAmountOut: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    swapExactOut(
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -739,6 +865,27 @@ export interface IStableSwap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    calculateSwapFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountIn: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calculateSwapOut(
+      tokenIndexFrom: BigNumberish,
+      tokenIndexTo: BigNumberish,
+      dy: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calculateSwapOutFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountOut: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     calculateTokenAmount(
       amounts: BigNumberish[],
       deposit: boolean,
@@ -811,6 +958,15 @@ export interface IStableSwap extends BaseContract {
       amountIn: BigNumberish,
       assetIn: string,
       assetOut: string,
+      minAmountOut: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    swapExactOut(
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -838,6 +994,27 @@ export interface IStableSwap extends BaseContract {
       tokenIndexFrom: BigNumberish,
       tokenIndexTo: BigNumberish,
       dx: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    calculateSwapFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountIn: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    calculateSwapOut(
+      tokenIndexFrom: BigNumberish,
+      tokenIndexTo: BigNumberish,
+      dy: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    calculateSwapOutFromAddress(
+      assetIn: string,
+      assetOut: string,
+      amountOut: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -913,6 +1090,15 @@ export interface IStableSwap extends BaseContract {
       amountIn: BigNumberish,
       assetIn: string,
       assetOut: string,
+      minAmountOut: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    swapExactOut(
+      amountOut: BigNumberish,
+      assetIn: string,
+      assetOut: string,
+      maxAmountIn: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
