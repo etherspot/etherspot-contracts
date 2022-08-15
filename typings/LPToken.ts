@@ -19,6 +19,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface LPTokenInterface extends utils.Interface {
   functions: {
+    "MINIMUM_LIQUIDITY()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -39,6 +40,10 @@ export interface LPTokenInterface extends utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "MINIMUM_LIQUIDITY",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -94,6 +99,10 @@ export interface LPTokenInterface extends utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "MINIMUM_LIQUIDITY",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -197,6 +206,8 @@ export interface LPToken extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     allowance(
       owner: string,
       spender: string,
@@ -278,6 +289,8 @@ export interface LPToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: string,
@@ -361,6 +374,8 @@ export interface LPToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -475,6 +490,8 @@ export interface LPToken extends BaseContract {
   };
 
   estimateGas: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -558,6 +575,8 @@ export interface LPToken extends BaseContract {
   };
 
   populateTransaction: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     allowance(
       owner: string,
       spender: string,

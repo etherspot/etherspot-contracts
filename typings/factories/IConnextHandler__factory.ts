@@ -38,6 +38,45 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "VERSION",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "aavePool",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "aavePortalFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "acceptProposedOwner",
     outputs: [],
     stateMutability: "nonpayable",
@@ -222,6 +261,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+    ],
+    name: "approveRouterForPortal",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -468,6 +520,46 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "facetAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum IDiamondCut.FacetCutAction",
+            name: "action",
+            type: "uint8",
+          },
+          {
+            internalType: "bytes4[]",
+            name: "functionSelectors",
+            type: "bytes4[]",
+          },
+        ],
+        internalType: "struct IDiamondCut.FacetCut[]",
+        name: "_diamondCut",
+        type: "tuple[]",
+      },
+      {
+        internalType: "address",
+        name: "_init",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_calldata",
+        type: "bytes",
+      },
+    ],
+    name: "diamondCut",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "domain",
     outputs: [
@@ -526,8 +618,23 @@ const _abi = [
               },
               {
                 internalType: "address",
+                name: "agent",
+                type: "address",
+              },
+              {
+                internalType: "address",
                 name: "recovery",
                 type: "address",
+              },
+              {
+                internalType: "bool",
+                name: "forceSlow",
+                type: "bool",
+              },
+              {
+                internalType: "bool",
+                name: "receiveLocal",
+                type: "bool",
               },
               {
                 internalType: "address",
@@ -540,14 +647,14 @@ const _abi = [
                 type: "uint256",
               },
               {
-                internalType: "bool",
-                name: "forceSlow",
-                type: "bool",
+                internalType: "uint256",
+                name: "relayerFee",
+                type: "uint256",
               },
               {
-                internalType: "bool",
-                name: "receiveLocal",
-                type: "bool",
+                internalType: "uint256",
+                name: "slippageTol",
+                type: "uint256",
               },
             ],
             internalType: "struct CallParams",
@@ -568,11 +675,6 @@ const _abi = [
             internalType: "bytes[]",
             name: "routerSignatures",
             type: "bytes[]",
-          },
-          {
-            internalType: "uint256",
-            name: "relayerFee",
-            type: "uint256",
           },
           {
             internalType: "uint256",
@@ -614,6 +716,144 @@ const _abi = [
         internalType: "contract IExecutor",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "bytes",
+            name: "callData",
+            type: "bytes",
+          },
+          {
+            internalType: "uint32",
+            name: "originDomain",
+            type: "uint32",
+          },
+          {
+            internalType: "uint32",
+            name: "destinationDomain",
+            type: "uint32",
+          },
+          {
+            internalType: "address",
+            name: "agent",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "recovery",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "forceSlow",
+            type: "bool",
+          },
+          {
+            internalType: "bool",
+            name: "receiveLocal",
+            type: "bool",
+          },
+          {
+            internalType: "address",
+            name: "callback",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "callbackFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "relayerFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "slippageTol",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct CallParams",
+        name: "_params",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_nonce",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_canonicalId",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint32",
+        name: "_canonicalDomain",
+        type: "uint32",
+      },
+      {
+        internalType: "address",
+        name: "_originSender",
+        type: "address",
+      },
+    ],
+    name: "forceReceiveLocal",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_transferId",
+        type: "bytes32",
+      },
+    ],
+    name: "getAavePortalDebt",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_transferId",
+        type: "bytes32",
+      },
+    ],
+    name: "getAavePortalFeeDebt",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -666,6 +906,25 @@ const _abi = [
       },
     ],
     name: "getRouterApproval",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+    ],
+    name: "getRouterApprovalForPortal",
     outputs: [
       {
         internalType: "bool",
@@ -855,6 +1114,11 @@ const _abi = [
           {
             internalType: "uint256[]",
             name: "balances",
+            type: "uint256[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "adminFees",
             type: "uint256[]",
           },
         ],
@@ -1115,6 +1379,13 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "pause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "promiseRouter",
     outputs: [
       {
@@ -1129,6 +1400,46 @@ const _abi = [
   {
     inputs: [],
     name: "proposeAssetOwnershipRenunciation",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "facetAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum IDiamondCut.FacetCutAction",
+            name: "action",
+            type: "uint8",
+          },
+          {
+            internalType: "bytes4[]",
+            name: "functionSelectors",
+            type: "bytes4[]",
+          },
+        ],
+        internalType: "struct IDiamondCut.FacetCut[]",
+        name: "_diamondCut",
+        type: "tuple[]",
+      },
+      {
+        internalType: "address",
+        name: "_init",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_calldata",
+        type: "bytes",
+      },
+    ],
+    name: "proposeDiamondCut",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1555,6 +1866,112 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_asset",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_backingAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_feeAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_maxIn",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_transferId",
+        type: "bytes32",
+      },
+    ],
+    name: "repayAavePortal",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_adopted",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_backingAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_feeAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_transferId",
+        type: "bytes32",
+      },
+    ],
+    name: "repayAavePortalFor",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "facetAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum IDiamondCut.FacetCutAction",
+            name: "action",
+            type: "uint8",
+          },
+          {
+            internalType: "bytes4[]",
+            name: "functionSelectors",
+            type: "bytes4[]",
+          },
+        ],
+        internalType: "struct IDiamondCut.FacetCut[]",
+        name: "_diamondCut",
+        type: "tuple[]",
+      },
+      {
+        internalType: "address",
+        name: "_init",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_calldata",
+        type: "bytes",
+      },
+    ],
+    name: "rescindDiamondCut",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes32",
         name: "_transferId",
         type: "bytes32",
@@ -1619,6 +2036,32 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_aavePool",
+        type: "address",
+      },
+    ],
+    name: "setAavePool",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_aavePortalFeeNumerator",
+        type: "uint256",
+      },
+    ],
+    name: "setAavePortalFee",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1965,6 +2408,50 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "canonicalId",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint256",
+        name: "amountOut",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "assetIn",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "assetOut",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "maxAmountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactOut",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "tokenRegistry",
     outputs: [
@@ -1994,6 +2481,26 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+    ],
+    name: "unapproveRouterForPortal",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpause",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -2063,8 +2570,23 @@ const _abi = [
               },
               {
                 internalType: "address",
+                name: "agent",
+                type: "address",
+              },
+              {
+                internalType: "address",
                 name: "recovery",
                 type: "address",
+              },
+              {
+                internalType: "bool",
+                name: "forceSlow",
+                type: "bool",
+              },
+              {
+                internalType: "bool",
+                name: "receiveLocal",
+                type: "bool",
               },
               {
                 internalType: "address",
@@ -2077,14 +2599,14 @@ const _abi = [
                 type: "uint256",
               },
               {
-                internalType: "bool",
-                name: "forceSlow",
-                type: "bool",
+                internalType: "uint256",
+                name: "relayerFee",
+                type: "uint256",
               },
               {
-                internalType: "bool",
-                name: "receiveLocal",
-                type: "bool",
+                internalType: "uint256",
+                name: "slippageTol",
+                type: "uint256",
               },
             ],
             internalType: "struct CallParams",
@@ -2099,11 +2621,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "relayerFee",
             type: "uint256",
           },
         ],

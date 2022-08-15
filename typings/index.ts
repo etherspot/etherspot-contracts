@@ -19,6 +19,7 @@ export type { IProposedOwnable } from "./IProposedOwnable";
 export type { ProposedOwnable } from "./ProposedOwnable";
 export type { ProposedOwnableUpgradeable } from "./ProposedOwnableUpgradeable";
 export type { Router } from "./Router";
+export type { Version } from "./Version";
 export type { XAppConnectionClient } from "./XAppConnectionClient";
 export type { Home } from "./Home";
 export type { MerkleTreeManager } from "./MerkleTreeManager";
@@ -108,6 +109,7 @@ export { IProposedOwnable__factory } from "./factories/IProposedOwnable__factory
 export { ProposedOwnable__factory } from "./factories/ProposedOwnable__factory";
 export { ProposedOwnableUpgradeable__factory } from "./factories/ProposedOwnableUpgradeable__factory";
 export { Router__factory } from "./factories/Router__factory";
+export { Version__factory } from "./factories/Version__factory";
 export { XAppConnectionClient__factory } from "./factories/XAppConnectionClient__factory";
 export { Home__factory } from "./factories/Home__factory";
 export { MerkleTreeManager__factory } from "./factories/MerkleTreeManager__factory";
