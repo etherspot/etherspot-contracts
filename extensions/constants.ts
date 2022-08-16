@@ -24,8 +24,10 @@ export enum NetworkNames {
   Moonbase = "moonbase",
   Fuse = 'fuse',
   FuseSparknet = 'fuseSparknet',
-  Celo = "celo",
-  CeloTest = "celoTest",
+  Celo = 'celo',
+  CeloTest = 'celoTest',
+  Cronos = "cronos",
+  CronosTest = 'cronosTest',
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -194,6 +196,16 @@ export const NETWORK_CONFIGS: {
     chainId: 123,
     defaultProviderUrl : 'https://rpc.fusespark.io',
     defaultGasPrice: 1,
+  },
+  [NetworkNames.Cronos]: {
+    chainId: 122,
+    defaultProviderUrl: 'https://evm.cronos.org',
+    defaultGasPrice: 20,
+  },
+  [NetworkNames.CronosTest]: {
+    chainId: 338,
+    defaultProviderUrl : 'https://evm-t3.cronos.org',
+    defaultGasPrice: 2100
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
