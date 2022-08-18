@@ -1,5 +1,7 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import { NetworkNames, NETWORK_CONFIGS } from './constants';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export function createConfigNetwork(
   networkName: NetworkNames,
