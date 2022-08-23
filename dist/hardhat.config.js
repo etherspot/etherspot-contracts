@@ -17,6 +17,11 @@ const config = {
         from: 0,
     },
     networks: Object.assign({ hardhat: {
+            forking: {
+                enabled: false,
+                url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+                blockNumber: 13798171,
+            },
             accounts: {
                 mnemonic: HARDHAT_MNEMONIC ||
                     "test test test test test test test test test test test junk",

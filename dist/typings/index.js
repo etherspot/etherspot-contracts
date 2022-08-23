@@ -84,6 +84,8 @@ var ISuperfluidToken__factory_1 = require("./factories/ISuperfluidToken__factory
 Object.defineProperty(exports, "ISuperfluidToken__factory", { enumerable: true, get: function () { return ISuperfluidToken__factory_1.ISuperfluidToken__factory; } });
 var Diamond__factory_1 = require("./factories/Diamond__factory");
 Object.defineProperty(exports, "Diamond__factory", { enumerable: true, get: function () { return Diamond__factory_1.Diamond__factory; } });
+var CBridgeFacet__factory_1 = require("./factories/CBridgeFacet__factory");
+Object.defineProperty(exports, "CBridgeFacet__factory", { enumerable: true, get: function () { return CBridgeFacet__factory_1.CBridgeFacet__factory; } });
 var ConnextFacet__factory_1 = require("./factories/ConnextFacet__factory");
 Object.defineProperty(exports, "ConnextFacet__factory", { enumerable: true, get: function () { return ConnextFacet__factory_1.ConnextFacet__factory; } });
 var DiamondCutFacet__factory_1 = require("./factories/DiamondCutFacet__factory");
@@ -94,6 +96,8 @@ var OwnershipFacet__factory_1 = require("./factories/OwnershipFacet__factory");
 Object.defineProperty(exports, "OwnershipFacet__factory", { enumerable: true, get: function () { return OwnershipFacet__factory_1.OwnershipFacet__factory; } });
 var StargateFacet__factory_1 = require("./factories/StargateFacet__factory");
 Object.defineProperty(exports, "StargateFacet__factory", { enumerable: true, get: function () { return StargateFacet__factory_1.StargateFacet__factory; } });
+var ICBridge__factory_1 = require("./factories/ICBridge__factory");
+Object.defineProperty(exports, "ICBridge__factory", { enumerable: true, get: function () { return ICBridge__factory_1.ICBridge__factory; } });
 var IDiamondCut__factory_1 = require("./factories/IDiamondCut__factory");
 Object.defineProperty(exports, "IDiamondCut__factory", { enumerable: true, get: function () { return IDiamondCut__factory_1.IDiamondCut__factory; } });
 var IDiamondLoupe__factory_1 = require("./factories/IDiamondLoupe__factory");

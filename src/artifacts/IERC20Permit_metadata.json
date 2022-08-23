@@ -105,7 +105,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"StargateFacet_flat.sol": "IERC20Permit"
+			"CBridgeFacet_flat.sol": "IERC20Permit"
 		},
 		"evmVersion": "istanbul",
 		"libraries": {},
@@ -119,11 +119,11 @@
 		"remappings": []
 	},
 	"sources": {
-		"StargateFacet_flat.sol": {
-			"keccak256": "0xe6074dd92720c8e9ee8399f4f13732bb39b8666d6dde23a53d9f8a32c18f2af6",
+		"CBridgeFacet_flat.sol": {
+			"keccak256": "0x2b4acbc63840dabc76fc908c0bfe4946b203e64618c31508343985cb97521ad0",
 			"urls": [
-				"bzz-raw://72a66b5e882fee4723fef9a1c8e5df550677b3e26fc458ae887b942028651037",
-				"dweb:/ipfs/QmX8wLfPkUcBp1p8GyzDnM7SdGXr8dD4eoFEiBGbL7TD7V"
+				"bzz-raw://7e38a2aff417afa4071b8e372637b867525c34f7ad180a87f5b89f6e24112288",
+				"dweb:/ipfs/QmTtitFtWHn1vbNfZUQbJpWsECDeqrHanVENanyhj8ZVto"
 			]
 		}
 	},

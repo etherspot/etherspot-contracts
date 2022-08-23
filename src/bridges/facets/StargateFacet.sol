@@ -239,20 +239,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         emit SGUpdatedSlippageTolerance(_newSlippage);
     }
 
-    /// @notice Withdraws tokens on contract
-    /// @param _token Address of token
-    /// @param _user Address of receiver of tokens
-    /// @param _amount Amount to withdraw
-    function sgWithdraw(
-        address _token,
-        address _user,
-        uint256 _amount
-    ) external payable nonReentrant {
-        LibDiamond.enforceIsContractOwner();
-        IERC20(_token).safeApprove(address(this), _amount);
-        IERC20(_token).safeTransferFrom(address(this), _user, _amount);
-    }
-
     /// @notice Adds a new pool for a specific token and chain
     /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
     /// @param _token Address of token
@@ -292,8 +278,6 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         Storage storage s = getStorage();
         return s.poolIds[_chainId][_token];
     }
-
-    receive() external payable {}
 
     //////////////////////////////////////////////////////////////
     ////////////////////// Private Functions /////////////////////
