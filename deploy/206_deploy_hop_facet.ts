@@ -5,7 +5,7 @@ import { HopConfig } from '../config/hop';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
-    deployments: { deploy },
+    deployments: { deploy, log },
     getNamedAccounts,
     ethers,
     network
@@ -13,7 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { from } = await getNamedAccounts();
 
   if (!HopConfig[network.name]) {
-    throw new Error("No config for this network available: " + network.name);
+    return log("No Hop config for this network available: " + network.name);
   }
 
   await deploy('HopFacet', {
@@ -25,9 +25,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const hopFacet = await ethers.getContract("HopFacet");
 
   const ABI = ['function initHop(uint256)'];
-  const iface = new hre.ethers.utils.Interface(ABI)
-
-  console.log('HopConfig', HopConfig[network.name]);
+  const iface = new hre.ethers.utils.Interface(ABI);
 
   const initData = iface.encodeFunctionData('initHop', [
     HopConfig[network.name]
