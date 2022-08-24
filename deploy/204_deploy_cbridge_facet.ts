@@ -3,7 +3,7 @@ import { network } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { addOrReplaceFacets } from "../utils/diamond";
-import CBridgeConfig from "../config/cBridge";
+import config from "../config/cBridge";
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const {
@@ -27,8 +27,8 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const ABI = ["function cbInitialize(address)"];
   const iface = new utils.Interface(ABI);
 
-  if (CBridgeConfig[network.name].cBridge != "") {
-    bridgeAddr = CBridgeConfig[network.name].cBridge;
+  if (config[network.name].cBridge != "") {
+    bridgeAddr = config[network.name].cBridge;
   }
 
   const initData = iface.encodeFunctionData("cbInitialize", [bridgeAddr]);
