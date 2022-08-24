@@ -27,6 +27,7 @@ export enum NetworkNames {
   Celo = "celo",
   CeloTest = "celoTest",
   ArbitrumNova = "arbitrumNova",
+  ArbitrumNitro = "arbitrumNitro",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -199,6 +200,11 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.ArbitrumNova]: {
     chainId: 42170,
     defaultProviderUrl: "https://nova.arbitrum.io/rpc",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumNitro]: {
+    chainId: 421613,
+    defaultProviderUrl: "https://goerli-rollup-explorer.arbitrum.io",
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
