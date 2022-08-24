@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const diamond_1 = require("../utils/diamond");
 const stargate_1 = __importDefault(require("../config/stargate"));
 const func = async function (hre) {
-    const { deployments: { deploy }, getNamedAccounts, ethers, network, } = hre;
+    const { deployments: { deploy, log }, getNamedAccounts, ethers, network, } = hre;
     const { from } = await getNamedAccounts();
     if (!stargate_1.default[network.name]) {
-        throw new Error("No stargate config for this network available: " + network.name);
+        return log("No stargate config for this network available: " + network.name);
     }
     await deploy("StargateFacet", {
         from,

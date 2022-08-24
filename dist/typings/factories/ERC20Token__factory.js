@@ -121,57 +121,6 @@ const _abi = [
         type: "function",
     },
     {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__5838cc23",
-                type: "bytes8",
-            },
-        ],
-        name: "c_5838cc23",
-        outputs: [],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__5838cc23",
-                type: "bytes8",
-            },
-        ],
-        name: "c_false5838cc23",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__5838cc23",
-                type: "bytes8",
-            },
-        ],
-        name: "c_true5838cc23",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
         inputs: [],
         name: "decimals",
         outputs: [

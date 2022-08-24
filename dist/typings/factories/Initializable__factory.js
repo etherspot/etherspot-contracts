@@ -8,13 +8,26 @@ const _abi = [
         inputs: [
             {
                 indexed: false,
-                internalType: "uint8",
-                name: "version",
-                type: "uint8",
+                internalType: "address",
+                name: "initializer",
+                type: "address",
             },
         ],
         name: "Initialized",
         type: "event",
+    },
+    {
+        inputs: [],
+        name: "isInitialized",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
     },
 ];
 class Initializable__factory {

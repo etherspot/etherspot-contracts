@@ -28,18 +28,15 @@ export interface CBridgeFacetInterface extends utils.Interface {
         "cbInitialize(address)": FunctionFragment;
         "cbUpdateBridge(address)": FunctionFragment;
         "cbUpdateSlippageTolerance(uint32)": FunctionFragment;
-        "cbWithdraw(address,address,uint256)": FunctionFragment;
     };
     encodeFunctionData(functionFragment: "cbBridgeTokens", values: [CBridgeDataStruct]): string;
     encodeFunctionData(functionFragment: "cbInitialize", values: [string]): string;
     encodeFunctionData(functionFragment: "cbUpdateBridge", values: [string]): string;
     encodeFunctionData(functionFragment: "cbUpdateSlippageTolerance", values: [BigNumberish]): string;
-    encodeFunctionData(functionFragment: "cbWithdraw", values: [string, string, BigNumberish]): string;
     decodeFunctionResult(functionFragment: "cbBridgeTokens", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "cbInitialize", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "cbUpdateBridge", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "cbUpdateSlippageTolerance", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "cbWithdraw", data: BytesLike): Result;
     events: {
         "CBInitialized(address,uint256)": EventFragment;
         "CBTransferStarted(string,address,address,address,uint256,uint256)": EventFragment;
@@ -112,9 +109,6 @@ export interface CBridgeFacet extends BaseContract {
         cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-            from?: string | Promise<string>;
-        }): Promise<ContractTransaction>;
     };
     cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
         from?: string | Promise<string>;
@@ -128,15 +122,11 @@ export interface CBridgeFacet extends BaseContract {
     cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-        from?: string | Promise<string>;
-    }): Promise<ContractTransaction>;
     callStatic: {
         cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: CallOverrides): Promise<void>;
         cbInitialize(_cbBridge: string, overrides?: CallOverrides): Promise<void>;
         cbUpdateBridge(_newAddress: string, overrides?: CallOverrides): Promise<void>;
         cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: CallOverrides): Promise<void>;
-        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
     };
     filters: {
         "CBInitialized(address,uint256)"(cBridge?: null, chainId?: null): CBInitializedEventFilter;
@@ -161,9 +151,6 @@ export interface CBridgeFacet extends BaseContract {
         cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-            from?: string | Promise<string>;
-        }): Promise<BigNumber>;
     };
     populateTransaction: {
         cbBridgeTokens(_cbData: CBridgeDataStruct, overrides?: PayableOverrides & {
@@ -176,9 +163,6 @@ export interface CBridgeFacet extends BaseContract {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
         cbUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
-            from?: string | Promise<string>;
-        }): Promise<PopulatedTransaction>;
-        cbWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
     };

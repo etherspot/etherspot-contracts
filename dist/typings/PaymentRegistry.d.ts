@@ -38,21 +38,6 @@ export declare type PaymentChannelCommitStructOutput = [
 export interface PaymentRegistryInterface extends utils.Interface {
     functions: {
         "addGuardian(address)": FunctionFragment;
-        "c_0ffe16b4(bytes8)": FunctionFragment;
-        "c_1b54acf3(bytes8)": FunctionFragment;
-        "c_3029712e(bytes8)": FunctionFragment;
-        "c_c0828b70(bytes8)": FunctionFragment;
-        "c_d5c463c2(bytes8)": FunctionFragment;
-        "c_false0ffe16b4(bytes8)": FunctionFragment;
-        "c_false1b54acf3(bytes8)": FunctionFragment;
-        "c_false3029712e(bytes8)": FunctionFragment;
-        "c_falsec0828b70(bytes8)": FunctionFragment;
-        "c_falsed5c463c2(bytes8)": FunctionFragment;
-        "c_true0ffe16b4(bytes8)": FunctionFragment;
-        "c_true1b54acf3(bytes8)": FunctionFragment;
-        "c_true3029712e(bytes8)": FunctionFragment;
-        "c_truec0828b70(bytes8)": FunctionFragment;
-        "c_trued5c463c2(bytes8)": FunctionFragment;
         "chainId()": FunctionFragment;
         "commitPaymentChannelAndDeposit(address,address,bytes32,uint256,uint256,bytes,bytes)": FunctionFragment;
         "commitPaymentChannelAndSplit(address,address,bytes32,uint256,uint256,uint256,bytes,bytes)": FunctionFragment;
@@ -80,21 +65,6 @@ export interface PaymentRegistryInterface extends utils.Interface {
         "withdrawDeposit(address,uint256,bytes)": FunctionFragment;
     };
     encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
-    encodeFunctionData(functionFragment: "c_0ffe16b4", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_1b54acf3", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_3029712e", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_c0828b70", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_d5c463c2", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false0ffe16b4", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false1b54acf3", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false3029712e", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_falsec0828b70", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_falsed5c463c2", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true0ffe16b4", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true1b54acf3", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true3029712e", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_truec0828b70", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_trued5c463c2", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
     encodeFunctionData(functionFragment: "commitPaymentChannelAndDeposit", values: [
         string,
@@ -146,21 +116,6 @@ export interface PaymentRegistryInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "verifyGuardianSignature", values: [BytesLike, BytesLike]): string;
     encodeFunctionData(functionFragment: "withdrawDeposit", values: [string, BigNumberish, BytesLike]): string;
     decodeFunctionResult(functionFragment: "addGuardian", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_0ffe16b4", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_1b54acf3", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_3029712e", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_c0828b70", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_d5c463c2", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false0ffe16b4", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false1b54acf3", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false3029712e", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_falsec0828b70", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_falsed5c463c2", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true0ffe16b4", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true1b54acf3", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true3029712e", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_truec0828b70", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_trued5c463c2", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "commitPaymentChannelAndDeposit", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "commitPaymentChannelAndSplit", data: BytesLike): Result;
@@ -347,21 +302,6 @@ export interface PaymentRegistry extends BaseContract {
         addGuardian(guardian: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_false0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_false1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_false3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_falsec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_falsed5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_truec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_trued5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
         chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
         commitPaymentChannelAndDeposit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -409,21 +349,6 @@ export interface PaymentRegistry extends BaseContract {
     addGuardian(guardian: string, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_false0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_false1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_false3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_falsec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_falsed5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_truec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_trued5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
     commitPaymentChannelAndDeposit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: Overrides & {
         from?: string | Promise<string>;
@@ -469,21 +394,6 @@ export interface PaymentRegistry extends BaseContract {
     }): Promise<ContractTransaction>;
     callStatic: {
         addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
-        c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_false0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_false1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_false3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_falsec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_falsed5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_truec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_trued5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<boolean>;
         chainId(overrides?: CallOverrides): Promise<BigNumber>;
         commitPaymentChannelAndDeposit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: CallOverrides): Promise<void>;
         commitPaymentChannelAndSplit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, depositPaymentValue: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: CallOverrides): Promise<void>;
@@ -540,21 +450,6 @@ export interface PaymentRegistry extends BaseContract {
         addGuardian(guardian: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_falsec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_falsed5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_truec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_trued5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         chainId(overrides?: CallOverrides): Promise<BigNumber>;
         commitPaymentChannelAndDeposit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -603,21 +498,6 @@ export interface PaymentRegistry extends BaseContract {
         addGuardian(guardian: string, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
-        c_0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_c0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_d5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_falsec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_falsed5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true0ffe16b4(c__0ffe16b4: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true1b54acf3(c__1b54acf3: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true3029712e(c__3029712e: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_truec0828b70(c__c0828b70: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_trued5c463c2(c__d5c463c2: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         commitPaymentChannelAndDeposit(sender: string, token: string, uid: BytesLike, blockNumber: BigNumberish, amount: BigNumberish, senderSignature: BytesLike, guardianSignature: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;

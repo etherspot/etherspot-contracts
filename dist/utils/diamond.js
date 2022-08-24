@@ -58,7 +58,7 @@ async function addOrReplaceFacets(facets, diamondAddress, initContract = ethers_
         console.log('No facets to add or replace.');
         return;
     }
-    const cutter = (await hardhat_1.ethers.getContractAt('IDiamondCut', diamondAddress));
+    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
     console.log('Adding/Replacing facets...');
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
     console.log('Diamond cut tx: ', tx.hash);
@@ -83,7 +83,7 @@ async function addFacets(facets, diamondAddress, initContract = ethers_1.constan
         console.log('No facets to add or replace.');
         return;
     }
-    const cutter = (await hardhat_1.ethers.getContractAt('IDiamondCut', diamondAddress));
+    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
     console.log('Adding facets...');
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
     console.log('Diamond cut tx: ', tx.hash);
@@ -102,7 +102,7 @@ async function removeFacet(selectors, diamondAddress) {
             functionSelectors: selectors,
         },
     ];
-    const cutter = (await hardhat_1.ethers.getContractAt('IDiamondCut', diamondAddress));
+    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
     console.log('Removing facet...');
     const tx = await cutter.diamondCut(cut, ethers_1.constants.AddressZero, '0x', {});
     console.log('Diamond cut tx: ', tx.hash);
@@ -122,7 +122,7 @@ async function replaceFacet(facet, diamondAddress, initContract = ethers_1.const
             functionSelectors: selectors,
         },
     ];
-    const cutter = (await hardhat_1.ethers.getContractAt('IDiamondCut', diamondAddress));
+    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
     console.log('Replacing facet...');
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
     console.log('Diamond cut tx: ', tx.hash);

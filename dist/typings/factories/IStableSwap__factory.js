@@ -369,6 +369,93 @@ const _abi = [
     {
         inputs: [
             {
+                internalType: "address",
+                name: "assetIn",
+                type: "address",
+            },
+            {
+                internalType: "address",
+                name: "assetOut",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "amountIn",
+                type: "uint256",
+            },
+        ],
+        name: "calculateSwapFromAddress",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint8",
+                name: "tokenIndexFrom",
+                type: "uint8",
+            },
+            {
+                internalType: "uint8",
+                name: "tokenIndexTo",
+                type: "uint8",
+            },
+            {
+                internalType: "uint256",
+                name: "dy",
+                type: "uint256",
+            },
+        ],
+        name: "calculateSwapOut",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "assetIn",
+                type: "address",
+            },
+            {
+                internalType: "address",
+                name: "assetOut",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "amountOut",
+                type: "uint256",
+            },
+        ],
+        name: "calculateSwapOutFromAddress",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
                 internalType: "uint256[]",
                 name: "amounts",
                 type: "uint256[]",
@@ -669,8 +756,47 @@ const _abi = [
                 name: "assetOut",
                 type: "address",
             },
+            {
+                internalType: "uint256",
+                name: "minAmountOut",
+                type: "uint256",
+            },
         ],
         name: "swapExact",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "payable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "amountOut",
+                type: "uint256",
+            },
+            {
+                internalType: "address",
+                name: "assetIn",
+                type: "address",
+            },
+            {
+                internalType: "address",
+                name: "assetOut",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "maxAmountIn",
+                type: "uint256",
+            },
+        ],
+        name: "swapExactOut",
         outputs: [
             {
                 internalType: "uint256",
