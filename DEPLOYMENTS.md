@@ -29,6 +29,7 @@
 | `BalancesHelper` | `fuseSparknet` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x17eca87186670f812655a315ee26a3f8a118accde1369e1a14e85e7f748ca63f | 
 | `BalancesHelper` | `celo` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xfc0dc010dd2df5473efc9e99d884818145c485de11993612ee8873680eed7b76 | 
 | `BalancesHelper` | `celoTest` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x6b910a25366bfda341b56258532d882579db1de46ace8e7457cc8da90cf9877b | 
+| `BalancesHelper` | `arbitrumNitro` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x34943a88565f9173b84843e04c737c6555210dae946eaa7d9e0ed72e9fc72171 | 
 | `BalancesHelper` | `etherspot` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xac7270105c381ce52e137b815727c88f9f03a0005afa776154de199de41c1d33 | 
 | `BalancesHelperV2` | `mainnet` | [0xe5A160F89f330cc933816E896a3F36376DE0a835](https://etherscan.io/address/0xe5A160F89f330cc933816E896a3F36376DE0a835) | [0xf6ea0fa211f992a6b409e3d9808abe1c3c6d9d3136969a5ee403ed9b26c9741f](https://etherscan.io/tx/0xf6ea0fa211f992a6b409e3d9808abe1c3c6d9d3136969a5ee403ed9b26c9741f) | 
 | `BalancesHelperV2` | `ropsten` | [0xe5A160F89f330cc933816E896a3F36376DE0a835](https://ropsten.etherscan.io/address/0xe5A160F89f330cc933816E896a3F36376DE0a835) | [0x85a9b1e970b917b4af56111429d9424409e0527fec62079e6451a94de7a5c737](https://ropsten.etherscan.io/tx/0x85a9b1e970b917b4af56111429d9424409e0527fec62079e6451a94de7a5c737) | 
@@ -48,6 +49,7 @@
 | `BalancesHelperV2` | `fuse` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xc2647efac011deb1cdd2ad539cbbb606cfa84106b7bea2e387f964ea2f5a288a | 
 | `BalancesHelperV2` | `fuseSparknet` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x794c538975130b41812df708b2174c971ab7af6fa1e19bb5d2b4301c7071c893 | 
 | `BalancesHelperV2` | `celo` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xfdc0e0d89733dfb237e8b3f4fa36810b84d079d6ecf0b50e435e9542d8b8cdbc | 
+| `BalancesHelperV2` | `arbitrumNitro` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x887cc509e64c1d4812491134cac0ebd165abcfa377807f2437404f2d9d303749 | 
 | `Diamond` | `fuse` | 0xF1447514368fCC942279862a8B5D6Ed7beDFf431 | 0x5931e70b172dc87726ad99af59018ccf9b8cfc9671a6c277f584dcd6871a9487 | 
 | `Diamond` | `fuseSparknet` | 0xF1447514368fCC942279862a8B5D6Ed7beDFf431 | 0xb04462e8680ede04a12a3dfa9c2b9df35c6ae2f28ec7ea1a15a400e92a722995 | 
 | `DiamondCutFacet` | `fuse` | 0xf859F683a47b3D0E2A964eFDdf7392972700a101 | 0x02bb6e8045d5d9b7c69dea3802d5e7a6d33a4844dd6f6263dc0c444604ecc450 | 
@@ -81,6 +83,7 @@
 | `ENSController` | `fuseSparknet` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xf73f44af58c7d1d4c28d2d86e8151d9df4afaa2577eb0699557abc16968dbd53 | 
 | `ENSController` | `celo` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x506af71c933202ab4deb3de6599c0c5ec5f07af0750837ffa38216fddd1af7eb | 
 | `ENSController` | `celoTest` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0xc45d57662670d6ab754683f4a030859fa8d1b0fad29a6dd335b768f259665ecd | 
+| `ENSController` | `arbitrumNitro` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x1ffee3063052940312d55fb7c90cc30212049c49f3e4ad3f1bef334484e98472 | 
 | `ENSController` | `etherspot` | 0xE23c8f8aB1Cdd56D89F181c22Bf43e5b53871E08 | 0x2dd4c61274c93e97aa5ce56138d7d67d4cc74503a97b0e2af4f2dee9844c7253 | 
 | `ENSHelper` | `mainnet` | [0xF330b17e19474762E6F408D7dCf0327264d4A2C0](https://etherscan.io/address/0xF330b17e19474762E6F408D7dCf0327264d4A2C0) | [0x5bc8f45cdbf67e82bf300831ee55c8e4d3099dfa5227265d0857b297f445c774](https://etherscan.io/tx/0x5bc8f45cdbf67e82bf300831ee55c8e4d3099dfa5227265d0857b297f445c774) | 
 | `ENSHelper` | `ropsten` | [0xF330b17e19474762E6F408D7dCf0327264d4A2C0](https://ropsten.etherscan.io/address/0xF330b17e19474762E6F408D7dCf0327264d4A2C0) | [0x0f407aa4f2281050627dc9175f4038562bd934ebea4a5fadc1346ab6eec2b191](https://ropsten.etherscan.io/tx/0x0f407aa4f2281050627dc9175f4038562bd934ebea4a5fadc1346ab6eec2b191) | 
@@ -109,6 +112,7 @@
 | `ENSHelper` | `fuseSparknet` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x6db86ba1be399c574ea44d3ce3b36f9759d97db6875c1e2519667ab946b6e240 | 
 | `ENSHelper` | `celo` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x396ec3c9f1f3a8625402798581ae2cb925d2ae1d6743ad9e7b498e814c570057 | 
 | `ENSHelper` | `celoTest` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x42c9dce6afca7bd38dee552c2b8724061e01bf9a47ecff91f3094e730bd80caf | 
+| `ENSHelper` | `arbitrumNitro` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x020b653764ca2fc7e9cd091d68878fed403ae42dcc22dcf66d9f594d8be78a01 | 
 | `ENSHelper` | `etherspot` | 0xF330b17e19474762E6F408D7dCf0327264d4A2C0 | 0x7cf8135b5b04916485a8ec064d304c46cfe871e613ea14e128c51b6616f0d0f0 | 
 | `ENSRegistry` | `ropsten` | [0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688](https://ropsten.etherscan.io/address/0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688) | [0x381bed3c0a4d0d37678448960916507741fcc38407f2e4c20fb21bb217eaeaa3](https://ropsten.etherscan.io/tx/0x381bed3c0a4d0d37678448960916507741fcc38407f2e4c20fb21bb217eaeaa3) | 
 | `ENSRegistry` | `rinkeby` | [0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688](https://rinkeby.etherscan.io/address/0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688) | [0xe225e456c7329522b59dd397020a24685f30e49b1d751c0241a97524618f7280](https://rinkeby.etherscan.io/tx/0xe225e456c7329522b59dd397020a24685f30e49b1d751c0241a97524618f7280) | 
@@ -136,6 +140,7 @@
 | `ENSRegistry` | `fuseSparknet` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x9c446bb44fa6e652f05391ccf363679d32237782495f7384d1a04214c40c7536 | 
 | `ENSRegistry` | `celo` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xfbd52c01cc283b000acfe5679ec13cd4956991d14ef2d9d899cc9cc4a30566aa | 
 | `ENSRegistry` | `celoTest` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x6361fb53ae0e03f60f5886aa101620f050d2ca0a94765e45dd0be8fabe3e1f5a | 
+| `ENSRegistry` | `arbitrumNitro` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0xa736c7bd9a26ba6a4d32962ac3dbef7110cf87e6aecce2226a993e4f2a0f088f | 
 | `ENSRegistry` | `etherspot` | 0xf17BCfd10B65fD0792dEef7a17Aa08B4b0086688 | 0x1b419734e3beb7a4d97e835e3b0f594ddb74290ab7fc940ba3c5a3b37e035775 | 
 | `ENSReverseRegistrar` | `ropsten` | [0x523C92966e9d2067ba547f59D51E907c20FD8761](https://ropsten.etherscan.io/address/0x523C92966e9d2067ba547f59D51E907c20FD8761) | [0xc68294e291c66968554fd5bb6ec5cb411d0ed2871d58515921275dc6f681777f](https://ropsten.etherscan.io/tx/0xc68294e291c66968554fd5bb6ec5cb411d0ed2871d58515921275dc6f681777f) | 
 | `ENSReverseRegistrar` | `rinkeby` | [0x523C92966e9d2067ba547f59D51E907c20FD8761](https://rinkeby.etherscan.io/address/0x523C92966e9d2067ba547f59D51E907c20FD8761) | [0x3a0912b8515cd1db08e7328b242f7a54f4318f25485876c0d4bd2ecc974a9835](https://rinkeby.etherscan.io/tx/0x3a0912b8515cd1db08e7328b242f7a54f4318f25485876c0d4bd2ecc974a9835) | 
@@ -163,6 +168,7 @@
 | `ENSReverseRegistrar` | `fuseSparknet` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x9d18868bf5babb156cc0551acc2874b85543f5168b89e0326473cd3e6630eca3 | 
 | `ENSReverseRegistrar` | `celo` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3fda2be4237a4ca2103d46d8755edb14c5ea4bef154eabfc4aa91280d9f16836 | 
 | `ENSReverseRegistrar` | `celoTest` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x178149172d88aa3d6b00fde5ba0d0bc120924349c5fb5030f43136d86cbb7383 | 
+| `ENSReverseRegistrar` | `arbitrumNitro` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x70de389b15700bc9fde25e81f4d6c53549d74665209a237ca24e054bb0111d49 | 
 | `ENSReverseRegistrar` | `etherspot` | 0x523C92966e9d2067ba547f59D51E907c20FD8761 | 0x3193533de6611dc509866e81e0d955674b8d351a82ca5db095e00b6e40414869 | 
 | `ExternalAccountRegistry` | `mainnet` | [0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc](https://etherscan.io/address/0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc) | [0x9af00ffb28be6114a6524dea26188caca62b80d69d4ccf9ebefaa417d458a27f](https://etherscan.io/tx/0x9af00ffb28be6114a6524dea26188caca62b80d69d4ccf9ebefaa417d458a27f) | 
 | `ExternalAccountRegistry` | `ropsten` | [0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc](https://ropsten.etherscan.io/address/0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc) | [0xe830124352205c4c5e68ee7053b93ec3c0ee450f1065f76fa27f98d784f54461](https://ropsten.etherscan.io/tx/0xe830124352205c4c5e68ee7053b93ec3c0ee450f1065f76fa27f98d784f54461) | 
@@ -191,6 +197,7 @@
 | `ExternalAccountRegistry` | `fuseSparknet` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0xaf97cd55f19b04f6aad22bfb1757d7c92346e5b9ebdb88d68bde2998ed2cafc2 | 
 | `ExternalAccountRegistry` | `celo` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x01dbf81a93f634c4352e223da76269ade120e638386bfdb5e6850989ffd7e9d1 | 
 | `ExternalAccountRegistry` | `celoTest` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0xdec39d8ca0dc8bfdc627a7c1f97d9dd3697c53c6f39ed4824e2a199fb987c8fe | 
+| `ExternalAccountRegistry` | `arbitrumNitro` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x8865d755782e210b3a71afba0d372d8cc1504ad47d0dae7fb97020ff5c29424a | 
 | `ExternalAccountRegistry` | `etherspot` | 0x502BbBcC044d2B146c310eB24E5cd8Eba37EdbEc | 0x0bec371bae9679a3eacab911686c48199f620c9f795d9cc5d5faec6f4ab0c669 | 
 | `Gateway` | `mainnet` | [0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163](https://etherscan.io/address/0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163) | [0x276a91239ac2300ee882129121de5e361ef7e5975247bfca2c9fa2d400eeec42](https://etherscan.io/tx/0x276a91239ac2300ee882129121de5e361ef7e5975247bfca2c9fa2d400eeec42) | 
 | `Gateway` | `ropsten` | [0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163](https://ropsten.etherscan.io/address/0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163) | [0x2ae586892c547a194fd18d64ff5b263c8aff8f988cd2f7e44707258ea75169a4](https://ropsten.etherscan.io/tx/0x2ae586892c547a194fd18d64ff5b263c8aff8f988cd2f7e44707258ea75169a4) | 
@@ -219,6 +226,7 @@
 | `Gateway` | `fuseSparknet` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x814795f50ab1bd03fa7eae4d28f70e85e24138ed8af01cab3ea0f98c98e81235 | 
 | `Gateway` | `celo` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x9f0a37c40e438898b92eb3404726cf7e3ab0566e3bd97453153d4502255f15d3 | 
 | `Gateway` | `celoTest` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x017b93cfff9bef60d74ed3f678617e31bce472a62c16e4170d27833d265295a6 | 
+| `Gateway` | `arbitrumNitro` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0x36f8325ad8033f74aaf44f3b83a5793928723d9af70eac918eaa8a288d1ab3e5 | 
 | `Gateway` | `etherspot` | 0x432defD2b3733e6fEBb1bD4B17Ed85D15b882163 | 0xba898531d95380c97307201fb1fe773801fb83343d9096c6bc4380402ed4486b | 
 | `OwnershipFacet` | `fuse` | 0xdd43fA3fCB57F9F075F48F0FA564162a0eE7fa70 | 0x6b077186eb6861290fb7f38c0d53e93b5e83f4e9e217b8d7dee5ab837c2cf4e8 | 
 | `OwnershipFacet` | `fuseSparknet` | 0xdd43fA3fCB57F9F075F48F0FA564162a0eE7fa70 | 0xb65d9d8fa6bb8390d70c2dfd7341b91077ae8eec4fe4513d53ce61e636d12185 | 
@@ -249,6 +257,7 @@
 | `PaymentRegistry` | `fuseSparknet` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x6c5375420adb40244862d193177f1bcb3bf6cf18bb53fd0693bca73d3693ca48 | 
 | `PaymentRegistry` | `celo` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x70b6d0b59d9ca6cfc0a02f04742a91177f87166cfe4c287edd08170519390479 | 
 | `PaymentRegistry` | `celoTest` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x82b9aa071e80bfb8521d76e0867035116153ee3f9e6d2ba49fd6ac2953d130bb | 
+| `PaymentRegistry` | `arbitrumNitro` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x805266d618015606750cbd0e794ef1420e7abed5584c7eb10dd2634c252eb0ec | 
 | `PaymentRegistry` | `etherspot` | 0xB6900522DC23F3cdAeA61bf0Ca17a672b8Dbe312 | 0x96338b94bbc9fe24b6e5def6ad523983dfd56883620a85ebd4ca35d0be609d0c | 
 | `PersonalAccountImplementationV1` | `mainnet` | [0x0672aF0018fdEbACcc93c7D047D62b72CB12883A](https://etherscan.io/address/0x0672aF0018fdEbACcc93c7D047D62b72CB12883A) | [0xa12aa1e0274308b6b120aad854ff7f10998cb022675d2ceb49d83f39539a98af](https://etherscan.io/tx/0xa12aa1e0274308b6b120aad854ff7f10998cb022675d2ceb49d83f39539a98af) | 
 | `PersonalAccountImplementationV1` | `ropsten` | [0x0672aF0018fdEbACcc93c7D047D62b72CB12883A](https://ropsten.etherscan.io/address/0x0672aF0018fdEbACcc93c7D047D62b72CB12883A) | [0x2452812ca96d4c16b76a8922fde4f99d6e2b44e4204a01ee3938df7a1ac0318d](https://ropsten.etherscan.io/tx/0x2452812ca96d4c16b76a8922fde4f99d6e2b44e4204a01ee3938df7a1ac0318d) | 
@@ -277,6 +286,7 @@
 | `PersonalAccountImplementationV1` | `fuseSparknet` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x3fded149d1fa752a031943332ec16600ba871bb13aa6c7e4fd4c90b0c78a501f | 
 | `PersonalAccountImplementationV1` | `celo` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x0816d1e8803abb1a638e1aba5ec7395e5cd8228d2883cc3d7c1ea2af19fc0926 | 
 | `PersonalAccountImplementationV1` | `celoTest` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0xbf4e974badd253ba96904e2281d01ac7e00ac798763568581b3674cf3e6df5df | 
+| `PersonalAccountImplementationV1` | `arbitrumNitro` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x41e4b313037c8579d3a5da6d041d488df6fd41232892bbd2eb8510e41d82e73d | 
 | `PersonalAccountImplementationV1` | `etherspot` | 0x0672aF0018fdEbACcc93c7D047D62b72CB12883A | 0x8ddcf689ffc89e45538b31941069088c0a63d34de0f24358cd29f536e8dce3e2 | 
 | `PersonalAccountRegistry` | `mainnet` | [0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa](https://etherscan.io/address/0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa) | [0xa8416e24556258050b31c7de5156defd5133290a3c33379b81efa19a056b1e52](https://etherscan.io/tx/0xa8416e24556258050b31c7de5156defd5133290a3c33379b81efa19a056b1e52) | 
 | `PersonalAccountRegistry` | `ropsten` | [0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa](https://ropsten.etherscan.io/address/0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa) | [0x3c62594ba3e6a2f0b0662fba3f3e6583ee6858a141e999326ee89e8bbfd174ea](https://ropsten.etherscan.io/tx/0x3c62594ba3e6a2f0b0662fba3f3e6583ee6858a141e999326ee89e8bbfd174ea) | 
@@ -305,6 +315,7 @@
 | `PersonalAccountRegistry` | `fuseSparknet` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xfbd74ec51c1c57acba61bc69f83923a3dc5f913524e8bbbfd00f97c9031d28dd | 
 | `PersonalAccountRegistry` | `celo` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x2a601f05cdc7d98281ce20575ba214505f325a9bc3a938c5255fa7a44fab39c5 | 
 | `PersonalAccountRegistry` | `celoTest` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x1462730017894782a39811340aa50ec65a2a9ad710f6a38de578ed7fc44e4b73 | 
+| `PersonalAccountRegistry` | `arbitrumNitro` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0x6779c8aff1b896b2228fd9248f244902ce6e7629b35eb962d862ffaca47a2851 |
 | `PersonalAccountRegistry` | `etherspot` | 0x7EB3A038F25B9F32f8e19A7F0De83D4916030eFa | 0xd9359a5aa653ba4acab01ad38a2cb644f2140f0d7d1648398414471422448346 | 
 | `WrappedWeiToken` | `mainnet` | [0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616](https://etherscan.io/address/0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616) | [0x628fa2e14dcdfc90c917d83c0b40a65fa5e5e8bc1660a18982877a306bc559d0](https://etherscan.io/tx/0x628fa2e14dcdfc90c917d83c0b40a65fa5e5e8bc1660a18982877a306bc559d0) | 
 | `WrappedWeiToken` | `ropsten` | [0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616](https://ropsten.etherscan.io/address/0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616) | [0x94b0402094d8e48ae4dbb01956154aec69ec3b2fc0b64250d793b29247bc3ae3](https://ropsten.etherscan.io/tx/0x94b0402094d8e48ae4dbb01956154aec69ec3b2fc0b64250d793b29247bc3ae3) | 
@@ -333,5 +344,6 @@
 | `WrappedWeiToken` | `fuseSparknet` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x892803ea55222c0ba1f2143063ab79df1ee42ce2bf2e65385c80f8a8c842d067 | 
 | `WrappedWeiToken` | `celo` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x81141ef3b78568d3c8889b4f4443868dd3766cd08b9eac34a5b8030c29636321 | 
 | `WrappedWeiToken` | `celoTest` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0xda0092889e56a998075e66d89d03e6f0f54382e43780adb837dc0ffac6f56b16 | 
+| `WrappedWeiToken` | `arbitrumNitro` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x990f502ea7ba7f8e5c3258281cb43e833aa7d040909cada623bc9417100f2460 | 
 | `WrappedWeiToken` | `etherspot` | 0x8e5ea4368fcd17A4efF851C5ffa6cd03bBDeb616 | 0x97561b8070bdcb84cc0ef0fc47a1f59ebe56c36e3f7448e90e39cdcd65aefd9d | 
 
