@@ -5,7 +5,7 @@ import config from "../config/stargate";
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const {
-    deployments: { deploy },
+    deployments: { deploy, log },
     getNamedAccounts,
     ethers,
     network,
@@ -13,9 +13,7 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const { from } = await getNamedAccounts();
 
   if (!config[network.name]) {
-    throw new Error(
-      "No stargate config for this network available: " + network.name,
-    );
+    return log("No stargate config for this network available: " + network.name);
   }
 
   await deploy("StargateFacet", {

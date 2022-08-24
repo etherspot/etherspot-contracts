@@ -24,6 +24,11 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
+      forking: {
+        enabled: false,
+        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        blockNumber: 13798171,
+      },
       accounts: {
         mnemonic:
           HARDHAT_MNEMONIC ||
@@ -56,7 +61,16 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        version: '0.8.15',
+        version: "0.8.11",
+        settings: {
+          evmVersion: "istanbul",
+          metadata: {
+            bytecodeHash: "none",
+          },
+        },
+      },
+      {
+        version: "0.8.15",
         settings: {
           evmVersion: "istanbul",
           metadata: {

@@ -5,7 +5,7 @@ import { ConnextConfig } from '../config/connext';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
-    deployments: { deploy },
+    deployments: { deploy, log },
     getNamedAccounts,
     ethers,
     network
@@ -13,7 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { from } = await getNamedAccounts();
 
   if (!ConnextConfig[network.name]) {
-    throw new Error("No connext config for this network available: " + network.name);
+    return log("No connext config for this network available: " + network.name)
   }
 
   await deploy('ConnextFacet', {
