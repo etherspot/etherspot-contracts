@@ -4,6 +4,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface LPTokenInterface extends utils.Interface {
     functions: {
+        "MINIMUM_LIQUIDITY()": FunctionFragment;
         "allowance(address,address)": FunctionFragment;
         "approve(address,uint256)": FunctionFragment;
         "balanceOf(address)": FunctionFragment;
@@ -23,6 +24,7 @@ export interface LPTokenInterface extends utils.Interface {
         "transferFrom(address,address,uint256)": FunctionFragment;
         "transferOwnership(address)": FunctionFragment;
     };
+    encodeFunctionData(functionFragment: "MINIMUM_LIQUIDITY", values?: undefined): string;
     encodeFunctionData(functionFragment: "allowance", values: [string, string]): string;
     encodeFunctionData(functionFragment: "approve", values: [string, BigNumberish]): string;
     encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
@@ -41,6 +43,7 @@ export interface LPTokenInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "transfer", values: [string, BigNumberish]): string;
     encodeFunctionData(functionFragment: "transferFrom", values: [string, string, BigNumberish]): string;
     encodeFunctionData(functionFragment: "transferOwnership", values: [string]): string;
+    decodeFunctionResult(functionFragment: "MINIMUM_LIQUIDITY", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -117,6 +120,7 @@ export interface LPToken extends BaseContract {
     once: OnEvent<this>;
     removeListener: OnEvent<this>;
     functions: {
+        MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<[BigNumber]>;
         allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<[BigNumber]>;
         approve(spender: string, amount: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -158,6 +162,7 @@ export interface LPToken extends BaseContract {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
     };
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
     allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
     approve(spender: string, amount: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
@@ -199,6 +204,7 @@ export interface LPToken extends BaseContract {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
     callStatic: {
+        MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
         allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
         approve(spender: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -229,6 +235,7 @@ export interface LPToken extends BaseContract {
         Transfer(from?: string | null, to?: string | null, value?: null): TransferEventFilter;
     };
     estimateGas: {
+        MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
         allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
         approve(spender: string, amount: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -271,6 +278,7 @@ export interface LPToken extends BaseContract {
         }): Promise<BigNumber>;
     };
     populateTransaction: {
+        MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         approve(spender: string, amount: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;

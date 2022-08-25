@@ -37,7 +37,6 @@ export interface StargateFacetInterface extends utils.Interface {
         "sgRetrievePoolId(uint16,address)": FunctionFragment;
         "sgUpdateRouter(address)": FunctionFragment;
         "sgUpdateSlippageTolerance(uint256)": FunctionFragment;
-        "sgWithdraw(address,address,uint256)": FunctionFragment;
     };
     encodeFunctionData(functionFragment: "sgAddPool", values: [BigNumberish, string, BigNumberish]): string;
     encodeFunctionData(functionFragment: "sgBridgeTokens", values: [StargateDataStruct]): string;
@@ -56,7 +55,6 @@ export interface StargateFacetInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "sgRetrievePoolId", values: [BigNumberish, string]): string;
     encodeFunctionData(functionFragment: "sgUpdateRouter", values: [string]): string;
     encodeFunctionData(functionFragment: "sgUpdateSlippageTolerance", values: [BigNumberish]): string;
-    encodeFunctionData(functionFragment: "sgWithdraw", values: [string, string, BigNumberish]): string;
     decodeFunctionResult(functionFragment: "sgAddPool", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgBridgeTokens", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgCalculateFees", data: BytesLike): Result;
@@ -67,7 +65,6 @@ export interface StargateFacetInterface extends utils.Interface {
     decodeFunctionResult(functionFragment: "sgRetrievePoolId", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgUpdateRouter", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "sgUpdateSlippageTolerance", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "sgWithdraw", data: BytesLike): Result;
     events: {
         "SGAddedPool(uint16,address,uint16)": EventFragment;
         "SGInitialized(address,uint16)": EventFragment;
@@ -174,9 +171,6 @@ export interface StargateFacet extends BaseContract {
         sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-            from?: string | Promise<string>;
-        }): Promise<ContractTransaction>;
     };
     sgAddPool(_chainId: BigNumberish, _token: string, _poolId: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
@@ -200,9 +194,6 @@ export interface StargateFacet extends BaseContract {
     sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-        from?: string | Promise<string>;
-    }): Promise<ContractTransaction>;
     callStatic: {
         sgAddPool(_chainId: BigNumberish, _token: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<void>;
         sgBridgeTokens(_sgData: StargateDataStruct, overrides?: CallOverrides): Promise<void>;
@@ -214,7 +205,6 @@ export interface StargateFacet extends BaseContract {
         sgRetrievePoolId(_chainId: BigNumberish, _token: string, overrides?: CallOverrides): Promise<number>;
         sgUpdateRouter(_newAddress: string, overrides?: CallOverrides): Promise<void>;
         sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: CallOverrides): Promise<void>;
-        sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
     };
     filters: {
         "SGAddedPool(uint16,address,uint16)"(chainId?: null, token?: null, poolId?: null): SGAddedPoolEventFilter;
@@ -253,9 +243,6 @@ export interface StargateFacet extends BaseContract {
         sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
-            from?: string | Promise<string>;
-        }): Promise<BigNumber>;
     };
     populateTransaction: {
         sgAddPool(_chainId: BigNumberish, _token: string, _poolId: BigNumberish, overrides?: Overrides & {
@@ -278,9 +265,6 @@ export interface StargateFacet extends BaseContract {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
         sgUpdateSlippageTolerance(_newSlippage: BigNumberish, overrides?: Overrides & {
-            from?: string | Promise<string>;
-        }): Promise<PopulatedTransaction>;
-        sgWithdraw(_token: string, _user: string, _amount: BigNumberish, overrides?: PayableOverrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
     };

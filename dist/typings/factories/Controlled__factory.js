@@ -4,57 +4,6 @@ exports.Controlled__factory = void 0;
 const ethers_1 = require("ethers");
 const _abi = [
     {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__e208e0f4",
-                type: "bytes8",
-            },
-        ],
-        name: "c_e208e0f4",
-        outputs: [],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__e208e0f4",
-                type: "bytes8",
-            },
-        ],
-        name: "c_falsee208e0f4",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes8",
-                name: "c__e208e0f4",
-                type: "bytes8",
-            },
-        ],
-        name: "c_truee208e0f4",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "pure",
-        type: "function",
-    },
-    {
         inputs: [],
         name: "controller",
         outputs: [

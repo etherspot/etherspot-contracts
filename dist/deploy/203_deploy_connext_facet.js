@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const diamond_1 = require("../utils/diamond");
 const connext_1 = require("../config/connext");
 const func = async function (hre) {
-    const { deployments: { deploy }, getNamedAccounts, ethers, network } = hre;
+    const { deployments: { deploy, log }, getNamedAccounts, ethers, network } = hre;
     const { from } = await getNamedAccounts();
     if (!connext_1.ConnextConfig[network.name]) {
-        throw new Error("No connext config for this network available: " + network.name);
+        return log("No connext config for this network available: " + network.name);
     }
     await deploy('ConnextFacet', {
         from,

@@ -42,43 +42,12 @@ export type CBridgeDataStructOutput = [
 
 export interface CBridgeFacetInterface extends utils.Interface {
   functions: {
-    "c_58fae2aa(bytes8)": FunctionFragment;
-    "c_b7c4ddcd(bytes8)": FunctionFragment;
-    "c_false58fae2aa(bytes8)": FunctionFragment;
-    "c_falseb7c4ddcd(bytes8)": FunctionFragment;
-    "c_true58fae2aa(bytes8)": FunctionFragment;
-    "c_trueb7c4ddcd(bytes8)": FunctionFragment;
     "cbBridgeTokens((uint64,uint64,uint256,address,address))": FunctionFragment;
     "cbInitialize(address)": FunctionFragment;
     "cbUpdateBridge(address)": FunctionFragment;
     "cbUpdateSlippageTolerance(uint32)": FunctionFragment;
-    "cbWithdraw(address,address,uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_58fae2aa",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_b7c4ddcd",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_false58fae2aa",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falseb7c4ddcd",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_true58fae2aa",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_trueb7c4ddcd",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "cbBridgeTokens",
     values: [CBridgeDataStruct]
@@ -95,29 +64,7 @@ export interface CBridgeFacetInterface extends utils.Interface {
     functionFragment: "cbUpdateSlippageTolerance",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "cbWithdraw",
-    values: [string, string, BigNumberish]
-  ): string;
 
-  decodeFunctionResult(functionFragment: "c_58fae2aa", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_b7c4ddcd", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_false58fae2aa",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falseb7c4ddcd",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_true58fae2aa",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_trueb7c4ddcd",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "cbBridgeTokens",
     data: BytesLike
@@ -134,7 +81,6 @@ export interface CBridgeFacetInterface extends utils.Interface {
     functionFragment: "cbUpdateSlippageTolerance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "cbWithdraw", data: BytesLike): Result;
 
   events: {
     "CBInitialized(address,uint256)": EventFragment;
@@ -210,36 +156,6 @@ export interface CBridgeFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -259,38 +175,7 @@ export interface CBridgeFacet extends BaseContract {
       _newSlippage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    cbWithdraw(
-      _token: string,
-      _user: string,
-      _amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
   };
-
-  c_58fae2aa(c__58fae2aa: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_b7c4ddcd(c__b7c4ddcd: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_false58fae2aa(
-    c__58fae2aa: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_falseb7c4ddcd(
-    c__b7c4ddcd: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_true58fae2aa(
-    c__58fae2aa: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_trueb7c4ddcd(
-    c__b7c4ddcd: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   cbBridgeTokens(
     _cbData: CBridgeDataStruct,
@@ -312,44 +197,7 @@ export interface CBridgeFacet extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  cbWithdraw(
-    _token: string,
-    _user: string,
-    _amount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: CallOverrides
@@ -364,13 +212,6 @@ export interface CBridgeFacet extends BaseContract {
 
     cbUpdateSlippageTolerance(
       _newSlippage: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    cbWithdraw(
-      _token: string,
-      _user: string,
-      _amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -411,36 +252,6 @@ export interface CBridgeFacet extends BaseContract {
   };
 
   estimateGas: {
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -459,47 +270,10 @@ export interface CBridgeFacet extends BaseContract {
     cbUpdateSlippageTolerance(
       _newSlippage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    cbWithdraw(
-      _token: string,
-      _user: string,
-      _amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_b7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_false58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falseb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_true58fae2aa(
-      c__58fae2aa: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_trueb7c4ddcd(
-      c__b7c4ddcd: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -518,13 +292,6 @@ export interface CBridgeFacet extends BaseContract {
     cbUpdateSlippageTolerance(
       _newSlippage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    cbWithdraw(
-      _token: string,
-      _user: string,
-      _amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

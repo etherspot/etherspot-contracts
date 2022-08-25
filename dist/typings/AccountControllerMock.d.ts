@@ -6,12 +6,6 @@ export interface AccountControllerMockInterface extends utils.Interface {
     functions: {
         "accountImplementation()": FunctionFragment;
         "accountRegistry()": FunctionFragment;
-        "c_19d98a43(bytes8)": FunctionFragment;
-        "c_9c0e30ce(bytes8)": FunctionFragment;
-        "c_false19d98a43(bytes8)": FunctionFragment;
-        "c_false9c0e30ce(bytes8)": FunctionFragment;
-        "c_true19d98a43(bytes8)": FunctionFragment;
-        "c_true9c0e30ce(bytes8)": FunctionFragment;
         "computeAccountAddress(bytes32)": FunctionFragment;
         "deployAccount(bytes32)": FunctionFragment;
         "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
@@ -21,12 +15,6 @@ export interface AccountControllerMockInterface extends utils.Interface {
     };
     encodeFunctionData(functionFragment: "accountImplementation", values?: undefined): string;
     encodeFunctionData(functionFragment: "accountRegistry", values?: undefined): string;
-    encodeFunctionData(functionFragment: "c_19d98a43", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_9c0e30ce", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false19d98a43", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false9c0e30ce", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true19d98a43", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true9c0e30ce", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "computeAccountAddress", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "deployAccount", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "executeAccountTransaction", values: [string, string, BigNumberish, BytesLike]): string;
@@ -35,12 +23,6 @@ export interface AccountControllerMockInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "upgradeAccount", values: [string]): string;
     decodeFunctionResult(functionFragment: "accountImplementation", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "accountRegistry", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_19d98a43", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_9c0e30ce", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false19d98a43", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false9c0e30ce", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true19d98a43", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true9c0e30ce", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "computeAccountAddress", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "deployAccount", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "executeAccountTransaction", data: BytesLike): Result;
@@ -119,12 +101,6 @@ export interface AccountControllerMock extends BaseContract {
     functions: {
         accountImplementation(overrides?: CallOverrides): Promise<[string]>;
         accountRegistry(overrides?: CallOverrides): Promise<[string]>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_false9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
         computeAccountAddress(salt: BytesLike, overrides?: CallOverrides): Promise<[string]>;
         deployAccount(salt: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -144,12 +120,6 @@ export interface AccountControllerMock extends BaseContract {
     };
     accountImplementation(overrides?: CallOverrides): Promise<string>;
     accountRegistry(overrides?: CallOverrides): Promise<string>;
-    c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_false9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     computeAccountAddress(salt: BytesLike, overrides?: CallOverrides): Promise<string>;
     deployAccount(salt: BytesLike, overrides?: Overrides & {
         from?: string | Promise<string>;
@@ -169,12 +139,6 @@ export interface AccountControllerMock extends BaseContract {
     callStatic: {
         accountImplementation(overrides?: CallOverrides): Promise<string>;
         accountRegistry(overrides?: CallOverrides): Promise<string>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_false9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<boolean>;
         computeAccountAddress(salt: BytesLike, overrides?: CallOverrides): Promise<string>;
         deployAccount(salt: BytesLike, overrides?: CallOverrides): Promise<void>;
         executeAccountTransaction(account: string, to: string, value: BigNumberish, data: BytesLike, overrides?: CallOverrides): Promise<void>;
@@ -197,12 +161,6 @@ export interface AccountControllerMock extends BaseContract {
     estimateGas: {
         accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
         accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         computeAccountAddress(salt: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         deployAccount(salt: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;
@@ -223,12 +181,6 @@ export interface AccountControllerMock extends BaseContract {
     populateTransaction: {
         accountImplementation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true9c0e30ce(c__9c0e30ce: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         computeAccountAddress(salt: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         deployAccount(salt: BytesLike, overrides?: Overrides & {
             from?: string | Promise<string>;

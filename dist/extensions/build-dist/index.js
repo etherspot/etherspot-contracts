@@ -56,8 +56,7 @@ const TASK_BUILD_DIST = 'build-dist';
                             address = null;
                         }
                     }
-                    addresses[chainId] = address;
-                    if (address && transactionHash && !name.startsWith('local')) {
+                    if (address && !name.startsWith('local')) {
                         if (!contractsMD[contractName]) {
                             contractsMD[contractName] = [];
                         }
