@@ -3,11 +3,7 @@ import { Provider } from "@ethersproject/providers";
 import type { SignatureValidator, SignatureValidatorInterface } from "../SignatureValidator";
 export declare class SignatureValidator__factory {
     static readonly abi: {
-        inputs: {
-            internalType: string;
-            name: string;
-            type: string;
-        }[];
+        inputs: any[];
         name: string;
         outputs: {
             internalType: string;

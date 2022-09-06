@@ -1,16 +1,20 @@
-import { BaseContract, Signer, utils } from "ethers";
-import { EventFragment } from "@ethersproject/abi";
+import { BaseContract, BigNumber, BytesLike, CallOverrides, PopulatedTransaction, Signer, utils } from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface InitializableInterface extends utils.Interface {
-    functions: {};
+    functions: {
+        "isInitialized()": FunctionFragment;
+    };
+    encodeFunctionData(functionFragment: "isInitialized", values?: undefined): string;
+    decodeFunctionResult(functionFragment: "isInitialized", data: BytesLike): Result;
     events: {
-        "Initialized(uint8)": EventFragment;
+        "Initialized(address)": EventFragment;
     };
     getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
 }
-export declare type InitializedEvent = TypedEvent<[number], {
-    version: number;
+export declare type InitializedEvent = TypedEvent<[string], {
+    initializer: string;
 }>;
 export declare type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 export interface Initializable extends BaseContract {
@@ -27,12 +31,21 @@ export interface Initializable extends BaseContract {
     on: OnEvent<this>;
     once: OnEvent<this>;
     removeListener: OnEvent<this>;
-    functions: {};
-    callStatic: {};
-    filters: {
-        "Initialized(uint8)"(version?: null): InitializedEventFilter;
-        Initialized(version?: null): InitializedEventFilter;
+    functions: {
+        isInitialized(overrides?: CallOverrides): Promise<[boolean]>;
     };
-    estimateGas: {};
-    populateTransaction: {};
+    isInitialized(overrides?: CallOverrides): Promise<boolean>;
+    callStatic: {
+        isInitialized(overrides?: CallOverrides): Promise<boolean>;
+    };
+    filters: {
+        "Initialized(address)"(initializer?: null): InitializedEventFilter;
+        Initialized(initializer?: null): InitializedEventFilter;
+    };
+    estimateGas: {
+        isInitialized(overrides?: CallOverrides): Promise<BigNumber>;
+    };
+    populateTransaction: {
+        isInitialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    };
 }

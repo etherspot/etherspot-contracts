@@ -20,6 +20,9 @@ const func = async function (hre) {
     const diamond = await ethers.getContract("Diamond");
     const ABI = ["function cbInitialize(address)"];
     const iface = new ethers_1.utils.Interface(ABI);
+    if (!cBridge_1.default[hardhat_1.network.name]) {
+        return;
+    }
     if (cBridge_1.default[hardhat_1.network.name].cBridge != "") {
         bridgeAddr = cBridge_1.default[hardhat_1.network.name].cBridge;
     }
@@ -28,5 +31,5 @@ const func = async function (hre) {
 };
 exports.default = func;
 func.id = "cbridge_facet_deploy";
-func.tags = ["bridging-facet", "cbridge"];
+func.tags = ["bridges", "cbridge"];
 func.dependencies = ["init-facets"];

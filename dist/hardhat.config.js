@@ -59,6 +59,15 @@ const config = {
                     },
                 },
             },
+            {
+                version: "0.8.15",
+                settings: {
+                    evmVersion: "istanbul",
+                    metadata: {
+                        bytecodeHash: "none",
+                    },
+                },
+            },
         ],
     },
     paths: {

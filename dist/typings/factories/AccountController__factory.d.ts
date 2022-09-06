@@ -15,11 +15,7 @@ export declare class AccountController__factory {
         outputs?: undefined;
         stateMutability?: undefined;
     } | {
-        inputs: {
-            internalType: string;
-            name: string;
-            type: string;
-        }[];
+        inputs: any[];
         name: string;
         outputs: {
             internalType: string;
