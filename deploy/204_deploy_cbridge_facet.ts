@@ -3,15 +3,19 @@ import { network } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { addOrReplaceFacets } from "../utils/diamond";
-import config from "../config/cBridge";
+import { CBridgeConfig } from "../config/cBridge";
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const {
-    deployments: { deploy },
+    deployments: { deploy, log },
     getNamedAccounts,
     ethers,
   } = hre;
   const { from } = await getNamedAccounts();
+
+  if (!CBridgeConfig[network.name]) {
+    return log("No cbridge config for this network available: " + network.name);
+  }
 
   let bridgeAddr = "0xc578cbaf5a411dfa9f0d227f97dadaa4074ad062";
 
@@ -27,8 +31,8 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const ABI = ["function cbInitialize(address)"];
   const iface = new utils.Interface(ABI);
 
-  if (config[network.name].cBridge != "") {
-    bridgeAddr = config[network.name].cBridge;
+  if (CBridgeConfig[network.name].cBridge != "") {
+    bridgeAddr = CBridgeConfig[network.name].cBridge;
   }
 
   const initData = iface.encodeFunctionData("cbInitialize", [bridgeAddr]);
