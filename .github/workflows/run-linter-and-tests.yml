@@ -17,9 +17,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 10.x
 
       - name: Determine npm cache directory
         id: npm-cache
