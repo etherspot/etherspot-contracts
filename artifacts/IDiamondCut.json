@@ -1,7 +1,11 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IDiamondCut",
+<<<<<<< HEAD
   "sourceName": "@connext/nxtp-contracts/contracts/core/connext/interfaces/IDiamondCut.sol",
+=======
+  "sourceName": "src/bridges/interfaces/IDiamondCut.sol",
+>>>>>>> master
   "abi": [
     {
       "anonymous": false,

@@ -207,6 +207,16 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://goerli-rollup-explorer.arbitrum.io",
     defaultGasPrice: 1,
   },
+  [NetworkNames.Fuse]: {
+    chainId: 122,
+    defaultProviderUrl: 'https://rpc.fuse.io',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.FuseSparknet]: {
+    chainId: 123,
+    defaultProviderUrl : 'https://rpc.fusespark.io',
+    defaultGasPrice: 1,
+  },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
     defaultProviderUrl: "https://qa-etherspot-testnet.pillarproject.io",

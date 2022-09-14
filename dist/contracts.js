@@ -19232,13 +19232,26 @@ module.exports = {
         "type": "function"
       },
       {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "initializer",
+            "type": "address"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
         "inputs": [],
         "name": "xAppConnectionManager",
         "outputs": [
           {
             "internalType": "contract XAppConnectionManager",
             "name": "",
-            "type": "address"
+            "type": "bool"
           }
         ],
         "stateMutability": "view",
@@ -19351,6 +19364,23 @@ module.exports = {
         "anonymous": false,
         "inputs": [
           {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "facetAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "enum IDiamondCut.FacetCutAction",
+                "name": "action",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes4[]",
+                "name": "functionSelectors",
+                "type": "bytes4[]"
+              }
+            ],
             "indexed": false,
             "internalType": "address",
             "name": "oldUpdater",
@@ -19502,7 +19532,9 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "stateMutability": "view",
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
