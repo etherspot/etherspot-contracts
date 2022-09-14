@@ -6,20 +6,11 @@ export interface AccountControllerInterface extends utils.Interface {
     functions: {
         "accountImplementation()": FunctionFragment;
         "accountRegistry()": FunctionFragment;
-        "c_19d98a43(bytes8)": FunctionFragment;
-        "c_false19d98a43(bytes8)": FunctionFragment;
-        "c_true19d98a43(bytes8)": FunctionFragment;
     };
     encodeFunctionData(functionFragment: "accountImplementation", values?: undefined): string;
     encodeFunctionData(functionFragment: "accountRegistry", values?: undefined): string;
-    encodeFunctionData(functionFragment: "c_19d98a43", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false19d98a43", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true19d98a43", values: [BytesLike]): string;
     decodeFunctionResult(functionFragment: "accountImplementation", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "accountRegistry", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_19d98a43", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false19d98a43", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true19d98a43", data: BytesLike): Result;
     events: {
         "AccountDeployed(address,address)": EventFragment;
         "AccountImplementationUpdated(address)": EventFragment;
@@ -92,21 +83,12 @@ export interface AccountController extends BaseContract {
     functions: {
         accountImplementation(overrides?: CallOverrides): Promise<[string]>;
         accountRegistry(overrides?: CallOverrides): Promise<[string]>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
     };
     accountImplementation(overrides?: CallOverrides): Promise<string>;
     accountRegistry(overrides?: CallOverrides): Promise<string>;
-    c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     callStatic: {
         accountImplementation(overrides?: CallOverrides): Promise<string>;
         accountRegistry(overrides?: CallOverrides): Promise<string>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     };
     filters: {
         "AccountDeployed(address,address)"(account?: null, accountImplementation?: null): AccountDeployedEventFilter;
@@ -123,15 +105,9 @@ export interface AccountController extends BaseContract {
     estimateGas: {
         accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
         accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
     };
     populateTransaction: {
         accountImplementation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true19d98a43(c__19d98a43: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
     };
 }

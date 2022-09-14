@@ -4,9 +4,6 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface ENSRegistryInterface extends utils.Interface {
     functions: {
-        "c_18e7c73b(bytes8)": FunctionFragment;
-        "c_false18e7c73b(bytes8)": FunctionFragment;
-        "c_true18e7c73b(bytes8)": FunctionFragment;
         "isApprovedForAll(address,address)": FunctionFragment;
         "owner(bytes32)": FunctionFragment;
         "recordExists(bytes32)": FunctionFragment;
@@ -20,9 +17,6 @@ export interface ENSRegistryInterface extends utils.Interface {
         "setTTL(bytes32,uint64)": FunctionFragment;
         "ttl(bytes32)": FunctionFragment;
     };
-    encodeFunctionData(functionFragment: "c_18e7c73b", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_false18e7c73b", values: [BytesLike]): string;
-    encodeFunctionData(functionFragment: "c_true18e7c73b", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "isApprovedForAll", values: [string, string]): string;
     encodeFunctionData(functionFragment: "owner", values: [BytesLike]): string;
     encodeFunctionData(functionFragment: "recordExists", values: [BytesLike]): string;
@@ -35,9 +29,6 @@ export interface ENSRegistryInterface extends utils.Interface {
     encodeFunctionData(functionFragment: "setSubnodeRecord", values: [BytesLike, BytesLike, string, string, BigNumberish]): string;
     encodeFunctionData(functionFragment: "setTTL", values: [BytesLike, BigNumberish]): string;
     encodeFunctionData(functionFragment: "ttl", values: [BytesLike]): string;
-    decodeFunctionResult(functionFragment: "c_18e7c73b", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_false18e7c73b", data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: "c_true18e7c73b", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "isApprovedForAll", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
     decodeFunctionResult(functionFragment: "recordExists", data: BytesLike): Result;
@@ -122,9 +113,6 @@ export interface ENSRegistry extends BaseContract {
     once: OnEvent<this>;
     removeListener: OnEvent<this>;
     functions: {
-        c_18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<[void]>;
-        c_false18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
-        c_true18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
         isApprovedForAll(owner_: string, operator: string, overrides?: CallOverrides): Promise<[boolean]>;
         owner(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
         recordExists(node: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
@@ -152,9 +140,6 @@ export interface ENSRegistry extends BaseContract {
         }): Promise<ContractTransaction>;
         ttl(node: BytesLike, overrides?: CallOverrides): Promise<[BigNumber]>;
     };
-    c_18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<void>;
-    c_false18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-    c_true18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     isApprovedForAll(owner_: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
     owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
     recordExists(node: BytesLike, overrides?: CallOverrides): Promise<boolean>;
@@ -182,9 +167,6 @@ export interface ENSRegistry extends BaseContract {
     }): Promise<ContractTransaction>;
     ttl(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
     callStatic: {
-        c_18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<void>;
-        c_false18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<boolean>;
-        c_true18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<boolean>;
         isApprovedForAll(owner_: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
         owner(node: BytesLike, overrides?: CallOverrides): Promise<string>;
         recordExists(node: BytesLike, overrides?: CallOverrides): Promise<boolean>;
@@ -211,9 +193,6 @@ export interface ENSRegistry extends BaseContract {
         Transfer(node?: BytesLike | null, owner?: null): TransferEventFilter;
     };
     estimateGas: {
-        c_18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_false18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
-        c_true18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         isApprovedForAll(owner_: string, operator: string, overrides?: CallOverrides): Promise<BigNumber>;
         owner(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
         recordExists(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
@@ -242,9 +221,6 @@ export interface ENSRegistry extends BaseContract {
         ttl(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
     };
     populateTransaction: {
-        c_18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_false18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        c_true18e7c73b(c__18e7c73b: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         isApprovedForAll(owner_: string, operator: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         owner(node: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         recordExists(node: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;

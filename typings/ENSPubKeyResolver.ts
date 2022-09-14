@@ -18,64 +18,16 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSPubKeyResolverInterface extends utils.Interface {
   functions: {
-    "c_ac93193e(bytes8)": FunctionFragment;
-    "c_e1dc25ce(bytes8)": FunctionFragment;
-    "c_falseac93193e(bytes8)": FunctionFragment;
-    "c_falsee1dc25ce(bytes8)": FunctionFragment;
-    "c_trueac93193e(bytes8)": FunctionFragment;
-    "c_truee1dc25ce(bytes8)": FunctionFragment;
     "pubkey(bytes32)": FunctionFragment;
     "setPubkey(bytes32,bytes32,bytes32)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "c_ac93193e",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_e1dc25ce",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falseac93193e",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_falsee1dc25ce",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_trueac93193e",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_truee1dc25ce",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "pubkey", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "setPubkey",
     values: [BytesLike, BytesLike, BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_ac93193e", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "c_e1dc25ce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falseac93193e",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_falsee1dc25ce",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_trueac93193e",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_truee1dc25ce",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "pubkey", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setPubkey", data: BytesLike): Result;
 
@@ -120,36 +72,6 @@ export interface ENSPubKeyResolver extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_ac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_e1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_falseac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_falsee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_trueac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    c_truee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     pubkey(
       node: BytesLike,
       overrides?: CallOverrides
@@ -162,30 +84,6 @@ export interface ENSPubKeyResolver extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  c_ac93193e(c__ac93193e: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_e1dc25ce(c__e1dc25ce: BytesLike, overrides?: CallOverrides): Promise<void>;
-
-  c_falseac93193e(
-    c__ac93193e: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_falsee1dc25ce(
-    c__e1dc25ce: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_trueac93193e(
-    c__ac93193e: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  c_truee1dc25ce(
-    c__e1dc25ce: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   pubkey(
     node: BytesLike,
@@ -200,36 +98,6 @@ export interface ENSPubKeyResolver extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    c_ac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_e1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_falseac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_falsee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_trueac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    c_truee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     pubkey(
       node: BytesLike,
       overrides?: CallOverrides
@@ -257,36 +125,6 @@ export interface ENSPubKeyResolver extends BaseContract {
   };
 
   estimateGas: {
-    c_ac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_e1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falseac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_falsee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_trueac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_truee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     pubkey(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     setPubkey(
@@ -298,36 +136,6 @@ export interface ENSPubKeyResolver extends BaseContract {
   };
 
   populateTransaction: {
-    c_ac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_e1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falseac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_falsee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_trueac93193e(
-      c__ac93193e: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_truee1dc25ce(
-      c__e1dc25ce: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     pubkey(
       node: BytesLike,
       overrides?: CallOverrides
