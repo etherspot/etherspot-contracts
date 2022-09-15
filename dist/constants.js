@@ -8,7 +8,6 @@ module.exports = {
     AccountImplementationV1: 'AccountImplementationV1',
     AccountRegistry: 'AccountRegistry',
     Address: 'Address',
-<<<<<<< HEAD
     AddressUpgradeable: 'AddressUpgradeable',
     AmplificationUtils: 'AmplificationUtils',
     BalancesHelper: 'BalancesHelper',
@@ -18,18 +17,11 @@ module.exports = {
     ConnextMessage: 'ConnextMessage',
     Context: 'Context',
     ContextUpgradeable: 'ContextUpgradeable',
-=======
-    BalancesHelper: 'BalancesHelper',
-    BalancesHelperV2: 'BalancesHelperV2',
->>>>>>> master
     Controlled: 'Controlled',
     Diamond: 'Diamond',
     DiamondCutFacet: 'DiamondCutFacet',
     DiamondLoupeFacet: 'DiamondLoupeFacet',
-<<<<<<< HEAD
     ECDSA: 'ECDSA',
-=======
->>>>>>> master
     ENSAbstractResolver: 'ENSAbstractResolver',
     ENSAddressResolver: 'ENSAddressResolver',
     ENSController: 'ENSController',
@@ -46,21 +38,17 @@ module.exports = {
     Gateway: 'Gateway',
     GatewayRecipient: 'GatewayRecipient',
     Guarded: 'Guarded',
-<<<<<<< HEAD
     Home: 'Home',
     HopFacet: 'HopFacet',
     IBridgeToken: 'IBridgeToken',
     ICBridge: 'ICBridge',
     ICallback: 'ICallback',
     IConnextHandler: 'IConnextHandler',
-=======
->>>>>>> master
     IDiamondCut: 'IDiamondCut',
     IDiamondLoupe: 'IDiamondLoupe',
     IERC165: 'IERC165',
     IERC173: 'IERC173',
     IERC20: 'IERC20',
-<<<<<<< HEAD
     IERC20MetadataUpgradeable: 'IERC20MetadataUpgradeable',
     IERC20Upgradeable: 'IERC20Upgradeable',
     IExecutor: 'IExecutor',
@@ -87,12 +75,6 @@ module.exports = {
     NomadBase: 'NomadBase',
     Ownable: 'Ownable',
     OwnableUpgradeable: 'OwnableUpgradeable',
-=======
-    ISuperAgreement: 'ISuperAgreement',
-    ISuperfluidToken: 'ISuperfluidToken',
-    Initializable: 'Initializable',
-    LibDiamond: 'LibDiamond',
->>>>>>> master
     OwnershipFacet: 'OwnershipFacet',
     PaymentDepositAccount: 'PaymentDepositAccount',
     PaymentRegistry: 'PaymentRegistry',
