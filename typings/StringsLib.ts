@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface StringsLibInterface extends utils.Interface {
   functions: {
-    "c_b490eebc(bytes8)": FunctionFragment;
-    "c_falseb490eebc(bytes8)": FunctionFragment;
-    "c_trueb490eebc(bytes8)": FunctionFragment;
+    "c_bf28adcf(bytes8)": FunctionFragment;
+    "c_falsebf28adcf(bytes8)": FunctionFragment;
+    "c_truebf28adcf(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_b490eebc",
+    functionFragment: "c_bf28adcf",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_falseb490eebc",
+    functionFragment: "c_falsebf28adcf",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_trueb490eebc",
+    functionFragment: "c_truebf28adcf",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_b490eebc", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_bf28adcf", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_falseb490eebc",
+    functionFragment: "c_falsebf28adcf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_trueb490eebc",
+    functionFragment: "c_truebf28adcf",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface StringsLib extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_b490eebc(
-      c__b490eebc: BytesLike,
+    c_bf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_falseb490eebc(
-      c__b490eebc: BytesLike,
+    c_falsebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_trueb490eebc(
-      c__b490eebc: BytesLike,
+    c_truebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_b490eebc(c__b490eebc: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_bf28adcf(c__bf28adcf: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_falseb490eebc(
-    c__b490eebc: BytesLike,
+  c_falsebf28adcf(
+    c__bf28adcf: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_trueb490eebc(
-    c__b490eebc: BytesLike,
+  c_truebf28adcf(
+    c__bf28adcf: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_b490eebc(
-      c__b490eebc: BytesLike,
+    c_bf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_falseb490eebc(
-      c__b490eebc: BytesLike,
+    c_falsebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_trueb490eebc(
-      c__b490eebc: BytesLike,
+    c_truebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface StringsLib extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_b490eebc(
-      c__b490eebc: BytesLike,
+    c_bf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_falseb490eebc(
-      c__b490eebc: BytesLike,
+    c_falsebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_trueb490eebc(
-      c__b490eebc: BytesLike,
+    c_truebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_b490eebc(
-      c__b490eebc: BytesLike,
+    c_bf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_falseb490eebc(
-      c__b490eebc: BytesLike,
+    c_falsebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_trueb490eebc(
-      c__b490eebc: BytesLike,
+    c_truebf28adcf(
+      c__bf28adcf: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

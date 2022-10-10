@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface AddressLibInterface extends utils.Interface {
   functions: {
-    "c_3858ce6a(bytes8)": FunctionFragment;
-    "c_false3858ce6a(bytes8)": FunctionFragment;
-    "c_true3858ce6a(bytes8)": FunctionFragment;
+    "c_6f8dca69(bytes8)": FunctionFragment;
+    "c_false6f8dca69(bytes8)": FunctionFragment;
+    "c_true6f8dca69(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_3858ce6a",
+    functionFragment: "c_6f8dca69",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_false3858ce6a",
+    functionFragment: "c_false6f8dca69",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_true3858ce6a",
+    functionFragment: "c_true6f8dca69",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_3858ce6a", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_6f8dca69", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_false3858ce6a",
+    functionFragment: "c_false6f8dca69",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_true3858ce6a",
+    functionFragment: "c_true6f8dca69",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface AddressLib extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_false3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_false6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_true3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_true6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_3858ce6a(c__3858ce6a: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_6f8dca69(c__6f8dca69: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_false3858ce6a(
-    c__3858ce6a: BytesLike,
+  c_false6f8dca69(
+    c__6f8dca69: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_true3858ce6a(
-    c__3858ce6a: BytesLike,
+  c_true6f8dca69(
+    c__6f8dca69: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_false3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_false6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_true3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_true6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface AddressLib extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_false3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_false6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_true3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_true6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_false3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_false6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_true3858ce6a(
-      c__3858ce6a: BytesLike,
+    c_true6f8dca69(
+      c__6f8dca69: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
