@@ -17,10 +17,12 @@ import {
   deployContract,
 } from '../shared';
 
-const { getSigners } = ethers;
+const { getSigners, getUnnamedSigners } = ethers;
 
 describe('Gateway', () => {
   let signers: SignerWithAddress[];
+  let deployer: SignerWithAddress;
+  let guardian: SignerWithAddress;
   let externalAccountRegistry: ExternalAccountRegistry;
   let gateway: Gateway;
   let gatewayRecipientMock: GatewayRecipientMock;
@@ -44,10 +46,16 @@ describe('Gateway', () => {
   }>;
 
   before(async () => {
-    signers = await getSigners();
+    signers = [
+      ...await getSigners(),
+      ...await getUnnamedSigners()
+    ]; // getSigners() returns only 20 signers
+    deployer = signers.pop();
+    guardian = signers.pop();
 
     externalAccountRegistry = await deployContract('ExternalAccountRegistry');
-    gateway = await deployContract('Gateway');
+    gateway = await deployContract('Gateway', [], deployer);
+    gateway = gateway.connect(deployer);
     gatewayRecipientMock = await deployContract('GatewayRecipientMock', [
       gateway.address,
     ]);
@@ -58,7 +66,7 @@ describe('Gateway', () => {
         externalAccountRegistry.address,
         personalAccountRegistry.address,
       ),
-    );
+    )
 
     await processTx(
       personalAccountRegistry.initialize([], randomAddress(), gateway.address),
@@ -118,6 +126,41 @@ describe('Gateway', () => {
     );
   });
 
+  context('guardians', () => {
+    let sender: SignerWithAddress;
+
+    before(() => {
+      sender = signers.pop();
+      gateway = gateway.connect(sender);
+    });
+
+    it('expect random address not to be guardian', async () => {
+      expect(await gateway.isGuardian(sender.address)).toBe(false);
+      expect(await gateway.isGuardian(deployer.address)).toBe(true);
+    });
+    
+    it('expect random address to not be able to add guardian', async () => {
+      await expect(gateway.addGuardian(sender.address))
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to add guardian', async () => {
+      const {
+        logs: [log],
+      } = await processTx(
+        gateway.connect(deployer).addGuardian(guardian.address)
+      );
+
+      const event = gateway.interface.parseLog(log);
+
+      expect(event.args.sender).toBe(deployer.address);
+      expect(event.args.guardian).toBe(guardian.address);
+
+      expect(await gateway.isGuardian(guardian.address)).toBe(true);
+    });
+  });
+
   context('sendBatch()', () => {
     let sender: SignerWithAddress;
 
@@ -150,6 +193,36 @@ describe('Gateway', () => {
       expect(events[0].args.sender).toBe(sender.address);
       expect(events[1].args.account).toBe(sender.address);
       expect(events[1].args.sender).toBe(sender.address);
+    });
+  });
+
+  context('sendBatchGuarded()', () => {
+    let sender: SignerWithAddress;
+
+    before(() => {
+      sender = signers.pop();
+      gateway = gateway.connect(sender);
+    });
+
+    it('expect to fail if sender is not guardian', async () => {
+      await expect(gateway.sendBatchGuarded([to], [data]))
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to success if sender is guardian', async () => {
+      const {
+        logs: [log],
+      } = await processTx(
+        gateway
+          .connect(guardian)
+          .sendBatchGuarded([to], [data])
+      );
+
+      const event = gatewayRecipientMock.interface.parseLog(log);
+
+      expect(event.args.account).toBe(guardian.address);
+      expect(event.args.sender).toBe(guardian.address);
     });
   });
 
@@ -216,6 +289,52 @@ describe('Gateway', () => {
         expect(event.args.account).toBe(account);
         expect(event.args.sender).toBe(sender.address);
       });
+    });
+  });
+
+  context('sendBatchFromAccountGuarded()', () => {
+    let account: SignerWithAddress;
+    let sender: SignerWithAddress;
+
+    before(async () => {
+      account = signers.pop();
+      sender = signers.pop();
+      gateway = gateway.connect(sender);
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
+      );
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(guardian.address),
+      );
+    });
+
+    it('expect to fail if sender is not guardian', async () => {
+      await expect(
+        gateway.sendBatchFromAccountGuarded(account.address, [to], [data])
+      )
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to success if sender is guardian', async () => {
+      const {
+        logs: [log],
+      } = await processTx(
+        gateway
+          .connect(guardian)
+          .sendBatchFromAccountGuarded(account.address, [to], [data]),
+      );
+
+      const event = gatewayRecipientMock.interface.parseLog(log);
+
+      expect(event.args.account).toBe(account.address);
+      expect(event.args.sender).toBe(guardian.address);
     });
   });
 
@@ -289,6 +408,86 @@ describe('Gateway', () => {
     });
   });
 
+  context('delegateBatchGuarded()', () => {
+    let account: SignerWithAddress;
+    let sender: SignerWithAddress;
+
+    before(async () => {
+      account = signers.pop();
+      sender = signers.pop();
+      gateway = gateway.connect(signers.pop());
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
+      );
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(guardian.address),
+      );
+    });
+
+    it('expect to fail if sender is not guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      await expect(
+        gateway.delegateBatchGuarded(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+        ),
+      )
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to success if sender is guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      const {
+        logs: [log],
+      } = await processTx(
+        gateway
+        .connect(guardian)
+        .delegateBatchGuarded(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+        ),
+      );
+
+      const event = gatewayRecipientMock.interface.parseLog(log);
+
+      expect(event.args.account).toBe(account.address);
+      expect(event.args.sender).toBe(sender.address);
+    });
+  });
+
   context('delegateBatchWithGasPrice()', () => {
     let account: SignerWithAddress;
     let sender: SignerWithAddress;
@@ -322,6 +521,84 @@ describe('Gateway', () => {
         logs: [log],
       } = await processTx(
         gateway.delegateBatchWithGasPrice(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+          {
+            gasPrice: GAS_PRICE,
+          },
+        ),
+      );
+
+      const event = gatewayRecipientMock.interface.parseLog(log);
+
+      expect(event.args.account).toBe(account.address);
+      expect(event.args.sender).toBe(sender.address);
+    });
+  });
+
+  context('delegateBatchWithGasPriceGuarded()', () => {
+    let account: SignerWithAddress;
+    let sender: SignerWithAddress;
+
+    before(async () => {
+      account = signers.pop();
+      sender = signers.pop();
+      gateway = gateway.connect(signers.pop());
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(guardian.address),
+      );
+    });
+
+    it('expect to fail if sender is not guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      await expect(
+        gateway.delegateBatchWithGasPriceGuarded(
+          account.address,
+          nonce,
+          [to],
+          [data],
+          senderSignature,
+        ),
+      )
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to success if sender is guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchWithGasPriceMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+          gasPrice: GAS_PRICE,
+        },
+      );
+
+      const {
+        logs: [log],
+      } = await processTx(
+        gateway
+        .connect(guardian)
+        .delegateBatchWithGasPriceGuarded(
           account.address,
           nonce,
           [to],
@@ -536,6 +813,89 @@ describe('Gateway', () => {
         expect(events[1].args.batch).toBe(batches[1]);
         expect(events[1].args.succeeded).toBeFalsy();
       });
+    });
+  });
+
+  context('delegateBatchesGuarded()', () => {
+    let from: SignerWithAddress;
+    let account: SignerWithAddress;
+    let sender: SignerWithAddress;
+
+    before(async () => {
+      from = signers.pop();
+      account = signers.pop();
+      sender = signers.pop();
+      gateway = gateway.connect(from);
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(guardian.address),
+      );
+
+      await processTx(
+        externalAccountRegistry
+          .connect(account)
+          .addAccountOwner(sender.address),
+      );
+    });
+
+    it('expect to fail if sender is not guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      const batch = gateway.interface.encodeFunctionData('delegateBatch', [
+        account.address,
+        nonce,
+        [to],
+        [data],
+        senderSignature,
+      ]);
+
+      await expect(
+        gateway.delegateBatchesGuarded([batch], false)
+      )
+        .rejects
+        .toThrow(/Guarded: tx\.origin is not the guardian/);
+    });
+
+    it('expect to success if sender is guardian', async () => {
+      const nonce = getNextNonce();
+      const senderSignature = await delegatedBatchMessagePayloadFactory.sign(
+        sender,
+        {
+          account: account.address,
+          nonce,
+          to: [to],
+          data: [data],
+        },
+      );
+
+      const batch = gateway.interface.encodeFunctionData('delegateBatch', [
+        account.address,
+        nonce,
+        [to],
+        [data],
+        senderSignature,
+      ]);
+
+      const { events } = await processTx(
+        gateway.connect(guardian).delegateBatchesGuarded([batch], false),
+      );
+
+      const event = events.find(({ event }) => event === 'BatchDelegated');
+
+      expect(event.args.sender).toBe(guardian.address);
+      expect(event.args.batch).toBe(batch);
+      expect(event.args.succeeded).toBeTruthy();
     });
   });
 
