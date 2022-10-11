@@ -2,6 +2,7 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
+import "../common/access/Guarded.sol";
 import "../common/libs/ECDSALib.sol";
 import "../common/libs/SafeMathLib.sol";
 import "../common/lifecycle/Initializable.sol";
@@ -9,15 +10,14 @@ import "../common/signature/SignatureValidator.sol";
 import "../external/ExternalAccountRegistry.sol";
 import "../personal/PersonalAccountRegistry.sol";
 
-
 /**
- * @title Gateway
+ * @title Gateway V2 with guarded batching functions
  *
  * @notice GSN replacement
  *
- * @author Stanisław Głogowski <stan@pillarproject.io>
+ * @author Utkir Sobirov <sobirovutkir@gmail.io>
  */
-contract Gateway is Initializable, SignatureValidator {
+contract GatewayV2 is Initializable, SignatureValidator, Guarded {
   using ECDSALib for bytes32;
   using SafeMathLib for uint256;
 
@@ -84,6 +84,9 @@ contract Gateway is Initializable, SignatureValidator {
   {
     externalAccountRegistry = externalAccountRegistry_;
     personalAccountRegistry = personalAccountRegistry_;
+
+    address[] memory guardians;
+    _initializeGuarded(guardians); // adds tx.origin to guardians list
   }
 
   // public functions
@@ -112,6 +115,25 @@ contract Gateway is Initializable, SignatureValidator {
   }
 
   /**
+   * @notice Sends guarded batch
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `msg.sender`
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
+  function sendBatchGuarded(
+    address[] memory to,
+    bytes[] memory data
+  )
+    public
+    onlyGuardian
+  {
+    sendBatch(to, data);
+  }
+
+  /**
    * @notice Sends batch from the account
    * @dev `GatewayRecipient` context api:
    * `_getContextAccount` will return `account` arg
@@ -134,6 +156,27 @@ contract Gateway is Initializable, SignatureValidator {
       to,
       data
     );
+  }
+
+  /**
+   * @notice Sends guarded batch from the account
+   * @dev `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return `msg.sender`
+   *
+   * @param account account address
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   */
+  function sendBatchFromAccountGuarded(
+    address account,
+    address[] memory to,
+    bytes[] memory data
+  )
+    public
+    onlyGuardian
+  {
+    sendBatchFromAccount(account, to, data);
   }
 
   /**
@@ -179,6 +222,33 @@ contract Gateway is Initializable, SignatureValidator {
       to,
       data
     );
+  }
+
+  /**
+   * @notice Delegates guarded batch from the account
+   * @dev Use `hashDelegatedBatch` to create sender message payload.
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
+  function delegateBatchGuarded(
+    address account,
+    uint256 nonce,
+    address[] memory to,
+    bytes[] memory data,
+    bytes memory senderSignature
+  )
+    public
+    onlyGuardian
+  {
+    delegateBatch(account, nonce, to, data, senderSignature);
   }
 
   /**
@@ -229,6 +299,34 @@ contract Gateway is Initializable, SignatureValidator {
   }
 
   /**
+   * @notice Delegates guarded batch from the account (with gas price)
+   *
+   * @dev Use `hashDelegatedBatchWithGasPrice` to create sender message payload (tx.gasprice as gasPrice)
+   *
+   * `GatewayRecipient` context api:
+   * `_getContextAccount` will return `account` arg
+   * `_getContextSender` will return recovered address from `senderSignature` arg
+   *
+   * @param account account address
+   * @param nonce next account nonce
+   * @param to array of batch recipients contracts
+   * @param data array of batch data
+   * @param senderSignature sender signature
+   */
+  function delegateBatchWithGasPriceGuarded(
+    address account,
+    uint256 nonce,
+    address[] memory to,
+    bytes[] memory data,
+    bytes memory senderSignature
+  )
+    public
+    onlyGuardian
+  {
+    delegateBatchWithGasPrice(account, nonce, to, data, senderSignature);
+  }
+
+  /**
    * @notice Delegates multiple batches
    * @dev It will revert when all batches fail
    * @param batches array of batches
@@ -270,6 +368,22 @@ contract Gateway is Initializable, SignatureValidator {
     if (!anySucceeded) {
       revert("Gateway: all batches reverted");
     }
+  }
+
+  /**
+   * @notice Delegates multiple guarded batches
+   * @dev It will revert when all batches fail
+   * @param batches array of batches
+   * @param revertOnFailure reverts on any error
+   */
+  function delegateBatchesGuarded(
+    bytes[] memory batches,
+    bool revertOnFailure
+  )
+    public
+    onlyGuardian
+  {
+    delegateBatches(batches, revertOnFailure);
   }
 
   // public functions (views)
