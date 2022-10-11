@@ -53,26 +53,40 @@ export type DelegatedBatchWithGasPriceStructOutput = [
   gasPrice: BigNumber;
 };
 
-export interface GatewayInterface extends utils.Interface {
+export interface GatewayV2Interface extends utils.Interface {
   functions: {
+    "addGuardian(address)": FunctionFragment;
     "chainId()": FunctionFragment;
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
+    "delegateBatchGuarded(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
+    "delegateBatchWithGasPriceGuarded(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatches(bytes[],bool)": FunctionFragment;
+    "delegateBatchesGuarded(bytes[],bool)": FunctionFragment;
     "externalAccountRegistry()": FunctionFragment;
     "getAccountNextNonce(address)": FunctionFragment;
     "hashDelegatedBatch((address,uint256,address[],bytes[]))": FunctionFragment;
     "hashDelegatedBatchWithGasPrice((address,uint256,address[],bytes[],uint256))": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
+    "isGuardian(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
     "personalAccountRegistry()": FunctionFragment;
+    "removeGuardian(address)": FunctionFragment;
     "sendBatch(address[],bytes[])": FunctionFragment;
     "sendBatchFromAccount(address,address[],bytes[])": FunctionFragment;
+    "sendBatchFromAccountGuarded(address,address[],bytes[])": FunctionFragment;
+    "sendBatchGuarded(address[],bytes[])": FunctionFragment;
+    "verifyGuardianSignature(bytes32,bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
   encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "delegateBatch",
+    values: [string, BigNumberish, string[], BytesLike[], BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegateBatchGuarded",
     values: [string, BigNumberish, string[], BytesLike[], BytesLike]
   ): string;
   encodeFunctionData(
@@ -80,7 +94,15 @@ export interface GatewayInterface extends utils.Interface {
     values: [string, BigNumberish, string[], BytesLike[], BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "delegateBatchWithGasPriceGuarded",
+    values: [string, BigNumberish, string[], BytesLike[], BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "delegateBatches",
+    values: [BytesLike[], boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegateBatchesGuarded",
     values: [BytesLike[], boolean]
   ): string;
   encodeFunctionData(
@@ -103,6 +125,7 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "initialize",
     values: [string, string]
   ): string;
+  encodeFunctionData(functionFragment: "isGuardian", values: [string]): string;
   encodeFunctionData(
     functionFragment: "isInitialized",
     values?: undefined
@@ -112,6 +135,10 @@ export interface GatewayInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "removeGuardian",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "sendBatch",
     values: [string[], BytesLike[]]
   ): string;
@@ -119,10 +146,30 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "sendBatchFromAccount",
     values: [string, string[], BytesLike[]]
   ): string;
+  encodeFunctionData(
+    functionFragment: "sendBatchFromAccountGuarded",
+    values: [string, string[], BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sendBatchGuarded",
+    values: [string[], BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "verifyGuardianSignature",
+    values: [BytesLike, BytesLike]
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "addGuardian",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "delegateBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "delegateBatchGuarded",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -130,7 +177,15 @@ export interface GatewayInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "delegateBatchWithGasPriceGuarded",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "delegateBatches",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "delegateBatchesGuarded",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -150,6 +205,7 @@ export interface GatewayInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "isGuardian", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isInitialized",
     data: BytesLike
@@ -158,18 +214,38 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "personalAccountRegistry",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeGuardian",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "sendBatch", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "sendBatchFromAccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "sendBatchFromAccountGuarded",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sendBatchGuarded",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "verifyGuardianSignature",
+    data: BytesLike
+  ): Result;
 
   events: {
     "BatchDelegated(address,bytes,bool)": EventFragment;
+    "GuardianAdded(address,address)": EventFragment;
+    "GuardianRemoved(address,address)": EventFragment;
     "Initialized(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BatchDelegated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GuardianAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GuardianRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
 }
 
@@ -180,16 +256,30 @@ export type BatchDelegatedEvent = TypedEvent<
 
 export type BatchDelegatedEventFilter = TypedEventFilter<BatchDelegatedEvent>;
 
+export type GuardianAddedEvent = TypedEvent<
+  [string, string],
+  { sender: string; guardian: string }
+>;
+
+export type GuardianAddedEventFilter = TypedEventFilter<GuardianAddedEvent>;
+
+export type GuardianRemovedEvent = TypedEvent<
+  [string, string],
+  { sender: string; guardian: string }
+>;
+
+export type GuardianRemovedEventFilter = TypedEventFilter<GuardianRemovedEvent>;
+
 export type InitializedEvent = TypedEvent<[string], { initializer: string }>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
-export interface Gateway extends BaseContract {
+export interface GatewayV2 extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: GatewayInterface;
+  interface: GatewayV2Interface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -211,9 +301,23 @@ export interface Gateway extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    addGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     delegateBatch(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    delegateBatchGuarded(
       account: string,
       nonce: BigNumberish,
       to: string[],
@@ -231,7 +335,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    delegateBatchWithGasPriceGuarded(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     delegateBatches(
+      batches: BytesLike[],
+      revertOnFailure: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    delegateBatchesGuarded(
       batches: BytesLike[],
       revertOnFailure: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -260,9 +379,16 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    isGuardian(guardian: string, overrides?: CallOverrides): Promise<[boolean]>;
+
     isInitialized(overrides?: CallOverrides): Promise<[boolean]>;
 
     personalAccountRegistry(overrides?: CallOverrides): Promise<[string]>;
+
+    removeGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     sendBatch(
       to: string[],
@@ -276,11 +402,44 @@ export interface Gateway extends BaseContract {
       data: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    sendBatchFromAccountGuarded(
+      account: string,
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    sendBatchGuarded(
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    verifyGuardianSignature(
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
   };
+
+  addGuardian(
+    guardian: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   delegateBatch(
+    account: string,
+    nonce: BigNumberish,
+    to: string[],
+    data: BytesLike[],
+    senderSignature: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  delegateBatchGuarded(
     account: string,
     nonce: BigNumberish,
     to: string[],
@@ -298,7 +457,22 @@ export interface Gateway extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  delegateBatchWithGasPriceGuarded(
+    account: string,
+    nonce: BigNumberish,
+    to: string[],
+    data: BytesLike[],
+    senderSignature: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   delegateBatches(
+    batches: BytesLike[],
+    revertOnFailure: boolean,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  delegateBatchesGuarded(
     batches: BytesLike[],
     revertOnFailure: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -327,9 +501,16 @@ export interface Gateway extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  isGuardian(guardian: string, overrides?: CallOverrides): Promise<boolean>;
+
   isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
   personalAccountRegistry(overrides?: CallOverrides): Promise<string>;
+
+  removeGuardian(
+    guardian: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   sendBatch(
     to: string[],
@@ -344,10 +525,40 @@ export interface Gateway extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  sendBatchFromAccountGuarded(
+    account: string,
+    to: string[],
+    data: BytesLike[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  sendBatchGuarded(
+    to: string[],
+    data: BytesLike[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  verifyGuardianSignature(
+    messageHash: BytesLike,
+    signature: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   callStatic: {
+    addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegateBatch(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    delegateBatchGuarded(
       account: string,
       nonce: BigNumberish,
       to: string[],
@@ -365,7 +576,22 @@ export interface Gateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    delegateBatchWithGasPriceGuarded(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     delegateBatches(
+      batches: BytesLike[],
+      revertOnFailure: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    delegateBatchesGuarded(
       batches: BytesLike[],
       revertOnFailure: boolean,
       overrides?: CallOverrides
@@ -394,9 +620,13 @@ export interface Gateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    isGuardian(guardian: string, overrides?: CallOverrides): Promise<boolean>;
+
     isInitialized(overrides?: CallOverrides): Promise<boolean>;
 
     personalAccountRegistry(overrides?: CallOverrides): Promise<string>;
+
+    removeGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
 
     sendBatch(
       to: string[],
@@ -410,6 +640,25 @@ export interface Gateway extends BaseContract {
       data: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    sendBatchFromAccountGuarded(
+      account: string,
+      to: string[],
+      data: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    sendBatchGuarded(
+      to: string[],
+      data: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    verifyGuardianSignature(
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
   };
 
   filters: {
@@ -424,14 +673,40 @@ export interface Gateway extends BaseContract {
       succeeded?: null
     ): BatchDelegatedEventFilter;
 
+    "GuardianAdded(address,address)"(
+      sender?: null,
+      guardian?: null
+    ): GuardianAddedEventFilter;
+    GuardianAdded(sender?: null, guardian?: null): GuardianAddedEventFilter;
+
+    "GuardianRemoved(address,address)"(
+      sender?: null,
+      guardian?: null
+    ): GuardianRemovedEventFilter;
+    GuardianRemoved(sender?: null, guardian?: null): GuardianRemovedEventFilter;
+
     "Initialized(address)"(initializer?: null): InitializedEventFilter;
     Initialized(initializer?: null): InitializedEventFilter;
   };
 
   estimateGas: {
+    addGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegateBatch(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    delegateBatchGuarded(
       account: string,
       nonce: BigNumberish,
       to: string[],
@@ -449,7 +724,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    delegateBatchWithGasPriceGuarded(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     delegateBatches(
+      batches: BytesLike[],
+      revertOnFailure: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    delegateBatchesGuarded(
       batches: BytesLike[],
       revertOnFailure: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -478,9 +768,16 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    isGuardian(guardian: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     isInitialized(overrides?: CallOverrides): Promise<BigNumber>;
 
     personalAccountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    removeGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     sendBatch(
       to: string[],
@@ -494,12 +791,45 @@ export interface Gateway extends BaseContract {
       data: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    sendBatchFromAccountGuarded(
+      account: string,
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    sendBatchGuarded(
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    verifyGuardianSignature(
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    addGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     delegateBatch(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegateBatchGuarded(
       account: string,
       nonce: BigNumberish,
       to: string[],
@@ -517,7 +847,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    delegateBatchWithGasPriceGuarded(
+      account: string,
+      nonce: BigNumberish,
+      to: string[],
+      data: BytesLike[],
+      senderSignature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     delegateBatches(
+      batches: BytesLike[],
+      revertOnFailure: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegateBatchesGuarded(
       batches: BytesLike[],
       revertOnFailure: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -548,10 +893,20 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    isGuardian(
+      guardian: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isInitialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     personalAccountRegistry(
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    removeGuardian(
+      guardian: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     sendBatch(
@@ -565,6 +920,25 @@ export interface Gateway extends BaseContract {
       to: string[],
       data: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    sendBatchFromAccountGuarded(
+      account: string,
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    sendBatchGuarded(
+      to: string[],
+      data: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    verifyGuardianSignature(
+      messageHash: BytesLike,
+      signature: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }
