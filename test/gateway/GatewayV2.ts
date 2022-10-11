@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat';
+import { deployments, ethers } from 'hardhat';
 import { BigNumberish, BytesLike } from 'ethers';
 import {
   ExternalAccountRegistry,
@@ -50,27 +50,22 @@ describe('GatewayV2', () => {
       ...await getSigners(),
       ...await getUnnamedSigners()
     ]; // getSigners() returns only 20 signers
-    deployer = signers.pop();
+    deployer = signers.shift();
     guardian = signers.pop();
 
-    externalAccountRegistry = await deployContract('ExternalAccountRegistry');
-    gateway = await deployContract('GatewayV2', [], deployer);
-    gateway = gateway.connect(deployer);
+    await deployments.fixture([
+      'gateway',
+      'gateway-v2',
+      'external',
+      'personal'
+    ]);
+    externalAccountRegistry = await ethers.getContract('ExternalAccountRegistry');
+    personalAccountRegistry = await ethers.getContract('PersonalAccountRegistry');
+    gateway = (await ethers.getContract<GatewayV2>('GatewayV2')).connect(deployer);
+
     gatewayRecipientMock = await deployContract('GatewayRecipientMock', [
       gateway.address,
     ]);
-    personalAccountRegistry = await deployContract('PersonalAccountRegistry');
-
-    await processTx(
-      gateway.initialize(
-        externalAccountRegistry.address,
-        personalAccountRegistry.address,
-      ),
-    )
-
-    await processTx(
-      personalAccountRegistry.initialize([], randomAddress(), gateway.address),
-    );
 
     to = gatewayRecipientMock.address;
     data = gatewayRecipientMock.interface.encodeFunctionData('emitContext');
