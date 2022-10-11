@@ -7,8 +7,8 @@ const func: DeployFunction = async hre => {
   } = hre;
   const { from } = await getNamedAccounts();
 
-  if (await read('Gateway', 'isInitialized')) {
-    log('Gateway already initialized');
+  if (await read('GatewayV2', 'isInitialized')) {
+    log('GatewayV2 already initialized');
   } else {
     const externalAccountRegistry = await get('ExternalAccountRegistry');
     const personalAccountRegistry = await get('PersonalAccountRegistry');
