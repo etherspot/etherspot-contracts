@@ -8,7 +8,7 @@ import {
 } from '../shared';
 import { HopConfig } from '../../config/hop';
 
-describe.only('HopFacet', () => {
+describe('HopFacet', () => {
   describe("L1->L2", () => {
     const TEST_TOKEN_ADDRESS = '0x98339D8C260052B7ad81c28c16C0b98420f2B46a';
     const SIGNER_ADDRESS = '0x03db1fa14c9d67a426d1d03514901fff08dc87cf';
