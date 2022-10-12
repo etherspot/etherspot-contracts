@@ -34,6 +34,7 @@ export declare enum ContractNames {
   ExternalAccountRegistry = 'ExternalAccountRegistry',
   Gateway = 'Gateway',
   GatewayRecipient = 'GatewayRecipient',
+  GatewayV2 = 'GatewayV2',
   Guarded = 'Guarded',
   Home = 'Home',
   HopFacet = 'HopFacet',
@@ -101,4 +102,5 @@ export declare enum ContractNames {
   WrappedWeiToken = 'WrappedWeiToken',
   XAppConnectionClient = 'XAppConnectionClient',
   XAppConnectionManager = 'XAppConnectionManager',
+  console = 'console',
 }

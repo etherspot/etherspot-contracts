@@ -112,7 +112,7 @@ exports.NETWORK_CONFIGS = {
     },
     [NetworkNames.Mumbai]: {
         chainId: 80001,
-        defaultProviderUrl: "https://rpc-mumbai.maticvigil.com",
+        defaultProviderUrl: "https://matic-mumbai.chainstacklabs.com",
         defaultGasPrice: 5,
         explorer: "https://mumbai.polygonscan.com",
     },
