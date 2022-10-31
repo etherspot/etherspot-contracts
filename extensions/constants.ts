@@ -26,6 +26,7 @@ export enum NetworkNames {
   FuseSparknet = 'fuseSparknet',
   Celo = "celo",
   CeloTest = "celoTest",
+  PolygonZkEvmTest = "polygonZkEvmTest"
   Etherspot = 'etherspot',
   LocalA = 'localA',
   LocalB = 'localB',
@@ -193,6 +194,12 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.FuseSparknet]: {
     chainId: 123,
     defaultProviderUrl : 'https://rpc.fusespark.io',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.PolygonZkEvmTest]: {
+    chainId: 1402,
+    defaultProviderUrl : 'https://rpc.public.zkevm-test.net/',
+    explorer: 'https://explorer.public.zkevm-test.net',
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
