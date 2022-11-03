@@ -53,7 +53,7 @@
     "deploy:fuse": "hardhat deploy --network fuse --tags create,setup",
     "deploy:fuseSparknet": "hardhat deploy --network fuseSparknet --tags create,setup",
     "deploy:neon": "hardhat deploy --network neon --tags create,setup",
-    "deploy:neonTest": "hardhat deploy --network neonTest --tags create,setup",
+    "deploy:neonDevnet": "hardhat deploy --network neonDevnet --tags create,setup",
     "deploy:etherspot": "hardhat deploy --network etherspot --tags create,setup",
     "deploy:localA": "hardhat deploy --network localA --tags create,setup",
     "deploy:localB": "hardhat deploy --network localB --tags create,setup",

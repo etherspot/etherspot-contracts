@@ -27,7 +27,7 @@ export enum NetworkNames {
   Celo = "celo",
   CeloTest = "celoTest",
   Neon = "neon",
-  NeonTest = "neonTest",
+  NeonDevnet = "neonDevnet",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -203,9 +203,9 @@ export const NETWORK_CONFIGS: {
     explorer: "https://neonscan.org/",
     defaultGasPrice: 1,
   },
-  [NetworkNames.NeonTest]: {
-    chainId: 245022940,
-    defaultProviderUrl: "https://proxy.testnet.neonlabs.org/solana",
+  [NetworkNames.NeonDevnet]: {
+    chainId: 245022926,
+    defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {
