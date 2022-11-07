@@ -28,6 +28,8 @@ export enum NetworkNames {
   CeloTest = "celoTest",
   Neon = "neon",
   NeonDevnet = "neonDevnet",
+  ArbitrumNova = "arbitrumNova",
+  ArbitrumNitro = "arbitrumNitro",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -122,7 +124,7 @@ export const NETWORK_CONFIGS: {
   },
   [NetworkNames.Mumbai]: {
     chainId: 80001,
-    defaultProviderUrl: "https://rpc-mumbai.maticvigil.com",
+    defaultProviderUrl: "https://matic-mumbai.chainstacklabs.com",
     defaultGasPrice: 5,
     explorer: "https://mumbai.polygonscan.com",
   },
@@ -185,6 +187,16 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.CeloTest]: {
     chainId: 44787,
     defaultProviderUrl: "https://alfajores-forno.celo-testnet.org",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumNova]: {
+    chainId: 42170,
+    defaultProviderUrl: "https://nova.arbitrum.io/rpc",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumNitro]: {
+    chainId: 421613,
+    defaultProviderUrl: "https://goerli-rollup-explorer.arbitrum.io",
     defaultGasPrice: 1,
   },
   [NetworkNames.Fuse]: {
