@@ -206,7 +206,7 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.NeonDevnet]: {
     chainId: 245022926,
     defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
-    defaultGasPrice: 1,
+    defaultGasPrice: 0,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
