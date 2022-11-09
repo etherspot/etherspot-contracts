@@ -26,6 +26,8 @@ export enum NetworkNames {
   FuseSparknet = "fuseSparknet",
   Celo = "celo",
   CeloTest = "celoTest",
+  Neon = "neon",
+  NeonDevnet = "neonDevnet",
   ArbitrumNova = "arbitrumNova",
   ArbitrumNitro = "arbitrumNitro",
   Etherspot = "etherspot",
@@ -187,16 +189,6 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://alfajores-forno.celo-testnet.org",
     defaultGasPrice: 1,
   },
-  [NetworkNames.Fuse]: {
-    chainId: 122,
-    defaultProviderUrl: "https://rpc.fuse.io",
-    defaultGasPrice: 1,
-  },
-  [NetworkNames.FuseSparknet]: {
-    chainId: 123,
-    defaultProviderUrl: "https://rpc.fusespark.io",
-    defaultGasPrice: 1,
-  },
   [NetworkNames.ArbitrumNova]: {
     chainId: 42170,
     defaultProviderUrl: "https://nova.arbitrum.io/rpc",
@@ -209,13 +201,24 @@ export const NETWORK_CONFIGS: {
   },
   [NetworkNames.Fuse]: {
     chainId: 122,
-    defaultProviderUrl: 'https://rpc.fuse.io',
+    defaultProviderUrl: "https://rpc.fuse.io",
     defaultGasPrice: 1,
   },
   [NetworkNames.FuseSparknet]: {
     chainId: 123,
-    defaultProviderUrl : 'https://rpc.fusespark.io',
+    defaultProviderUrl: "https://rpc.fusespark.io",
     defaultGasPrice: 1,
+  },
+  [NetworkNames.Neon]: {
+    chainId: 245022934,
+    defaultProviderUrl: "https://proxy.mainnet.neonlabs.org/solana",
+    explorer: "https://neonscan.org/",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.NeonDevnet]: {
+    chainId: 245022926,
+    defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
+    defaultGasPrice: 0,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
