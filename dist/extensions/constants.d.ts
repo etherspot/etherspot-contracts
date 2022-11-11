@@ -26,6 +26,7 @@ export declare enum NetworkNames {
     FuseSparknet = "fuseSparknet",
     Celo = "celo",
     CeloTest = "celoTest",
+    PolygonZkEvmTest = "polygonZkEvmTest",
     Etherspot = "etherspot",
     LocalA = "localA",
     LocalB = "localB",
@@ -34,7 +35,7 @@ export declare enum NetworkNames {
 export declare const NETWORK_CONFIGS: {
     [key: string]: {
         chainId: number;
-        defaultProviderUrl?: 'infura' | string;
+        defaultProviderUrl?: "infura" | string;
         defaultGas?: number;
         defaultGasPrice?: number;
         explorer?: string | {
