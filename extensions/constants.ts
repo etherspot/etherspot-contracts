@@ -198,7 +198,7 @@ export const NETWORK_CONFIGS: {
   },
   [NetworkNames.PolygonZkEvmTest]: {
     chainId: 1402,
-    defaultProviderUrl: "https://rpc.public.zkevm-test.net/",
+    defaultProviderUrl: "https://rpc.public.zkevm-test.net",
     explorer: "https://explorer.public.zkevm-test.net",
     defaultGasPrice: 1,
   },
