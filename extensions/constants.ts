@@ -199,7 +199,7 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.OptimismGoerli]: {
     chainId: 420,
     defaultProviderUrl: "https://goerli.optimism.io",
-    explorer: "https://goerli-explorer.optimism.io",
+    explorer: "https://goerli-optimism.etherscan.io",
     defaultGasPrice: 3,
   },
   [NetworkNames.Etherspot]: {
