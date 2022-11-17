@@ -37,6 +37,7 @@ module.exports = {
     ExternalAccountRegistry: 'ExternalAccountRegistry',
     Gateway: 'Gateway',
     GatewayRecipient: 'GatewayRecipient',
+    GatewayV2: 'GatewayV2',
     Guarded: 'Guarded',
     Home: 'Home',
     HopFacet: 'HopFacet',
@@ -104,5 +105,6 @@ module.exports = {
     WrappedWeiToken: 'WrappedWeiToken',
     XAppConnectionClient: 'XAppConnectionClient',
     XAppConnectionManager: 'XAppConnectionManager',
+    console: 'console',
   },
 };

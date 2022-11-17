@@ -44,3 +44,6 @@ jobs:
 
       - name: Run tests
         run: npm run test -- --report-gas
+      
+      - name: Dry run build
+        run: npm run build

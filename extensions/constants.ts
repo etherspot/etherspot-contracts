@@ -27,6 +27,10 @@ export enum NetworkNames {
   Celo = "celo",
   CeloTest = "celoTest",
   OptimismGoerli = "optimismGoerli",
+  Neon = "neon",
+  NeonDevnet = "neonDevnet",
+  ArbitrumNova = "arbitrumNova",
+  ArbitrumNitro = "arbitrumNitro",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -121,7 +125,7 @@ export const NETWORK_CONFIGS: {
   },
   [NetworkNames.Mumbai]: {
     chainId: 80001,
-    defaultProviderUrl: "https://rpc-mumbai.maticvigil.com",
+    defaultProviderUrl: "https://matic-mumbai.chainstacklabs.com",
     defaultGasPrice: 5,
     explorer: "https://mumbai.polygonscan.com",
   },
@@ -186,6 +190,16 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://alfajores-forno.celo-testnet.org",
     defaultGasPrice: 1,
   },
+  [NetworkNames.ArbitrumNova]: {
+    chainId: 42170,
+    defaultProviderUrl: "https://nova.arbitrum.io/rpc",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.ArbitrumNitro]: {
+    chainId: 421613,
+    defaultProviderUrl: "https://goerli-rollup-explorer.arbitrum.io",
+    defaultGasPrice: 1,
+  },
   [NetworkNames.Fuse]: {
     chainId: 122,
     defaultProviderUrl: "https://rpc.fuse.io",
@@ -201,6 +215,17 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://goerli.optimism.io",
     explorer: "https://goerli-optimism.etherscan.io",
     defaultGasPrice: 3,
+  },
+  [NetworkNames.Neon]: {
+    chainId: 245022934,
+    defaultProviderUrl: "https://proxy.mainnet.neonlabs.org/solana",
+    explorer: "https://neonscan.org/",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.NeonDevnet]: {
+    chainId: 245022926,
+    defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
+    defaultGasPrice: 0,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
