@@ -26,6 +26,7 @@ export enum NetworkNames {
   FuseSparknet = "fuseSparknet",
   Celo = "celo",
   CeloTest = "celoTest",
+  OptimismGoerli = "optimismGoerli",
   Neon = "neon",
   NeonDevnet = "neonDevnet",
   ArbitrumNova = "arbitrumNova",
@@ -208,6 +209,12 @@ export const NETWORK_CONFIGS: {
     chainId: 123,
     defaultProviderUrl: "https://rpc.fusespark.io",
     defaultGasPrice: 1,
+  },
+  [NetworkNames.OptimismGoerli]: {
+    chainId: 420,
+    defaultProviderUrl: "https://goerli.optimism.io",
+    explorer: "https://goerli-optimism.etherscan.io",
+    defaultGasPrice: 3,
   },
   [NetworkNames.Neon]: {
     chainId: 245022934,

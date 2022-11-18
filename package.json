@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "Etherspot Solidity contracts",
   "keywords": [
     "ether",
@@ -52,6 +52,7 @@
     "deploy:celoTest": "hardhat deploy --network celoTest --tags create,setup",
     "deploy:fuse": "hardhat deploy --network fuse --tags create,setup",
     "deploy:fuseSparknet": "hardhat deploy --network fuseSparknet --tags create,setup",
+    "deploy:optimismGoerli": "hardhat deploy --network optimismGoerli --tags create,setup",
     "deploy:neon": "hardhat deploy --network neon --tags create,setup",
     "deploy:neonDevnet": "hardhat deploy --network neonDevnet --tags create,setup",
     "deploy:arbitrumNova": "hardhat deploy --network arbitrumNova --tags create,setup",
