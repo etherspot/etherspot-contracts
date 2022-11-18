@@ -105,6 +105,5 @@ module.exports = {
     WrappedWeiToken: 'WrappedWeiToken',
     XAppConnectionClient: 'XAppConnectionClient',
     XAppConnectionManager: 'XAppConnectionManager',
-    console: 'console',
   },
 };

@@ -102,5 +102,4 @@ export declare enum ContractNames {
   WrappedWeiToken = 'WrappedWeiToken',
   XAppConnectionClient = 'XAppConnectionClient',
   XAppConnectionManager = 'XAppConnectionManager',
-  console = 'console',
 }
