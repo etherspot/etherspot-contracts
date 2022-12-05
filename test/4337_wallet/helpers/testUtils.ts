@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/camelcase */
 import { ethers } from "hardhat";
 import {
@@ -195,6 +197,7 @@ export function rethrow(): (e: Error) => void {
     .stack!.replace(/Error.*\n.*at.*\n/, "")
     .replace(/.*at.* \(internal[\s\S]*/, "");
 
+  // eslint-disable-next-line prefer-rest-params
   if (arguments[0] != null) {
     throw new Error("must use .catch(rethrow()), and NOT .catch(rethrow)");
   }
@@ -207,6 +210,7 @@ export function rethrow(): (e: Error) => void {
     if (found != null) {
       const data = found[1];
       message =
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         decodeRevertReason(data) ?? e.message + " - " + data.slice(0, 100);
     } else {
       message = e.message;
@@ -247,7 +251,7 @@ export function decodeRevertReason(
   return null;
 }
 
-let currentNode: string = "";
+let currentNode = "";
 
 // basic geth support
 // - by default, has a single account. our code needs more.

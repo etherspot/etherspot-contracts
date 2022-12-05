@@ -193,9 +193,12 @@ describe("bls account", function() {
 
     it("validate after simulation returns SimulationResultWithAggregation", async () => {
       const verifier = new BlsVerifier(BLS_DOMAIN);
+      console.log("EntryPoint address: ", entrypoint.address);
+
       const senderAddress = await entrypoint.callStatic
         .getSenderAddress(initCode)
         .catch(e => e.errorArgs.sender);
+
       await fund(senderAddress, "0.01");
       const userOp = await fillUserOp(
         {

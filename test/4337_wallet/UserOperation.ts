@@ -1,4 +1,4 @@
-import * as typ from "./solidityTypes";
+import * as typ from "./helpers/solidityTypes";
 
 export interface UserOperation {
   sender: typ.address;
