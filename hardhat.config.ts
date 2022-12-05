@@ -70,6 +70,15 @@ const config: HardhatUserConfig = {
         },
       },
       {
+        version: "0.8.12",
+        settings: {
+          evmVersion: "london",
+          metadata: {
+            bytecodeHash: "none",
+          },
+        },
+      },
+      {
         version: "0.8.15",
         settings: {
           evmVersion: "istanbul",

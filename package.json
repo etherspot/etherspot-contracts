@@ -75,8 +75,8 @@
     "test": "hardhat test"
   },
   "devDependencies": {
-    "@ethereumjs/tx": "3.5.2",
     "@connext/nxtp-contracts": "0.2.0-beta.20",
+    "@ethereumjs/tx": "3.5.2",
     "@nomiclabs/hardhat-etherscan": "2.1.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.6.0",
@@ -115,5 +115,10 @@
   },
   "resolutions": {
     "hardhat/**/@ethereumjs/tx": "3.5.0"
+  },
+  "dependencies": {
+    "@thehubbleproject/bls": "^0.5.1",
+    "i": "^0.3.7",
+    "npm": "^9.1.3"
   }
 }
