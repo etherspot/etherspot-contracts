@@ -193,11 +193,30 @@ describe("bls account", function() {
 
     it("validate after simulation returns SimulationResultWithAggregation", async () => {
       const verifier = new BlsVerifier(BLS_DOMAIN);
-      console.log("EntryPoint address: ", entrypoint.address);
 
+      // failing here
+
+      // check entrypoint contract is deployed
+      console.log("EntryPoint address: ", entrypoint.address);
+      console.log("EntryPoint resolved address: ", entrypoint.resolvedAddress);
+
+      //check calling entrypoint contract to get a reponse
+      const bal = await entrypoint.callStatic.balanceOf(entrypoint.address);
+      console.log("Entrypoint balance: ", parseInt(bal.toString()));
+
+      /* FAILING FN */
+      console.log("before senderAddress assignment");
       const senderAddress = await entrypoint.callStatic
         .getSenderAddress(initCode)
-        .catch(e => e.errorArgs.sender);
+        .catch(e => {
+          console.log("errorArgs log: ", e);
+
+          return e.errorArgs.sender;
+        });
+      console.log("logging senderAddress var: ", senderAddress);
+      console.log("after senderAddress assignment");
+
+      /////////////////////////////
 
       await fund(senderAddress, "0.01");
       const userOp = await fillUserOp(
