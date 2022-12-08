@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { ethers } from "hardhat";
 import {
   arrayify,
@@ -16,6 +16,7 @@ import {
   ContractReceipt,
   Wallet,
 } from "ethers";
+// eslint-disable-next-line @typescript-eslint/camelcase
 import {
   EntryPoint,
   EntryPoint__factory,
@@ -197,7 +198,6 @@ export function rethrow(): (e: Error) => void {
     .stack!.replace(/Error.*\n.*at.*\n/, "")
     .replace(/.*at.* \(internal[\s\S]*/, "");
 
-  // eslint-disable-next-line prefer-rest-params
   if (arguments[0] != null) {
     throw new Error("must use .catch(rethrow()), and NOT .catch(rethrow)");
   }
@@ -210,7 +210,6 @@ export function rethrow(): (e: Error) => void {
     if (found != null) {
       const data = found[1];
       message =
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         decodeRevertReason(data) ?? e.message + " - " + data.slice(0, 100);
     } else {
       message = e.message;
@@ -379,12 +378,14 @@ export async function isDeployed(addr: string): Promise<boolean> {
 }
 
 // internal helper function: create a UserOpsPerAggregator structure, with no aggregator or signature
-export function userOpsWithoutAgg(userOps: UserOperation[]) {
-  return [
-    {
-      userOps,
-      aggregator: AddressZero,
-      signature: "0x",
-    },
-  ];
-}
+// export function userOpsWithoutAgg(
+//   userOps: UserOperation[],
+// ): IEntryPoint.UserOpsPerAggregatorStruct[] {
+//   return [
+//     {
+//       userOps,
+//       aggregator: AddressZero,
+//       signature: "0x",
+//     },
+//   ];
+// }

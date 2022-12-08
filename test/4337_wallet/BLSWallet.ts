@@ -194,29 +194,16 @@ describe("bls account", function() {
     it("validate after simulation returns SimulationResultWithAggregation", async () => {
       const verifier = new BlsVerifier(BLS_DOMAIN);
 
-      // failing here
+      /* Bush fixed - previous method of extracting 
+      information from the custom error was not working
+      correctly */
 
-      // check entrypoint contract is deployed
-      console.log("EntryPoint address: ", entrypoint.address);
-      console.log("EntryPoint resolved address: ", entrypoint.resolvedAddress);
-
-      //check calling entrypoint contract to get a reponse
-      const bal = await entrypoint.callStatic.balanceOf(entrypoint.address);
-      console.log("Entrypoint balance: ", parseInt(bal.toString()));
-
-      /* FAILING FN */
-      console.log("before senderAddress assignment");
       const senderAddress = await entrypoint.callStatic
         .getSenderAddress(initCode)
         .catch(e => {
-          console.log("errorArgs log: ", e);
-
-          return e.errorArgs.sender;
+          const addr = e.message.slice(92, -3);
+          return addr;
         });
-      console.log("logging senderAddress var: ", senderAddress);
-      console.log("after senderAddress assignment");
-
-      /////////////////////////////
 
       await fund(senderAddress, "0.01");
       const userOp = await fillUserOp(
@@ -231,14 +218,21 @@ describe("bls account", function() {
       const sigParts = signer3.sign(requestHash);
       userOp.signature = hexConcat(sigParts);
 
-      const {
-        aggregationInfo,
-      } = await entrypoint.callStatic
+      /* Bush fixed: sliced the correct params from the custom error message */
+
+      const aggregationInfo = await entrypoint.callStatic
         .simulateValidation(userOp)
-        .catch(simulationResultWithAggregationCatch);
-      expect(aggregationInfo.actualAggregator).to.eq(blsAgg.address);
-      expect(aggregationInfo.aggregatorStake).to.eq(ONE_ETH);
-      expect(aggregationInfo.aggregatorUnstakeDelay).to.eq(2);
+        // .catch(simulationResultWithAggregationCatch);
+        .catch(e => {
+          const aggAddr = e.message.slice(143, 185);
+          const stkAmnt = e.message.slice(188, 207);
+          const unstkDelay = e.message.slice(-4, -3);
+          const eData = [aggAddr, stkAmnt, unstkDelay];
+          return eData;
+        });
+      expect(aggregationInfo[0]).to.eq(blsAgg.address);
+      expect(aggregationInfo[1]).to.eq(ONE_ETH.toString());
+      expect(Number(aggregationInfo[2])).to.eq(2);
 
       const [signature] = defaultAbiCoder.decode(
         ["bytes32[2]"],

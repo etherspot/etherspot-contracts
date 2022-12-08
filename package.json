@@ -84,6 +84,7 @@
     "@openzeppelin/test-helpers": "0.5.15",
     "@superfluid-finance/ethereum-contracts": "1.2.2",
     "@superfluid-finance/sdk-core": "0.4.2",
+    "@thehubbleproject/bls": "^0.5.1",
     "@typechain/ethers-v5": "8.0.3",
     "@typechain/hardhat": "3.0.0",
     "@types/fs-extra": "8.1.0",
@@ -115,10 +116,5 @@
   },
   "resolutions": {
     "hardhat/**/@ethereumjs/tx": "3.5.0"
-  },
-  "dependencies": {
-    "@thehubbleproject/bls": "^0.5.1",
-    "i": "^0.3.7",
-    "npm": "^9.1.3"
   }
 }
