@@ -116,5 +116,8 @@
   },
   "resolutions": {
     "hardhat/**/@ethereumjs/tx": "3.5.0"
+  },
+  "dependencies": {
+    "@thehubbleproject/bls": "^0.5.1"
   }
 }
