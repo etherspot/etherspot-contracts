@@ -377,7 +377,7 @@ export async function isDeployed(addr: string): Promise<boolean> {
   return code.length > 2;
 }
 
-// internal helper function: create a UserOpsPerAggregator structure, with no aggregator or signature
+// // internal helper function: create a UserOpsPerAggregator structure, with no aggregator or signature
 // export function userOpsWithoutAgg(
 //   userOps: UserOperation[],
 // ): IEntryPoint.UserOpsPerAggregatorStruct[] {

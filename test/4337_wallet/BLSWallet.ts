@@ -20,7 +20,7 @@ import {
   deployEntryPoint,
   fund,
   ONE_ETH,
-  simulationResultWithAggregationCatch,
+  // simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { DefaultsForUserOp, fillUserOp } from "./UserOp";
 import { expect } from "chai";
