@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "BLSAccountDeployer",
-  "sourceName": "src/4337_wallet/BLSAccount.sol",
+  "sourceName": "src/4337_wallet/samples/BLSAccountDeployer.sol",
   "abi": [
     {
       "inputs": [

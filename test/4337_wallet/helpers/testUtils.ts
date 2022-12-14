@@ -1,3 +1,5 @@
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -20,7 +22,7 @@ import {
 import {
   EntryPoint,
   EntryPoint__factory,
-  IEntryPoint,
+  // IEntryPoint,
   IERC20,
   SimpleAccount__factory,
   TestAggregatedAccount__factory,
@@ -30,6 +32,7 @@ import { expect } from "chai";
 import { Create2Factory } from "./Create2Factory";
 import { debugTransaction } from "./debugTx";
 import { UserOperation } from "../UserOperation";
+import { UserOpsPerAggregatorStruct } from "../../../typings/IEntryPoint";
 
 export const AddressZero = ethers.constants.AddressZero;
 export const HashZero = ethers.constants.HashZero;
@@ -377,15 +380,15 @@ export async function isDeployed(addr: string): Promise<boolean> {
   return code.length > 2;
 }
 
-// // internal helper function: create a UserOpsPerAggregator structure, with no aggregator or signature
-// export function userOpsWithoutAgg(
-//   userOps: UserOperation[],
-// ): IEntryPoint.UserOpsPerAggregatorStruct[] {
-//   return [
-//     {
-//       userOps,
-//       aggregator: AddressZero,
-//       signature: "0x",
-//     },
-//   ];
-// }
+// internal helper function: create a UserOpsPerAggregator structure, with no aggregator or signature
+export function userOpsWithoutAgg(
+  userOps: UserOperation[],
+): UserOpsPerAggregatorStruct[] {
+  return [
+    {
+      userOps,
+      aggregator: AddressZero,
+      signature: "0x",
+    },
+  ];
+}

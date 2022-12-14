@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/camelcase */
 import "./helpers/aa.init";
 import { ethers } from "hardhat";
@@ -21,11 +22,12 @@ import {
   deployEntryPoint,
   FIVE_ETH,
   ONE_ETH,
-  simulationResultCatch,
+  // simulationResultCatch,
   userOpsWithoutAgg,
 } from "./helpers/testUtils";
 import { fillAndSign } from "./UserOp";
 import { hexConcat, hexZeroPad, parseEther } from "ethers/lib/utils";
+import { expectRevert } from "@openzeppelin/test-helpers";
 
 describe("DepositPaymaster", () => {
   let entryPoint: EntryPoint;
@@ -69,9 +71,10 @@ describe("DepositPaymaster", () => {
         .withdrawTokensTo(token.address, AddressZero, 1)
         .then(tx => tx.data!);
 
-      await expect(
+      await expectRevert(
         account.exec(paymaster.address, 0, paymasterWithdraw),
-      ).to.revertedWith("DepositPaymaster: must unlockTokenDeposit");
+        "DepositPaymaster: must unlockTokenDeposit",
+      );
     });
     it("should fail to withdraw within the same block ", async () => {
       const paymasterUnlock = await paymaster.populateTransaction
@@ -81,12 +84,13 @@ describe("DepositPaymaster", () => {
         .withdrawTokensTo(token.address, AddressZero, 1)
         .then(tx => tx.data!);
 
-      await expect(
+      await expectRevert(
         account.execBatch(
           [paymaster.address, paymaster.address],
           [paymasterUnlock, paymasterWithdraw],
         ),
-      ).to.be.revertedWith("DepositPaymaster: must unlockTokenDeposit");
+        "DepositPaymaster: must unlockTokenDeposit",
+      );
     });
     it("should succeed to withdraw after unlock", async () => {
       const paymasterUnlock = await paymaster.populateTransaction
@@ -98,7 +102,7 @@ describe("DepositPaymaster", () => {
         .then(tx => tx.data!);
       await account.exec(paymaster.address, 0, paymasterUnlock);
       await account.exec(paymaster.address, 0, paymasterWithdraw);
-      expect(await token.balanceOf(target)).to.eq(1);
+      expect(await (await token.balanceOf(target)).eq(1)).to.be.true;
     });
   });
 
@@ -124,9 +128,10 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expect(
+      await expectRevert(
         entryPoint.callStatic.simulateValidation(userOp),
-      ).to.be.revertedWith("paymasterAndData must specify token");
+        "paymasterAndData must specify token",
+      );
     });
 
     it("should fail with wrong token", async () => {
@@ -141,9 +146,10 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expect(
+      await expectRevert(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-      ).to.be.revertedWith("DepositPaymaster: unsupported token");
+        "DepositPaymaster: unsupported token",
+      );
     });
 
     it("should reject if no deposit", async () => {
@@ -158,9 +164,10 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expect(
+      await expectRevert(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-      ).to.be.revertedWith("DepositPaymaster: deposit too low");
+        "DepositPaymaster: deposit too low",
+      );
     });
 
     it("should reject if deposit is not locked", async () => {
@@ -182,9 +189,10 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expect(
+      await expectRevert(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-      ).to.be.revertedWith("not locked");
+        "not locked",
+      );
     });
 
     it("succeed with valid deposit", async () => {
@@ -205,9 +213,14 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await entryPoint.callStatic
+      const simVal = await entryPoint.callStatic
         .simulateValidation(userOp)
-        .catch(simulationResultCatch);
+        .catch(e => {
+          const err = e.message.slice(71, 87);
+          return err;
+        });
+      // SimulationResult error indicates success
+      expect(simVal).to.equal("SimulationResult");
     });
   });
   describe("#handleOps", () => {
@@ -257,7 +270,8 @@ describe("DepositPaymaster", () => {
       expect(await counter.queryFilter(counter.filters.CalledFrom())).to.eql(
         [],
       );
-      expect(await ethers.provider.getBalance(beneficiary)).to.be.gt(0);
+      expect(await (await ethers.provider.getBalance(beneficiary)).gt(0)).to.be
+        .true;
     });
 
     it("should pay with tokens if available", async () => {
@@ -313,7 +327,8 @@ describe("DepositPaymaster", () => {
       );
       expect(log.args.success).to.eq(true);
       const charge = log.args.actualGasCost;
-      expect(await ethers.provider.getBalance(beneficiary)).to.eq(charge);
+      expect(await (await ethers.provider.getBalance(beneficiary)).eq(charge))
+        .to.be.true;
 
       const targetLogs = await counter.queryFilter(
         counter.filters.CalledFrom(),

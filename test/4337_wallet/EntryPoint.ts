@@ -38,12 +38,12 @@ import {
   getAccountAddress,
   HashZero,
   getAggregatedAccountDeployer,
-  simulationResultCatch,
-  simulationResultWithAggregationCatch,
+  // simulationResultCatch,
+  // simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { fillAndSign, getUserOpHash } from "./UserOp";
 import { UserOperation } from "./UserOperation";
-import { ContractReceipt, PopulatedTransaction } from "ethers/lib/ethers";
+import { PopulatedTransaction } from "ethers/lib/ethers";
 import { ethers } from "hardhat";
 import {
   defaultAbiCoder,
@@ -115,9 +115,7 @@ describe("EntryPoint", function() {
 
     describe("without stake", () => {
       it("should fail to stake without value", async () => {
-        await expect(entryPoint.addStake(2)).to.revertedWith(
-          "no stake specified",
-        );
+        await expectRevert(entryPoint.addStake(2), "no stake specified");
       });
       it("should fail to stake without delay", async () => {
         await expectRevert(
@@ -152,7 +150,7 @@ describe("EntryPoint", function() {
         const { stake } = await entryPoint.getDepositInfo(addr);
         await entryPoint.addStake(2, { value: ONE_ETH });
         const { stake: stakeAfter } = await entryPoint.getDepositInfo(addr);
-        expect(stakeAfter).to.eq(stake.add(ONE_ETH));
+        expect(stakeAfter.toString()).to.eq(stake.add(ONE_ETH).toString());
       });
       it("should fail to withdraw before unlock", async () => {
         await expectRevert(
@@ -233,7 +231,8 @@ describe("EntryPoint", function() {
             const { stake } = await entryPoint.getDepositInfo(addr);
             const addr1 = createAddress();
             await entryPoint.withdrawStake(addr1);
-            expect(await ethers.provider.getBalance(addr1)).to.eq(stake);
+            const addr1Bal = await ethers.provider.getBalance(addr1);
+            expect(addr1Bal.toString()).to.eq(stake.toString());
             const {
               stake: stakeAfter,
               withdrawTime,
@@ -259,14 +258,16 @@ describe("EntryPoint", function() {
           owner,
         );
         await account.addDeposit({ value: ONE_ETH });
-        expect(await getBalance(account.address)).to.equal(0);
+        const accBal = await getBalance(account.address);
+        expect(accBal).to.equal(0);
         expect(await account.getDeposit()).to.eql(ONE_ETH);
       });
       it("should be able to withdraw", async () => {
         const depositBefore = await account.getDeposit();
         await account.withdrawDepositTo(account.address, ONE_ETH);
         expect(await getBalance(account.address)).to.equal(1e18);
-        expect(await account.getDeposit()).to.equal(depositBefore.sub(ONE_ETH));
+        const dep = await account.getDeposit();
+        expect(dep.eq(depositBefore.sub(ONE_ETH))).to.be.true;
       });
     });
   });
@@ -302,9 +303,14 @@ describe("EntryPoint", function() {
         entryPoint,
       );
       await fund(account1);
-      await entryPoint.callStatic
+      const simVal = await entryPoint.callStatic
         .simulateValidation(op)
-        .catch(simulationResultCatch);
+        .catch(e => {
+          const err = e.message.slice(71, 87);
+          return err;
+        });
+      // SimulationResult error indicates success
+      expect(simVal).to.equal("SimulationResult");
     });
 
     it("should prevent overflows: fail if any numeric value is more than 120 bits", async () => {
@@ -359,9 +365,14 @@ describe("EntryPoint", function() {
       );
       await fund(op1.sender);
 
-      await entryPoint.callStatic
+      const simVal = await entryPoint.callStatic
         .simulateValidation(op1)
-        .catch(simulationResultCatch);
+        .catch(e => {
+          const err = e.message.slice(71, 87);
+          return err;
+        });
+      // SimulationResult error indicates success
+      expect(simVal).to.equal("SimulationResult");
     });
 
     it("should not call initCode from entrypoint", async () => {
@@ -548,9 +559,11 @@ describe("EntryPoint", function() {
           "should pay from stake, not balance",
         );
         const depositUsed = depositBefore.sub(depositAfter);
-        expect(await ethers.provider.getBalance(beneficiaryAddress)).to.equal(
-          depositUsed,
-        );
+        expect(
+          await (await ethers.provider.getBalance(beneficiaryAddress)).eq(
+            depositUsed,
+          ),
+        ).to.be.true;
 
         await calcGasUsage(rcpt, entryPoint, beneficiaryAddress);
       });
@@ -655,7 +668,11 @@ describe("EntryPoint", function() {
           entryPoint,
         );
 
-        expect(await ethers.provider.getBalance(op.sender)).to.eq(0);
+        expect(
+          await (await ethers.provider.getBalance(op.sender)).eq(
+            BigNumber.from(0),
+          ),
+        ).to.be.true;
 
         await expectRevert(
           entryPoint.callStatic.handleOps([op], beneficiaryAddress, {
@@ -778,9 +795,14 @@ describe("EntryPoint", function() {
           entryPoint,
         );
 
-        await entryPoint.callStatic
+        const simVal = await entryPoint.callStatic
           .simulateValidation(op2, { gasPrice: 1e9 })
-          .catch(simulationResultCatch);
+          .catch(e => {
+            const err = e.message.slice(71, 87);
+            return err;
+          });
+        // SimulationResult error indicates success
+        expect(simVal).to.equal("SimulationResult");
 
         await fund(op1.sender);
         await fund(account2.address);
@@ -791,8 +813,13 @@ describe("EntryPoint", function() {
         // console.log(ret.events!.map(e=>({ev:e.event, ...objdump(e.args!)})))
       });
       it("should execute", async () => {
-        expect(await counter.counters(account1)).equal(1);
-        expect(await counter.counters(account2.address)).equal(1);
+        expect(await (await counter.counters(account1)).eq(BigNumber.from(1)))
+          .to.be.true;
+        expect(
+          await (await counter.counters(account2.address)).eq(
+            BigNumber.from(1),
+          ),
+        ).to.be.true;
       });
       it("should pay for tx", async () => {
         // const cost1 = prebalance1.sub(await ethers.provider.getBalance(account1))
@@ -1001,7 +1028,10 @@ describe("EntryPoint", function() {
             );
             addr = await entryPoint.callStatic
               .getSenderAddress(initCode)
-              .catch(e => e.errorArgs.sender);
+              .catch(e => {
+                const addr = e.message.slice(92, -3);
+                return addr;
+              });
             await ethersSigner.sendTransaction({
               to: addr,
               value: parseEther("0.1"),
@@ -1019,16 +1049,18 @@ describe("EntryPoint", function() {
             await aggregator.addStake(entryPoint.address, 3, {
               value: TWO_ETH,
             });
-            const {
-              aggregationInfo,
-            } = await entryPoint.callStatic
+            const aggregationInfo = await entryPoint.callStatic
               .simulateValidation(userOp)
-              .catch(simulationResultWithAggregationCatch);
-            expect(aggregationInfo.actualAggregator).to.equal(
-              aggregator.address,
-            );
-            expect(aggregationInfo.aggregatorStake).to.equal(TWO_ETH);
-            expect(aggregationInfo.aggregatorUnstakeDelay).to.equal(3);
+              .catch(e => {
+                const aggAddr = e.message.slice(143, 185);
+                const stkAmnt = e.message.slice(188, 207);
+                const unstkDelay = e.message.slice(-4, -3);
+                const eData = [aggAddr, stkAmnt, unstkDelay];
+                return eData;
+              });
+            expect(aggregationInfo[0]).to.equal(aggregator.address);
+            expect(BigNumber.from(aggregationInfo[1]).eq(TWO_ETH)).to.be.true;
+            expect(Number(aggregationInfo[2])).to.equal(3);
           });
           it("should create account in handleOps", async () => {
             await aggregator.validateUserOpSignature(userOp);
@@ -1138,18 +1170,22 @@ describe("EntryPoint", function() {
           entryPoint,
         );
 
-        const {
-          paymasterInfo,
-        } = await entryPoint.callStatic
+        const paymasterInfo = await entryPoint.callStatic
           .simulateValidation(op)
-          .catch(simulationResultCatch);
-        const {
-          paymasterStake: simRetStake,
-          paymasterUnstakeDelay: simRetDelay,
-        } = paymasterInfo;
+          .catch(e => {
+            const paymStake = e.message.slice(-25, -6);
+            const globUnstakeDelay = e.message.slice(-4, -3);
+            const eData = [paymStake, globUnstakeDelay];
+            return eData;
+          });
+        // REWORKED TO GRAB DATA FROM CUSTOM ERROR
+        // const {
+        //   paymasterStake: simRetStake,
+        //   paymasterUnstakeDelay: simRetDelay,
+        // } = paymasterInfo;
 
-        expect(simRetStake).to.eql(paymasterStake);
-        expect(simRetDelay).to.eql(globalUnstakeDelaySec);
+        expect(paymasterInfo[0]).to.eql(paymasterStake);
+        expect(paymasterInfo[1]).to.eql(globalUnstakeDelaySec);
       });
     });
 
@@ -1182,9 +1218,11 @@ describe("EntryPoint", function() {
             sessionOwner,
             entryPoint,
           );
-          const { deadline } = await entryPoint.callStatic
+          const deadline = await entryPoint.callStatic
             .simulateValidation(userOp)
-            .catch(simulationResultCatch);
+            .catch(e => {
+              return e.message.slice(-20, -10);
+            });
           expect(deadline).to.eql(now + 60);
         });
 
@@ -1235,9 +1273,11 @@ describe("EntryPoint", function() {
             ethersSigner,
             entryPoint,
           );
-          const { deadline } = await entryPoint.callStatic
+          const deadline = await entryPoint.callStatic
             .simulateValidation(userOp)
-            .catch(simulationResultCatch);
+            .catch(e => {
+              return e.message.slice(-38, -28);
+            });
           expect(deadline).to.eql(now + 60);
         });
 
