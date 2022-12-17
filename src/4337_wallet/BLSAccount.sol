@@ -1,27 +1,35 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.12;
 
-import "./SimpleAccount.sol";
+import "./EtherspotAccount.sol";
 import "./bls/IBLSAccount.sol";
 
 /**
  * Minimal BLS-based account that uses an aggregated signature.
  * The account must maintain its own BLS public-key, and expose its trusted signature aggregator.
- * Note that unlike the "standard" SimpleAccount, this account can't be called directly
- * (normal SimpleAccount uses its "signer" address as both the ecrecover signer, and as a legitimate
+ * Note that unlike the "standard" EtherspotAccount, this account can't be called directly
+ * (normal EtherspotAccount uses its "signer" address as both the ecrecover signer, and as a legitimate
  * Ethereum sender address. Obviously, a BLS public is not a valid Ethereum sender address.)
  */
-contract BLSAccount is SimpleAccount, IBLSAccount {
+contract BLSAccount is EtherspotAccount, IBLSAccount {
     address public immutable aggregator;
     uint256[4] private publicKey;
 
-    constructor(
-        IEntryPoint anEntryPoint,
-        address anAggregator,
-        uint256[4] memory aPublicKey
-    ) SimpleAccount(anEntryPoint, address(0)) {
-        publicKey = aPublicKey;
+    // The constructor is used only for the "implementation" and only sets immutable values.
+    // Mutable values slots for proxy accounts are set by the 'initialize' function.
+    constructor(IEntryPoint anEntryPoint, address anAggregator)
+        EtherspotAccount(anEntryPoint)
+    {
         aggregator = anAggregator;
+    }
+
+    function initialize(uint256[4] memory aPublicKey)
+        public
+        virtual
+        initializer
+    {
+        super._initialize(address(0));
+        publicKey = aPublicKey;
     }
 
     function _validateSignature(

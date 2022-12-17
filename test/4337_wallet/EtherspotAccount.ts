@@ -4,9 +4,9 @@ import { ethers } from "hardhat";
 import { expect } from "chai";
 import { expectRevert } from "@openzeppelin/test-helpers";
 import {
-  SimpleAccount,
-  SimpleAccountDeployer__factory,
-  SimpleAccount__factory,
+  EtherspotAccount,
+  EtherspotAccountDeployer__factory,
+  EtherspotAccount__factory,
   TestUtil,
   TestUtil__factory,
 } from "../../typings";
@@ -27,7 +27,7 @@ import {
 import { parseEther } from "ethers/lib/utils";
 import { UserOperation } from "./UserOperation";
 
-describe("SimpleAccount", function() {
+describe("EtherspotAccount", function() {
   const entryPoint = "0x".padEnd(42, "2");
   let accounts: string[];
   let testUtil: TestUtil;
@@ -43,7 +43,7 @@ describe("SimpleAccount", function() {
   });
 
   it("owner should be able to call transfer", async () => {
-    const account = await new SimpleAccount__factory(
+    const account = await new EtherspotAccount__factory(
       ethers.provider.getSigner(),
     ).deploy(entryPoint, accounts[0]);
     await ethersSigner.sendTransaction({
@@ -54,14 +54,14 @@ describe("SimpleAccount", function() {
     await account.transfer(accounts[2], ONE_ETH);
   });
   it("other account should not be able to call transfer", async () => {
-    const account = await new SimpleAccount__factory(
+    const account = await new EtherspotAccount__factory(
       ethers.provider.getSigner(),
     ).deploy(entryPoint, accounts[0]);
     await expectRevert(
       account
         .connect(ethers.provider.getSigner(1))
         .transfer(accounts[2], ONE_ETH),
-      "only owner",
+      "EtherspotAccount:: Only owner",
     );
   });
 
@@ -72,7 +72,7 @@ describe("SimpleAccount", function() {
   });
 
   describe("#validateUserOp", () => {
-    let account: SimpleAccount;
+    let account: EtherspotAccount;
     let userOp: UserOperation;
     let userOpHash: string;
     let preBalance: number;
@@ -83,7 +83,7 @@ describe("SimpleAccount", function() {
     before(async () => {
       // that's the account of ethersSigner
       const entryPoint = accounts[2];
-      account = await new SimpleAccount__factory(
+      account = await new EtherspotAccount__factory(
         await ethers.getSigner(entryPoint),
       ).deploy(entryPoint, accountOwner.address);
       await ethersSigner.sendTransaction({
@@ -137,7 +137,7 @@ describe("SimpleAccount", function() {
     it("should reject same TX on nonce error", async () => {
       await expectRevert(
         account.validateUserOp(userOp, userOpHash, AddressZero, 0),
-        "invalid nonce",
+        "EtherspotAccount:: Invalid nonce",
       );
     });
     it("should reject tx with wrong signature", async () => {
@@ -146,14 +146,14 @@ describe("SimpleAccount", function() {
       const wrongUserOpHash = ethers.constants.HashZero;
       await expectRevert(
         account.validateUserOp(userOp, wrongUserOpHash, AddressZero, 0),
-        "account: wrong signature",
+        "EtherspotAccount:: Wrong signature",
       );
     });
   });
-  context("SimpleAccountDeployer", () => {
+  context("EtherspotAccountDeployer", () => {
     it("sanity: check deployer", async () => {
       const ownerAddr = createAddress();
-      const deployer = await new SimpleAccountDeployer__factory(
+      const deployer = await new EtherspotAccountDeployer__factory(
         ethersSigner,
       ).deploy();
       const target = await deployer.callStatic.deployAccount(

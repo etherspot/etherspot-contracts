@@ -63,17 +63,18 @@ export interface BLSAccountInterface extends utils.Interface {
     "addDeposit()": FunctionFragment;
     "aggregator()": FunctionFragment;
     "entryPoint()": FunctionFragment;
-    "exec(address,uint256,bytes)": FunctionFragment;
-    "execBatch(address[],bytes[])": FunctionFragment;
-    "execFromEntryPoint(address,uint256,bytes)": FunctionFragment;
+    "execute(address,uint256,bytes)": FunctionFragment;
+    "executeBatch(address[],bytes[])": FunctionFragment;
     "getAggregator()": FunctionFragment;
     "getBlsPublicKey()": FunctionFragment;
     "getDeposit()": FunctionFragment;
+    "initialize(address)": FunctionFragment;
     "nonce()": FunctionFragment;
     "owner()": FunctionFragment;
+    "proxiableUUID()": FunctionFragment;
     "setBlsPublicKey(uint256[4])": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "updateEntryPoint(address)": FunctionFragment;
+    "upgradeTo(address)": FunctionFragment;
+    "upgradeToAndCall(address,bytes)": FunctionFragment;
     "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,address,uint256)": FunctionFragment;
     "withdrawDepositTo(address,uint256)": FunctionFragment;
   };
@@ -91,16 +92,12 @@ export interface BLSAccountInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "exec",
+    functionFragment: "execute",
     values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "execBatch",
+    functionFragment: "executeBatch",
     values: [string[], BytesLike[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "execFromEntryPoint",
-    values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getAggregator",
@@ -114,19 +111,21 @@ export interface BLSAccountInterface extends utils.Interface {
     functionFragment: "getDeposit",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(functionFragment: "nonce", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "proxiableUUID",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "setBlsPublicKey",
     values: [[BigNumberish, BigNumberish, BigNumberish, BigNumberish]]
   ): string;
+  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "updateEntryPoint",
-    values: [string]
+    functionFragment: "upgradeToAndCall",
+    values: [string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "validateUserOp",
@@ -140,10 +139,9 @@ export interface BLSAccountInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exec", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "execBatch", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "execFromEntryPoint",
+    functionFragment: "executeBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -155,15 +153,20 @@ export interface BLSAccountInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonce", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setBlsPublicKey",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "updateEntryPoint",
+    functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -176,21 +179,36 @@ export interface BLSAccountInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "EntryPointChanged(address,address)": EventFragment;
+    "AdminChanged(address,address)": EventFragment;
+    "BeaconUpgraded(address)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "PublicKeyChanged(uint256[4],uint256[4])": EventFragment;
+    "SimpleAccountInitialized(address,address)": EventFragment;
+    "Upgraded(address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "EntryPointChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PublicKeyChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SimpleAccountInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
-export type EntryPointChangedEvent = TypedEvent<
+export type AdminChangedEvent = TypedEvent<
   [string, string],
-  { oldEntryPoint: string; newEntryPoint: string }
+  { previousAdmin: string; newAdmin: string }
 >;
 
-export type EntryPointChangedEventFilter =
-  TypedEventFilter<EntryPointChangedEvent>;
+export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
+
+export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export type InitializedEvent = TypedEvent<[number], { version: number }>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export type PublicKeyChangedEvent = TypedEvent<
   [
@@ -205,6 +223,18 @@ export type PublicKeyChangedEvent = TypedEvent<
 
 export type PublicKeyChangedEventFilter =
   TypedEventFilter<PublicKeyChangedEvent>;
+
+export type SimpleAccountInitializedEvent = TypedEvent<
+  [string, string],
+  { entryPoint: string; owner: string }
+>;
+
+export type SimpleAccountInitializedEventFilter =
+  TypedEventFilter<SimpleAccountInitializedEvent>;
+
+export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
+
+export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
 export interface BLSAccount extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -241,23 +271,16 @@ export interface BLSAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<[string]>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -269,24 +292,36 @@ export interface BLSAccount extends BaseContract {
 
     getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    "initialize(address)"(
+      anOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "initialize(uint256[4])"(
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     nonce(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     setBlsPublicKey(
       newPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     validateUserOp(
@@ -312,23 +347,16 @@ export interface BLSAccount extends BaseContract {
 
   entryPoint(overrides?: CallOverrides): Promise<string>;
 
-  exec(
+  execute(
     dest: string,
     value: BigNumberish,
     func: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  execBatch(
+  executeBatch(
     dest: string[],
     func: BytesLike[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  execFromEntryPoint(
-    dest: string,
-    value: BigNumberish,
-    func: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -340,24 +368,36 @@ export interface BLSAccount extends BaseContract {
 
   getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
+  "initialize(address)"(
+    anOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "initialize(uint256[4])"(
+    aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
+
+  proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   setBlsPublicKey(
     newPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  transfer(
-    dest: string,
-    amount: BigNumberish,
+  upgradeTo(
+    newImplementation: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  updateEntryPoint(
-    newEntryPoint: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   validateUserOp(
@@ -381,23 +421,16 @@ export interface BLSAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<string>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -409,23 +442,35 @@ export interface BLSAccount extends BaseContract {
 
     getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
+    "initialize(address)"(
+      anOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "initialize(uint256[4])"(
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     setBlsPublicKey(
       newPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    upgradeTo(
+      newImplementation: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -445,14 +490,22 @@ export interface BLSAccount extends BaseContract {
   };
 
   filters: {
-    "EntryPointChanged(address,address)"(
-      oldEntryPoint?: string | null,
-      newEntryPoint?: string | null
-    ): EntryPointChangedEventFilter;
-    EntryPointChanged(
-      oldEntryPoint?: string | null,
-      newEntryPoint?: string | null
-    ): EntryPointChangedEventFilter;
+    "AdminChanged(address,address)"(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+    AdminChanged(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+
+    "BeaconUpgraded(address)"(
+      beacon?: string | null
+    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
 
     "PublicKeyChanged(uint256[4],uint256[4])"(
       oldPublicKey?: null,
@@ -462,6 +515,18 @@ export interface BLSAccount extends BaseContract {
       oldPublicKey?: null,
       newPublicKey?: null
     ): PublicKeyChangedEventFilter;
+
+    "SimpleAccountInitialized(address,address)"(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): SimpleAccountInitializedEventFilter;
+    SimpleAccountInitialized(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): SimpleAccountInitializedEventFilter;
+
+    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -473,23 +538,16 @@ export interface BLSAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -499,24 +557,36 @@ export interface BLSAccount extends BaseContract {
 
     getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
+    "initialize(address)"(
+      anOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "initialize(uint256[4])"(
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBlsPublicKey(
       newPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     validateUserOp(
@@ -543,23 +613,16 @@ export interface BLSAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -569,24 +632,36 @@ export interface BLSAccount extends BaseContract {
 
     getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    "initialize(address)"(
+      anOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "initialize(uint256[4])"(
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     nonce(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setBlsPublicKey(
       newPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     validateUserOp(

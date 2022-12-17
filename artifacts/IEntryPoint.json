@@ -67,16 +67,50 @@
           "components": [
             {
               "internalType": "uint256",
-              "name": "paymasterStake",
+              "name": "stake",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "paymasterUnstakeDelay",
+              "name": "unstakeDelaySec",
               "type": "uint256"
             }
           ],
-          "internalType": "struct IEntryPoint.PaymasterInfo",
+          "internalType": "struct IStakeManager.StakeInfo",
+          "name": "senderInfo",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "stake",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "unstakeDelaySec",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IStakeManager.StakeInfo",
+          "name": "factoryInfo",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "stake",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "unstakeDelaySec",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IStakeManager.StakeInfo",
           "name": "paymasterInfo",
           "type": "tuple"
         }
@@ -105,16 +139,50 @@
           "components": [
             {
               "internalType": "uint256",
-              "name": "paymasterStake",
+              "name": "stake",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "paymasterUnstakeDelay",
+              "name": "unstakeDelaySec",
               "type": "uint256"
             }
           ],
-          "internalType": "struct IEntryPoint.PaymasterInfo",
+          "internalType": "struct IStakeManager.StakeInfo",
+          "name": "senderInfo",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "stake",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "unstakeDelaySec",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IStakeManager.StakeInfo",
+          "name": "factoryInfo",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "stake",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "unstakeDelaySec",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IStakeManager.StakeInfo",
           "name": "paymasterInfo",
           "type": "tuple"
         },
@@ -126,23 +194,61 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
-              "name": "aggregatorStake",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "aggregatorUnstakeDelay",
-              "type": "uint256"
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "stake",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "unstakeDelaySec",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IStakeManager.StakeInfo",
+              "name": "stakeInfo",
+              "type": "tuple"
             }
           ],
-          "internalType": "struct IEntryPoint.AggregationInfo",
-          "name": "aggregationInfo",
+          "internalType": "struct IEntryPoint.AggregatorStakeInfo",
+          "name": "aggregatorInfo",
           "type": "tuple"
         }
       ],
       "name": "SimulationResultWithAggregation",
       "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "userOpHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "factory",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "paymaster",
+          "type": "address"
+        }
+      ],
+      "name": "AccountDeployed",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -161,6 +267,19 @@
         }
       ],
       "name": "Deposited",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "aggregator",
+          "type": "address"
+        }
+      ],
+      "name": "SignatureAggregatorChanged",
       "type": "event"
     },
     {
@@ -261,6 +380,12 @@
         },
         {
           "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
           "internalType": "uint256",
           "name": "actualGasCost",
           "type": "uint256"
@@ -268,14 +393,8 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "actualGasPrice",
+          "name": "actualGasUsed",
           "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "success",
-          "type": "bool"
         }
       ],
       "name": "UserOperationEvent",

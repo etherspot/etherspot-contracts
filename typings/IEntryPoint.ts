@@ -190,16 +190,20 @@ export interface IEntryPointInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "withdrawTo", data: BytesLike): Result;
 
   events: {
+    "AccountDeployed(bytes32,address,address,address)": EventFragment;
     "Deposited(address,uint256)": EventFragment;
+    "SignatureAggregatorChanged(address)": EventFragment;
     "StakeLocked(address,uint256,uint256)": EventFragment;
     "StakeUnlocked(address,uint256)": EventFragment;
     "StakeWithdrawn(address,address,uint256)": EventFragment;
-    "UserOperationEvent(bytes32,address,address,uint256,uint256,uint256,bool)": EventFragment;
+    "UserOperationEvent(bytes32,address,address,uint256,bool,uint256,uint256)": EventFragment;
     "UserOperationRevertReason(bytes32,address,uint256,bytes)": EventFragment;
     "Withdrawn(address,address,uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AccountDeployed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SignatureAggregatorChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StakeLocked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StakeUnlocked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StakeWithdrawn"): EventFragment;
@@ -208,12 +212,27 @@ export interface IEntryPointInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
 
+export type AccountDeployedEvent = TypedEvent<
+  [string, string, string, string],
+  { userOpHash: string; sender: string; factory: string; paymaster: string }
+>;
+
+export type AccountDeployedEventFilter = TypedEventFilter<AccountDeployedEvent>;
+
 export type DepositedEvent = TypedEvent<
   [string, BigNumber],
   { account: string; totalDeposit: BigNumber }
 >;
 
 export type DepositedEventFilter = TypedEventFilter<DepositedEvent>;
+
+export type SignatureAggregatorChangedEvent = TypedEvent<
+  [string],
+  { aggregator: string }
+>;
+
+export type SignatureAggregatorChangedEventFilter =
+  TypedEventFilter<SignatureAggregatorChangedEvent>;
 
 export type StakeLockedEvent = TypedEvent<
   [string, BigNumber, BigNumber],
@@ -237,15 +256,15 @@ export type StakeWithdrawnEvent = TypedEvent<
 export type StakeWithdrawnEventFilter = TypedEventFilter<StakeWithdrawnEvent>;
 
 export type UserOperationEventEvent = TypedEvent<
-  [string, string, string, BigNumber, BigNumber, BigNumber, boolean],
+  [string, string, string, BigNumber, boolean, BigNumber, BigNumber],
   {
     userOpHash: string;
     sender: string;
     paymaster: string;
     nonce: BigNumber;
-    actualGasCost: BigNumber;
-    actualGasPrice: BigNumber;
     success: boolean;
+    actualGasCost: BigNumber;
+    actualGasUsed: BigNumber;
   }
 >;
 
@@ -470,6 +489,19 @@ export interface IEntryPoint extends BaseContract {
   };
 
   filters: {
+    "AccountDeployed(bytes32,address,address,address)"(
+      userOpHash?: BytesLike | null,
+      sender?: string | null,
+      factory?: null,
+      paymaster?: null
+    ): AccountDeployedEventFilter;
+    AccountDeployed(
+      userOpHash?: BytesLike | null,
+      sender?: string | null,
+      factory?: null,
+      paymaster?: null
+    ): AccountDeployedEventFilter;
+
     "Deposited(address,uint256)"(
       account?: string | null,
       totalDeposit?: null
@@ -478,6 +510,13 @@ export interface IEntryPoint extends BaseContract {
       account?: string | null,
       totalDeposit?: null
     ): DepositedEventFilter;
+
+    "SignatureAggregatorChanged(address)"(
+      aggregator?: null
+    ): SignatureAggregatorChangedEventFilter;
+    SignatureAggregatorChanged(
+      aggregator?: null
+    ): SignatureAggregatorChangedEventFilter;
 
     "StakeLocked(address,uint256,uint256)"(
       account?: string | null,
@@ -510,23 +549,23 @@ export interface IEntryPoint extends BaseContract {
       amount?: null
     ): StakeWithdrawnEventFilter;
 
-    "UserOperationEvent(bytes32,address,address,uint256,uint256,uint256,bool)"(
+    "UserOperationEvent(bytes32,address,address,uint256,bool,uint256,uint256)"(
       userOpHash?: BytesLike | null,
       sender?: string | null,
       paymaster?: string | null,
       nonce?: null,
+      success?: null,
       actualGasCost?: null,
-      actualGasPrice?: null,
-      success?: null
+      actualGasUsed?: null
     ): UserOperationEventEventFilter;
     UserOperationEvent(
       userOpHash?: BytesLike | null,
       sender?: string | null,
       paymaster?: string | null,
       nonce?: null,
+      success?: null,
       actualGasCost?: null,
-      actualGasPrice?: null,
-      success?: null
+      actualGasUsed?: null
     ): UserOperationEventEventFilter;
 
     "UserOperationRevertReason(bytes32,address,uint256,bytes)"(

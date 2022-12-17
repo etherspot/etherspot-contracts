@@ -9,7 +9,7 @@ import {
   signUserOp,
 } from "../test/4337_wallet/UserOp";
 import { UserOperation } from "../test/4337_wallet/UserOperation";
-import { SimpleAccount__factory } from "../typings";
+import { EtherspotAccount__factory } from "../typings";
 
 const saltToHex = (salt: string | number) => {
   salt = salt.toString();
@@ -49,15 +49,17 @@ async function testAADeployment() {
   const ep = await EntryPoint.connect(deployer).deploy();
   console.log(" EntryPoint deployed to: ", ep.address);
 
-  // Deploy SimpleAccount for user
+  // Deploy EtherspotAccount for user
   console.log("\x1b[35m Deploying AA wallet for user.....\x1b[0m");
-  const SimpleAccountDeployer = await hre.ethers.getContractFactory(
-    "SimpleAccountDeployer",
+  const EtherspotAccountDeployer = await hre.ethers.getContractFactory(
+    "EtherspotAccountDeployer",
   );
-  const sad = await SimpleAccountDeployer.connect(deployer).deploy();
-  console.log(" SimpleAccountDeployer deployed to: ", sad.address);
+  const sad = await EtherspotAccountDeployer.connect(deployer).deploy();
+  console.log(" EtherspotAccountDeployer deployed to: ", sad.address);
 
-  console.log("\n" + "\x1b[32m Testing deployed SimpleAccountDeployer\x1b[0m ");
+  console.log(
+    "\n" + "\x1b[32m Testing deployed EtherspotAccountDeployer\x1b[0m ",
+  );
 
   // Deploy an AA account through deployer
   console.log("\x1b[35m Calculating predefined address.....\x1b[0m");
@@ -65,8 +67,8 @@ async function testAADeployment() {
   console.log(" Expected user address: ", expected);
 
   await sad.deployAccount(ep.address, user.address, SALT);
-  const SimpleAccount = await ethers.getContractFactory("SimpleAccount");
-  const sa = await SimpleAccount.attach(expected);
+  const EtherspotAccount = await ethers.getContractFactory("EtherspotAccount");
+  const sa = await EtherspotAccount.attach(expected);
 
   console.log("\n" + "\x1b[32m Testing deployed EntryPoint\x1b[0m");
   console.log("\x1b[35m Sanity checking EntryPoint setup.....\x1b[0m");
@@ -133,7 +135,7 @@ async function testAADeployment() {
   const actualGasPrice = 1e9;
   const chainId = await ethers.provider.getNetwork().then(net => net.chainId);
 
-  const account = await new SimpleAccount__factory(
+  const account = await new EtherspotAccount__factory(
     await ethers.getSigner(entryPoint.address),
   ).deploy(entryPoint.address, accountOwner.address);
 

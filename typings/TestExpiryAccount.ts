@@ -63,15 +63,16 @@ export interface TestExpiryAccountInterface extends utils.Interface {
     "addDeposit()": FunctionFragment;
     "addTemporaryOwner(address,uint256)": FunctionFragment;
     "entryPoint()": FunctionFragment;
-    "exec(address,uint256,bytes)": FunctionFragment;
-    "execBatch(address[],bytes[])": FunctionFragment;
-    "execFromEntryPoint(address,uint256,bytes)": FunctionFragment;
+    "execute(address,uint256,bytes)": FunctionFragment;
+    "executeBatch(address[],bytes[])": FunctionFragment;
     "getDeposit()": FunctionFragment;
+    "initialize(address)": FunctionFragment;
     "nonce()": FunctionFragment;
     "owner()": FunctionFragment;
     "ownerDeadlines(address)": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "updateEntryPoint(address)": FunctionFragment;
+    "proxiableUUID()": FunctionFragment;
+    "upgradeTo(address)": FunctionFragment;
+    "upgradeToAndCall(address,bytes)": FunctionFragment;
     "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,address,uint256)": FunctionFragment;
     "withdrawDepositTo(address,uint256)": FunctionFragment;
   };
@@ -89,21 +90,18 @@ export interface TestExpiryAccountInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "exec",
+    functionFragment: "execute",
     values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "execBatch",
+    functionFragment: "executeBatch",
     values: [string[], BytesLike[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "execFromEntryPoint",
-    values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getDeposit",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(functionFragment: "nonce", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -111,12 +109,13 @@ export interface TestExpiryAccountInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
+    functionFragment: "proxiableUUID",
+    values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "updateEntryPoint",
-    values: [string]
+    functionFragment: "upgradeToAndCall",
+    values: [string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "validateUserOp",
@@ -133,22 +132,26 @@ export interface TestExpiryAccountInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exec", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "execBatch", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "execFromEntryPoint",
+    functionFragment: "executeBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonce", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "ownerDeadlines",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "updateEntryPoint",
+    functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -161,19 +164,46 @@ export interface TestExpiryAccountInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "EntryPointChanged(address,address)": EventFragment;
+    "AdminChanged(address,address)": EventFragment;
+    "BeaconUpgraded(address)": EventFragment;
+    "Initialized(uint8)": EventFragment;
+    "SimpleAccountInitialized(address,address)": EventFragment;
+    "Upgraded(address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "EntryPointChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SimpleAccountInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
-export type EntryPointChangedEvent = TypedEvent<
+export type AdminChangedEvent = TypedEvent<
   [string, string],
-  { oldEntryPoint: string; newEntryPoint: string }
+  { previousAdmin: string; newAdmin: string }
 >;
 
-export type EntryPointChangedEventFilter =
-  TypedEventFilter<EntryPointChangedEvent>;
+export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
+
+export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export type InitializedEvent = TypedEvent<[number], { version: number }>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
+export type SimpleAccountInitializedEvent = TypedEvent<
+  [string, string],
+  { entryPoint: string; owner: string }
+>;
+
+export type SimpleAccountInitializedEventFilter =
+  TypedEventFilter<SimpleAccountInitializedEvent>;
+
+export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
+
+export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
 export interface TestExpiryAccount extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -214,27 +244,25 @@ export interface TestExpiryAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<[string]>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
+    getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    initialize(
+      anOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     nonce(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -245,15 +273,17 @@ export interface TestExpiryAccount extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
+
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     validateUserOp(
@@ -283,27 +313,25 @@ export interface TestExpiryAccount extends BaseContract {
 
   entryPoint(overrides?: CallOverrides): Promise<string>;
 
-  exec(
+  execute(
     dest: string,
     value: BigNumberish,
     func: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  execBatch(
+  executeBatch(
     dest: string[],
     func: BytesLike[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  execFromEntryPoint(
-    dest: string,
-    value: BigNumberish,
-    func: BytesLike,
+  getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+  initialize(
+    anOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
   nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -311,15 +339,17 @@ export interface TestExpiryAccount extends BaseContract {
 
   ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  transfer(
-    dest: string,
-    amount: BigNumberish,
+  proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+  upgradeTo(
+    newImplementation: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  updateEntryPoint(
-    newEntryPoint: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   validateUserOp(
@@ -347,27 +377,22 @@ export interface TestExpiryAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<string>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initialize(anOwner: string, overrides?: CallOverrides): Promise<void>;
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -375,14 +400,16 @@ export interface TestExpiryAccount extends BaseContract {
 
     ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+    upgradeTo(
+      newImplementation: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -402,14 +429,34 @@ export interface TestExpiryAccount extends BaseContract {
   };
 
   filters: {
-    "EntryPointChanged(address,address)"(
-      oldEntryPoint?: string | null,
-      newEntryPoint?: string | null
-    ): EntryPointChangedEventFilter;
-    EntryPointChanged(
-      oldEntryPoint?: string | null,
-      newEntryPoint?: string | null
-    ): EntryPointChangedEventFilter;
+    "AdminChanged(address,address)"(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+    AdminChanged(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+
+    "BeaconUpgraded(address)"(
+      beacon?: string | null
+    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
+
+    "SimpleAccountInitialized(address,address)"(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): SimpleAccountInitializedEventFilter;
+    SimpleAccountInitialized(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): SimpleAccountInitializedEventFilter;
+
+    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -425,27 +472,25 @@ export interface TestExpiryAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
+    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initialize(
+      anOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -453,15 +498,17 @@ export interface TestExpiryAccount extends BaseContract {
 
     ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     validateUserOp(
@@ -492,27 +539,25 @@ export interface TestExpiryAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    exec(
+    execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    execBatch(
+    executeBatch(
       dest: string[],
       func: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    execFromEntryPoint(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
+    getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    initialize(
+      anOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonce(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -523,15 +568,17 @@ export interface TestExpiryAccount extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    transfer(
-      dest: string,
-      amount: BigNumberish,
+    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    upgradeTo(
+      newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     validateUserOp(

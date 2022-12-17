@@ -36,19 +36,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newEntryPoint",
-        type: "address",
-      },
-    ],
-    name: "updateEntryPoint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         components: [
           {
             internalType: "address",

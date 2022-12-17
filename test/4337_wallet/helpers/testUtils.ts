@@ -1,13 +1,12 @@
-/* eslint-disable prefer-rest-params */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/camelcase */
 import { ethers } from "hardhat";
 import {
   arrayify,
-  getCreate2Address,
   hexConcat,
+  Interface,
   keccak256,
   parseEther,
 } from "ethers/lib/utils";
@@ -16,16 +15,19 @@ import {
   BigNumberish,
   Contract,
   ContractReceipt,
+  Signer,
   Wallet,
 } from "ethers";
-// eslint-disable-next-line @typescript-eslint/camelcase
+import { JsonRpcProvider } from "ethers/node_modules/@ethersproject/providers";
 import {
+  ERC1967Proxy__factory,
   EntryPoint,
   EntryPoint__factory,
-  // IEntryPoint,
   IERC20,
-  SimpleAccount__factory,
-  TestAggregatedAccount__factory,
+  EtherspotAccount,
+  EtherspotAccountFactory__factory,
+  EtherspotAccount__factory,
+  EtherspotAccountFactory,
 } from "../../../typings";
 import { BytesLike, hexValue } from "@ethersproject/bytes";
 import { expect } from "chai";
@@ -33,6 +35,7 @@ import { Create2Factory } from "./Create2Factory";
 import { debugTransaction } from "./debugTx";
 import { UserOperation } from "../UserOperation";
 import { UserOpsPerAggregatorStruct } from "../../../typings/IEntryPoint";
+import { zeroAddress } from "ethereumjs-util";
 
 export const AddressZero = ethers.constants.AddressZero;
 export const HashZero = ethers.constants.HashZero;
@@ -112,18 +115,13 @@ export async function calcGasUsage(
     entryPoint.filters.UserOperationEvent(),
     rcpt.blockHash,
   );
-  const { actualGasCost, actualGasPrice } = logs[0].args;
+  const { actualGasCost, actualGasUsed } = logs[0].args;
   console.log("\t== actual gasUsed (from tx receipt)=", actualGas.toString());
-  const calculatedGasUsed =
-    actualGasCost.toNumber() / actualGasPrice.toNumber();
-  console.log(
-    "\t== calculated gasUsed (paid to beneficiary)=",
-    calculatedGasUsed,
-  );
+  console.log("\t== calculated gasUsed (paid to beneficiary)=", actualGasUsed);
   const tx = await ethers.provider.getTransaction(rcpt.transactionHash);
   console.log(
     "\t== gasDiff",
-    actualGas.toNumber() - calculatedGasUsed - callDataCost(tx.data),
+    actualGas.toNumber() - actualGasUsed.toNumber() - callDataCost(tx.data),
   );
   if (beneficiaryAddress != null) {
     expect(await getBalance(beneficiaryAddress)).to.eq(
@@ -136,28 +134,27 @@ export async function calcGasUsage(
 // helper function to create a deployer (initCode) call to our account. relies on the global "create2Deployer"
 // note that this is a very naive deployer: merely calls "create2", which means entire constructor code is passed
 // with each deployment. a better deployer will only receive the constructor parameters.
-export function getAccountDeployer(
-  entryPoint: string,
+export function getAccountInitCode(
   owner: string,
+  factory: EtherspotAccountFactory,
+  salt = 0,
 ): BytesLike {
-  const accountCtr = new SimpleAccount__factory(
-    ethers.provider.getSigner(),
-  ).getDeployTransaction(entryPoint, owner).data!;
-  const factory = new Create2Factory(ethers.provider);
-  const initCallData = factory.getDeployTransactionCallData(
-    hexValue(accountCtr),
-    0,
-  );
-  return hexConcat([Create2Factory.contractAddress, initCallData]);
+  return hexConcat([
+    factory.address,
+    factory.interface.encodeFunctionData("createAccount", [owner, salt]),
+  ]);
 }
 
-export async function getAggregatedAccountDeployer(
+export async function getAggregatedAccountInitCode(
   entryPoint: string,
-  aggregator: string,
+  implementationAddress: string,
 ): Promise<BytesLike> {
-  const accountCtr = await new TestAggregatedAccount__factory(
+  const initializeCall = new Interface(
+    EtherspotAccount__factory.abi,
+  ).encodeFunctionData("initialize", [zeroAddress()]);
+  const accountCtr = new ERC1967Proxy__factory(
     ethers.provider.getSigner(),
-  ).getDeployTransaction(entryPoint, aggregator).data!;
+  ).getDeployTransaction(implementationAddress, initializeCall).data!;
 
   const factory = new Create2Factory(ethers.provider);
   const initCallData = factory.getDeployTransactionCallData(
@@ -168,15 +165,12 @@ export async function getAggregatedAccountDeployer(
 }
 
 // given the parameters as AccountDeployer, return the resulting "counterfactual address" that it would create.
-export function getAccountAddress(entryPoint: string, owner: string): string {
-  const accountCtr = new SimpleAccount__factory(
-    ethers.provider.getSigner(),
-  ).getDeployTransaction(entryPoint, owner).data!;
-  return getCreate2Address(
-    Create2Factory.contractAddress,
-    HashZero,
-    keccak256(hexValue(accountCtr)),
-  );
+export async function getAccountAddress(
+  owner: string,
+  factory: EtherspotAccountFactory,
+  salt = 0,
+): Promise<string> {
+  return await factory.getAddress(owner, salt);
 }
 
 const panicCodes: { [key: number]: string } = {
@@ -263,6 +257,7 @@ export async function checkForGeth(): Promise<void> {
 
   currentNode = await provider.request({ method: "web3_clientVersion" });
 
+  console.log("node version:", currentNode);
   // NOTE: must run geth with params:
   // --http.api personal,eth,net,web3
   // --allow-insecure-unlock
@@ -274,7 +269,7 @@ export async function checkForGeth(): Promise<void> {
       await provider
         .request({ method: "personal_unlockAccount", params: [acc, "pass"] })
         .catch(rethrow);
-      await fund(acc);
+      await fund(acc, "10");
     }
   }
 }
@@ -306,8 +301,8 @@ export async function checkForBannedOps(
     .map((op, index) => ({ op: op.op, index }))
     .filter(op => op.op === "NUMBER");
   expect(blockHash.length).to.equal(
-    1,
-    "expected exactly 1 call to NUMBER (Just before validatePaymasterUserOp)",
+    2,
+    "expected exactly 2 call to NUMBER (Just before and after validateUserOperation)",
   );
   const validateAccountOps = logs.slice(0, blockHash[0].index - 1);
   const validatePaymasterOps = logs.slice(blockHash[0].index + 1);
@@ -363,7 +358,7 @@ export function simulationResultWithAggregationCatch(e: any): any {
 }
 
 export async function deployEntryPoint(
-  provider = ethers.provider,
+  provider: JsonRpcProvider = ethers.provider,
 ): Promise<EntryPoint> {
   const create2factory = new Create2Factory(provider);
   const epf = new EntryPoint__factory(provider.getSigner());
@@ -391,4 +386,31 @@ export function userOpsWithoutAgg(
       signature: "0x",
     },
   ];
+}
+
+// Deploys an implementation and a proxy pointing to this implementation
+export async function createAccount(
+  ethersSigner: Signer,
+  accountOwner: string,
+  entryPoint: string,
+  _factory?: EtherspotAccountFactory,
+): Promise<{
+  proxy: EtherspotAccount;
+  accountFactory: EtherspotAccountFactory;
+  implementation: string;
+}> {
+  const accountFactory =
+    _factory ??
+    (await new EtherspotAccountFactory__factory(ethersSigner).deploy(
+      entryPoint,
+    ));
+  const implementation = await accountFactory.accountImplementation();
+  await accountFactory.createAccount(accountOwner, 0);
+  const accountAddress = await accountFactory.getAddress(accountOwner, 0);
+  const proxy = EtherspotAccount__factory.connect(accountAddress, ethersSigner);
+  return {
+    implementation,
+    accountFactory,
+    proxy,
+  };
 }

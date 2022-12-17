@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity ^0.8.12;
 
-import "../SimpleAccount.sol";
+import "../EtherspotAccount.sol";
 
 /**
  * A test account, for testing expiry.
@@ -9,14 +9,16 @@ import "../SimpleAccount.sol";
  * NOTE: this is not a full "session key" implementation: a real session key should probably limit
  * other things, like target contracts and methods to be called.
  */
-contract TestExpiryAccount is SimpleAccount {
+contract TestExpiryAccount is EtherspotAccount {
     using ECDSA for bytes32;
 
     mapping(address => uint256) public ownerDeadlines;
 
-    constructor(IEntryPoint anEntryPoint, address anOwner)
-        SimpleAccount(anEntryPoint, anOwner)
-    {
+    // solhint-disable-next-line no-empty-blocks
+    constructor(IEntryPoint anEntryPoint) EtherspotAccount(anEntryPoint) {}
+
+    function initialize(address anOwner) public virtual override initializer {
+        super._initialize(anOwner);
         addTemporaryOwner(anOwner, type(uint256).max);
     }
 

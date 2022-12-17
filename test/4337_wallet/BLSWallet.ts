@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/camelcase */
 import {
   aggregate,
@@ -6,21 +7,21 @@ import {
 } from "@thehubbleproject/bls/dist/signer";
 import { arrayify, defaultAbiCoder, hexConcat } from "ethers/lib/utils";
 import {
-  BLSAccountDeployer,
-  BLSSignatureAggregator,
-  BLSAccount,
-  EntryPoint,
-  BLSAccountDeployer__factory,
   BLSOpen__factory,
+  BLSSignatureAggregator,
   BLSSignatureAggregator__factory,
+  BLSAccount,
   BLSAccount__factory,
+  BLSAccountFactory,
+  BLSAccountFactory__factory,
+  EntryPoint,
 } from "../../typings";
 import { ethers } from "hardhat";
 import {
   deployEntryPoint,
   fund,
   ONE_ETH,
-  // simulationResultWithAggregationCatch,
+  simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { DefaultsForUserOp, fillUserOp } from "./UserOp";
 import { expect } from "chai";
@@ -40,7 +41,7 @@ describe("bls account", function() {
   let entrypoint: EntryPoint;
   let account1: BLSAccount;
   let account2: BLSAccount;
-  let accountDeployer: BLSAccountDeployer;
+  let accountDeployer: BLSAccountFactory;
   before(async () => {
     entrypoint = await deployEntryPoint();
     const BLSOpenLib = await new BLSOpen__factory(
@@ -58,20 +59,24 @@ describe("bls account", function() {
     signer1 = fact.getSigner(arrayify(BLS_DOMAIN), "0x01");
     signer2 = fact.getSigner(arrayify(BLS_DOMAIN), "0x02");
 
-    accountDeployer = await new BLSAccountDeployer__factory(
+    const blsAccountImplementation = await new BLSAccount__factory(
       etherSigner,
-    ).deploy();
+    ).deploy(entrypoint.address, blsAgg.address);
+    accountDeployer = await new BLSAccountFactory__factory(etherSigner).deploy(
+      blsAccountImplementation.address,
+    );
 
+    // TODO: these two are not created via the 'accountDeployer' for some reason - I am not touching it for now
     account1 = await new BLSAccount__factory(etherSigner).deploy(
       entrypoint.address,
       blsAgg.address,
-      signer1.pubkey,
     );
+    await account1["initialize(uint256[4])"](signer1.pubkey);
     account2 = await new BLSAccount__factory(etherSigner).deploy(
       entrypoint.address,
       blsAgg.address,
-      signer2.pubkey,
     );
+    await account2["initialize(uint256[4])"](signer2.pubkey);
   });
 
   it("#getTrailingPublicKey", async () => {
@@ -182,9 +187,8 @@ describe("bls account", function() {
       signer3 = fact.getSigner(arrayify(BLS_DOMAIN), "0x03");
       initCode = hexConcat([
         accountDeployer.address,
-        accountDeployer.interface.encodeFunctionData("deployAccount", [
+        accountDeployer.interface.encodeFunctionData("createAccount", [
           entrypoint.address,
-          blsAgg.address,
           0,
           signer3.pubkey,
         ]),
@@ -193,18 +197,9 @@ describe("bls account", function() {
 
     it("validate after simulation returns SimulationResultWithAggregation", async () => {
       const verifier = new BlsVerifier(BLS_DOMAIN);
-
-      /* Bush fixed - previous method of extracting 
-      information from the custom error was not working
-      correctly */
-
       const senderAddress = await entrypoint.callStatic
         .getSenderAddress(initCode)
-        .catch(e => {
-          const addr = e.message.slice(92, -3);
-          return addr;
-        });
-
+        .catch(e => e.errorArgs.sender);
       await fund(senderAddress, "0.01");
       const userOp = await fillUserOp(
         {
@@ -218,21 +213,12 @@ describe("bls account", function() {
       const sigParts = signer3.sign(requestHash);
       userOp.signature = hexConcat(sigParts);
 
-      /* Bush fixed: sliced the correct params from the custom error message */
-
-      const aggregationInfo = await entrypoint.callStatic
+      const { aggregatorInfo } = await entrypoint.callStatic
         .simulateValidation(userOp)
-        // .catch(simulationResultWithAggregationCatch);
-        .catch(e => {
-          const aggAddr = e.message.slice(143, 185);
-          const stkAmnt = e.message.slice(188, 207);
-          const unstkDelay = e.message.slice(-4, -3);
-          const eData = [aggAddr, stkAmnt, unstkDelay];
-          return eData;
-        });
-      expect(aggregationInfo[0]).to.eq(blsAgg.address);
-      expect(aggregationInfo[1]).to.eq(ONE_ETH.toString());
-      expect(Number(aggregationInfo[2])).to.eq(2);
+        .catch(simulationResultWithAggregationCatch);
+      expect(aggregatorInfo.actualAggregator).to.eq(blsAgg.address);
+      expect(aggregatorInfo.stakeInfo.stake).to.eq(ONE_ETH);
+      expect(aggregatorInfo.stakeInfo.unstakeDelaySec).to.eq(2);
 
       const [signature] = defaultAbiCoder.decode(
         ["bytes32[2]"],
@@ -243,7 +229,6 @@ describe("bls account", function() {
       ); // TODO: returns uint256[4], verify needs bytes32[4]
       const requestHash1 = await blsAgg.getUserOpHash(userOp);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       expect(verifier.verify(signature, pubkey, requestHash1)).to.equal(true);
     });

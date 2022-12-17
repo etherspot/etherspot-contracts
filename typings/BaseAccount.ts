@@ -61,7 +61,6 @@ export interface BaseAccountInterface extends utils.Interface {
   functions: {
     "entryPoint()": FunctionFragment;
     "nonce()": FunctionFragment;
-    "updateEntryPoint(address)": FunctionFragment;
     "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,address,uint256)": FunctionFragment;
   };
 
@@ -71,20 +70,12 @@ export interface BaseAccountInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "nonce", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "updateEntryPoint",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "validateUserOp",
     values: [UserOperationStruct, BytesLike, string, BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "updateEntryPoint",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "validateUserOp",
     data: BytesLike
@@ -124,11 +115,6 @@ export interface BaseAccount extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     validateUserOp(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
@@ -142,11 +128,6 @@ export interface BaseAccount extends BaseContract {
 
   nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
-  updateEntryPoint(
-    newEntryPoint: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   validateUserOp(
     userOp: UserOperationStruct,
     userOpHash: BytesLike,
@@ -159,11 +140,6 @@ export interface BaseAccount extends BaseContract {
     entryPoint(overrides?: CallOverrides): Promise<string>;
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
-
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     validateUserOp(
       userOp: UserOperationStruct,
@@ -181,11 +157,6 @@ export interface BaseAccount extends BaseContract {
 
     nonce(overrides?: CallOverrides): Promise<BigNumber>;
 
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     validateUserOp(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
@@ -199,11 +170,6 @@ export interface BaseAccount extends BaseContract {
     entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonce(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    updateEntryPoint(
-      newEntryPoint: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
 
     validateUserOp(
       userOp: UserOperationStruct,

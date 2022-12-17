@@ -1,18 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/camelcase */
-import "./helpers/aa.init";
+import "./aa.init";
 import { ethers } from "hardhat";
 import { expect } from "chai";
 import {
-  SimpleAccount,
+  EtherspotAccount,
   EntryPoint,
   DepositPaymaster,
-  TestCounter,
-  TestToken,
-  SimpleAccount__factory,
   DepositPaymaster__factory,
   TestOracle__factory,
+  TestCounter,
   TestCounter__factory,
+  TestToken,
   TestToken__factory,
 } from "../../typings";
 import {
@@ -22,12 +20,12 @@ import {
   deployEntryPoint,
   FIVE_ETH,
   ONE_ETH,
-  // simulationResultCatch,
+  simulationResultCatch,
   userOpsWithoutAgg,
+  createAccount,
 } from "./helpers/testUtils";
 import { fillAndSign } from "./UserOp";
 import { hexConcat, hexZeroPad, parseEther } from "ethers/lib/utils";
-import { expectRevert } from "@openzeppelin/test-helpers";
 
 describe("DepositPaymaster", () => {
   let entryPoint: EntryPoint;
@@ -52,13 +50,14 @@ describe("DepositPaymaster", () => {
   });
 
   describe("deposit", () => {
-    let account: SimpleAccount;
+    let account: EtherspotAccount;
 
     before(async () => {
-      account = await new SimpleAccount__factory(ethersSigner).deploy(
-        entryPoint.address,
+      ({ proxy: account } = await createAccount(
+        ethersSigner,
         await ethersSigner.getAddress(),
-      );
+        entryPoint.address,
+      ));
     });
     it("should deposit and read balance", async () => {
       await paymaster.addDepositFor(token.address, account.address, 100);
@@ -71,10 +70,9 @@ describe("DepositPaymaster", () => {
         .withdrawTokensTo(token.address, AddressZero, 1)
         .then(tx => tx.data!);
 
-      await expectRevert(
-        account.exec(paymaster.address, 0, paymasterWithdraw),
-        "DepositPaymaster: must unlockTokenDeposit",
-      );
+      await expect(
+        account.execute(paymaster.address, 0, paymasterWithdraw),
+      ).to.revertedWith("DepositPaymaster: must unlockTokenDeposit");
     });
     it("should fail to withdraw within the same block ", async () => {
       const paymasterUnlock = await paymaster.populateTransaction
@@ -84,13 +82,12 @@ describe("DepositPaymaster", () => {
         .withdrawTokensTo(token.address, AddressZero, 1)
         .then(tx => tx.data!);
 
-      await expectRevert(
-        account.execBatch(
+      await expect(
+        account.executeBatch(
           [paymaster.address, paymaster.address],
           [paymasterUnlock, paymasterWithdraw],
         ),
-        "DepositPaymaster: must unlockTokenDeposit",
-      );
+      ).to.be.revertedWith("DepositPaymaster: must unlockTokenDeposit");
     });
     it("should succeed to withdraw after unlock", async () => {
       const paymasterUnlock = await paymaster.populateTransaction
@@ -100,23 +97,22 @@ describe("DepositPaymaster", () => {
       const paymasterWithdraw = await paymaster.populateTransaction
         .withdrawTokensTo(token.address, target, 1)
         .then(tx => tx.data!);
-      await account.exec(paymaster.address, 0, paymasterUnlock);
-      await account.exec(paymaster.address, 0, paymasterWithdraw);
-      expect(await (await token.balanceOf(target)).eq(1)).to.be.true;
+      await account.execute(paymaster.address, 0, paymasterUnlock);
+      await account.execute(paymaster.address, 0, paymasterWithdraw);
+      expect(await token.balanceOf(target)).to.eq(1);
     });
   });
 
   describe("#validatePaymasterUserOp", () => {
-    let account: SimpleAccount;
+    let account: EtherspotAccount;
     const gasPrice = 1e9;
-    let accountOwner: string;
 
     before(async () => {
-      accountOwner = await ethersSigner.getAddress();
-      account = await new SimpleAccount__factory(ethersSigner).deploy(
+      ({ proxy: account } = await createAccount(
+        ethersSigner,
+        await ethersSigner.getAddress(),
         entryPoint.address,
-        accountOwner,
-      );
+      ));
     });
 
     it("should fail if no token", async () => {
@@ -128,10 +124,9 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expectRevert(
+      await expect(
         entryPoint.callStatic.simulateValidation(userOp),
-        "paymasterAndData must specify token",
-      );
+      ).to.be.revertedWith("paymasterAndData must specify token");
     });
 
     it("should fail with wrong token", async () => {
@@ -146,10 +141,9 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expectRevert(
+      await expect(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-        "DepositPaymaster: unsupported token",
-      );
+      ).to.be.revertedWith("DepositPaymaster: unsupported token");
     });
 
     it("should reject if no deposit", async () => {
@@ -164,10 +158,9 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expectRevert(
+      await expect(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-        "DepositPaymaster: deposit too low",
-      );
+      ).to.be.revertedWith("DepositPaymaster: deposit too low");
     });
 
     it("should reject if deposit is not locked", async () => {
@@ -176,7 +169,7 @@ describe("DepositPaymaster", () => {
       const paymasterUnlock = await paymaster.populateTransaction
         .unlockTokenDeposit()
         .then(tx => tx.data!);
-      await account.exec(paymaster.address, 0, paymasterUnlock);
+      await account.execute(paymaster.address, 0, paymasterUnlock);
 
       const userOp = await fillAndSign(
         {
@@ -189,10 +182,9 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await expectRevert(
+      await expect(
         entryPoint.callStatic.simulateValidation(userOp, { gasPrice }),
-        "not locked",
-      );
+      ).to.be.revertedWith("not locked");
     });
 
     it("succeed with valid deposit", async () => {
@@ -200,7 +192,7 @@ describe("DepositPaymaster", () => {
       const paymasterLockTokenDeposit = await paymaster.populateTransaction
         .lockTokenDeposit()
         .then(tx => tx.data!);
-      await account.exec(paymaster.address, 0, paymasterLockTokenDeposit);
+      await account.execute(paymaster.address, 0, paymasterLockTokenDeposit);
 
       const userOp = await fillAndSign(
         {
@@ -213,32 +205,28 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      const simVal = await entryPoint.callStatic
+      await entryPoint.callStatic
         .simulateValidation(userOp)
-        .catch(e => {
-          const err = e.message.slice(71, 87);
-          return err;
-        });
-      // SimulationResult error indicates success
-      expect(simVal).to.equal("SimulationResult");
+        .catch(simulationResultCatch);
     });
   });
   describe("#handleOps", () => {
-    let account: SimpleAccount;
+    let account: EtherspotAccount;
     const accountOwner = createAccountOwner();
     let counter: TestCounter;
     let callData: string;
     before(async () => {
-      account = await new SimpleAccount__factory(ethersSigner).deploy(
+      ({ proxy: account } = await createAccount(
+        ethersSigner,
+        await accountOwner.getAddress(),
         entryPoint.address,
-        accountOwner.address,
-      );
+      ));
       counter = await new TestCounter__factory(ethersSigner).deploy();
       const counterJustEmit = await counter.populateTransaction
         .justemit()
         .then(tx => tx.data!);
       callData = await account.populateTransaction
-        .execFromEntryPoint(counter.address, 0, counterJustEmit)
+        .execute(counter.address, 0, counterJustEmit)
         .then(tx => tx.data!);
 
       await paymaster.addDepositFor(token.address, account.address, ONE_ETH);
@@ -270,8 +258,7 @@ describe("DepositPaymaster", () => {
       expect(await counter.queryFilter(counter.filters.CalledFrom())).to.eql(
         [],
       );
-      expect(await (await ethers.provider.getBalance(beneficiary)).gt(0)).to.be
-        .true;
+      expect(await ethers.provider.getBalance(beneficiary)).to.be.gt(0);
     });
 
     it("should pay with tokens if available", async () => {
@@ -285,7 +272,7 @@ describe("DepositPaymaster", () => {
         .approve(paymaster.address, ethers.constants.MaxUint256)
         .then(tx => tx.data!);
       const execApprove = await account.populateTransaction
-        .execFromEntryPoint(token.address, 0, tokenApprovePaymaster)
+        .execute(token.address, 0, tokenApprovePaymaster)
         .then(tx => tx.data!);
       const userOp1 = await fillAndSign(
         {
@@ -327,8 +314,7 @@ describe("DepositPaymaster", () => {
       );
       expect(log.args.success).to.eq(true);
       const charge = log.args.actualGasCost;
-      expect(await (await ethers.provider.getBalance(beneficiary)).eq(charge))
-        .to.be.true;
+      expect(await ethers.provider.getBalance(beneficiary)).to.eq(charge);
 
       const targetLogs = await counter.queryFilter(
         counter.filters.CalledFrom(),
