@@ -151,6 +151,7 @@ export type UserOpInfoStructOutput = [
 
 export interface EntryPointInterface extends utils.Interface {
   functions: {
+    "SIG_VALIDATION_FAILED()": FunctionFragment;
     "addStake(uint32)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "depositTo(address)": FunctionFragment;
@@ -161,12 +162,17 @@ export interface EntryPointInterface extends utils.Interface {
     "handleAggregatedOps(((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],address,bytes)[],address)": FunctionFragment;
     "handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],address)": FunctionFragment;
     "innerHandleOp(bytes,((address,uint256,uint256,uint256,uint256,address,uint256,uint256),bytes32,uint256,uint256,uint256),bytes)": FunctionFragment;
+    "simulateHandleOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes))": FunctionFragment;
     "simulateValidation((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes))": FunctionFragment;
     "unlockStake()": FunctionFragment;
     "withdrawStake(address)": FunctionFragment;
     "withdrawTo(address,uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "SIG_VALIDATION_FAILED",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "addStake",
     values: [BigNumberish]
@@ -199,6 +205,10 @@ export interface EntryPointInterface extends utils.Interface {
     values: [BytesLike, UserOpInfoStruct, BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "simulateHandleOp",
+    values: [UserOperationStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "simulateValidation",
     values: [UserOperationStruct]
   ): string;
@@ -215,6 +225,10 @@ export interface EntryPointInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "SIG_VALIDATION_FAILED",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "addStake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "depositTo", data: BytesLike): Result;
@@ -238,6 +252,10 @@ export interface EntryPointInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "handleOps", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "innerHandleOp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "simulateHandleOp",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -378,6 +396,8 @@ export interface EntryPoint extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -437,6 +457,11 @@ export interface EntryPoint extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    simulateHandleOp(
+      op: UserOperationStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     simulateValidation(
       userOp: UserOperationStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -457,6 +482,8 @@ export interface EntryPoint extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
 
   addStake(
     _unstakeDelaySec: BigNumberish,
@@ -517,6 +544,11 @@ export interface EntryPoint extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  simulateHandleOp(
+    op: UserOperationStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   simulateValidation(
     userOp: UserOperationStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -538,6 +570,8 @@ export interface EntryPoint extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: CallOverrides
@@ -593,6 +627,11 @@ export interface EntryPoint extends BaseContract {
       context: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    simulateHandleOp(
+      op: UserOperationStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     simulateValidation(
       userOp: UserOperationStruct,
@@ -719,6 +758,8 @@ export interface EntryPoint extends BaseContract {
   };
 
   estimateGas: {
+    SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -767,6 +808,11 @@ export interface EntryPoint extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    simulateHandleOp(
+      op: UserOperationStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     simulateValidation(
       userOp: UserOperationStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -789,6 +835,10 @@ export interface EntryPoint extends BaseContract {
   };
 
   populateTransaction: {
+    SIG_VALIDATION_FAILED(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -840,6 +890,11 @@ export interface EntryPoint extends BaseContract {
       callData: BytesLike,
       opInfo: UserOpInfoStruct,
       context: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    simulateHandleOp(
+      op: UserOperationStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

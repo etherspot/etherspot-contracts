@@ -3,6 +3,7 @@ pragma solidity >=0.6.12;
 
 import {ModexpInverse, ModexpSqrt} from "./ModExp.sol";
 import {BNPairingPrecompileCostEstimator} from "./BNPairingPrecompileCostEstimator.sol";
+import "hardhat/console.sol";
 
 /**
     @title  Boneh–Lynn–Shacham (BLS) signature scheme on Barreto-Naehrig 254 bit curve (BN-254)
@@ -60,6 +61,9 @@ library BLS {
         ];
         uint256[1] memory out;
         uint256 precompileGasCost = gasleft();
+        console.log("out[0]");
+        console.logUint(out[0]);
+
         //            BNPairingPrecompileCostEstimator(COST_ESTIMATOR_ADDRESS).getGasCost(
         //                2
         //            );
@@ -75,9 +79,13 @@ library BLS {
                 0x20
             )
         }
+        console.log("out[0]");
+        console.logUint(out[0]);
+
         if (!callSuccess) {
             return (false, false);
         }
+
         return (out[0] != 0, true);
     }
 

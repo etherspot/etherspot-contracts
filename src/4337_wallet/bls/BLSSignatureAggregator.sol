@@ -7,7 +7,6 @@ import "../interfaces/IEntryPoint.sol";
 import {BLSOpen} from "./lib/BLSOpen.sol";
 import "./IBLSAccount.sol";
 import "./BLSHelper.sol";
-import "hardhat/console.sol";
 
 /**
  * A BLS-based signature aggregator, to validate aggregated signature of multiple UserOps if BLSAccount
@@ -178,9 +177,11 @@ contract BLSSignatureAggregator is IAggregator {
             userOp.signature,
             (uint256[2])
         );
+
         uint256[4] memory pubkey = getUserOpPublicKey(userOp);
         uint256[2] memory message = userOpToMessage(userOp);
 
+        BLSOpen.verifySingle(signature, pubkey, message);
         require(
             BLSOpen.verifySingle(signature, pubkey, message),
             "BLS: wrong sig"

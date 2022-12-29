@@ -26,6 +26,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
+      allowUnlimitedContractSize: true,
       forking: {
         enabled: false,
         url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
@@ -87,6 +88,7 @@ const config: HardhatUserConfig = {
           metadata: {
             bytecodeHash: "none",
           },
+          optimizer: { enabled: true, runs: 1000000 },
         },
       },
     ],

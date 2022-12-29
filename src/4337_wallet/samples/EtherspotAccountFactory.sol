@@ -14,11 +14,9 @@ import "../EtherspotAccount.sol";
  */
 contract EtherspotAccountFactory {
     EtherspotAccount public immutable accountImplementation;
-    IEntryPoint private immutable entryPoint;
 
     constructor(IEntryPoint _entryPoint) {
         accountImplementation = new EtherspotAccount(_entryPoint);
-        entryPoint = _entryPoint;
     }
 
     /**

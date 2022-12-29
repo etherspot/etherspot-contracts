@@ -3,13 +3,14 @@ import hre from "hardhat";
 import { ethers } from "hardhat";
 import { BigNumber, Wallet } from "ethers";
 import { arrayify, keccak256 } from "ethers/lib/utils";
+import { EtherspotAccount, EtherspotAccountFactory__factory } from "../typings";
 import {
   fillUserOpDefaults,
   getUserOpHash,
   signUserOp,
 } from "../test/4337_wallet/UserOp";
+import { createAccount } from "../test/4337_wallet/helpers/testUtils";
 import { UserOperation } from "../test/4337_wallet/UserOperation";
-import { EtherspotAccount__factory } from "../typings";
 
 const saltToHex = (salt: string | number) => {
   salt = salt.toString();
@@ -51,29 +52,31 @@ async function testAADeployment() {
 
   // Deploy EtherspotAccount for user
   console.log("\x1b[35m Deploying AA wallet for user.....\x1b[0m");
-  const EtherspotAccountDeployer = await hre.ethers.getContractFactory(
-    "EtherspotAccountDeployer",
+  const EtherspotAccountFactory = await hre.ethers.getContractFactory(
+    "EtherspotAccountFactory",
   );
-  const sad = await EtherspotAccountDeployer.connect(deployer).deploy();
-  console.log(" EtherspotAccountDeployer deployed to: ", sad.address);
+  const sad = await EtherspotAccountFactory.connect(deployer).deploy(
+    ep.address,
+  );
+  console.log(" EtherspotAccountFactory deployed to: ", sad.address);
 
   console.log(
-    "\n" + "\x1b[32m Testing deployed EtherspotAccountDeployer\x1b[0m ",
+    "\n" + "\x1b[32m Testing deployed EtherspotAccountFactory\x1b[0m ",
   );
 
   // Deploy an AA account through deployer
   console.log("\x1b[35m Calculating predefined address.....\x1b[0m");
-  const expected = await sad.getAddress(ep.address, user.address, SALT);
+  const expected = await sad.getAddress(user.address, SALT);
   console.log(" Expected user address: ", expected);
 
-  await sad.deployAccount(ep.address, user.address, SALT);
+  await sad.createAccount(user.address, SALT);
   const EtherspotAccount = await ethers.getContractFactory("EtherspotAccount");
   const sa = await EtherspotAccount.attach(expected);
 
   console.log("\n" + "\x1b[32m Testing deployed EntryPoint\x1b[0m");
   console.log("\x1b[35m Sanity checking EntryPoint setup.....\x1b[0m");
 
-  const epCheck = await sa.connect(user).entryPoint();
+  const epCheck = await sa.entryPoint();
   epCheck == ep.address
     ? console.log(" EntryPoint sanity check: true")
     : console.log(" EntryPoint sanity check: false");
@@ -114,7 +117,7 @@ async function testAADeployment() {
   );
   await sa
     .connect(user)
-    .transfer(receiver.address, ethers.utils.parseEther("1"));
+    .execute(receiver.address, ethers.utils.parseEther("1"), "0x");
 
   // Log User AA balance
   console.log(
@@ -129,15 +132,18 @@ async function testAADeployment() {
   );
 
   console.log("\n" + "\x1b[32m Testing validation of UserOperation\x1b[0m");
+  let account: EtherspotAccount;
   const callGasLimit = 200000;
   const verificationGasLimit = 100000;
   const maxFeePerGas = 3e9;
   const actualGasPrice = 1e9;
   const chainId = await ethers.provider.getNetwork().then(net => net.chainId);
 
-  const account = await new EtherspotAccount__factory(
+  ({ proxy: account } = await createAccount(
     await ethers.getSigner(entryPoint.address),
-  ).deploy(entryPoint.address, accountOwner.address);
+    accountOwner.address,
+    entryPoint.address,
+  ));
 
   await ethersSigner.sendTransaction({
     from: deployer.address,
@@ -178,13 +184,11 @@ async function testAADeployment() {
   console.log(" Expected amount to pay: ", expectedPay);
   console.log(" User pre-balance: ", preBalance);
   console.log(" User post-balance: ", postBalance);
-  preBalance - postBalance == expectedPay
-    ? console.log(
-        "\x1b[34m Difference in balances == to expected gas payment: true\x1b[0m",
-      )
-    : console.log(
-        "\x1b[34m Difference in balances == to expected gas payment: false\x1b[0m",
-      );
+  console.log(
+    `\x1b[34m Difference in user balance to equal expected gas payment: ${preBalance -
+      postBalance ==
+      expectedPay}\x1b[0m`,
+  );
 
   const nonce = await account.connect(entryPoint).nonce();
   parseInt(nonce.toString()) == 1

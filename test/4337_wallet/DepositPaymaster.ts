@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import "./aa.init";
+import "./helpers/aa.init";
 import { ethers } from "hardhat";
 import { expect } from "chai";
 import {
@@ -20,7 +20,7 @@ import {
   deployEntryPoint,
   FIVE_ETH,
   ONE_ETH,
-  simulationResultCatch,
+  // simulationResultCatch,
   userOpsWithoutAgg,
   createAccount,
 } from "./helpers/testUtils";
@@ -205,9 +205,10 @@ describe("DepositPaymaster", () => {
         ethersSigner,
         entryPoint,
       );
-      await entryPoint.callStatic
-        .simulateValidation(userOp)
-        .catch(simulationResultCatch);
+      await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
+        const customError = JSON.stringify(e);
+        expect(customError).to.include("SimulationResult");
+      });
     });
   });
   describe("#handleOps", () => {

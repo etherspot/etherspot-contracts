@@ -1,15 +1,14 @@
+/* ONLY RUNS IF `allowUnlimitedContractSize: true` in hh-config */
 /* eslint-disable @typescript-eslint/camelcase */
 import "./helpers/aa.init";
 import { BigNumber, Event, Wallet } from "ethers";
 import { expect } from "chai";
 import {
-  anyUint,
-  anyValue,
-} from "@nomicfoundation/hardhat-chai-matchers/withArgs";
-import {
   EntryPoint,
   EtherspotAccount,
   EtherspotAccountFactory,
+  TestAggregatedAccount__factory,
+  TestAggregatedAccountFactory__factory,
   TestCounter,
   TestCounter__factory,
   TestExpirePaymaster,
@@ -18,10 +17,9 @@ import {
   TestExpiryAccount__factory,
   TestPaymasterAcceptAll,
   TestPaymasterAcceptAll__factory,
-  TestSignatureAggregator,
   TestAggregatedAccount,
+  TestSignatureAggregator,
   TestSignatureAggregator__factory,
-  TestAggregatedAccount__factory,
 } from "../../typings";
 import {
   AddressZero,
@@ -40,10 +38,8 @@ import {
   createAddress,
   getAccountAddress,
   HashZero,
-  simulationResultCatch,
   createAccount,
   getAggregatedAccountInitCode,
-  simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { fillAndSign, getUserOpHash } from "./UserOp";
 import { UserOperation } from "./UserOperation";
@@ -295,15 +291,62 @@ describe("EntryPoint", function() {
     });
 
     it("should fail if validateUserOp fails", async () => {
-      // using wrong owner for account1
+      // using wrong nonce
       const op = await fillAndSign(
-        { sender: account1.address },
+        { sender: account.address, nonce: 1234 },
         accountOwner,
         entryPoint,
       );
       await expect(
         entryPoint.callStatic.simulateValidation(op).catch(rethrow()),
-      ).to.revertedWith("EtherspotAccount:: Wrong signature");
+      ).to.revertedWith("EtherspotAccount:: Invalid nonce");
+    });
+
+    it("should report signature failure without revert", async () => {
+      // (this is actually a feature of the wallet, not the entrypoint)
+      // using wrong owner for account1
+      // (zero gas price so it doesn't fail on prefund)
+      const op = await fillAndSign(
+        { sender: account1.address, maxFeePerGas: 0 },
+        accountOwner,
+        entryPoint,
+      );
+      const returnInfo = await entryPoint.callStatic
+        .simulateValidation(op)
+        .catch(e => {
+          return e.message.split(",")[2].replace(" ", "");
+        });
+      expect(returnInfo).to.eql(await entryPoint.SIG_VALIDATION_FAILED());
+    });
+
+    it("should revert if wallet not deployed (and no initcode)", async () => {
+      const op = await fillAndSign(
+        {
+          sender: createAddress(),
+          nonce: 0,
+          verificationGasLimit: 1000,
+        },
+        accountOwner,
+        entryPoint,
+      );
+      await expect(
+        entryPoint.callStatic.simulateValidation(op),
+      ).to.revertedWith("AA20 account not deployed");
+    });
+
+    it("should revert on oog if not enough verificationGas", async () => {
+      const op = await fillAndSign(
+        { sender: account.address, verificationGasLimit: 1000 },
+        accountOwner,
+        entryPoint,
+      );
+
+      await entryPoint.callStatic.simulateValidation(op).catch(e => {
+        console.log(e.message);
+      }),
+        await expect(
+          entryPoint.callStatic.simulateValidation(op),
+        ).to.revertedWith("AA23 reverted (or OOG)");
     });
 
     it("should succeed if validateUserOp succeeds", async () => {
@@ -315,8 +358,29 @@ describe("EntryPoint", function() {
       await fund(account1);
       await entryPoint.callStatic.simulateValidation(op).catch(e => {
         const customError = JSON.stringify(e);
-        expect(customError).to.include("SimulationResult");
+        expect(customError).to.include("ValidationResult");
       });
+    });
+
+    it("should return zero paymasterDeadline and empty context if no paymaster", async () => {
+      const op = await fillAndSign(
+        { sender: account1.address, maxFeePerGas: 0 },
+        accountOwner1,
+        entryPoint,
+      );
+      const returnInfo = await entryPoint.callStatic
+        .simulateValidation(op)
+        .catch(e => {
+          const paymDead = e.message.split(",")[3].replace(" ", "");
+          const paymCon = e.message
+            .split(",")[4]
+            .replace("]", "")
+            .replace(" ", "")
+            .replaceAll('"', "");
+          return [paymDead, paymCon];
+        });
+      expect(returnInfo[0]).to.eql(0);
+      expect(returnInfo[1]).to.eql("0x");
     });
 
     it("should return stake of sender", async () => {
@@ -338,11 +402,10 @@ describe("EntryPoint", function() {
         ethersSigner,
         entryPoint,
       );
-
       await entryPoint.callStatic.simulateValidation(op).catch(e => {
         const customError = JSON.stringify(e);
         expect(customError).to.include(
-          "SimulationResult",
+          "ValidationResult",
           `[${stakeValue}, ${unstakeDelay}]`,
         );
       });
@@ -370,14 +433,54 @@ describe("EntryPoint", function() {
             etherspotAccountFactory,
           ),
           sender: "0x".padEnd(42, "1"),
-          verificationGasLimit: 1e6,
+          verificationGasLimit: 3e6,
         },
         accountOwner1,
         entryPoint,
       );
       await expect(
         entryPoint.callStatic.simulateValidation(op1),
-      ).to.revertedWith("AA12 initCode must return sender");
+      ).to.revertedWith("AA14 initCode must return sender");
+    });
+
+    it("should report failure on insufficient verificationGas (OOG) for creation", async () => {
+      const initCode = getAccountInitCode(
+        accountOwner1.address,
+        etherspotAccountFactory,
+      );
+      const sender = await entryPoint.callStatic
+        .getSenderAddress(initCode)
+        .catch(e => {
+          return e.message.split('"')[1];
+        });
+      const op0 = await fillAndSign(
+        {
+          initCode,
+          sender,
+          verificationGasLimit: 5e5,
+          maxFeePerGas: 0,
+        },
+        accountOwner1,
+        entryPoint,
+      );
+      // must succeed with enough verification gas.
+      await expect(
+        entryPoint.callStatic.simulateValidation(op0, { gasLimit: 1e6 }),
+      ).to.revertedWith("ValidationResult");
+
+      const op1 = await fillAndSign(
+        {
+          initCode,
+          sender,
+          verificationGasLimit: 1e5,
+          maxFeePerGas: 0,
+        },
+        accountOwner1,
+        entryPoint,
+      );
+      await expect(
+        entryPoint.callStatic.simulateValidation(op1, { gasLimit: 1e6 }),
+      ).to.revertedWith("AA13 initCode failed or OOG");
     });
 
     it("should succeed for creating an account", async () => {
@@ -400,7 +503,7 @@ describe("EntryPoint", function() {
 
       await entryPoint.callStatic.simulateValidation(op1).catch(e => {
         const customError = JSON.stringify(e);
-        expect(customError).to.include("SimulationResult");
+        expect(customError).to.include("ValidationResult");
       });
     });
 
@@ -423,10 +526,10 @@ describe("EntryPoint", function() {
         accountOwner,
         entryPoint,
       );
-      const error = await entryPoint.callStatic
-        .simulateValidation(op1)
-        .catch(e => e);
-      expect(error.message).to.match(/initCode failed/, error);
+      await entryPoint.callStatic.simulateValidation(op1).catch(e => {
+        const customError = JSON.stringify(e.message);
+        expect(customError).to.include("AA13 initCode failed or OOG");
+      });
     });
 
     it("should not use banned ops during simulateValidation", async () => {
@@ -454,6 +557,51 @@ describe("EntryPoint", function() {
     });
   });
 
+  describe("#simulateHandleOp", () => {
+    it("should simulate execution", async () => {
+      const accountOwner1 = createAccountOwner();
+      const { proxy: account } = await createAccount(
+        ethersSigner,
+        await accountOwner.getAddress(),
+        entryPoint.address,
+      );
+      await fund(account);
+      const counter = await new TestCounter__factory(ethersSigner).deploy();
+
+      const count = counter.interface.encodeFunctionData("count");
+      const callData = account.interface.encodeFunctionData("execute", [
+        counter.address,
+        0,
+        count,
+      ]);
+      // deliberately broken signature.. simulate should work with it too.
+      const userOp = await fillAndSign(
+        {
+          sender: account.address,
+          callData,
+          maxFeePerGas: 1, // gasprice=gas...
+        },
+        accountOwner1,
+        entryPoint,
+      );
+
+      const ret = await entryPoint.callStatic
+        .simulateHandleOp(userOp)
+        .catch(e => {
+          const preOpGas = e.message
+            .split(",")[0]
+            .split("(")[1]
+            .replace('"', "");
+          const totGas = e.message.split(",")[1].replace(" ", "");
+          return [preOpGas, totGas];
+        });
+      // TODO: we can't directly check simulation called the wallet's execute.
+      // need to do call tracing and parse emitted events
+      // we "hack" it by reporting out gas used, which is expected to be more than just verification
+      console.log("preOpGas=", ret[0], "total gas=", ret[1]);
+    });
+  });
+
   describe("without paymaster (account pays in eth)", () => {
     describe("#handleOps", () => {
       let counter: TestCounter;
@@ -466,6 +614,51 @@ describe("EntryPoint", function() {
           0,
           count.data!,
         );
+      });
+
+      describe("#simulateHandleOp", () => {
+        it("should simulate execution", async () => {
+          const accountOwner1 = createAccountOwner();
+          const { proxy: account } = await createAccount(
+            ethersSigner,
+            await accountOwner.getAddress(),
+            entryPoint.address,
+          );
+          await fund(account);
+          const counter = await new TestCounter__factory(ethersSigner).deploy();
+
+          const count = counter.interface.encodeFunctionData("count");
+          const callData = account.interface.encodeFunctionData("execute", [
+            counter.address,
+            0,
+            count,
+          ]);
+          // deliberately broken signature.. simulate should work with it too.
+          const userOp = await fillAndSign(
+            {
+              sender: account.address,
+              callData,
+              maxFeePerGas: 1, // gasprice=gas...
+            },
+            accountOwner1,
+            entryPoint,
+          );
+
+          const ret = await entryPoint.callStatic
+            .simulateHandleOp(userOp)
+            .catch(e => {
+              const preOpGas = e.message
+                .split(",")[0]
+                .split("(")[1]
+                .replace('"', "");
+              const totGas = e.message.split(",")[1].replace(" ", "");
+              return [preOpGas, totGas];
+            });
+          // TODO: we can't directly check simulation called the wallet's execute.
+          // need to do call tracing and parse emitted events
+          // we "hack" it by reporting out gas used, which is expected to be more than just verification
+          console.log("preOpGas=", ret[0], "total gas=", ret[1]);
+        });
       });
 
       it("account should pay for tx", async function() {
@@ -651,6 +844,33 @@ describe("EntryPoint", function() {
         );
         await calcGasUsage(rcpt, entryPoint, beneficiaryAddress);
       });
+
+      it("should report failure on insufficient verificationGas after creation", async () => {
+        const op0 = await fillAndSign(
+          {
+            sender: account.address,
+            verificationGasLimit: 5e5,
+          },
+          accountOwner,
+          entryPoint,
+        );
+        // must succeed with enough verification gas
+        await expect(
+          entryPoint.callStatic.simulateValidation(op0),
+        ).to.revertedWith("ValidationResult");
+
+        const op1 = await fillAndSign(
+          {
+            sender: account.address,
+            verificationGasLimit: 10000,
+          },
+          accountOwner,
+          entryPoint,
+        );
+        await expect(
+          entryPoint.callStatic.simulateValidation(op1),
+        ).to.revertedWith("AA23 reverted (or OOG)");
+      });
     });
 
     describe("create account", () => {
@@ -678,7 +898,7 @@ describe("EntryPoint", function() {
           entryPoint.callStatic.handleOps([op], beneficiaryAddress, {
             gasLimit: 1e7,
           }),
-        ).to.revertedWith("AA12 initCode must return sender");
+        ).to.revertedWith("AA14 initCode must return sender");
       });
 
       it("should reject create if account not funded", async () => {
@@ -694,6 +914,7 @@ describe("EntryPoint", function() {
           accountOwner,
           entryPoint,
         );
+
         expect(await ethers.provider.getBalance(op.sender)).to.eq(0);
 
         await expect(
@@ -834,7 +1055,10 @@ describe("EntryPoint", function() {
 
         await entryPoint.callStatic
           .simulateValidation(op2, { gasPrice: 1e9 })
-          .catch(simulationResultCatch);
+          .catch(e => {
+            const customError = JSON.stringify(e);
+            expect(customError).to.include("ValidationResult");
+          });
 
         await fund(op1.sender);
         await fund(account2.address);
@@ -895,6 +1119,44 @@ describe("EntryPoint", function() {
         await expect(
           entryPoint.handleOps([userOp], beneficiaryAddress),
         ).to.revertedWith("wrong aggregator");
+      });
+
+      it("should reject non-contract (address(1)) aggregator", async () => {
+        // this is just sanity check that the compiler indeed reverts on a call to "validateSignatures()" to nonexistent contracts
+        const address1 = hexZeroPad("0x1", 20);
+        const aggAccount1 = await new TestAggregatedAccount__factory(
+          ethersSigner,
+        ).deploy(entryPoint.address, address1);
+        await aggAccount1.initialize(zeroAddress());
+
+        const userOp = await fillAndSign(
+          {
+            sender: aggAccount1.address,
+            maxFeePerGas: 0,
+          },
+          accountOwner,
+          entryPoint,
+        );
+
+        const sig = HashZero;
+
+        expect(
+          await entryPoint
+            .handleAggregatedOps(
+              [
+                {
+                  userOps: [userOp],
+                  aggregator: address1,
+                  signature: sig,
+                },
+              ],
+              beneficiaryAddress,
+            )
+            .catch(e => e.message),
+        ).to.match(
+          /reverted without a reason string|function call to a non-contract account/,
+        );
+        // (different error in coverage mode (because of different solidity settings)
       });
       it("should fail to execute aggregated account with wrong aggregator", async () => {
         const userOp = await fillAndSign(
@@ -1071,16 +1333,18 @@ describe("EntryPoint", function() {
           let addr: string;
           let userOp: UserOperation;
           before(async () => {
-            const aggregatedAccountImplementation = await new TestAggregatedAccount__factory(
+            const factory = await new TestAggregatedAccountFactory__factory(
               ethersSigner,
             ).deploy(entryPoint.address, aggregator.address);
             initCode = await getAggregatedAccountInitCode(
               entryPoint.address,
-              aggregatedAccountImplementation.address,
+              factory,
             );
             addr = await entryPoint.callStatic
               .getSenderAddress(initCode)
-              .catch(e => e.errorArgs.sender);
+              .catch(e => {
+                return e.message.split('"')[1];
+              });
             await ethersSigner.sendTransaction({
               to: addr,
               value: parseEther("0.1"),
@@ -1098,16 +1362,14 @@ describe("EntryPoint", function() {
             await aggregator.addStake(entryPoint.address, 3, {
               value: TWO_ETH,
             });
-            const {
-              aggregatorInfo,
-            } = await entryPoint.callStatic
-              .simulateValidation(userOp)
-              .catch(simulationResultWithAggregationCatch);
-            expect(aggregatorInfo.actualAggregator).to.equal(
-              aggregator.address,
-            );
-            expect(aggregatorInfo.stakeInfo.stake).to.equal(TWO_ETH);
-            expect(aggregatorInfo.stakeInfo.unstakeDelaySec).to.equal(3);
+            await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
+              const customError = JSON.stringify(e);
+              expect(customError).to.include("ValidationResult");
+              expect(customError).to.include(
+                `${aggregator.address}`,
+                `[${TWO_ETH}, ${3}]`,
+              );
+            });
           });
           it("should create account in handleOps", async () => {
             await aggregator.validateUserOpSignature(userOp);
@@ -1150,6 +1412,27 @@ describe("EntryPoint", function() {
         );
       });
 
+      it("should fail with nonexistent paymaster", async () => {
+        const pm = createAddress();
+        const op = await fillAndSign(
+          {
+            paymasterAndData: pm,
+            callData: accountExecFromEntryPoint.data,
+            initCode: getAccountInitCode(
+              account2Owner.address,
+              etherspotAccountFactory,
+            ),
+            verificationGasLimit: 3e6,
+            callGasLimit: 1e6,
+          },
+          account2Owner,
+          entryPoint,
+        );
+        await expect(entryPoint.simulateValidation(op)).to.revertedWith(
+          '"AA30 paymaster not deployed"',
+        );
+      });
+
       it("should fail if paymaster has no deposit", async function() {
         const op = await fillAndSign(
           {
@@ -1160,7 +1443,7 @@ describe("EntryPoint", function() {
               etherspotAccountFactory,
             ),
 
-            verificationGasLimit: 1e6,
+            verificationGasLimit: 3e6,
             callGasLimit: 1e6,
           },
           account2Owner,
@@ -1202,7 +1485,7 @@ describe("EntryPoint", function() {
         );
         expect(paymasterPaid).to.eql(actualGasCost);
       });
-      it("simulate should return paymaster stake and delay", async () => {
+      it("simulateValidation should return paymaster stake and delay", async () => {
         await paymaster.deposit({ value: ONE_ETH });
         const anOwner = createAccountOwner();
 
@@ -1219,18 +1502,13 @@ describe("EntryPoint", function() {
           entryPoint,
         );
 
-        const {
-          paymasterInfo,
-        } = await entryPoint.callStatic
-          .simulateValidation(op)
-          .catch(simulationResultCatch);
-        const {
-          stake: simRetStake,
-          unstakeDelaySec: simRetDelay,
-        } = paymasterInfo;
-
-        expect(simRetStake).to.eql(paymasterStake);
-        expect(simRetDelay).to.eql(globalUnstakeDelaySec);
+        await entryPoint.callStatic.simulateValidation(op).catch(e => {
+          const customError = JSON.stringify(e);
+          expect(customError).to.include(
+            "ValidationResult",
+            `[${paymasterStake}, ${globalUnstakeDelaySec}]`,
+          );
+        });
       });
     });
 
@@ -1263,15 +1541,18 @@ describe("EntryPoint", function() {
             sessionOwner,
             entryPoint,
           );
-          await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
-            const customError = JSON.stringify(e);
-            expect(customError).to.include("SimulationResult", `${now + 60}`);
-          });
-
-          // expect(deadline).to.eql(now + 60);
+          const ret = await entryPoint.callStatic
+            .simulateValidation(userOp)
+            .catch(e => {
+              const deadline = e.message.split(",")[2].replace(" ", "");
+              const paymDeadline = e.message.split(",")[3].replace(" ", "");
+              return [deadline, paymDeadline];
+            });
+          expect(ret[0]).to.eql(now + 60);
+          expect(ret[1]).to.eql(0);
         });
 
-        it("should reject expired owner", async () => {
+        it("should not reject expired owner", async () => {
           const sessionOwner = createAccountOwner();
           await account.addTemporaryOwner(sessionOwner.address, now - 60);
           const userOp = await fillAndSign(
@@ -1281,9 +1562,17 @@ describe("EntryPoint", function() {
             sessionOwner,
             entryPoint,
           );
-          await expect(
-            entryPoint.callStatic.simulateValidation(userOp),
-          ).to.revertedWith("expired");
+
+          const ret = await entryPoint.callStatic
+            .simulateValidation(userOp)
+            .catch(e => {
+              const deadline = e.message.split(",")[2].replace(" ", "");
+              const paymDeadline = e.message.split(",")[3].replace(" ", "");
+
+              return [deadline, paymDeadline];
+            });
+          expect(ret[0]).eql(now - 60);
+          expect(ret[1]).to.eql(0);
         });
       });
 
@@ -1320,11 +1609,11 @@ describe("EntryPoint", function() {
           );
           await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
             const customError = JSON.stringify(e);
-            expect(customError).to.include("SimulationResult", `${now + 60}`);
+            expect(customError).to.include("ValidationResult", `${now + 60}`);
           });
         });
 
-        it("should reject expired paymaster request", async () => {
+        it("should not reject expired paymaster request", async () => {
           const expireTime = defaultAbiCoder.encode(["uint256"], [now - 60]);
           const userOp = await fillAndSign(
             {
@@ -1334,9 +1623,14 @@ describe("EntryPoint", function() {
             ethersSigner,
             entryPoint,
           );
-          await expect(
-            entryPoint.callStatic.simulateValidation(userOp),
-          ).to.revertedWith("expired");
+          const ret = await entryPoint.callStatic
+            .simulateValidation(userOp)
+            .catch(e => {
+              const paymDeadline = e.message.split(",")[3].replace(" ", "");
+
+              return paymDeadline;
+            });
+          expect(ret).to.eql(now - 60);
         });
       });
     });

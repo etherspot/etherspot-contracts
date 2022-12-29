@@ -2,11 +2,9 @@
 import { Wallet } from "ethers";
 import { ethers } from "hardhat";
 import { expect } from "chai";
-import { expectRevert } from "@openzeppelin/test-helpers";
 import {
   EtherspotAccount,
-  EtherspotAccountDeployer__factory,
-  EtherspotAccount__factory,
+  EtherspotAccountFactory__factory,
   TestUtil,
   TestUtil__factory,
 } from "../../typings";
@@ -17,6 +15,8 @@ import {
   getBalance,
   isDeployed,
   ONE_ETH,
+  createAccount,
+  HashZero,
 } from "./helpers/testUtils";
 import {
   fillUserOpDefaults,
@@ -43,26 +43,29 @@ describe("EtherspotAccount", function() {
   });
 
   it("owner should be able to call transfer", async () => {
-    const account = await new EtherspotAccount__factory(
+    const { proxy: account } = await createAccount(
       ethers.provider.getSigner(),
-    ).deploy(entryPoint, accounts[0]);
+      accounts[0],
+      entryPoint,
+    );
     await ethersSigner.sendTransaction({
       from: accounts[0],
       to: account.address,
       value: parseEther("2"),
     });
-    await account.transfer(accounts[2], ONE_ETH);
+    await account.execute(accounts[2], ONE_ETH, "0x");
   });
   it("other account should not be able to call transfer", async () => {
-    const account = await new EtherspotAccount__factory(
+    const { proxy: account } = await createAccount(
       ethers.provider.getSigner(),
-    ).deploy(entryPoint, accounts[0]);
-    await expectRevert(
+      accounts[0],
+      entryPoint,
+    );
+    await expect(
       account
         .connect(ethers.provider.getSigner(1))
-        .transfer(accounts[2], ONE_ETH),
-      "EtherspotAccount:: Only owner",
-    );
+        .execute(accounts[2], ONE_ETH, "0x"),
+    ).to.be.revertedWith("EtherspotAccount:: Not Owner or EntryPoint");
   });
 
   it("should pack in js the same as solidity", async () => {
@@ -83,9 +86,11 @@ describe("EtherspotAccount", function() {
     before(async () => {
       // that's the account of ethersSigner
       const entryPoint = accounts[2];
-      account = await new EtherspotAccount__factory(
+      ({ proxy: account } = await createAccount(
         await ethers.getSigner(entryPoint),
-      ).deploy(entryPoint, accountOwner.address);
+        accountOwner.address,
+        entryPoint,
+      ));
       await ethersSigner.sendTransaction({
         from: accounts[0],
         to: account.address,
@@ -131,38 +136,33 @@ describe("EtherspotAccount", function() {
     });
 
     it("should increment nonce", async () => {
-      const nonce = await account.nonce();
-      expect(parseInt(nonce.toString())).to.equal(1);
+      expect(await account.nonce()).to.equal(1);
     });
     it("should reject same TX on nonce error", async () => {
-      await expectRevert(
+      await expect(
         account.validateUserOp(userOp, userOpHash, AddressZero, 0),
-        "EtherspotAccount:: Invalid nonce",
-      );
+      ).to.revertedWith("EtherspotAccount:: Invalid nonce");
     });
-    it("should reject tx with wrong signature", async () => {
-      // validateUserOp doesn't check the actual UserOp for the signature, but relies on the userOpHash given by
-      // the entrypoint
-      const wrongUserOpHash = ethers.constants.HashZero;
-      await expectRevert(
-        account.validateUserOp(userOp, wrongUserOpHash, AddressZero, 0),
-        "EtherspotAccount:: Wrong signature",
+    it("should return NO_SIG_VALIDATION on wrong signature", async () => {
+      const userOpHash = HashZero;
+      const deadline = await account.callStatic.validateUserOp(
+        { ...userOp, nonce: 1 },
+        userOpHash,
+        AddressZero,
+        0,
       );
+      expect(deadline).to.eq(1);
     });
   });
-  context("EtherspotAccountDeployer", () => {
+  context("EtherspotAccountFactory", () => {
     it("sanity: check deployer", async () => {
       const ownerAddr = createAddress();
-      const deployer = await new EtherspotAccountDeployer__factory(
+      const deployer = await new EtherspotAccountFactory__factory(
         ethersSigner,
-      ).deploy();
-      const target = await deployer.callStatic.deployAccount(
-        entryPoint,
-        ownerAddr,
-        1234,
-      );
+      ).deploy(entryPoint);
+      const target = await deployer.callStatic.createAccount(ownerAddr, 1234);
       expect(await isDeployed(target)).to.eq(false);
-      await deployer.deployAccount(entryPoint, ownerAddr, 1234);
+      await deployer.createAccount(ownerAddr, 1234);
       expect(await isDeployed(target)).to.eq(true);
     });
   });

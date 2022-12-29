@@ -11,6 +11,32 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "preOpGas",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "paid",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "paymasterDeadline",
+        type: "uint256",
+      },
+    ],
+    name: "ExecutionResult",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "opIndex",
         type: "uint256",
       },
@@ -53,19 +79,36 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "preOpGas",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "prefund",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "deadline",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "preOpGas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "prefund",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "paymasterDeadline",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "paymasterContext",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct IEntryPoint.ReturnInfo",
+        name: "returnInfo",
+        type: "tuple",
       },
       {
         components: [
@@ -119,25 +162,42 @@ const _abi = [
         type: "tuple",
       },
     ],
-    name: "SimulationResult",
+    name: "ValidationResult",
     type: "error",
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "preOpGas",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "prefund",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "deadline",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "preOpGas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "prefund",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "paymasterDeadline",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "paymasterContext",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct IEntryPoint.ReturnInfo",
+        name: "returnInfo",
+        type: "tuple",
       },
       {
         components: [
@@ -220,7 +280,7 @@ const _abi = [
         type: "tuple",
       },
     ],
-    name: "SimulationResultWithAggregation",
+    name: "ValidationResultWithAggregation",
     type: "error",
   },
   {
@@ -803,6 +863,76 @@ const _abi = [
       },
     ],
     name: "handleOps",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "initCode",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "callData",
+            type: "bytes",
+          },
+          {
+            internalType: "uint256",
+            name: "callGasLimit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "verificationGasLimit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "preVerificationGas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxFeePerGas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxPriorityFeePerGas",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "paymasterAndData",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "signature",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct UserOperation",
+        name: "op",
+        type: "tuple",
+      },
+    ],
+    name: "simulateHandleOp",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -19,22 +19,39 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface BLSAccountFactoryInterface extends utils.Interface {
   functions: {
-    "createAccount(address,uint256,uint256[4])": FunctionFragment;
+    "accountImplementation()": FunctionFragment;
+    "createAccount(uint256,uint256[4])": FunctionFragment;
+    "getAddress(uint256,uint256[4])": FunctionFragment;
   };
 
   encodeFunctionData(
+    functionFragment: "accountImplementation",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "createAccount",
     values: [
-      string,
+      BigNumberish,
+      [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAddress",
+    values: [
       BigNumberish,
       [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
     ]
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "accountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "createAccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getAddress", data: BytesLike): Result;
 
   events: {};
 }
@@ -66,24 +83,45 @@ export interface BLSAccountFactory extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    accountImplementation(overrides?: CallOverrides): Promise<[string]>;
+
     createAccount(
-      anEntryPoint: string,
       salt: BigNumberish,
       aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getAddress(
+      salt: BigNumberish,
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: CallOverrides
+    ): Promise<[string]>;
   };
 
+  accountImplementation(overrides?: CallOverrides): Promise<string>;
+
   createAccount(
-    anEntryPoint: string,
     salt: BigNumberish,
     aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  getAddress(
+    salt: BigNumberish,
+    aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   callStatic: {
+    accountImplementation(overrides?: CallOverrides): Promise<string>;
+
     createAccount(
-      anEntryPoint: string,
+      salt: BigNumberish,
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getAddress(
       salt: BigNumberish,
       aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: CallOverrides
@@ -93,20 +131,36 @@ export interface BLSAccountFactory extends BaseContract {
   filters: {};
 
   estimateGas: {
+    accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
+
     createAccount(
-      anEntryPoint: string,
       salt: BigNumberish,
       aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getAddress(
+      salt: BigNumberish,
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    accountImplementation(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     createAccount(
-      anEntryPoint: string,
       salt: BigNumberish,
       aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAddress(
+      salt: BigNumberish,
+      aPublicKey: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

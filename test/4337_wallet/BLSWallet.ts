@@ -21,7 +21,7 @@ import {
   deployEntryPoint,
   fund,
   ONE_ETH,
-  simulationResultWithAggregationCatch,
+  // simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { DefaultsForUserOp, fillUserOp } from "./UserOp";
 import { expect } from "chai";
@@ -59,11 +59,9 @@ describe("bls account", function() {
     signer1 = fact.getSigner(arrayify(BLS_DOMAIN), "0x01");
     signer2 = fact.getSigner(arrayify(BLS_DOMAIN), "0x02");
 
-    const blsAccountImplementation = await new BLSAccount__factory(
-      etherSigner,
-    ).deploy(entrypoint.address, blsAgg.address);
     accountDeployer = await new BLSAccountFactory__factory(etherSigner).deploy(
-      blsAccountImplementation.address,
+      entrypoint.address,
+      blsAgg.address,
     );
 
     // TODO: these two are not created via the 'accountDeployer' for some reason - I am not touching it for now
@@ -188,18 +186,19 @@ describe("bls account", function() {
       initCode = hexConcat([
         accountDeployer.address,
         accountDeployer.interface.encodeFunctionData("createAccount", [
-          entrypoint.address,
           0,
           signer3.pubkey,
         ]),
       ]);
     });
 
-    it("validate after simulation returns SimulationResultWithAggregation", async () => {
+    it("validate after simulation returns ValidationResultWithAggregation", async () => {
       const verifier = new BlsVerifier(BLS_DOMAIN);
       const senderAddress = await entrypoint.callStatic
         .getSenderAddress(initCode)
-        .catch(e => e.errorArgs.sender);
+        .catch(e => {
+          return e.message.split('"')[1];
+        });
       await fund(senderAddress, "0.01");
       const userOp = await fillUserOp(
         {
@@ -213,12 +212,19 @@ describe("bls account", function() {
       const sigParts = signer3.sign(requestHash);
       userOp.signature = hexConcat(sigParts);
 
-      const { aggregatorInfo } = await entrypoint.callStatic
+      const aggregatorInfo = await entrypoint.callStatic
         .simulateValidation(userOp)
-        .catch(simulationResultWithAggregationCatch);
-      expect(aggregatorInfo.actualAggregator).to.eq(blsAgg.address);
-      expect(aggregatorInfo.stakeInfo.stake).to.eq(ONE_ETH);
-      expect(aggregatorInfo.stakeInfo.unstakeDelaySec).to.eq(2);
+        .catch(e => {
+          const actualAggregator = e.message.split('"')[1];
+          const stake = e.message.split('"')[2].slice(3, 22);
+          const unstakeDelaySec = parseInt(
+            e.message.split('"')[2].slice(24, 25),
+          );
+          return [actualAggregator, stake, unstakeDelaySec];
+        });
+      expect(aggregatorInfo[0]).to.eq(blsAgg.address);
+      expect(aggregatorInfo[1]).to.eq(ONE_ETH);
+      expect(aggregatorInfo[2]).to.eq(2);
 
       const [signature] = defaultAbiCoder.decode(
         ["bytes32[2]"],

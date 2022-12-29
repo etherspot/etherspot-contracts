@@ -17,23 +17,32 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface EtherspotAccountDeployerInterface extends utils.Interface {
+export interface TestAggregatedAccountFactoryInterface extends utils.Interface {
   functions: {
-    "deployAccount(address,address,uint256)": FunctionFragment;
-    "getAddress(address,address,uint256)": FunctionFragment;
+    "accountImplementation()": FunctionFragment;
+    "createAccount(address,uint256)": FunctionFragment;
+    "getAddress(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "deployAccount",
-    values: [string, string, BigNumberish]
+    functionFragment: "accountImplementation",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createAccount",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getAddress",
-    values: [string, string, BigNumberish]
+    values: [string, BigNumberish]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "deployAccount",
+    functionFragment: "accountImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "createAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getAddress", data: BytesLike): Result;
@@ -41,12 +50,12 @@ export interface EtherspotAccountDeployerInterface extends utils.Interface {
   events: {};
 }
 
-export interface EtherspotAccountDeployer extends BaseContract {
+export interface TestAggregatedAccountFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: EtherspotAccountDeployerInterface;
+  interface: TestAggregatedAccountFactoryInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -68,45 +77,45 @@ export interface EtherspotAccountDeployer extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    deployAccount(
-      entryPoint: string,
+    accountImplementation(overrides?: CallOverrides): Promise<[string]>;
+
+    createAccount(
       owner: string,
       salt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     getAddress(
-      entryPoint: string,
       owner: string,
       salt: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
   };
 
-  deployAccount(
-    entryPoint: string,
+  accountImplementation(overrides?: CallOverrides): Promise<string>;
+
+  createAccount(
     owner: string,
     salt: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   getAddress(
-    entryPoint: string,
     owner: string,
     salt: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   callStatic: {
-    deployAccount(
-      entryPoint: string,
+    accountImplementation(overrides?: CallOverrides): Promise<string>;
+
+    createAccount(
       owner: string,
       salt: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
     getAddress(
-      entryPoint: string,
       owner: string,
       salt: BigNumberish,
       overrides?: CallOverrides
@@ -116,15 +125,15 @@ export interface EtherspotAccountDeployer extends BaseContract {
   filters: {};
 
   estimateGas: {
-    deployAccount(
-      entryPoint: string,
+    accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
+
+    createAccount(
       owner: string,
       salt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     getAddress(
-      entryPoint: string,
       owner: string,
       salt: BigNumberish,
       overrides?: CallOverrides
@@ -132,15 +141,17 @@ export interface EtherspotAccountDeployer extends BaseContract {
   };
 
   populateTransaction: {
-    deployAccount(
-      entryPoint: string,
+    accountImplementation(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    createAccount(
       owner: string,
       salt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getAddress(
-      entryPoint: string,
       owner: string,
       salt: BigNumberish,
       overrides?: CallOverrides

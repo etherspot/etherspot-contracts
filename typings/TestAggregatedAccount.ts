@@ -163,15 +163,15 @@ export interface TestAggregatedAccountInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "EtherspotInitialized(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "SimpleAccountInitialized(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EtherspotInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SimpleAccountInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -186,17 +186,17 @@ export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
-export type InitializedEvent = TypedEvent<[number], { version: number }>;
-
-export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
-
-export type SimpleAccountInitializedEvent = TypedEvent<
+export type EtherspotInitializedEvent = TypedEvent<
   [string, string],
   { entryPoint: string; owner: string }
 >;
 
-export type SimpleAccountInitializedEventFilter =
-  TypedEventFilter<SimpleAccountInitializedEvent>;
+export type EtherspotInitializedEventFilter =
+  TypedEventFilter<EtherspotInitializedEvent>;
+
+export type InitializedEvent = TypedEvent<[number], { version: number }>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
@@ -425,17 +425,17 @@ export interface TestAggregatedAccount extends BaseContract {
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
+    "EtherspotInitialized(address,address)"(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): EtherspotInitializedEventFilter;
+    EtherspotInitialized(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): EtherspotInitializedEventFilter;
+
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
-
-    "SimpleAccountInitialized(address,address)"(
-      entryPoint?: string | null,
-      owner?: string | null
-    ): SimpleAccountInitializedEventFilter;
-    SimpleAccountInitialized(
-      entryPoint?: string | null,
-      owner?: string | null
-    ): SimpleAccountInitializedEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;

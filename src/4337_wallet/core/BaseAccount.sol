@@ -16,6 +16,9 @@ import "../interfaces/IEntryPoint.sol";
 abstract contract BaseAccount is IAccount {
     using UserOperationLib for UserOperation;
 
+    //return value in case of signature failure.
+    uint256 internal constant SIG_VALIDATION_FAILED = 1;
+
     /**
      * return the account nonce.
      * subclass should return a nonce value that is used both by _validateAndUpdateNonce, and by the external provider (to read the current nonce)

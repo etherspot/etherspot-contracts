@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/camelcase */
 import { ethers } from "hardhat";
-import {
-  arrayify,
-  hexConcat,
-  Interface,
-  keccak256,
-  parseEther,
-} from "ethers/lib/utils";
+import { arrayify, hexConcat, keccak256, parseEther } from "ethers/lib/utils";
 import {
   BigNumber,
   BigNumberish,
@@ -18,9 +11,7 @@ import {
   Signer,
   Wallet,
 } from "ethers";
-import { JsonRpcProvider } from "ethers/node_modules/@ethersproject/providers";
 import {
-  ERC1967Proxy__factory,
   EntryPoint,
   EntryPoint__factory,
   IERC20,
@@ -28,14 +19,15 @@ import {
   EtherspotAccountFactory__factory,
   EtherspotAccount__factory,
   EtherspotAccountFactory,
+  TestAggregatedAccountFactory,
 } from "../../../typings";
-import { BytesLike, hexValue } from "@ethersproject/bytes";
+import { UserOpsPerAggregatorStruct } from "../../../typings/IEntryPoint";
+import { BytesLike } from "@ethersproject/bytes";
+import { JsonRpcProvider } from "ethers/node_modules/@ethersproject/providers";
 import { expect } from "chai";
 import { Create2Factory } from "./Create2Factory";
 import { debugTransaction } from "./debugTx";
 import { UserOperation } from "../UserOperation";
-import { UserOpsPerAggregatorStruct } from "../../../typings/IEntryPoint";
-import { zeroAddress } from "ethereumjs-util";
 
 export const AddressZero = ethers.constants.AddressZero;
 export const HashZero = ethers.constants.HashZero;
@@ -131,9 +123,7 @@ export async function calcGasUsage(
   return { actualGasCost };
 }
 
-// helper function to create a deployer (initCode) call to our account. relies on the global "create2Deployer"
-// note that this is a very naive deployer: merely calls "create2", which means entire constructor code is passed
-// with each deployment. a better deployer will only receive the constructor parameters.
+// helper function to create the initCode to deploy the account, using our account factory.
 export function getAccountInitCode(
   owner: string,
   factory: EtherspotAccountFactory,
@@ -147,21 +137,15 @@ export function getAccountInitCode(
 
 export async function getAggregatedAccountInitCode(
   entryPoint: string,
-  implementationAddress: string,
+  factory: TestAggregatedAccountFactory,
+  salt = 0,
 ): Promise<BytesLike> {
-  const initializeCall = new Interface(
-    EtherspotAccount__factory.abi,
-  ).encodeFunctionData("initialize", [zeroAddress()]);
-  const accountCtr = new ERC1967Proxy__factory(
-    ethers.provider.getSigner(),
-  ).getDeployTransaction(implementationAddress, initializeCall).data!;
-
-  const factory = new Create2Factory(ethers.provider);
-  const initCallData = factory.getDeployTransactionCallData(
-    hexValue(accountCtr),
-    0,
-  );
-  return hexConcat([Create2Factory.contractAddress, initCallData]);
+  // the test aggregated account doesn't check the owner...
+  const owner = AddressZero;
+  return hexConcat([
+    factory.address,
+    factory.interface.encodeFunctionData("createAccount", [owner, salt]),
+  ]);
 }
 
 // given the parameters as AccountDeployer, return the resulting "counterfactual address" that it would create.
@@ -185,6 +169,36 @@ const panicCodes: { [key: number]: string } = {
   0x41: "memory overflow",
   0x51: "zero-initialized variable of internal function type",
 };
+
+export function decodeRevertReason(
+  data: string,
+  nullIfNoMatch = true,
+): string | null {
+  const methodSig = data.slice(0, 10);
+  const dataParams = "0x" + data.slice(10);
+
+  if (methodSig === "0x08c379a0") {
+    const [err] = ethers.utils.defaultAbiCoder.decode(["string"], dataParams);
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    return `Error(${err})`;
+  } else if (methodSig === "0x00fa072b") {
+    const [opindex, paymaster, msg] = ethers.utils.defaultAbiCoder.decode(
+      ["uint256", "address", "string"],
+      dataParams,
+    );
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    return `FailedOp(${opindex}, ${
+      paymaster !== AddressZero ? paymaster : "none"
+    }, ${msg})`;
+  } else if (methodSig === "0x4e487b71") {
+    const [code] = ethers.utils.defaultAbiCoder.decode(["uint256"], dataParams);
+    return `Panic(${panicCodes[code] ?? code} + ')`;
+  }
+  if (!nullIfNoMatch) {
+    return data;
+  }
+  return null;
+}
 
 // rethrow "cleaned up" exception.
 // - stack trace goes back to method (or catch) line, not inner provider
@@ -215,36 +229,6 @@ export function rethrow(): (e: Error) => void {
     err.stack = "Error: " + message + "\n" + stack;
     throw err;
   };
-}
-
-export function decodeRevertReason(
-  data: string,
-  nullIfNoMatch = true,
-): string | null {
-  const methodSig = data.slice(0, 10);
-  const dataParams = "0x" + data.slice(10);
-
-  if (methodSig === "0x08c379a0") {
-    const [err] = ethers.utils.defaultAbiCoder.decode(["string"], dataParams);
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    return `Error(${err})`;
-  } else if (methodSig === "0x00fa072b") {
-    const [opindex, paymaster, msg] = ethers.utils.defaultAbiCoder.decode(
-      ["uint256", "address", "string"],
-      dataParams,
-    );
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    return `FailedOp(${opindex}, ${
-      paymaster !== AddressZero ? paymaster : "none"
-    }, ${msg})`;
-  } else if (methodSig === "0x4e487b71") {
-    const [code] = ethers.utils.defaultAbiCoder.decode(["uint256"], dataParams);
-    return `Panic(${panicCodes[code] ?? code} + ')`;
-  }
-  if (!nullIfNoMatch) {
-    return data;
-  }
-  return null;
 }
 
 let currentNode = "";
@@ -336,22 +320,21 @@ export async function checkForBannedOps(
 }
 
 /**
- * process exception of SimulationResult
+ * process exception of ValidationResult
  * usage: entryPoint.simulationResult(..).catch(simulationResultCatch)
  */
 export function simulationResultCatch(e: any): any {
-  if (e.errorName !== "SimulationResult") {
+  if (e.errorName !== "ValidationResult") {
     throw e;
   }
   return e.errorArgs;
 }
 
 /**
- * process exception of SimulationResultWithAggregation
- * usage: entryPoint.simulationResult(..).catch(simulationResultWithAggregation)
+ * process exception of ValidationResultWithAggregation * usage: entryPoint.simulationResult(..).catch(simulationResultWithAggregation)
  */
 export function simulationResultWithAggregationCatch(e: any): any {
-  if (e.errorName !== "SimulationResultWithAggregation") {
+  if (e.errorName !== "ValidationResultWithAggregation") {
     throw e;
   }
   return e.errorArgs;

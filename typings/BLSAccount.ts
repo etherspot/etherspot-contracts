@@ -181,17 +181,17 @@ export interface BLSAccountInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "EtherspotInitialized(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "PublicKeyChanged(uint256[4],uint256[4])": EventFragment;
-    "SimpleAccountInitialized(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EtherspotInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PublicKeyChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SimpleAccountInitialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -205,6 +205,14 @@ export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export type EtherspotInitializedEvent = TypedEvent<
+  [string, string],
+  { entryPoint: string; owner: string }
+>;
+
+export type EtherspotInitializedEventFilter =
+  TypedEventFilter<EtherspotInitializedEvent>;
 
 export type InitializedEvent = TypedEvent<[number], { version: number }>;
 
@@ -223,14 +231,6 @@ export type PublicKeyChangedEvent = TypedEvent<
 
 export type PublicKeyChangedEventFilter =
   TypedEventFilter<PublicKeyChangedEvent>;
-
-export type SimpleAccountInitializedEvent = TypedEvent<
-  [string, string],
-  { entryPoint: string; owner: string }
->;
-
-export type SimpleAccountInitializedEventFilter =
-  TypedEventFilter<SimpleAccountInitializedEvent>;
 
 export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
@@ -504,6 +504,15 @@ export interface BLSAccount extends BaseContract {
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
+    "EtherspotInitialized(address,address)"(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): EtherspotInitializedEventFilter;
+    EtherspotInitialized(
+      entryPoint?: string | null,
+      owner?: string | null
+    ): EtherspotInitializedEventFilter;
+
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
@@ -515,15 +524,6 @@ export interface BLSAccount extends BaseContract {
       oldPublicKey?: null,
       newPublicKey?: null
     ): PublicKeyChangedEventFilter;
-
-    "SimpleAccountInitialized(address,address)"(
-      entryPoint?: string | null,
-      owner?: string | null
-    ): SimpleAccountInitializedEventFilter;
-    SimpleAccountInitialized(
-      entryPoint?: string | null,
-      owner?: string | null
-    ): SimpleAccountInitializedEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
