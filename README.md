@@ -59,3 +59,4 @@ MIT
 [npm-image]: https://badge.fury.io/js/%40etherspot%2Fcontracts.svg
 [npm-url]: https://npmjs.org/package/@etherspot/contracts
 
+test
