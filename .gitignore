@@ -28,3 +28,4 @@ coverage.json
 
 # hardhat
 .hardhat
+.git/
