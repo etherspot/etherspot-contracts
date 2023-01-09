@@ -53,7 +53,7 @@ describe("EtherspotAccount", function() {
       to: account.address,
       value: parseEther("2"),
     });
-    await account.execute(accounts[2], ONE_ETH, "0x");
+    await account.executeTransaction(accounts[2], ONE_ETH, "0x");
   });
   it("other account should not be able to call transfer", async () => {
     const { proxy: account } = await createAccount(
@@ -64,7 +64,7 @@ describe("EtherspotAccount", function() {
     await expect(
       account
         .connect(ethers.provider.getSigner(1))
-        .execute(accounts[2], ONE_ETH, "0x"),
+        .executeTransaction(accounts[2], ONE_ETH, "0x"),
     ).to.be.revertedWith("EtherspotAccount:: Not Owner or EntryPoint");
   });
 

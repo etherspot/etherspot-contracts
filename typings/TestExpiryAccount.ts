@@ -61,15 +61,16 @@ export type UserOperationStructOutput = [
 export interface TestExpiryAccountInterface extends utils.Interface {
   functions: {
     "addDeposit()": FunctionFragment;
-    "addTemporaryOwner(address,uint256)": FunctionFragment;
+    "addTemporaryOwner(address,uint64,uint64)": FunctionFragment;
     "entryPoint()": FunctionFragment;
-    "execute(address,uint256,bytes)": FunctionFragment;
     "executeBatch(address[],bytes[])": FunctionFragment;
+    "executeTransaction(address,uint256,bytes)": FunctionFragment;
     "getDeposit()": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "nonce()": FunctionFragment;
     "owner()": FunctionFragment;
-    "ownerDeadlines(address)": FunctionFragment;
+    "ownerAfter(address)": FunctionFragment;
+    "ownerUntil(address)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -83,19 +84,19 @@ export interface TestExpiryAccountInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "addTemporaryOwner",
-    values: [string, BigNumberish]
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "entryPoint",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
-    values: [string, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "executeBatch",
     values: [string[], BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeTransaction",
+    values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getDeposit",
@@ -104,10 +105,8 @@ export interface TestExpiryAccountInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(functionFragment: "nonce", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "ownerDeadlines",
-    values: [string]
-  ): string;
+  encodeFunctionData(functionFragment: "ownerAfter", values: [string]): string;
+  encodeFunctionData(functionFragment: "ownerUntil", values: [string]): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
@@ -132,19 +131,20 @@ export interface TestExpiryAccountInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "executeTransaction",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonce", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ownerDeadlines",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "ownerAfter", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "ownerUntil", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
@@ -238,22 +238,23 @@ export interface TestExpiryAccount extends BaseContract {
 
     addTemporaryOwner(
       owner: string,
-      deadline: BigNumberish,
+      _after: BigNumberish,
+      _until: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     entryPoint(overrides?: CallOverrides): Promise<[string]>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -268,10 +269,9 @@ export interface TestExpiryAccount extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    ownerDeadlines(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ownerAfter(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    ownerUntil(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -307,22 +307,23 @@ export interface TestExpiryAccount extends BaseContract {
 
   addTemporaryOwner(
     owner: string,
-    deadline: BigNumberish,
+    _after: BigNumberish,
+    _until: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   entryPoint(overrides?: CallOverrides): Promise<string>;
 
-  execute(
-    dest: string,
-    value: BigNumberish,
-    func: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   executeBatch(
     dest: string[],
     func: BytesLike[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  executeTransaction(
+    dest: string,
+    value: BigNumberish,
+    func: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -337,7 +338,9 @@ export interface TestExpiryAccount extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  ownerAfter(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  ownerUntil(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -371,22 +374,23 @@ export interface TestExpiryAccount extends BaseContract {
 
     addTemporaryOwner(
       owner: string,
-      deadline: BigNumberish,
+      _after: BigNumberish,
+      _until: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     entryPoint(overrides?: CallOverrides): Promise<string>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -398,7 +402,9 @@ export interface TestExpiryAccount extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    ownerAfter(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    ownerUntil(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -466,22 +472,23 @@ export interface TestExpiryAccount extends BaseContract {
 
     addTemporaryOwner(
       owner: string,
-      deadline: BigNumberish,
+      _after: BigNumberish,
+      _until: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     entryPoint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -496,7 +503,9 @@ export interface TestExpiryAccount extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    ownerDeadlines(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    ownerAfter(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    ownerUntil(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -533,22 +542,23 @@ export interface TestExpiryAccount extends BaseContract {
 
     addTemporaryOwner(
       owner: string,
-      deadline: BigNumberish,
+      _after: BigNumberish,
+      _until: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -563,7 +573,12 @@ export interface TestExpiryAccount extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    ownerDeadlines(
+    ownerAfter(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    ownerUntil(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

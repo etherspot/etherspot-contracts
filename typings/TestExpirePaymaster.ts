@@ -241,7 +241,9 @@ export interface TestExpirePaymaster extends BaseContract {
       userOpHash: BytesLike,
       maxCost: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string, BigNumber] & { context: string; deadline: BigNumber }>;
+    ): Promise<
+      [string, BigNumber] & { context: string; sigTimeRange: BigNumber }
+    >;
 
     withdrawStake(
       withdrawAddress: string,
@@ -300,7 +302,9 @@ export interface TestExpirePaymaster extends BaseContract {
     userOpHash: BytesLike,
     maxCost: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<[string, BigNumber] & { context: string; deadline: BigNumber }>;
+  ): Promise<
+    [string, BigNumber] & { context: string; sigTimeRange: BigNumber }
+  >;
 
   withdrawStake(
     withdrawAddress: string,
@@ -353,7 +357,9 @@ export interface TestExpirePaymaster extends BaseContract {
       userOpHash: BytesLike,
       maxCost: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string, BigNumber] & { context: string; deadline: BigNumber }>;
+    ): Promise<
+      [string, BigNumber] & { context: string; sigTimeRange: BigNumber }
+    >;
 
     withdrawStake(
       withdrawAddress: string,

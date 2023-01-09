@@ -71,7 +71,7 @@ describe("DepositPaymaster", () => {
         .then(tx => tx.data!);
 
       await expect(
-        account.execute(paymaster.address, 0, paymasterWithdraw),
+        account.executeTransaction(paymaster.address, 0, paymasterWithdraw),
       ).to.revertedWith("DepositPaymaster: must unlockTokenDeposit");
     });
     it("should fail to withdraw within the same block ", async () => {
@@ -97,8 +97,8 @@ describe("DepositPaymaster", () => {
       const paymasterWithdraw = await paymaster.populateTransaction
         .withdrawTokensTo(token.address, target, 1)
         .then(tx => tx.data!);
-      await account.execute(paymaster.address, 0, paymasterUnlock);
-      await account.execute(paymaster.address, 0, paymasterWithdraw);
+      await account.executeTransaction(paymaster.address, 0, paymasterUnlock);
+      await account.executeTransaction(paymaster.address, 0, paymasterWithdraw);
       expect(await token.balanceOf(target)).to.eq(1);
     });
   });
@@ -169,7 +169,7 @@ describe("DepositPaymaster", () => {
       const paymasterUnlock = await paymaster.populateTransaction
         .unlockTokenDeposit()
         .then(tx => tx.data!);
-      await account.execute(paymaster.address, 0, paymasterUnlock);
+      await account.executeTransaction(paymaster.address, 0, paymasterUnlock);
 
       const userOp = await fillAndSign(
         {
@@ -187,12 +187,16 @@ describe("DepositPaymaster", () => {
       ).to.be.revertedWith("not locked");
     });
 
-    it("succeed with valid deposit", async () => {
+    it.only("succeed with valid deposit", async () => {
       // needed only if previous test did unlock.
       const paymasterLockTokenDeposit = await paymaster.populateTransaction
         .lockTokenDeposit()
         .then(tx => tx.data!);
-      await account.execute(paymaster.address, 0, paymasterLockTokenDeposit);
+      await account.executeTransaction(
+        paymaster.address,
+        0,
+        paymasterLockTokenDeposit,
+      );
 
       const userOp = await fillAndSign(
         {
@@ -207,6 +211,7 @@ describe("DepositPaymaster", () => {
       );
       await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
         const customError = JSON.stringify(e);
+        console.log("CUSTOM ERROR: ", e);
         expect(customError).to.include("SimulationResult");
       });
     });
@@ -227,7 +232,7 @@ describe("DepositPaymaster", () => {
         .justemit()
         .then(tx => tx.data!);
       callData = await account.populateTransaction
-        .execute(counter.address, 0, counterJustEmit)
+        .executeTransaction(counter.address, 0, counterJustEmit)
         .then(tx => tx.data!);
 
       await paymaster.addDepositFor(token.address, account.address, ONE_ETH);
@@ -268,12 +273,12 @@ describe("DepositPaymaster", () => {
       const initialTokens = parseEther("1");
       await token.mint(account.address, initialTokens);
 
-      // need to "approve" the paymaster to use the tokens. we issue a UserOp for that (which uses the deposit to execute)
+      // need to "approve" the paymaster to use the tokens. we issue a UserOp for that (which uses the deposit to executeTransaction)
       const tokenApprovePaymaster = await token.populateTransaction
         .approve(paymaster.address, ethers.constants.MaxUint256)
         .then(tx => tx.data!);
       const execApprove = await account.populateTransaction
-        .execute(token.address, 0, tokenApprovePaymaster)
+        .executeTransaction(token.address, 0, tokenApprovePaymaster)
         .then(tx => tx.data!);
       const userOp1 = await fillAndSign(
         {

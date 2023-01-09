@@ -91,14 +91,19 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256",
+            internalType: "bool",
+            name: "sigFailed",
+            type: "bool",
           },
           {
-            internalType: "uint256",
-            name: "paymasterDeadline",
-            type: "uint256",
+            internalType: "uint64",
+            name: "validAfter",
+            type: "uint64",
+          },
+          {
+            internalType: "uint64",
+            name: "validUntil",
+            type: "uint64",
           },
           {
             internalType: "bytes",
@@ -180,14 +185,19 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256",
+            internalType: "bool",
+            name: "sigFailed",
+            type: "bool",
           },
           {
-            internalType: "uint256",
-            name: "paymasterDeadline",
-            type: "uint256",
+            internalType: "uint64",
+            name: "validAfter",
+            type: "uint64",
+          },
+          {
+            internalType: "uint64",
+            name: "validUntil",
+            type: "uint64",
           },
           {
             internalType: "bytes",

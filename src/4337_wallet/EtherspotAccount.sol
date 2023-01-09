@@ -8,7 +8,6 @@ pragma solidity ^0.8.12;
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
-
 import "./core/BaseAccount.sol";
 
 /**
@@ -62,7 +61,7 @@ contract EtherspotAccount is BaseAccount, UUPSUpgradeable, Initializable {
     /**
      * execute a transaction (called directly from owner, not by entryPoint)
      */
-    function execute(
+    function executeTransaction(
         address dest,
         uint256 value,
         bytes calldata func

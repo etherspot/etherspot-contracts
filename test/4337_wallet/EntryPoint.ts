@@ -1,4 +1,3 @@
-/* ONLY RUNS IF `allowUnlimitedContractSize: true` in hh-config */
 /* eslint-disable @typescript-eslint/camelcase */
 import "./helpers/aa.init";
 import { BigNumber, Event, Wallet } from "ethers";
@@ -38,8 +37,10 @@ import {
   createAddress,
   getAccountAddress,
   HashZero,
+  // simulationResultCatch,
   createAccount,
   getAggregatedAccountInitCode,
+  // simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
 import { fillAndSign, getUserOpHash } from "./UserOp";
 import { UserOperation } from "./UserOperation";
@@ -311,12 +312,12 @@ describe("EntryPoint", function() {
         accountOwner,
         entryPoint,
       );
-      const returnInfo = await entryPoint.callStatic
+      const sigFailed = await entryPoint.callStatic
         .simulateValidation(op)
         .catch(e => {
           return e.message.split(",")[2].replace(" ", "");
         });
-      expect(returnInfo).to.eql(await entryPoint.SIG_VALIDATION_FAILED());
+      expect(sigFailed).eq("true");
     });
 
     it("should revert if wallet not deployed (and no initcode)", async () => {
@@ -340,13 +341,9 @@ describe("EntryPoint", function() {
         accountOwner,
         entryPoint,
       );
-
-      await entryPoint.callStatic.simulateValidation(op).catch(e => {
-        console.log(e.message);
-      }),
-        await expect(
-          entryPoint.callStatic.simulateValidation(op),
-        ).to.revertedWith("AA23 reverted (or OOG)");
+      await expect(
+        entryPoint.callStatic.simulateValidation(op),
+      ).to.revertedWith("AA23 reverted (or OOG)");
     });
 
     it("should succeed if validateUserOp succeeds", async () => {
@@ -362,25 +359,22 @@ describe("EntryPoint", function() {
       });
     });
 
-    it("should return zero paymasterDeadline and empty context if no paymaster", async () => {
+    it("should return empty context if no paymaster", async () => {
       const op = await fillAndSign(
         { sender: account1.address, maxFeePerGas: 0 },
         accountOwner1,
         entryPoint,
       );
-      const returnInfo = await entryPoint.callStatic
+      const paymasterContext = await entryPoint.callStatic
         .simulateValidation(op)
         .catch(e => {
-          const paymDead = e.message.split(",")[3].replace(" ", "");
-          const paymCon = e.message
-            .split(",")[4]
+          return e.message
+            .split(",")[5]
             .replace("]", "")
             .replace(" ", "")
             .replaceAll('"', "");
-          return [paymDead, paymCon];
         });
-      expect(returnInfo[0]).to.eql(0);
-      expect(returnInfo[1]).to.eql("0x");
+      expect(paymasterContext).to.eql("0x");
     });
 
     it("should return stake of sender", async () => {
@@ -526,10 +520,10 @@ describe("EntryPoint", function() {
         accountOwner,
         entryPoint,
       );
-      await entryPoint.callStatic.simulateValidation(op1).catch(e => {
-        const customError = JSON.stringify(e.message);
-        expect(customError).to.include("AA13 initCode failed or OOG");
-      });
+      const error = await entryPoint.callStatic
+        .simulateValidation(op1)
+        .catch(e => e);
+      expect(error.message).to.match(/initCode failed or OOG/, error);
     });
 
     it("should not use banned ops during simulateValidation", async () => {
@@ -616,49 +610,20 @@ describe("EntryPoint", function() {
         );
       });
 
-      describe("#simulateHandleOp", () => {
-        it("should simulate execution", async () => {
-          const accountOwner1 = createAccountOwner();
-          const { proxy: account } = await createAccount(
-            ethersSigner,
-            await accountOwner.getAddress(),
-            entryPoint.address,
-          );
-          await fund(account);
-          const counter = await new TestCounter__factory(ethersSigner).deploy();
-
-          const count = counter.interface.encodeFunctionData("count");
-          const callData = account.interface.encodeFunctionData("execute", [
-            counter.address,
-            0,
-            count,
-          ]);
-          // deliberately broken signature.. simulate should work with it too.
-          const userOp = await fillAndSign(
-            {
-              sender: account.address,
-              callData,
-              maxFeePerGas: 1, // gasprice=gas...
-            },
-            accountOwner1,
-            entryPoint,
-          );
-
-          const ret = await entryPoint.callStatic
-            .simulateHandleOp(userOp)
-            .catch(e => {
-              const preOpGas = e.message
-                .split(",")[0]
-                .split("(")[1]
-                .replace('"', "");
-              const totGas = e.message.split(",")[1].replace(" ", "");
-              return [preOpGas, totGas];
-            });
-          // TODO: we can't directly check simulation called the wallet's execute.
-          // need to do call tracing and parse emitted events
-          // we "hack" it by reporting out gas used, which is expected to be more than just verification
-          console.log("preOpGas=", ret[0], "total gas=", ret[1]);
-        });
+      it("should revert on signature failure", async () => {
+        // wallet-reported signature failure should revert in handleOps
+        const wrongOwner = createAccountOwner();
+        const op = await fillAndSign(
+          {
+            sender: account.address,
+          },
+          wrongOwner,
+          entryPoint,
+        );
+        const beneficiaryAddress = createAddress();
+        await expect(
+          entryPoint.estimateGas.handleOps([op], beneficiaryAddress),
+        ).to.revertedWith("AA24 signature error");
       });
 
       it("account should pay for tx", async function() {
@@ -700,6 +665,111 @@ describe("EntryPoint", function() {
         );
 
         await calcGasUsage(rcpt, entryPoint, beneficiaryAddress);
+      });
+
+      it("account should pay for high gas usage tx", async function() {
+        if (process.env.COVERAGE != null) {
+          return;
+        }
+        const iterations = 45;
+        const count = await counter.populateTransaction.gasWaster(
+          iterations,
+          "",
+        );
+        const accountExec = await account.populateTransaction.execute(
+          counter.address,
+          0,
+          count.data!,
+        );
+        const op = await fillAndSign(
+          {
+            sender: account.address,
+            callData: accountExec.data,
+            verificationGasLimit: 1e5,
+            callGasLimit: 11e5,
+          },
+          accountOwner,
+          entryPoint,
+        );
+        const beneficiaryAddress = createAddress();
+        const offsetBefore = await counter.offset();
+        console.log("  == offset before", offsetBefore);
+        // for estimateGas, must specify maxFeePerGas, otherwise our gas check fails
+        console.log(
+          "  == est gas=",
+          await entryPoint.estimateGas
+            .handleOps([op], beneficiaryAddress, { maxFeePerGas: 1e9 })
+            .then(tostr),
+        );
+
+        // must specify at least on of maxFeePerGas, gasLimit
+        // (gasLimit, to prevent estimateGas to fail on missing maxFeePerGas, see above..)
+        const rcpt = await entryPoint
+          .handleOps([op], beneficiaryAddress, {
+            maxFeePerGas: 1e9,
+            gasLimit: 13e5,
+          })
+          .then(async t => await t.wait());
+
+        console.log(
+          "rcpt.gasUsed=",
+          rcpt.gasUsed.toString(),
+          rcpt.transactionHash,
+        );
+        await calcGasUsage(rcpt, entryPoint, beneficiaryAddress);
+
+        // check that the state of the counter contract is updated
+        // this ensures that the `callGasLimit` is high enough
+        // therefore this value can be used as a reference in the test below
+        console.log("  == offset after", await counter.offset());
+        expect(await counter.offset()).to.equal(offsetBefore.add(iterations));
+      });
+
+      it("account should not pay if too low gas limit was set", async function() {
+        const iterations = 45;
+        const count = await counter.populateTransaction.gasWaster(
+          iterations,
+          "",
+        );
+        const accountExec = await account.populateTransaction.execute(
+          counter.address,
+          0,
+          count.data!,
+        );
+        const op = await fillAndSign(
+          {
+            sender: account.address,
+            callData: accountExec.data,
+            verificationGasLimit: 1e5,
+            callGasLimit: 11e5,
+          },
+          accountOwner,
+          entryPoint,
+        );
+        const inititalAccountBalance = await getBalance(account.address);
+        const beneficiaryAddress = createAddress();
+        const offsetBefore = await counter.offset();
+        console.log("  == offset before", offsetBefore);
+        // for estimateGas, must specify maxFeePerGas, otherwise our gas check fails
+        console.log(
+          "  == est gas=",
+          await entryPoint.estimateGas
+            .handleOps([op], beneficiaryAddress, { maxFeePerGas: 1e9 })
+            .then(tostr),
+        );
+
+        // must specify at least on of maxFeePerGas, gasLimit
+        // (gasLimit, to prevent estimateGas to fail on missing maxFeePerGas, see above..)
+        // this transaction should revert as the gasLimit is too low to satisfy the expected `callGasLimit` (see test above)
+        await expect(
+          entryPoint.handleOps([op], beneficiaryAddress, {
+            maxFeePerGas: 1e9,
+            gasLimit: 12e5,
+          }),
+        ).to.revertedWith("AA95 out of gas");
+
+        // Make sure that the user did not pay for the transaction
+        expect(await getBalance(account.address)).to.eq(inititalAccountBalance);
       });
 
       it('legacy mode (maxPriorityFee==maxFeePerGas) should not use "basefee" opcode', async function() {
@@ -942,7 +1012,7 @@ describe("EntryPoint", function() {
               etherspotAccountFactory,
               salt,
             ),
-            callGasLimit: 1e7,
+            callGasLimit: 1e6,
             verificationGasLimit: 2e6,
           },
           accountOwner,
@@ -1120,6 +1190,33 @@ describe("EntryPoint", function() {
           entryPoint.handleOps([userOp], beneficiaryAddress),
         ).to.revertedWith("wrong aggregator");
       });
+      it("should fail to execute aggregated account with wrong aggregator", async () => {
+        const userOp = await fillAndSign(
+          {
+            sender: aggAccount.address,
+          },
+          accountOwner,
+          entryPoint,
+        );
+
+        const wrongAggregator = await new TestSignatureAggregator__factory(
+          ethersSigner,
+        ).deploy();
+        const sig = HashZero;
+
+        await expect(
+          entryPoint.handleAggregatedOps(
+            [
+              {
+                userOps: [userOp],
+                aggregator: wrongAggregator.address,
+                signature: sig,
+              },
+            ],
+            beneficiaryAddress,
+          ),
+        ).to.revertedWith("wrong aggregator");
+      });
 
       it("should reject non-contract (address(1)) aggregator", async () => {
         // this is just sanity check that the compiler indeed reverts on a call to "validateSignatures()" to nonexistent contracts
@@ -1157,33 +1254,6 @@ describe("EntryPoint", function() {
           /reverted without a reason string|function call to a non-contract account/,
         );
         // (different error in coverage mode (because of different solidity settings)
-      });
-      it("should fail to execute aggregated account with wrong aggregator", async () => {
-        const userOp = await fillAndSign(
-          {
-            sender: aggAccount.address,
-          },
-          accountOwner,
-          entryPoint,
-        );
-
-        const wrongAggregator = await new TestSignatureAggregator__factory(
-          ethersSigner,
-        ).deploy();
-        const sig = HashZero;
-
-        await expect(
-          entryPoint.handleAggregatedOps(
-            [
-              {
-                userOps: [userOp],
-                aggregator: wrongAggregator.address,
-                signature: sig,
-              },
-            ],
-            beneficiaryAddress,
-          ),
-        ).to.revertedWith("wrong aggregator");
       });
 
       it("should fail to execute aggregated account with wrong agg. signature", async () => {
@@ -1283,12 +1353,12 @@ describe("EntryPoint", function() {
           .then(async ret => ret.wait());
         const events = rcpt.events
           ?.map((ev: Event) => {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             if (ev.event === "UserOperationEvent") {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               return `userOp(${ev.args?.sender})`;
             }
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             if (ev.event === "SignatureAggregatorChanged") {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               return `agg(${ev.args?.aggregator})`;
             } else return null;
           })
@@ -1512,28 +1582,30 @@ describe("EntryPoint", function() {
       });
     });
 
-    describe("Validation deadline", () => {
-      describe("validateUserOp deadline", function() {
-        let account: TestExpiryAccount;
-        let now: number;
-        before("init account with session key", async () => {
-          // create a test account. The primary owner is the global ethersSigner, so that we can easily add a temporaryOwner, below
-          account = await new TestExpiryAccount__factory(ethersSigner).deploy(
-            entryPoint.address,
-          );
-          await account.initialize(await ethersSigner.getAddress());
-          await ethersSigner.sendTransaction({
-            to: account.address,
-            value: parseEther("0.1"),
-          });
-          now = await ethers.provider
-            .getBlock("latest")
-            .then(block => block.timestamp);
+    describe("Validation time-range", () => {
+      const beneficiary = createAddress();
+      let account: TestExpiryAccount;
+      let now: number;
+      let sessionOwner: Wallet;
+      before("init account with session key", async () => {
+        // create a test account. The primary owner is the global ethersSigner, so that we can easily add a temporaryOwner, below
+        account = await new TestExpiryAccount__factory(ethersSigner).deploy(
+          entryPoint.address,
+        );
+        await account.initialize(await ethersSigner.getAddress());
+        await ethersSigner.sendTransaction({
+          to: account.address,
+          value: parseEther("0.1"),
         });
+        now = await ethers.provider
+          .getBlock("latest")
+          .then(block => block.timestamp);
+        sessionOwner = createAccountOwner();
+        await account.addTemporaryOwner(sessionOwner.address, 100, now + 60);
+      });
 
+      describe("validateUserOp time-range", function() {
         it("should accept non-expired owner", async () => {
-          const sessionOwner = createAccountOwner();
-          await account.addTemporaryOwner(sessionOwner.address, now + 60);
           const userOp = await fillAndSign(
             {
               sender: account.address,
@@ -1544,49 +1616,41 @@ describe("EntryPoint", function() {
           const ret = await entryPoint.callStatic
             .simulateValidation(userOp)
             .catch(e => {
-              const deadline = e.message.split(",")[2].replace(" ", "");
-              const paymDeadline = e.message.split(",")[3].replace(" ", "");
-              return [deadline, paymDeadline];
+              const validAfter = e.message.split(",")[3].replace(" ", "");
+              const validUntil = e.message.split(",")[4].replace(" ", "");
+              return [validAfter, validUntil];
             });
-          expect(ret[0]).to.eql(now + 60);
-          expect(ret[1]).to.eql(0);
+          expect(ret[0]).to.eql(100);
+          expect(ret[1]).to.eql(now + 60 - 1);
         });
 
         it("should not reject expired owner", async () => {
-          const sessionOwner = createAccountOwner();
-          await account.addTemporaryOwner(sessionOwner.address, now - 60);
+          const expiredOwner = createAccountOwner();
+          await account.addTemporaryOwner(expiredOwner.address, 123, now - 60);
           const userOp = await fillAndSign(
             {
               sender: account.address,
             },
-            sessionOwner,
+            expiredOwner,
             entryPoint,
           );
-
           const ret = await entryPoint.callStatic
             .simulateValidation(userOp)
             .catch(e => {
-              const deadline = e.message.split(",")[2].replace(" ", "");
-              const paymDeadline = e.message.split(",")[3].replace(" ", "");
-
-              return [deadline, paymDeadline];
+              const validAfter = e.message.split(",")[3].replace(" ", "");
+              const validUntil = e.message.split(",")[4].replace(" ", "");
+              return [validAfter, validUntil];
             });
-          expect(ret[0]).eql(now - 60);
-          expect(ret[1]).to.eql(0);
+          expect(ret[1]).eql(now - 60 - 1);
+          expect(ret[0]).to.eql(123);
         });
       });
 
       describe("validatePaymasterUserOp with deadline", function() {
-        let account: TestExpiryAccount;
         let paymaster: TestExpirePaymaster;
         let now: number;
         before("init account with session key", async function() {
           this.timeout(20000);
-          // account without eth - must be paid by paymaster.
-          account = await new TestExpiryAccount__factory(ethersSigner).deploy(
-            entryPoint.address,
-          );
-          await account.initialize(await ethersSigner.getAddress());
           paymaster = await new TestExpirePaymaster__factory(
             ethersSigner,
           ).deploy(entryPoint.address);
@@ -1598,27 +1662,14 @@ describe("EntryPoint", function() {
         });
 
         it("should accept non-expired paymaster request", async () => {
-          const expireTime = defaultAbiCoder.encode(["uint256"], [now + 60]);
-          const userOp = await fillAndSign(
-            {
-              sender: account.address,
-              paymasterAndData: hexConcat([paymaster.address, expireTime]),
-            },
-            ethersSigner,
-            entryPoint,
+          const timeRange = defaultAbiCoder.encode(
+            ["uint64", "uint64"],
+            [123, now + 60],
           );
-          await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
-            const customError = JSON.stringify(e);
-            expect(customError).to.include("ValidationResult", `${now + 60}`);
-          });
-        });
-
-        it("should not reject expired paymaster request", async () => {
-          const expireTime = defaultAbiCoder.encode(["uint256"], [now - 60]);
           const userOp = await fillAndSign(
             {
               sender: account.address,
-              paymasterAndData: hexConcat([paymaster.address, expireTime]),
+              paymasterAndData: hexConcat([paymaster.address, timeRange]),
             },
             ethersSigner,
             entryPoint,
@@ -1626,11 +1677,149 @@ describe("EntryPoint", function() {
           const ret = await entryPoint.callStatic
             .simulateValidation(userOp)
             .catch(e => {
-              const paymDeadline = e.message.split(",")[3].replace(" ", "");
-
-              return paymDeadline;
+              const validAfter = e.message.split(",")[3].replace(" ", "");
+              const validUntil = e.message.split(",")[4].replace(" ", "");
+              return [validAfter, validUntil];
             });
-          expect(ret).to.eql(now - 60);
+          expect(ret[1]).to.eql(now + 60 - 1);
+          expect(ret[0]).to.eql(123);
+        });
+
+        it("should not reject expired paymaster request", async () => {
+          const timeRange = defaultAbiCoder.encode(
+            ["uint64", "uint64"],
+            [321, now - 60],
+          );
+          const userOp = await fillAndSign(
+            {
+              sender: account.address,
+              paymasterAndData: hexConcat([paymaster.address, timeRange]),
+            },
+            ethersSigner,
+            entryPoint,
+          );
+          const ret = await entryPoint.callStatic
+            .simulateValidation(userOp)
+            .catch(e => {
+              const validAfter = e.message.split(",")[3].replace(" ", "");
+              const validUntil = e.message.split(",")[4].replace(" ", "");
+              return [validAfter, validUntil];
+            });
+          expect(ret[1]).to.eql(now - 60 - 1);
+          expect(ret[0]).to.eql(321);
+        });
+
+        // helper method
+        async function createOpWithPaymasterParams(
+          owner: Wallet,
+          after: number,
+          until: number,
+        ): Promise<UserOperation> {
+          const timeRange = defaultAbiCoder.encode(
+            ["uint64", "uint64"],
+            [after, until],
+          );
+          return await fillAndSign(
+            {
+              sender: account.address,
+              paymasterAndData: hexConcat([paymaster.address, timeRange]),
+            },
+            owner,
+            entryPoint,
+          );
+        }
+
+        describe("time-range overlap of paymaster and account should intersect", () => {
+          let owner: Wallet;
+          before(async () => {
+            owner = createAccountOwner();
+            await account.addTemporaryOwner(owner.address, 100, 500);
+          });
+
+          async function simulateWithPaymasterParams(
+            after: number,
+            until: number,
+          ): Promise<any> {
+            const userOp = await createOpWithPaymasterParams(
+              owner,
+              after,
+              until,
+            );
+            const ret = await entryPoint.callStatic
+              .simulateValidation(userOp)
+              .catch(e => {
+                return e.message.split(", ");
+              });
+            return ret;
+          }
+
+          // sessionOwner has a range of 100.. now+60
+          it('should use lower "after" value of paymaster', async () => {
+            const ret = await simulateWithPaymasterParams(10, 1000);
+            const validAfter = ret.at(3);
+            expect(validAfter).to.eql(100);
+          });
+          it('should use lower "after" value of account', async () => {
+            const ret = await simulateWithPaymasterParams(200, 1000);
+            const validAfter = ret.at(3);
+            expect(validAfter).to.eql(200);
+          });
+          it('should use higher "until" value of paymaster', async () => {
+            const ret = await simulateWithPaymasterParams(10, 400);
+            const validUntil = ret.at(4);
+            expect(validUntil).to.eql(399);
+          });
+          it('should use higher "until" value of account', async () => {
+            const ret = await simulateWithPaymasterParams(200, 600);
+            const validUntil = ret.at(4);
+            expect(validUntil).to.eql(499);
+          });
+
+          it("handleOps should revert on expired paymaster request", async () => {
+            const userOp = await createOpWithPaymasterParams(
+              sessionOwner,
+              now + 100,
+              now + 200,
+            );
+            await expect(
+              entryPoint.handleOps([userOp], beneficiary),
+            ).to.revertedWith("AA32 paymaster expired or not due");
+          });
+        });
+      });
+      describe("handleOps should abort on time-range", () => {
+        it("should revert on expired account", async () => {
+          const expiredOwner = createAccountOwner();
+          await account.addTemporaryOwner(expiredOwner.address, 1, 2);
+          const userOp = await fillAndSign(
+            {
+              sender: account.address,
+            },
+            expiredOwner,
+            entryPoint,
+          );
+          await expect(
+            entryPoint.handleOps([userOp], beneficiary),
+          ).to.revertedWith("AA22 expired or not due");
+        });
+
+        it("should revert on date owner", async () => {
+          const futureOwner = createAccountOwner();
+          await account.addTemporaryOwner(
+            futureOwner.address,
+            now + 100,
+            now + 200,
+          );
+          const userOp = await fillAndSign(
+            {
+              sender: account.address,
+            },
+            futureOwner,
+            entryPoint,
+          );
+          await expect(
+            entryPoint.handleOps([userOp], beneficiary),
+          ).to.revertedWith("AA22 expired or not due");
         });
       });
     });

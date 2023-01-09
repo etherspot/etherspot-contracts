@@ -20,6 +20,23 @@ abstract contract BaseAccount is IAccount {
     uint256 internal constant SIG_VALIDATION_FAILED = 1;
 
     /**
+     * helper to pack the return value for validateUserOp
+     * @param sigFailed true if the signature check failed, false, if it succeeded.
+     * @param validUntil last timestamp this UserOperation is valid (or zero for infinite)
+     * @param validAfter first timestamp this UserOperation is valid
+     */
+    function packSigTimeRange(
+        bool sigFailed,
+        uint256 validUntil,
+        uint256 validAfter
+    ) internal pure returns (uint256) {
+        return
+            uint256(sigFailed ? 1 : 0) |
+            uint256(validUntil << 8) |
+            uint256(validAfter << (64 + 8));
+    }
+
+    /**
      * return the account nonce.
      * subclass should return a nonce value that is used both by _validateAndUpdateNonce, and by the external provider (to read the current nonce)
      */

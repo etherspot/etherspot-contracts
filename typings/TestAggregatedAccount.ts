@@ -63,8 +63,8 @@ export interface TestAggregatedAccountInterface extends utils.Interface {
     "addDeposit()": FunctionFragment;
     "aggregator()": FunctionFragment;
     "entryPoint()": FunctionFragment;
-    "execute(address,uint256,bytes)": FunctionFragment;
     "executeBatch(address[],bytes[])": FunctionFragment;
+    "executeTransaction(address,uint256,bytes)": FunctionFragment;
     "getAggregator()": FunctionFragment;
     "getDeposit()": FunctionFragment;
     "initialize(address)": FunctionFragment;
@@ -90,12 +90,12 @@ export interface TestAggregatedAccountInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
-    values: [string, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "executeBatch",
     values: [string[], BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeTransaction",
+    values: [string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getAggregator",
@@ -129,9 +129,12 @@ export interface TestAggregatedAccountInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "executeTransaction",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -237,16 +240,16 @@ export interface TestAggregatedAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<[string]>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -299,16 +302,16 @@ export interface TestAggregatedAccount extends BaseContract {
 
   entryPoint(overrides?: CallOverrides): Promise<string>;
 
-  execute(
-    dest: string,
-    value: BigNumberish,
-    func: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   executeBatch(
     dest: string[],
     func: BytesLike[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  executeTransaction(
+    dest: string,
+    value: BigNumberish,
+    func: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -359,16 +362,16 @@ export interface TestAggregatedAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<string>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -450,16 +453,16 @@ export interface TestAggregatedAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -513,16 +516,16 @@ export interface TestAggregatedAccount extends BaseContract {
 
     entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    execute(
-      dest: string,
-      value: BigNumberish,
-      func: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     executeBatch(
       dest: string[],
       func: BytesLike[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    executeTransaction(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
