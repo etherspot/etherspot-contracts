@@ -17,7 +17,6 @@ export enum NetworkNames {
   Aurora = "aurora",
   AuroraTest = "auroraTest",
   Arbitrum = "arbitrum",
-  ArbitrumTest = "arbitrumTest",
   Optimism = "optimism",
   OptimismKovan = "optimismKovan",
   Moonbeam = "moonbeam",
@@ -153,11 +152,6 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.Arbitrum]: {
     chainId: 42161,
     defaultProviderUrl: "https://arb1.arbitrum.io/rpc",
-    defaultGasPrice: 1,
-  },
-  [NetworkNames.ArbitrumTest]: {
-    chainId: 421611,
-    defaultProviderUrl: "https://rinkeby.arbitrum.io/rpc",
     defaultGasPrice: 1,
   },
   [NetworkNames.Optimism]: {

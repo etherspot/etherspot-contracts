@@ -51,8 +51,4 @@ export const CBridgeConfig = {
     cBridge: "0x6D5862a18C6a169D44d02a8B726a02A5B707B484",
     chainId: 69,
   },
-  [NetworkNames.ArbitrumTest]: {
-    cBridge: "0x8314Af54080dF4d05768c5D3f097f59f170d9564",
-    chainId: 421611,
-  },
 };

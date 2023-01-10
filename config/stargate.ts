@@ -54,10 +54,6 @@ const config: StargateConfig = {
     stargateRouter: "0x817436a076060D158204d955E5403b6Ed0A5fac0",
     chainId: 10009,
   },
-  [NetworkNames.ArbitrumTest]: {
-    stargateRouter: "0x6701D9802aDF674E524053bd44AA83ef253efc41",
-    chainId: 10010,
-  },
   [NetworkNames.OptimismKovan]: {
     stargateRouter: "0xCC68641528B948642bDE1729805d6cf1DECB0B00",
     chainId: 10011,
