@@ -152,6 +152,7 @@ export type UserOpInfoStructOutput = [
 export interface EntryPointInterface extends utils.Interface {
   functions: {
     "SIG_VALIDATION_FAILED()": FunctionFragment;
+    "_simulateFindAggregator(address,address)": FunctionFragment;
     "addStake(uint32)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "depositTo(address)": FunctionFragment;
@@ -172,6 +173,10 @@ export interface EntryPointInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "SIG_VALIDATION_FAILED",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "_simulateFindAggregator",
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "addStake",
@@ -227,6 +232,10 @@ export interface EntryPointInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "SIG_VALIDATION_FAILED",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "_simulateFindAggregator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "addStake", data: BytesLike): Result;
@@ -398,6 +407,12 @@ export interface EntryPoint extends BaseContract {
   functions: {
     SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    _simulateFindAggregator(
+      sender: string,
+      paymaster: string,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -485,6 +500,12 @@ export interface EntryPoint extends BaseContract {
 
   SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
 
+  _simulateFindAggregator(
+    sender: string,
+    paymaster: string,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   addStake(
     _unstakeDelaySec: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -571,6 +592,12 @@ export interface EntryPoint extends BaseContract {
 
   callStatic: {
     SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
+
+    _simulateFindAggregator(
+      sender: string,
+      paymaster: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     addStake(
       _unstakeDelaySec: BigNumberish,
@@ -760,6 +787,12 @@ export interface EntryPoint extends BaseContract {
   estimateGas: {
     SIG_VALIDATION_FAILED(overrides?: CallOverrides): Promise<BigNumber>;
 
+    _simulateFindAggregator(
+      sender: string,
+      paymaster: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     addStake(
       _unstakeDelaySec: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -836,6 +869,12 @@ export interface EntryPoint extends BaseContract {
 
   populateTransaction: {
     SIG_VALIDATION_FAILED(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _simulateFindAggregator(
+      sender: string,
+      paymaster: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

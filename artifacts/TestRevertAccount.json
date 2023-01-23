@@ -1,0 +1,126 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "TestRevertAccount",
+  "sourceName": "src/4337_wallet/test/TestRevertAccount.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IEntryPoint",
+          "name": "_ep",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "name": "revertLong",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "initCode",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "verificationGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "preVerificationGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxFeePerGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxPriorityFeePerGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "paymasterAndData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct UserOperation",
+          "name": "",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "missingAccountFunds",
+          "type": "uint256"
+        }
+      ],
+      "name": "validateUserOp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "sigTimeRange",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405260405161044d38038061044d833981810160405281019061002591906100e0565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505061010d565b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600061009b82610070565b9050919050565b60006100ad82610090565b9050919050565b6100bd816100a2565b81146100c857600080fd5b50565b6000815190506100da816100b4565b92915050565b6000602082840312156100f6576100f561006b565b5b6000610104848285016100cb565b91505092915050565b6103318061011c6000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80630825d1fc1461003b578063be76c6ef1461006b575b600080fd5b61005560048036038101906100509190610220565b610087565b60405161006291906102b2565b60405180910390f35b610085600480360381019061008091906102cd565b610122565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b760faf983306040518363ffffffff1660e01b81526004016100e49190610309565b6000604051808303818588803b1580156100fd57600080fd5b505af1158015610111573d6000803e3d6000fd5b505050505060009050949350505050565b806000fd5b600080fd5b600080fd5b600080fd5b6000610160828403121561014d5761014c610131565b5b81905092915050565b6000819050919050565b61016981610156565b811461017457600080fd5b50565b60008135905061018681610160565b92915050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b60006101b78261018c565b9050919050565b6101c7816101ac565b81146101d257600080fd5b50565b6000813590506101e4816101be565b92915050565b6000819050919050565b6101fd816101ea565b811461020857600080fd5b50565b60008135905061021a816101f4565b92915050565b6000806000806080858703121561023a57610239610127565b5b600085013567ffffffffffffffff8111156102585761025761012c565b5b61026487828801610136565b945050602061027587828801610177565b9350506040610286878288016101d5565b92505060606102978782880161020b565b91505092959194509250565b6102ac816101ea565b82525050565b60006020820190506102c760008301846102a3565b92915050565b6000602082840312156102e3576102e2610127565b5b60006102f18482850161020b565b91505092915050565b610303816101ac565b82525050565b600060208201905061031e60008301846102fa565b9291505056fea164736f6c634300080c000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80630825d1fc1461003b578063be76c6ef1461006b575b600080fd5b61005560048036038101906100509190610220565b610087565b60405161006291906102b2565b60405180910390f35b610085600480360381019061008091906102cd565b610122565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b760faf983306040518363ffffffff1660e01b81526004016100e49190610309565b6000604051808303818588803b1580156100fd57600080fd5b505af1158015610111573d6000803e3d6000fd5b505050505060009050949350505050565b806000fd5b600080fd5b600080fd5b600080fd5b6000610160828403121561014d5761014c610131565b5b81905092915050565b6000819050919050565b61016981610156565b811461017457600080fd5b50565b60008135905061018681610160565b92915050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b60006101b78261018c565b9050919050565b6101c7816101ac565b81146101d257600080fd5b50565b6000813590506101e4816101be565b92915050565b6000819050919050565b6101fd816101ea565b811461020857600080fd5b50565b60008135905061021a816101f4565b92915050565b6000806000806080858703121561023a57610239610127565b5b600085013567ffffffffffffffff8111156102585761025761012c565b5b61026487828801610136565b945050602061027587828801610177565b9350506040610286878288016101d5565b92505060606102978782880161020b565b91505092959194509250565b6102ac816101ea565b82525050565b60006020820190506102c760008301846102a3565b92915050565b6000602082840312156102e3576102e2610127565b5b60006102f18482850161020b565b91505092915050565b610303816101ac565b82525050565b600060208201905061031e60008301846102fa565b9291505056fea164736f6c634300080c000a",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

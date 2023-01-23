@@ -215,10 +215,10 @@ describe("bls account", function() {
       const aggregatorInfo = await entrypoint.callStatic
         .simulateValidation(userOp)
         .catch(e => {
-          const actualAggregator = e.message.split('"')[1];
-          const stake = e.message.split('"')[2].slice(3, 22);
+          const actualAggregator = e.message.split('"')[3];
+          const stake = e.message.split('"')[4].slice(3, 22);
           const unstakeDelaySec = parseInt(
-            e.message.split('"')[2].slice(24, 25),
+            e.message.split('"')[4].slice(24, 25),
           );
           return [actualAggregator, stake, unstakeDelaySec];
         });

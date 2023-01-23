@@ -216,7 +216,7 @@ interface IEntryPoint is IStakeManager {
     error ExecutionResult(
         uint256 preOpGas,
         uint256 paid,
-        uint256 deadline,
-        uint256 paymasterDeadline
+        uint64 validAfter,
+        uint64 validBefore
     );
 }

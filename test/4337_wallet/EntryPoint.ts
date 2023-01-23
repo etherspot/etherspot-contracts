@@ -16,9 +16,12 @@ import {
   TestExpiryAccount__factory,
   TestPaymasterAcceptAll,
   TestPaymasterAcceptAll__factory,
+  TestRevertAccount__factory,
   TestAggregatedAccount,
   TestSignatureAggregator,
   TestSignatureAggregator__factory,
+  MaliciousAccount__factory,
+  TestWarmColdAccount__factory,
 } from "../../typings";
 import {
   AddressZero,
@@ -42,11 +45,12 @@ import {
   getAggregatedAccountInitCode,
   // simulationResultWithAggregationCatch,
 } from "./helpers/testUtils";
-import { fillAndSign, getUserOpHash } from "./UserOp";
+import { DefaultsForUserOp, fillAndSign, getUserOpHash } from "./UserOp";
 import { UserOperation } from "./UserOperation";
 import { PopulatedTransaction } from "ethers/lib/ethers";
 import { ethers } from "hardhat";
 import {
+  arrayify,
   defaultAbiCoder,
   hexConcat,
   hexZeroPad,
@@ -386,7 +390,7 @@ describe("EntryPoint", function() {
         entryPoint.address,
       );
       await fund(account2);
-      await account2.execute(
+      await account2.executeTransaction(
         entryPoint.address,
         stakeValue,
         entryPoint.interface.encodeFunctionData("addStake", [unstakeDelay]),
@@ -513,7 +517,11 @@ describe("EntryPoint", function() {
         {
           initCode: hexConcat([
             account.address,
-            account.interface.encodeFunctionData("execute", [sender, 0, "0x"]),
+            account.interface.encodeFunctionData("executeTransaction", [
+              sender,
+              0,
+              "0x",
+            ]),
           ]),
           sender,
         },
@@ -563,11 +571,10 @@ describe("EntryPoint", function() {
       const counter = await new TestCounter__factory(ethersSigner).deploy();
 
       const count = counter.interface.encodeFunctionData("count");
-      const callData = account.interface.encodeFunctionData("execute", [
-        counter.address,
-        0,
-        count,
-      ]);
+      const callData = account.interface.encodeFunctionData(
+        "executeTransaction",
+        [counter.address, 0, count],
+      );
       // deliberately broken signature.. simulate should work with it too.
       const userOp = await fillAndSign(
         {
@@ -596,6 +603,157 @@ describe("EntryPoint", function() {
     });
   });
 
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
+  describe("flickering account validation", () => {
+    it("should prevent leakage of basefee", async () => {
+      const maliciousAccount = await new MaliciousAccount__factory(
+        ethersSigner,
+      ).deploy(entryPoint.address, { value: parseEther("1") });
+
+      const snap = await ethers.provider.send("evm_snapshot", []);
+      await ethers.provider.send("evm_mine", []);
+      const block = await ethers.provider.getBlock("latest");
+      await ethers.provider.send("evm_revert", [snap]);
+
+      if (block.baseFeePerGas == null) {
+        expect.fail(null, null, "test error: no basefee");
+      }
+
+      const userOp: UserOperation = {
+        sender: maliciousAccount.address,
+        nonce: block.baseFeePerGas,
+        initCode: "0x",
+        callData: "0x",
+        callGasLimit: "0x" + (1e5).toString(16),
+        verificationGasLimit: "0x" + (1e5).toString(16),
+        preVerificationGas: "0x" + (1e5).toString(16),
+        // we need maxFeeperGas > block.basefee + maxPriorityFeePerGas so requiredPrefund onchain is basefee + maxPriorityFeePerGas
+        maxFeePerGas: block.baseFeePerGas.mul(3),
+        maxPriorityFeePerGas: block.baseFeePerGas,
+        paymasterAndData: "0x",
+        signature: "0x",
+      };
+      try {
+        await expect(
+          entryPoint.simulateValidation(userOp, { gasLimit: 1e6 }),
+        ).to.revertedWith("ValidationResult");
+        console.log("after first simulation");
+        await ethers.provider.send("evm_mine", []);
+        await expect(
+          entryPoint.simulateValidation(userOp, { gasLimit: 1e6 }),
+        ).to.revertedWith("Revert after first validation");
+        // if we get here, it means the userOp passed first sim and reverted second
+        expect.fail(null, null, "should fail on first simulation");
+      } catch (e) {
+        expect(e.message).to.include("Revert after first validation");
+      }
+    });
+
+    it("should limit revert reason length before emitting it", async () => {
+      const revertLength = 1e5;
+      const REVERT_REASON_MAX_LEN = 2048;
+      const testRevertAccount = await new TestRevertAccount__factory(
+        ethersSigner,
+      ).deploy(entryPoint.address, { value: parseEther("1") });
+      const badData = await testRevertAccount.populateTransaction.revertLong(
+        revertLength + 1,
+      );
+      const badOp: UserOperation = {
+        ...DefaultsForUserOp,
+        sender: testRevertAccount.address,
+        callGasLimit: 1e5,
+        maxFeePerGas: 1,
+        verificationGasLimit: 1e5,
+        callData: badData.data!,
+      };
+      const beneficiaryAddress = createAddress();
+      await expect(
+        entryPoint.simulateValidation(badOp, { gasLimit: 3e5 }),
+      ).to.revertedWith("ValidationResult");
+      const tx = await entryPoint.handleOps([badOp], beneficiaryAddress, {
+        gasLimit: 3e5,
+      });
+      const receipt = await tx.wait();
+      const userOperationRevertReasonEvent = receipt.events?.find(
+        event => event.event === "UserOperationRevertReason",
+      );
+      expect(userOperationRevertReasonEvent?.event).to.equal(
+        "UserOperationRevertReason",
+      );
+      const revertReason = Buffer.from(
+        arrayify(userOperationRevertReasonEvent?.args?.revertReason),
+      );
+      expect(revertReason.length).to.equal(REVERT_REASON_MAX_LEN);
+    });
+    describe("warm/cold storage detection in simulation vs execution", () => {
+      const TOUCH_GET_AGGREGATOR = 1;
+      const TOUCH_PAYMASTER = 2;
+      it("should prevent detection through getAggregator()", async () => {
+        const testWarmColdAccount = await new TestWarmColdAccount__factory(
+          ethersSigner,
+        ).deploy(entryPoint.address, { value: parseEther("1") });
+        const badOp: UserOperation = {
+          ...DefaultsForUserOp,
+          nonce: TOUCH_GET_AGGREGATOR,
+          sender: testWarmColdAccount.address,
+        };
+        const beneficiaryAddress = createAddress();
+        try {
+          await entryPoint.simulateValidation(badOp, { gasLimit: 1e6 });
+        } catch (e) {
+          if ((e as Error).message.includes("ValidationResult")) {
+            const tx = await entryPoint.handleOps([badOp], beneficiaryAddress, {
+              gasLimit: 1e6,
+            });
+            await tx.wait();
+          } else {
+            expect(e.message).to.include(
+              'FailedOp(0, "0x0000000000000000000000000000000000000000", "AA23 reverted (or OOG)")',
+            );
+          }
+        }
+      });
+
+      it("should prevent detection through paymaster.code.length", async () => {
+        const testWarmColdAccount = await new TestWarmColdAccount__factory(
+          ethersSigner,
+        ).deploy(entryPoint.address, { value: parseEther("1") });
+        const paymaster = await new TestPaymasterAcceptAll__factory(
+          ethersSigner,
+        ).deploy(entryPoint.address);
+        await paymaster.deposit({ value: ONE_ETH });
+        const badOp: UserOperation = {
+          ...DefaultsForUserOp,
+          nonce: TOUCH_PAYMASTER,
+          paymasterAndData: paymaster.address,
+          sender: testWarmColdAccount.address,
+        };
+        const beneficiaryAddress = createAddress();
+        try {
+          await entryPoint.simulateValidation(badOp, { gasLimit: 1e6 });
+        } catch (e) {
+          if ((e as Error).message.includes("ValidationResult")) {
+            const tx = await entryPoint.handleOps([badOp], beneficiaryAddress, {
+              gasLimit: 1e6,
+            });
+            await tx.wait();
+          } else {
+            expect(e.message).to.include(
+              'FailedOp(0, "0x0000000000000000000000000000000000000000", "AA23 reverted (or OOG)")',
+            );
+          }
+        }
+      });
+    });
+  });
+
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
   describe("without paymaster (account pays in eth)", () => {
     describe("#handleOps", () => {
       let counter: TestCounter;
@@ -603,7 +761,7 @@ describe("EntryPoint", function() {
       before(async () => {
         counter = await new TestCounter__factory(ethersSigner).deploy();
         const count = await counter.populateTransaction.count();
-        accountExecFromEntryPoint = await account.populateTransaction.execute(
+        accountExecFromEntryPoint = await account.populateTransaction.executeTransaction(
           counter.address,
           0,
           count.data!,
@@ -676,7 +834,7 @@ describe("EntryPoint", function() {
           iterations,
           "",
         );
-        const accountExec = await account.populateTransaction.execute(
+        const accountExec = await account.populateTransaction.executeTransaction(
           counter.address,
           0,
           count.data!,
@@ -731,7 +889,7 @@ describe("EntryPoint", function() {
           iterations,
           "",
         );
-        const accountExec = await account.populateTransaction.execute(
+        const accountExec = await account.populateTransaction.executeTransaction(
           counter.address,
           0,
           count.data!,
@@ -1081,7 +1239,7 @@ describe("EntryPoint", function() {
       before("before", async () => {
         counter = await new TestCounter__factory(ethersSigner).deploy();
         const count = await counter.populateTransaction.count();
-        accountExecCounterFromEntryPoint = await account.populateTransaction.execute(
+        accountExecCounterFromEntryPoint = await account.populateTransaction.executeTransaction(
           counter.address,
           0,
           count.data!,
@@ -1475,7 +1633,7 @@ describe("EntryPoint", function() {
         });
         counter = await new TestCounter__factory(ethersSigner).deploy();
         const count = await counter.populateTransaction.count();
-        accountExecFromEntryPoint = await account.populateTransaction.execute(
+        accountExecFromEntryPoint = await account.populateTransaction.executeTransaction(
           counter.address,
           0,
           count.data!,

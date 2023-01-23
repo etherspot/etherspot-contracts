@@ -187,7 +187,7 @@ describe("DepositPaymaster", () => {
       ).to.be.revertedWith("not locked");
     });
 
-    it.only("succeed with valid deposit", async () => {
+    it("succeed with valid deposit", async () => {
       // needed only if previous test did unlock.
       const paymasterLockTokenDeposit = await paymaster.populateTransaction
         .lockTokenDeposit()
@@ -211,8 +211,7 @@ describe("DepositPaymaster", () => {
       );
       await entryPoint.callStatic.simulateValidation(userOp).catch(e => {
         const customError = JSON.stringify(e);
-        console.log("CUSTOM ERROR: ", e);
-        expect(customError).to.include("SimulationResult");
+        expect(customError).to.include("ValidationResult");
       });
     });
   });

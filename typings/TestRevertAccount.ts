@@ -57,36 +57,36 @@ export type UserOperationStructOutput = [
   signature: string;
 };
 
-export interface IPaymasterInterface extends utils.Interface {
+export interface TestRevertAccountInterface extends utils.Interface {
   functions: {
-    "postOp(uint8,bytes,uint256)": FunctionFragment;
-    "validatePaymasterUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)": FunctionFragment;
+    "revertLong(uint256)": FunctionFragment;
+    "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "postOp",
-    values: [BigNumberish, BytesLike, BigNumberish]
+    functionFragment: "revertLong",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "validatePaymasterUserOp",
-    values: [UserOperationStruct, BytesLike, BigNumberish]
+    functionFragment: "validateUserOp",
+    values: [UserOperationStruct, BytesLike, string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "postOp", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "revertLong", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "validatePaymasterUserOp",
+    functionFragment: "validateUserOp",
     data: BytesLike
   ): Result;
 
   events: {};
 }
 
-export interface IPaymaster extends BaseContract {
+export interface TestRevertAccount extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: IPaymasterInterface;
+  interface: TestRevertAccountInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -108,83 +108,70 @@ export interface IPaymaster extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    postOp(
-      mode: BigNumberish,
-      context: BytesLike,
-      actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    revertLong(
+      length: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
-    validatePaymasterUserOp(
-      userOp: UserOperationStruct,
-      userOpHash: BytesLike,
-      maxCost: BigNumberish,
+    validateUserOp(
+      arg0: UserOperationStruct,
+      arg1: BytesLike,
+      arg2: string,
+      missingAccountFunds: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  postOp(
-    mode: BigNumberish,
-    context: BytesLike,
-    actualGasCost: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  revertLong(length: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-  validatePaymasterUserOp(
-    userOp: UserOperationStruct,
-    userOpHash: BytesLike,
-    maxCost: BigNumberish,
+  validateUserOp(
+    arg0: UserOperationStruct,
+    arg1: BytesLike,
+    arg2: string,
+    missingAccountFunds: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    postOp(
-      mode: BigNumberish,
-      context: BytesLike,
-      actualGasCost: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    revertLong(length: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    validatePaymasterUserOp(
-      userOp: UserOperationStruct,
-      userOpHash: BytesLike,
-      maxCost: BigNumberish,
+    validateUserOp(
+      arg0: UserOperationStruct,
+      arg1: BytesLike,
+      arg2: string,
+      missingAccountFunds: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber] & { context: string; sigTimeRange: BigNumber }
-    >;
+    ): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
-    postOp(
-      mode: BigNumberish,
-      context: BytesLike,
-      actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    revertLong(
+      length: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    validatePaymasterUserOp(
-      userOp: UserOperationStruct,
-      userOpHash: BytesLike,
-      maxCost: BigNumberish,
+    validateUserOp(
+      arg0: UserOperationStruct,
+      arg1: BytesLike,
+      arg2: string,
+      missingAccountFunds: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    postOp(
-      mode: BigNumberish,
-      context: BytesLike,
-      actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    revertLong(
+      length: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    validatePaymasterUserOp(
-      userOp: UserOperationStruct,
-      userOpHash: BytesLike,
-      maxCost: BigNumberish,
+    validateUserOp(
+      arg0: UserOperationStruct,
+      arg1: BytesLike,
+      arg2: string,
+      missingAccountFunds: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

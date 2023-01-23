@@ -117,7 +117,7 @@ const _abi = [
     outputs: [
       {
         internalType: "uint256",
-        name: "deadline",
+        name: "sigTimeRange",
         type: "uint256",
       },
     ],

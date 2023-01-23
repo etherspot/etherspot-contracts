@@ -36,7 +36,7 @@ contract BLSAccount is EtherspotAccount, IBLSAccount {
         UserOperation calldata userOp,
         bytes32 userOpHash,
         address userOpAggregator
-    ) internal view override returns (uint256 deadline) {
+    ) internal view override returns (uint256 sigTimeRange) {
         (userOp, userOpHash);
         require(userOpAggregator == aggregator, "BLSAccount: wrong aggregator");
         return 0;
