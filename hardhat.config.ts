@@ -20,6 +20,14 @@ import {
 
 const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 
+const aa4337Settings = {
+  version: '0.8.17',
+  settings: {
+    optimizer: { enabled: true, runs: 1000000 },
+    viaIR: true
+  }
+}
+
 const config: HardhatUserConfig = {
   namedAccounts: {
     from: 0,
@@ -92,6 +100,11 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+    overrides: {
+      'src/4337_wallet/core/EntryPoint.sol': aa4337Settings,
+      'src/4337_wallet/samples/EtherspotAccountFactory.sol': aa4337Settings,
+      'src/4337_wallet/DepositPaymaster.sol': aa4337Settings,
+    }
   },
   paths: {
     sources: "src",
