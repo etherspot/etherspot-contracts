@@ -21,7 +21,7 @@ import {
 const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
 
 const aa4337Settings = {
-  version: '0.8.17',
+  version: '0.8.12',
   settings: {
     optimizer: { enabled: true, runs: 1000000 },
     viaIR: true
