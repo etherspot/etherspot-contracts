@@ -47,8 +47,4 @@ export declare const CBridgeConfig: {
         cBridge: string;
         chainId: number;
     };
-    arbitrumTest: {
-        cBridge: string;
-        chainId: number;
-    };
 };

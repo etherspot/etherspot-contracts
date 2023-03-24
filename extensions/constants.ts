@@ -30,6 +30,7 @@ export enum NetworkNames {
   NeonDevnet = "neonDevnet",
   ArbitrumNova = "arbitrumNova",
   ArbitrumNitro = "arbitrumNitro",
+  BaseGoerli= "baseGoerli",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -220,6 +221,12 @@ export const NETWORK_CONFIGS: {
     chainId: 245022926,
     defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
     defaultGasPrice: 0,
+  },
+  [NetworkNames.BaseGoerli]: {
+    chainId: 84531,
+    defaultProviderUrl: "https://goerli.base.org",
+    defaultGas: 1,
+    explorer: "https://goerli.basescan.org",
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
