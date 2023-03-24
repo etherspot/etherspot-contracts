@@ -21,7 +21,6 @@ var NetworkNames;
     NetworkNames["Aurora"] = "aurora";
     NetworkNames["AuroraTest"] = "auroraTest";
     NetworkNames["Arbitrum"] = "arbitrum";
-    NetworkNames["ArbitrumTest"] = "arbitrumTest";
     NetworkNames["Optimism"] = "optimism";
     NetworkNames["OptimismKovan"] = "optimismKovan";
     NetworkNames["Moonbeam"] = "moonbeam";
@@ -35,6 +34,7 @@ var NetworkNames;
     NetworkNames["NeonDevnet"] = "neonDevnet";
     NetworkNames["ArbitrumNova"] = "arbitrumNova";
     NetworkNames["ArbitrumNitro"] = "arbitrumNitro";
+    NetworkNames["BaseGoerli"] = "baseGoerli";
     NetworkNames["Etherspot"] = "etherspot";
     NetworkNames["LocalA"] = "localA";
     NetworkNames["LocalB"] = "localB";
@@ -145,11 +145,6 @@ exports.NETWORK_CONFIGS = {
         defaultProviderUrl: "https://arb1.arbitrum.io/rpc",
         defaultGasPrice: 1,
     },
-    [NetworkNames.ArbitrumTest]: {
-        chainId: 421611,
-        defaultProviderUrl: "https://rinkeby.arbitrum.io/rpc",
-        defaultGasPrice: 1,
-    },
     [NetworkNames.Optimism]: {
         chainId: 10,
         defaultProviderUrl: "https://mainnet.optimism.io",
@@ -216,6 +211,12 @@ exports.NETWORK_CONFIGS = {
         chainId: 245022926,
         defaultProviderUrl: "https://proxy.devnet.neonlabs.org/solana",
         defaultGasPrice: 0,
+    },
+    [NetworkNames.BaseGoerli]: {
+        chainId: 84531,
+        defaultProviderUrl: "https://goerli.base.org",
+        defaultGas: 1,
+        explorer: "https://goerli.basescan.org",
     },
     [NetworkNames.Etherspot]: {
         chainId: 4386,
