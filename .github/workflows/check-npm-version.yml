@@ -1,4 +1,4 @@
-name: Check if package version is updated
+name: Check if package.json version is updated
 
 on:
   pull_request:
