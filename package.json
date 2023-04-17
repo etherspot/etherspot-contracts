@@ -31,7 +31,7 @@
     "deploy:goerli": "hardhat deploy --network goerli --tags create,setup",
     "deploy:kovan": "hardhat deploy --network kovan --tags create,setup",
     "deploy:xdai": "hardhat deploy --network xdai --tags create,setup",
-    "deploy:sokol": "hardhat deploy --network sokol --tags create,setup",
+    "deploy:chiado": "hardhat deploy --network chiado --tags create,setup",
     "deploy:bsc": "hardhat deploy --network bsc --tags create,setup",
     "deploy:bscTest": "hardhat deploy --network bscTest --tags create,setup",
     "deploy:fantom": "hardhat deploy --network fantom --tags create,setup",
