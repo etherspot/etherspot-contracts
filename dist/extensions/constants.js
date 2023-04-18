@@ -9,7 +9,7 @@ var NetworkNames;
     NetworkNames["Goerli"] = "goerli";
     NetworkNames["Kovan"] = "kovan";
     NetworkNames["Xdai"] = "xdai";
-    NetworkNames["Sokol"] = "sokol";
+    NetworkNames["Chiado"] = "chiado";
     NetworkNames["Bsc"] = "bsc";
     NetworkNames["BscTest"] = "bscTest";
     NetworkNames["Fantom"] = "fantom";
@@ -76,11 +76,11 @@ exports.NETWORK_CONFIGS = {
         defaultGasPrice: 1,
         explorer: "https://blockscout.com/poa/xdai",
     },
-    [NetworkNames.Sokol]: {
-        chainId: 77,
-        defaultProviderUrl: "https://sokol.poa.network",
+    [NetworkNames.Chiado]: {
+        chainId: 10200,
+        defaultProviderUrl: "https://rpc.chiadochain.net",
         defaultGasPrice: 1,
-        explorer: "https://blockscout.com/poa/sokol",
+        explorer: "https://blockscout.com/gnosis/chiado",
     },
     [NetworkNames.Bsc]: {
         chainId: 56,

@@ -5,7 +5,7 @@ export declare enum NetworkNames {
     Goerli = "goerli",
     Kovan = "kovan",
     Xdai = "xdai",
-    Sokol = "sokol",
+    Chiado = "chiado",
     Bsc = "bsc",
     BscTest = "bscTest",
     Fantom = "fantom",
