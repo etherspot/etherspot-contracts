@@ -58,6 +58,7 @@
     "deploy:arbitrumNova": "hardhat deploy --network arbitrumNova --tags create,setup",
     "deploy:arbitrumNitro": "hardhat deploy --network arbitrumNitro --tags create,setup",
     "deploy:baseGoerli": "hardhat deploy --network baseGoerli --tags create,setup",
+    "deploy:klaytnBaobab": "hardhat deploy --network klaytnBaobab --tags create,setup",
     "deploy:etherspot": "hardhat deploy --network etherspot --tags create,setup",
     "deploy:localA": "hardhat deploy --network localA --tags create,setup",
     "deploy:localB": "hardhat deploy --network localB --tags create,setup",

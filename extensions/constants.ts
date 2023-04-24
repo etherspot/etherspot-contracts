@@ -31,6 +31,7 @@ export enum NetworkNames {
   ArbitrumNova = "arbitrumNova",
   ArbitrumNitro = "arbitrumNitro",
   BaseGoerli= "baseGoerli",
+  KlaytnBaobab= "klaytnBaobab",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -227,6 +228,12 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://goerli.base.org",
     defaultGas: 1,
     explorer: "https://goerli.basescan.org",
+  },
+  [NetworkNames.KlaytnBaobab]: {
+    chainId: 1001,
+    defaultProviderUrl: "https://public-en-baobab.klaytn.net",
+    defaultGas: 1,
+    explorer: "https://baobab.scope.klaytn.com"
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
