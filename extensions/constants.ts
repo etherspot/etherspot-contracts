@@ -32,6 +32,7 @@ export enum NetworkNames {
   ArbitrumNitro = "arbitrumNitro",
   BaseGoerli= "baseGoerli",
   KlaytnBaobab= "klaytnBaobab",
+  Klaytn= "klaytn",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -234,6 +235,12 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://public-en-baobab.klaytn.net",
     defaultGas: 1,
     explorer: "https://baobab.scope.klaytn.com"
+  },
+  [NetworkNames.Klaytn]: {
+    chainId: 8217,
+    defaultProviderUrl: "https://public-en-cypress.klaytn.net",
+    explorer: "https://scope.klaytn.com",
+    defaultGasPrice: 120,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
