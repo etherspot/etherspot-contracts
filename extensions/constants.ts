@@ -33,6 +33,7 @@ export enum NetworkNames {
   BaseGoerli= "baseGoerli",
   KlaytnBaobab= "klaytnBaobab",
   Klaytn= "klaytn",
+  OKTC= "oktc",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -241,6 +242,12 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://public-en-cypress.klaytn.net",
     explorer: "https://scope.klaytn.com",
     defaultGasPrice: 120,
+  },
+  [NetworkNames.OKTC]: {
+    chainId: 66,
+    defaultProviderUrl: "https://exchainrpc.okex.org",
+    explorer: "https://www.okx.com/en-in/explorer/oktc",
+    defaultGasPrice: 0.2,
   },
   [NetworkNames.Etherspot]: {
     chainId: 4386,
