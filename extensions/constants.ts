@@ -30,10 +30,11 @@ export enum NetworkNames {
   NeonDevnet = "neonDevnet",
   ArbitrumNova = "arbitrumNova",
   ArbitrumNitro = "arbitrumNitro",
-  BaseGoerli= "baseGoerli",
-  KlaytnBaobab= "klaytnBaobab",
-  Klaytn= "klaytn",
-  OKTC= "oktc",
+  BaseGoerli = "baseGoerli",
+  KlaytnBaobab = "klaytnBaobab",
+  Klaytn = "klaytn",
+  OKTC = "oktc",
+  OktcTest = "oktcTest",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -46,6 +47,8 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl?: "infura" | string;
     defaultGas?: number;
     defaultGasPrice?: number;
+    defaultMaxFeePerGas?: number;
+    defaultMaxPriorityFeePerGas?: number;
     explorer?:
       | string
       | {
@@ -247,8 +250,15 @@ export const NETWORK_CONFIGS: {
     chainId: 66,
     defaultProviderUrl: "https://exchainrpc.okex.org",
     explorer: "https://www.okx.com/en-in/explorer/oktc",
-    defaultGasPrice: 0.2,
+    defaultMaxFeePerGas: 0.2,
+    defaultMaxPriorityFeePerGas: 0.1,
   },
+  [NetworkNames.OktcTest]: {
+    chainId: 65,
+    defaultProviderUrl: "https://exchaintestrpc.okex.org",
+    defaultGasPrice: 1,
+    explorer: "https://www.oklink.com/oktc-test",
+},
   [NetworkNames.Etherspot]: {
     chainId: 4386,
     defaultProviderUrl: "https://qa-etherspot-testnet.pillarproject.io",
