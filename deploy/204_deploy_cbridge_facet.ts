@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+/* import { utils } from "ethers";
 import { network } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
@@ -48,3 +48,4 @@ export default func;
 func.id = "cbridge_facet_deploy";
 func.tags = ["bridges", "cbridge"];
 func.dependencies = ["init-facets"];
+ */

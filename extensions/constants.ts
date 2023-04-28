@@ -47,8 +47,6 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl?: "infura" | string;
     defaultGas?: number;
     defaultGasPrice?: number;
-    defaultMaxFeePerGas?: number;
-    defaultMaxPriorityFeePerGas?: number;
     explorer?:
       | string
       | {
@@ -250,8 +248,7 @@ export const NETWORK_CONFIGS: {
     chainId: 66,
     defaultProviderUrl: "https://exchainrpc.okex.org",
     explorer: "https://www.okx.com/en-in/explorer/oktc",
-    defaultMaxFeePerGas: 0.2,
-    defaultMaxPriorityFeePerGas: 0.1,
+    defaultGasPrice: 0.2,
   },
   [NetworkNames.OktcTest]: {
     chainId: 65,

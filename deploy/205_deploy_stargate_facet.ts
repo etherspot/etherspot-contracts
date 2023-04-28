@@ -1,4 +1,4 @@
-import { DeployFunction } from "hardhat-deploy/types";
+/* import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { addOrReplaceFacets } from "../utils/diamond";
 import config from "../config/stargate";
@@ -45,3 +45,4 @@ func.tags = ["bridges", "stargate"];
 func.dependencies = ["init-facets"];
 
 export default func;
+ */

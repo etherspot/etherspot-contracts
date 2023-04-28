@@ -53,31 +53,17 @@ function createConfigNetwork(networkName) {
             }
             const privateKey = process.env[`${envPrefix}_PROVIDER_PRIVATE_KEY`];
             const accounts = privateKey ? [privateKey] : [];
-            if(defaultMaxGasPerFee) {
-                result = {
-                    [networkName]: {
-                        chainId,
-                        url,
-                        accounts,
-                        gas,
-                        maxGasPerFee: defaultMaxGasPerFee * 1000000000,
-                        maxPriorityFeePerGas: 0.1 * 1000000000,
-                    },
-                };
-            } else {
-                result = {
-                    [networkName]: {
-                        chainId,
-                        url,
-                        accounts,
-                        gas,
-                        gasPrice,
-                    },
-                };
-            }
+            result = {
+                [networkName]: {
+                    chainId,
+                    url,
+                    accounts,
+                    gas,
+                    gasPrice,
+                },
+            };
         }
     }
-    console.log("Result ", result);
     return result;
 }
 exports.createConfigNetwork = createConfigNetwork;

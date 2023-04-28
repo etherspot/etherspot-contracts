@@ -1,4 +1,4 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
+/* import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
@@ -22,3 +22,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 func.tags = ['bridges', 'diamond'];
 
 export default func;
+ */
