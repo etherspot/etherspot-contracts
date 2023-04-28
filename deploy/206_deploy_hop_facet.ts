@@ -1,4 +1,4 @@
-/* import { DeployFunction } from 'hardhat-deploy/types';
+import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { addOrReplaceFacets } from '../utils/diamond';
 import { HopConfig } from '../config/hop';
@@ -43,4 +43,3 @@ func.tags = ['bridges', 'hop'];
 func.dependencies = ['init-facets'];
 
 export default func;
- */

@@ -1,4 +1,4 @@
-/* import { ethers } from 'hardhat';
+import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { IDiamondLoupe } from '../typings';
 import { addFacets, addOrReplaceFacets } from '../utils/diamond';
@@ -26,4 +26,3 @@ func.tags = ['bridges', 'init-facets'];
 func.dependencies = ['initial-facets', 'diamond'];
 
 export default func;
- */
