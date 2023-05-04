@@ -1,8 +1,140 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IConnextHandler",
-  "sourceName": "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnextHandler.sol",
+  "contractName": "IConnext",
+  "sourceName": "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol",
   "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "facetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IDiamondCut.FacetCutAction",
+              "name": "action",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "functionSelectors",
+              "type": "bytes4[]"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct IDiamondCut.FacetCut[]",
+          "name": "_diamondCut",
+          "type": "tuple[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_init",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "_calldata",
+          "type": "bytes"
+        }
+      ],
+      "name": "DiamondCut",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "facetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IDiamondCut.FacetCutAction",
+              "name": "action",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "functionSelectors",
+              "type": "bytes4[]"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct IDiamondCut.FacetCut[]",
+          "name": "_diamondCut",
+          "type": "tuple[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_init",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "_calldata",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        }
+      ],
+      "name": "DiamondCutProposed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "facetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IDiamondCut.FacetCutAction",
+              "name": "action",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "functionSelectors",
+              "type": "bytes4[]"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct IDiamondCut.FacetCut[]",
+          "name": "_diamondCut",
+          "type": "tuple[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_init",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "_calldata",
+          "type": "bytes"
+        }
+      ],
+      "name": "DiamondCutRescinded",
+      "type": "event"
+    },
     {
       "inputs": [],
       "name": "LIQUIDITY_FEE_DENOMINATOR",
@@ -24,19 +156,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "VERSION",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
         }
       ],
       "stateMutability": "view",
@@ -84,6 +203,24 @@
         }
       ],
       "name": "acceptProposedRouterOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_domain",
+          "type": "uint32"
+        },
+        {
+          "internalType": "address",
+          "name": "_connext",
+          "type": "address"
+        }
+      ],
+      "name": "addConnextion",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -145,6 +282,19 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "_sequencer",
+          "type": "address"
+        }
+      ],
+      "name": "addSequencer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "components": [
             {
               "internalType": "uint32",
@@ -157,7 +307,7 @@
               "type": "bytes32"
             }
           ],
-          "internalType": "struct ConnextMessage.TokenId",
+          "internalType": "struct TokenId",
           "name": "_canonical",
           "type": "tuple"
         },
@@ -229,7 +379,7 @@
               "type": "bytes32"
             }
           ],
-          "internalType": "struct ConnextMessage.TokenId",
+          "internalType": "struct TokenId",
           "name": "",
           "type": "tuple"
         }
@@ -240,12 +390,24 @@
     {
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "_adopted",
-          "type": "bytes32"
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
         }
       ],
-      "name": "adoptedToLocalPools",
+      "name": "adoptedToLocalExternalPools",
       "outputs": [
         {
           "internalType": "contract IStableSwap",
@@ -254,6 +416,38 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "adoptedToLocalExternalPools",
+      "outputs": [
+        {
+          "internalType": "contract IStableSwap",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "router",
+          "type": "address"
+        }
+      ],
+      "name": "approveRouter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -273,8 +467,39 @@
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "_asset",
+          "name": "_key",
           "type": "bytes32"
+        }
+      ],
+      "name": "approvedAssets",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
         }
       ],
       "name": "approvedAssets",
@@ -308,26 +533,19 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "assetOwnershipRenounced",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sequencer",
+          "type": "address"
+        }
+      ],
+      "name": "approvedSequencers",
       "outputs": [
         {
           "internalType": "bool",
           "name": "",
           "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "assetOwnershipTimestamp",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -466,7 +684,7 @@
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "_canonicalId",
+          "name": "_key",
           "type": "bytes32"
         }
       ],
@@ -484,19 +702,82 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes32[]",
-          "name": "_transferIds",
-          "type": "bytes32[]"
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
         }
       ],
-      "name": "claim",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "name": "canonicalToAdopted",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "canonicalToRepresentation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
+        }
+      ],
+      "name": "canonicalToRepresentation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -574,6 +855,29 @@
         },
         {
           "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "_custom",
+          "type": "address"
+        }
+      ],
+      "name": "enrollCustom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_domain",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bytes32",
           "name": "_router",
           "type": "bytes32"
         }
@@ -590,16 +894,6 @@
             {
               "components": [
                 {
-                  "internalType": "address",
-                  "name": "to",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "callData",
-                  "type": "bytes"
-                },
-                {
                   "internalType": "uint32",
                   "name": "originDomain",
                   "type": "uint32"
@@ -610,19 +904,19 @@
                   "type": "uint32"
                 },
                 {
+                  "internalType": "uint32",
+                  "name": "canonicalDomain",
+                  "type": "uint32"
+                },
+                {
                   "internalType": "address",
-                  "name": "agent",
+                  "name": "to",
                   "type": "address"
                 },
                 {
                   "internalType": "address",
-                  "name": "recovery",
+                  "name": "delegate",
                   "type": "address"
-                },
-                {
-                  "internalType": "bool",
-                  "name": "forceSlow",
-                  "type": "bool"
                 },
                 {
                   "internalType": "bool",
@@ -630,34 +924,44 @@
                   "type": "bool"
                 },
                 {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippage",
+                  "type": "uint256"
+                },
+                {
                   "internalType": "address",
-                  "name": "callback",
+                  "name": "originSender",
                   "type": "address"
                 },
                 {
                   "internalType": "uint256",
-                  "name": "callbackFee",
+                  "name": "bridgedAmt",
                   "type": "uint256"
                 },
                 {
                   "internalType": "uint256",
-                  "name": "relayerFee",
+                  "name": "normalizedIn",
                   "type": "uint256"
                 },
                 {
                   "internalType": "uint256",
-                  "name": "slippageTol",
+                  "name": "nonce",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "canonicalId",
+                  "type": "bytes32"
                 }
               ],
-              "internalType": "struct CallParams",
+              "internalType": "struct TransferInfo",
               "name": "params",
               "type": "tuple"
-            },
-            {
-              "internalType": "address",
-              "name": "local",
-              "type": "address"
             },
             {
               "internalType": "address[]",
@@ -670,19 +974,14 @@
               "type": "bytes[]"
             },
             {
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "nonce",
-              "type": "uint256"
-            },
-            {
               "internalType": "address",
-              "name": "originSender",
+              "name": "sequencer",
               "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "sequencerSignature",
+              "type": "bytes"
             }
           ],
           "internalType": "struct ExecuteArgs",
@@ -702,13 +1001,76 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "executor",
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "_functionSelector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "facetAddress",
       "outputs": [
         {
-          "internalType": "contract IExecutor",
-          "name": "",
+          "internalType": "address",
+          "name": "facetAddress_",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "facetAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "facetAddresses_",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_facet",
+          "type": "address"
+        }
+      ],
+      "name": "facetFunctionSelectors",
+      "outputs": [
+        {
+          "internalType": "bytes4[]",
+          "name": "facetFunctionSelectors_",
+          "type": "bytes4[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "facets",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "facetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "functionSelectors",
+              "type": "bytes4[]"
+            }
+          ],
+          "internalType": "struct IDiamondLoupe.Facet[]",
+          "name": "facets_",
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
@@ -718,16 +1080,6 @@
       "inputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "callData",
-              "type": "bytes"
-            },
             {
               "internalType": "uint32",
               "name": "originDomain",
@@ -739,19 +1091,19 @@
               "type": "uint32"
             },
             {
+              "internalType": "uint32",
+              "name": "canonicalDomain",
+              "type": "uint32"
+            },
+            {
               "internalType": "address",
-              "name": "agent",
+              "name": "to",
               "type": "address"
             },
             {
               "internalType": "address",
-              "name": "recovery",
+              "name": "delegate",
               "type": "address"
-            },
-            {
-              "internalType": "bool",
-              "name": "forceSlow",
-              "type": "bool"
             },
             {
               "internalType": "bool",
@@ -759,59 +1111,134 @@
               "type": "bool"
             },
             {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "slippage",
+              "type": "uint256"
+            },
+            {
               "internalType": "address",
-              "name": "callback",
+              "name": "originSender",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "callbackFee",
+              "name": "bridgedAmt",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "relayerFee",
+              "name": "normalizedIn",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "slippageTol",
+              "name": "nonce",
               "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "canonicalId",
+              "type": "bytes32"
             }
           ],
-          "internalType": "struct CallParams",
+          "internalType": "struct TransferInfo",
+          "name": "_params",
+          "type": "tuple"
+        }
+      ],
+      "name": "forceReceiveLocal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "originDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "destinationDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "canonicalDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "delegate",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "receiveLocal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "slippage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "originSender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bridgedAmt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "normalizedIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "canonicalId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TransferInfo",
           "name": "_params",
           "type": "tuple"
         },
         {
           "internalType": "uint256",
-          "name": "_amount",
+          "name": "_slippage",
           "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nonce",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "_canonicalId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint32",
-          "name": "_canonicalDomain",
-          "type": "uint32"
-        },
-        {
-          "internalType": "address",
-          "name": "_originSender",
-          "type": "address"
         }
       ],
-      "name": "forceReceiveLocal",
+      "name": "forceUpdateSlippage",
       "outputs": [],
-      "stateMutability": "payable",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -847,6 +1274,100 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "facetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IDiamondCut.FacetCutAction",
+              "name": "action",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "functionSelectors",
+              "type": "bytes4[]"
+            }
+          ],
+          "internalType": "struct IDiamondCut.FacetCut[]",
+          "name": "_diamondCut",
+          "type": "tuple[]"
+        },
+        {
+          "internalType": "address",
+          "name": "_init",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_calldata",
+          "type": "bytes"
+        }
+      ],
+      "name": "getAcceptanceTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getCustodiedAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_domain",
+          "type": "uint32"
+        }
+      ],
+      "name": "getLocalAndAdoptedToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -1060,6 +1581,11 @@
         {
           "components": [
             {
+              "internalType": "bytes32",
+              "name": "key",
+              "type": "bytes32"
+            },
+            {
               "internalType": "uint256",
               "name": "initialA",
               "type": "uint256"
@@ -1113,6 +1639,16 @@
               "internalType": "uint256[]",
               "name": "adminFees",
               "type": "uint256[]"
+            },
+            {
+              "internalType": "bool",
+              "name": "disabled",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "removeTime",
+              "type": "uint256"
             }
           ],
           "internalType": "struct SwapUtils.Swap",
@@ -1217,6 +1753,37 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "_candidate",
+          "type": "address"
+        }
+      ],
+      "name": "getTokenId",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint32",
           "name": "_origin",
           "type": "uint32"
@@ -1238,6 +1805,24 @@
         }
       ],
       "name": "handle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "initializeRouter",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1283,11 +1868,6 @@
           "internalType": "uint256",
           "name": "_adminFee",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "lpTokenTargetAddress",
-          "type": "address"
         }
       ],
       "name": "initializeSwap",
@@ -1296,49 +1876,13 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint32",
-          "name": "_domain",
-          "type": "uint32"
-        },
+      "inputs": [],
+      "name": "lpTokenTargetAddress",
+      "outputs": [
         {
           "internalType": "address",
-          "name": "_recipient",
+          "name": "",
           "type": "address"
-        },
-        {
-          "internalType": "bytes32[]",
-          "name": "_transferIds",
-          "type": "bytes32[]"
-        }
-      ],
-      "name": "initiateClaim",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "isAssetOwnershipRenounced",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "isRouterOwnershipRenounced",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -1372,17 +1916,10 @@
     },
     {
       "inputs": [],
-      "name": "pause",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "promiseRouter",
+      "name": "owner",
       "outputs": [
         {
-          "internalType": "contract PromiseRouter",
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
@@ -1392,9 +1929,22 @@
     },
     {
       "inputs": [],
-      "name": "proposeAssetOwnershipRenunciation",
+      "name": "pause",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1451,6 +2001,13 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "proposeRouterAllowlistRemoval",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -1470,27 +2027,7 @@
     },
     {
       "inputs": [],
-      "name": "proposeRouterOwnershipRenunciation",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "proposed",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "proposedOwnableOwner",
       "outputs": [
         {
           "internalType": "address",
@@ -1538,64 +2075,13 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_transferId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "reconciledTransfers",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
-      "name": "relayerFeeRouer",
+      "name": "relayerFeeVault",
       "outputs": [
         {
-          "internalType": "contract RelayerFeeRouter",
+          "internalType": "address",
           "name": "",
           "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "relayerFeeRouter",
-      "outputs": [
-        {
-          "internalType": "contract RelayerFeeRouter",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_transferId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "relayerFees",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -1609,12 +2095,12 @@
           "type": "uint32"
         }
       ],
-      "name": "remotes",
+      "name": "remote",
       "outputs": [
         {
-          "internalType": "bytes32",
+          "internalType": "address",
           "name": "",
-          "type": "bytes32"
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -1623,13 +2109,53 @@
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "_adoptedAssetId",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_representation",
+          "type": "address"
+        }
+      ],
+      "name": "removeAssetId",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes32",
-          "name": "_canonicalId",
+          "name": "_key",
           "type": "bytes32"
         },
         {
           "internalType": "address",
           "name": "_adoptedAssetId",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_representation",
           "type": "address"
         }
       ],
@@ -1652,14 +2178,8 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "router",
-          "type": "address"
-        }
-      ],
-      "name": "removeRouter",
+      "inputs": [],
+      "name": "removeRouterAllowlist",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1711,6 +2231,19 @@
         }
       ],
       "name": "removeRouterLiquidityFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sequencer",
+          "type": "address"
+        }
+      ],
+      "name": "removeSequencer",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1823,45 +2356,78 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "renounceAssetOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceRouterOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounced",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_asset",
-          "type": "address"
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "originDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "destinationDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "canonicalDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "delegate",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "receiveLocal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "slippage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "originSender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bridgedAmt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "normalizedIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "canonicalId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TransferInfo",
+          "name": "_params",
+          "type": "tuple"
         },
         {
           "internalType": "uint256",
@@ -1877,11 +2443,6 @@
           "internalType": "uint256",
           "name": "_maxIn",
           "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "_transferId",
-          "type": "bytes32"
         }
       ],
       "name": "repayAavePortal",
@@ -1892,14 +2453,76 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_router",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_adopted",
-          "type": "address"
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "originDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "destinationDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "canonicalDomain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "delegate",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "receiveLocal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "slippage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "originSender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bridgedAmt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "normalizedIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "canonicalId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TransferInfo",
+          "name": "_params",
+          "type": "tuple"
         },
         {
           "internalType": "uint256",
@@ -1910,16 +2533,42 @@
           "internalType": "uint256",
           "name": "_feeAmount",
           "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "_transferId",
-          "type": "bytes32"
         }
       ],
       "name": "repayAavePortalFor",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_adopted",
+          "type": "address"
+        }
+      ],
+      "name": "representationToCanonical",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1982,6 +2631,32 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "routerAllowlistRemoved",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "routerAllowlistTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -1995,32 +2670,6 @@
         }
       ],
       "name": "routerBalances",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "routerOwnershipRenounced",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "routerOwnershipTimestamp",
       "outputs": [
         {
           "internalType": "uint256",
@@ -2060,19 +2709,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_executor",
-          "type": "address"
-        }
-      ],
-      "name": "setExecutor",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "_numerator",
           "type": "uint256"
@@ -2099,25 +2735,12 @@
     {
       "inputs": [
         {
-          "internalType": "address payable",
-          "name": "_promiseRouter",
-          "type": "address"
-        }
-      ],
-      "name": "setPromiseRouter",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "address",
-          "name": "_relayerFeeRouter",
+          "name": "_relayerFeeVault",
           "type": "address"
         }
       ],
-      "name": "setRelayerFeeRouter",
+      "name": "setRelayerFeeVault",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -2136,19 +2759,6 @@
         }
       ],
       "name": "setRouterRecipient",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_sponsorVault",
-          "type": "address"
-        }
-      ],
-      "name": "setSponsorVault",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -2193,32 +2803,6 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_tokenRegistry",
-          "type": "address"
-        }
-      ],
-      "name": "setTokenRegistry",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_wrapper",
-          "type": "address"
-        }
-      ],
-      "name": "setWrapper",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "_xAppConnectionManager",
           "type": "address"
         }
@@ -2243,9 +2827,75 @@
               "type": "bytes32"
             }
           ],
-          "internalType": "struct ConnextMessage.TokenId",
+          "internalType": "struct TokenId",
           "name": "_canonical",
           "type": "tuple"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_canonicalDecimals",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "_representationName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_representationSymbol",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_adoptedAssetId",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_stableSwapPool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_cap",
+          "type": "uint256"
+        }
+      ],
+      "name": "setupAsset",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "_representation",
+          "type": "address"
         },
         {
           "internalType": "address",
@@ -2258,45 +2908,15 @@
           "type": "address"
         }
       ],
-      "name": "setupAsset",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "router",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        }
-      ],
-      "name": "setupRouter",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "sponsorVault",
+      "name": "setupAssetWithDeployedRepresentation",
       "outputs": [
         {
-          "internalType": "contract ISponsorVault",
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -2445,13 +3065,19 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "tokenRegistry",
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_transferId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "transferStatus",
       "outputs": [
         {
-          "internalType": "contract ITokenRegistry",
+          "internalType": "enum DestinationTransferStatus",
           "name": "",
-          "type": "address"
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",
@@ -2460,20 +3086,14 @@
     {
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "_transferId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "transferRelayer",
-      "outputs": [
-        {
           "internalType": "address",
-          "name": "",
+          "name": "router",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
+      "name": "unapproveRouter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -2499,6 +3119,84 @@
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_symbol",
+          "type": "string"
+        }
+      ],
+      "name": "updateDetails",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "domain",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct TokenId",
+          "name": "_canonical",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_updated",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateLiquidityCap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAddress",
+          "type": "address"
+        }
+      ],
+      "name": "updateLpTokenTarget",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes32",
           "name": "canonicalId",
           "type": "bytes32"
@@ -2511,23 +3209,10 @@
     },
     {
       "inputs": [],
-      "name": "wrapper",
-      "outputs": [
-        {
-          "internalType": "contract IWrapped",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "xAppConnectionManager",
       "outputs": [
         {
-          "internalType": "contract XAppConnectionManager",
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
@@ -2538,91 +3223,91 @@
     {
       "inputs": [
         {
-          "components": [
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "to",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "callData",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint32",
-                  "name": "originDomain",
-                  "type": "uint32"
-                },
-                {
-                  "internalType": "uint32",
-                  "name": "destinationDomain",
-                  "type": "uint32"
-                },
-                {
-                  "internalType": "address",
-                  "name": "agent",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "recovery",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bool",
-                  "name": "forceSlow",
-                  "type": "bool"
-                },
-                {
-                  "internalType": "bool",
-                  "name": "receiveLocal",
-                  "type": "bool"
-                },
-                {
-                  "internalType": "address",
-                  "name": "callback",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "callbackFee",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "relayerFee",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "slippageTol",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct CallParams",
-              "name": "params",
-              "type": "tuple"
-            },
-            {
-              "internalType": "address",
-              "name": "transactingAssetId",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct XCallArgs",
-          "name": "_args",
-          "type": "tuple"
+          "internalType": "uint32",
+          "name": "_destination",
+          "type": "uint32"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_delegate",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_slippage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_callData",
+          "type": "bytes"
         }
       ],
       "name": "xcall",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_destination",
+          "type": "uint32"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_delegate",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_slippage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_callData",
+          "type": "bytes"
+        }
+      ],
+      "name": "xcallIntoLocal",
       "outputs": [
         {
           "internalType": "bytes32",

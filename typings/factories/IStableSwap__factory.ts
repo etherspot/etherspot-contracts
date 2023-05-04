@@ -765,6 +765,11 @@ const _abi = [
         name: "minAmountOut",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
     ],
     name: "swapExact",
     outputs: [
@@ -797,6 +802,11 @@ const _abi = [
       {
         internalType: "uint256",
         name: "maxAmountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
         type: "uint256",
       },
     ],

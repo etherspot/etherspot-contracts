@@ -38,8 +38,8 @@ export interface IStableSwapInterface extends utils.Interface {
     "removeLiquidityImbalance(uint256[],uint256,uint256)": FunctionFragment;
     "removeLiquidityOneToken(uint256,uint8,uint256,uint256)": FunctionFragment;
     "swap(uint8,uint8,uint256,uint256,uint256)": FunctionFragment;
-    "swapExact(uint256,address,address,uint256)": FunctionFragment;
-    "swapExactOut(uint256,address,address,uint256)": FunctionFragment;
+    "swapExact(uint256,address,address,uint256,uint256)": FunctionFragment;
+    "swapExactOut(uint256,address,address,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -128,11 +128,11 @@ export interface IStableSwapInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "swapExact",
-    values: [BigNumberish, string, string, BigNumberish]
+    values: [BigNumberish, string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapExactOut",
-    values: [BigNumberish, string, string, BigNumberish]
+    values: [BigNumberish, string, string, BigNumberish, BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -470,6 +470,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       minAmountOut: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -478,6 +479,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -598,6 +600,7 @@ export interface IStableSwap extends BaseContract {
     assetIn: string,
     assetOut: string,
     minAmountOut: BigNumberish,
+    deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -606,6 +609,7 @@ export interface IStableSwap extends BaseContract {
     assetIn: string,
     assetOut: string,
     maxAmountIn: BigNumberish,
+    deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -726,6 +730,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       minAmountOut: BigNumberish,
+      deadline: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -734,6 +739,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -959,6 +965,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       minAmountOut: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -967,6 +974,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -1091,6 +1099,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       minAmountOut: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1099,6 +1108,7 @@ export interface IStableSwap extends BaseContract {
       assetIn: string,
       assetOut: string,
       maxAmountIn: BigNumberish,
+      deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
