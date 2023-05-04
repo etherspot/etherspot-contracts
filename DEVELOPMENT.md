@@ -10,7 +10,7 @@
 | `testnets` | Görli | `GOERLI` | `goerli` |
 | `testnets` | Kovan | `KOVAN` | `kovan` |
 | `mainnets` | xDai | `XDAI` | `xdai` |
-| `testnets` | Sokol (xDai testnet) | `SOKOL` | `sokol` |
+| `testnets` | Chiado (xDai testnet) | `CHIADO` | `chiado` |
 | `mainnets` | Binance Smart Chain | `BSC` | `bsc` |
 | `testnets` | Binance Smart Chain (testnet) | `BSC_TEST` | `bscTest` |
 | `mainnets` | Fantom | `FANTOM` | `fantom` |
@@ -27,6 +27,8 @@
 | `testnets` | Optimism Kovan | `OPTIMISM_KOVAN` | `optimismKovan` |
 | `mainnets` | Fuse | `FUSE` | `fuse` |
 | `testnets` | Fuse Sparknet | `FUSE_SPARKNET` | `fuseSparknet` |
+| `testnets` | Base Goerli | `BASE_GOERLI` | `baseGoerli` |
+| `testnets` | Klaytn Baobab | `KLAYTN_BAOBAB` | `klaytnBaobab` |
 | `testnets` | Etherspot | `ETHERSPOT` | `etherspot` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localB` |
