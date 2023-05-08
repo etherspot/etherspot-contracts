@@ -59,6 +59,7 @@
     "deploy:arbitrumNitro": "hardhat deploy --network arbitrumNitro --tags create,setup",
     "deploy:baseGoerli": "hardhat deploy --network baseGoerli --tags create,setup",
     "deploy:oktcTest": "hardhat deploy --network oktcTest --tags create,setup",
+    "deploy:oktc": "hardhat deploy --network oktc --tags create,setup",
     "deploy:klaytnBaobab": "hardhat deploy --network klaytnBaobab --tags create,setup",
     "deploy:klaytn": "hardhat deploy --network klaytn --tags create,setup",
     "deploy:etherspot": "hardhat deploy --network etherspot --tags create,setup",

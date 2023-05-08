@@ -29,6 +29,9 @@
 | `testnets` | Fuse Sparknet | `FUSE_SPARKNET` | `fuseSparknet` |
 | `testnets` | Base Goerli | `BASE_GOERLI` | `baseGoerli` |
 | `testnets` | Klaytn Baobab | `KLAYTN_BAOBAB` | `klaytnBaobab` |
+| `mainnets` | Klaytn | `KLAYTN` | `klaytn` |
+| `testnets` | OktcTest | `OKTC_TEST` | `oktcTest` |
+| `mainnets` | Oktc | `OKTC` | `oktc` |
 | `testnets` | Etherspot | `ETHERSPOT` | `etherspot` |
 | `localnets` | Localnet (instance A) | `LOCAL_A` | `localA` |
 | `localnets` | Localnet (instance B) | `LOCAL_B` | `localB` |
