@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "1.9.8",
+  "version": "1.9.9",
   "description": "Etherspot Solidity contracts",
   "keywords": [
     "ether",
@@ -59,6 +59,8 @@
     "deploy:arbitrumNitro": "hardhat deploy --network arbitrumNitro --tags create,setup",
     "deploy:baseGoerli": "hardhat deploy --network baseGoerli --tags create,setup",
     "deploy:oktcTest": "hardhat deploy --network oktcTest --tags create,setup",
+    "deploy:klaytnBaobab": "hardhat deploy --network klaytnBaobab --tags create,setup",
+    "deploy:klaytn": "hardhat deploy --network klaytn --tags create,setup",
     "deploy:etherspot": "hardhat deploy --network etherspot --tags create,setup",
     "deploy:localA": "hardhat deploy --network localA --tags create,setup",
     "deploy:localB": "hardhat deploy --network localB --tags create,setup",

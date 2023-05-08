@@ -32,6 +32,8 @@ export declare enum NetworkNames {
     ArbitrumNitro = "arbitrumNitro",
     BaseGoerli = "baseGoerli",
     OktcTest = "oktcTest",
+    KlaytnBaobab = "klaytnBaobab",
+    Klaytn = "klaytn",
     Etherspot = "etherspot",
     LocalA = "localA",
     LocalB = "localB",
