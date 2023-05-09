@@ -31,6 +31,8 @@ export enum NetworkNames {
   ArbitrumNova = "arbitrumNova",
   ArbitrumNitro = "arbitrumNitro",
   BaseGoerli= "baseGoerli",
+  OktcTest = "oktcTest",
+  OKTC= "oktc",
   KlaytnBaobab= "klaytnBaobab",
   Klaytn= "klaytn",
   Etherspot = "etherspot",
@@ -229,6 +231,18 @@ export const NETWORK_CONFIGS: {
     defaultProviderUrl: "https://goerli.base.org",
     defaultGas: 1,
     explorer: "https://goerli.basescan.org",
+  },
+  [NetworkNames.OktcTest]: {
+    chainId: 65,
+    defaultProviderUrl: "https://exchaintestrpc.okex.org",
+    defaultGasPrice: 1,
+    explorer: "https://www.oklink.com/oktc-test",
+  },
+  [NetworkNames.OKTC]: {
+    chainId: 66,
+    defaultProviderUrl: "https://exchainrpc.okex.org",
+    explorer: "https://www.okx.com/en-in/explorer/oktc",
+    defaultGasPrice: 0.2,
   },
   [NetworkNames.KlaytnBaobab]: {
     chainId: 1001,
