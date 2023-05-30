@@ -123,6 +123,8 @@ contract ConnextFacet {
             _destinationDomain != getDomainId(),
             "Connext: Cannot bridge to same domain"
         );
+        // check amount
+        require(msg.value == _relayerFee, "Connext: relayerFee != msg.value");
         // Check for allowance
         require(
             token.allowance(msg.sender, address(this)) >= _amount,
@@ -182,6 +184,11 @@ contract ConnextFacet {
         require(
             _destinationDomain != getDomainId(),
             "Connext: Cannot bridge to same domain"
+        );
+        // check amount
+        require(
+            msg.value == _amount + _relayerFee,
+            "Connext: amount + relayerFee != msg.value"
         );
         {
             // scope for weth - avoids stack too deep errors

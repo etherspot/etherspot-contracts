@@ -258,7 +258,7 @@ describe("ConnextFacet", () => {
     });
 
     it("should revert on call with incorrect relayer fee", async () => {
-      await expectRevert.unspecified(
+      await expectRevert(
         connextFacet
           .connect(alice)
           .connextTokenTransfer(
@@ -272,6 +272,7 @@ describe("ConnextFacet", () => {
               value: ethers.utils.parseEther("0.04"),
             },
           ),
+        "Connext: relayerFee != msg.value",
       );
     });
   });
@@ -377,7 +378,7 @@ describe("ConnextFacet", () => {
     });
 
     it("should revert on call with incorrect relayer fee", async () => {
-      await expectRevert.unspecified(
+      await expectRevert(
         connextFacet
           .connect(alice)
           .connextEthTransfer(
@@ -391,6 +392,7 @@ describe("ConnextFacet", () => {
               value: ethers.utils.parseEther("1.04"),
             },
           ),
+        "Connext: amount + relayerFee != msg.value",
       );
     });
   });
