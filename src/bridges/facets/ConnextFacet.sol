@@ -240,7 +240,7 @@ contract ConnextFacet {
      * @dev returns WETH contract
      * @return address WETH contract
      */
-    function getWETH() private view returns (address weth) {
+    function getWETH() private view returns (address) {
         return getStorage().weth;
     }
 
