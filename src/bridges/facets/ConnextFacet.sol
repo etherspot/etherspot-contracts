@@ -225,8 +225,7 @@ contract ConnextFacet {
      * @return address connext contract
      */
     function getConnext() private view returns (address) {
-        Storage storage s = getStorage();
-        return s.connext;
+        return getStorage().connext;
     }
 
     /**
@@ -234,17 +233,15 @@ contract ConnextFacet {
      * @return uint32 domain id
      */
     function getDomainId() private view returns (uint32) {
-        Storage storage s = getStorage();
-        return s.domainId;
+        return getStorage().domainId;
     }
 
     /**
      * @dev returns WETH contract
      * @return address WETH contract
      */
-    function getWETH() private view returns (address) {
-        Storage storage s = getStorage();
-        return s.weth;
+    function getWETH() private view returns (address weth) {
+        return getStorage().weth;
     }
 
     /**
