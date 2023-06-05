@@ -135,7 +135,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       mainnet: ETHERSCAN_API_KEY,
-      gnosis: "<gnosis scan api key>",
+      // gnosis: "<gnosis scan api key>",
     },
   },
 };
