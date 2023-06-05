@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "@nomicfoundation/hardhat-verify";
+import "@nomicfoundation/hardhat-etherscan";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
 import "hardhat-deploy";
@@ -133,10 +133,7 @@ const config: HardhatUserConfig = {
     [ContractNames.ENSReverseRegistrar]: utils.id("ETHERspot@1.2.0"),
   },
   etherscan: {
-    apiKey: {
-      mainnet: ETHERSCAN_API_KEY,
-      // gnosis: "<gnosis scan api key>",
-    },
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 
