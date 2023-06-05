@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "@nomicfoundation/hardhat-etherscan";
+import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
 import "hardhat-deploy";
