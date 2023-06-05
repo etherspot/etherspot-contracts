@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "@nomiclabs/hardhat-etherscan";
+import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-web3";
 import "@typechain/hardhat";
 import "hardhat-deploy";
@@ -118,9 +118,6 @@ const config: HardhatUserConfig = {
         "0xf8a88085174876e800830186a08080b853604580600e600039806000f350fe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3830150f8a0d69f418f6da8f01fb95d6d87e1f2eabd85884784cd2ba2d306ba066d41b7c5e6a05a2b76982a148ca8ca2803ceac3d39a3f26208b654c473b17b01e7536eeba55e",
     },
   },
-  gasReporter: {
-    enabled: false,
-  },
   ens: {
     internalTopLevelDomains: ["pillar", "etherspot", "dank"],
   },
@@ -136,7 +133,10 @@ const config: HardhatUserConfig = {
     [ContractNames.ENSReverseRegistrar]: utils.id("ETHERspot@1.2.0"),
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: ETHERSCAN_API_KEY,
+      gnosis: "<gnosis scan api key>",
+    },
   },
 };
 
