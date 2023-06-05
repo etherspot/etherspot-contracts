@@ -19,11 +19,9 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface LPTokenInterface extends utils.Interface {
   functions: {
-    "MINIMUM_LIQUIDITY()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burn(uint256)": FunctionFragment;
     "burnFrom(address,uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -41,10 +39,6 @@ export interface LPTokenInterface extends utils.Interface {
   };
 
   encodeFunctionData(
-    functionFragment: "MINIMUM_LIQUIDITY",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
   ): string;
@@ -53,7 +47,6 @@ export interface LPTokenInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "burn", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "burnFrom",
     values: [string, BigNumberish]
@@ -99,14 +92,9 @@ export interface LPTokenInterface extends utils.Interface {
     values: [string]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "MINIMUM_LIQUIDITY",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnFrom", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
@@ -206,8 +194,6 @@ export interface LPToken extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     allowance(
       owner: string,
       spender: string,
@@ -221,11 +207,6 @@ export interface LPToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     burnFrom(
       account: string,
@@ -290,8 +271,6 @@ export interface LPToken extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
-
   allowance(
     owner: string,
     spender: string,
@@ -305,11 +284,6 @@ export interface LPToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  burn(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   burnFrom(
     account: string,
@@ -374,8 +348,6 @@ export interface LPToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: string,
       spender: string,
@@ -389,8 +361,6 @@ export interface LPToken extends BaseContract {
     ): Promise<boolean>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    burn(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     burnFrom(
       account: string,
@@ -490,8 +460,6 @@ export interface LPToken extends BaseContract {
   };
 
   estimateGas: {
-    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: string,
       spender: string,
@@ -505,11 +473,6 @@ export interface LPToken extends BaseContract {
     ): Promise<BigNumber>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     burnFrom(
       account: string,
@@ -575,8 +538,6 @@ export interface LPToken extends BaseContract {
   };
 
   populateTransaction: {
-    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     allowance(
       owner: string,
       spender: string,
@@ -592,11 +553,6 @@ export interface LPToken extends BaseContract {
     balanceOf(
       account: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     burnFrom(

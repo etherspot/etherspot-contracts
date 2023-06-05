@@ -6,7 +6,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
-import "hardhat-tracer";
+// import "hardhat-tracer";
 import { HardhatUserConfig } from "hardhat/config";
 import { utils } from "ethers";
 import {
@@ -16,7 +16,11 @@ import {
   NETWORK_CONFIGS,
 } from "./extensions";
 
-const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
+const {
+  HARDHAT_MNEMONIC,
+  MAINNET_ALCHEMY_API_KEY,
+  ETHERSCAN_API_KEY,
+} = process.env;
 
 const config: HardhatUserConfig = {
   namedAccounts: {
@@ -26,7 +30,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         enabled: false,
-        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        url: `https://eth-mainnet.alchemyapi.io/v2/${MAINNET_ALCHEMY_API_KEY}`,
         blockNumber: 13798171,
       },
       accounts: {
@@ -77,6 +81,9 @@ const config: HardhatUserConfig = {
             bytecodeHash: "none",
           },
         },
+      },
+      {
+        version: "0.8.17",
       },
     ],
   },

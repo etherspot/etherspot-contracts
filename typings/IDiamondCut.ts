@@ -32,20 +32,51 @@ export type FacetCutStructOutput = [string, number, string[]] & {
 export interface IDiamondCutInterface extends utils.Interface {
   functions: {
     "diamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
+    "getAcceptanceTime((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
+    "proposeDiamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
+    "rescindDiamondCut((address,uint8,bytes4[])[],address,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "diamondCut",
     values: [FacetCutStruct[], string, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getAcceptanceTime",
+    values: [FacetCutStruct[], string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "proposeDiamondCut",
+    values: [FacetCutStruct[], string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rescindDiamondCut",
+    values: [FacetCutStruct[], string, BytesLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "diamondCut", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAcceptanceTime",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "proposeDiamondCut",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rescindDiamondCut",
+    data: BytesLike
+  ): Result;
 
   events: {
     "DiamondCut(tuple[],address,bytes)": EventFragment;
+    "DiamondCutProposed(tuple[],address,bytes,uint256)": EventFragment;
+    "DiamondCutRescinded(tuple[],address,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "DiamondCut"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DiamondCutProposed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DiamondCutRescinded"): EventFragment;
 }
 
 export type DiamondCutEvent = TypedEvent<
@@ -54,6 +85,27 @@ export type DiamondCutEvent = TypedEvent<
 >;
 
 export type DiamondCutEventFilter = TypedEventFilter<DiamondCutEvent>;
+
+export type DiamondCutProposedEvent = TypedEvent<
+  [FacetCutStructOutput[], string, string, BigNumber],
+  {
+    _diamondCut: FacetCutStructOutput[];
+    _init: string;
+    _calldata: string;
+    deadline: BigNumber;
+  }
+>;
+
+export type DiamondCutProposedEventFilter =
+  TypedEventFilter<DiamondCutProposedEvent>;
+
+export type DiamondCutRescindedEvent = TypedEvent<
+  [FacetCutStructOutput[], string, string],
+  { _diamondCut: FacetCutStructOutput[]; _init: string; _calldata: string }
+>;
+
+export type DiamondCutRescindedEventFilter =
+  TypedEventFilter<DiamondCutRescindedEvent>;
 
 export interface IDiamondCut extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -88,6 +140,27 @@ export interface IDiamondCut extends BaseContract {
       _calldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getAcceptanceTime(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   diamondCut(
@@ -97,8 +170,50 @@ export interface IDiamondCut extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  getAcceptanceTime(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  proposeDiamondCut(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  rescindDiamondCut(
+    _diamondCut: FacetCutStruct[],
+    _init: string,
+    _calldata: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getAcceptanceTime(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    rescindDiamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,
       _calldata: BytesLike,
@@ -117,6 +232,30 @@ export interface IDiamondCut extends BaseContract {
       _init?: null,
       _calldata?: null
     ): DiamondCutEventFilter;
+
+    "DiamondCutProposed(tuple[],address,bytes,uint256)"(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null,
+      deadline?: null
+    ): DiamondCutProposedEventFilter;
+    DiamondCutProposed(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null,
+      deadline?: null
+    ): DiamondCutProposedEventFilter;
+
+    "DiamondCutRescinded(tuple[],address,bytes)"(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null
+    ): DiamondCutRescindedEventFilter;
+    DiamondCutRescinded(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null
+    ): DiamondCutRescindedEventFilter;
   };
 
   estimateGas: {
@@ -126,10 +265,52 @@ export interface IDiamondCut extends BaseContract {
       _calldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getAcceptanceTime(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    rescindDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     diamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAcceptanceTime(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    proposeDiamondCut(
+      _diamondCut: FacetCutStruct[],
+      _init: string,
+      _calldata: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rescindDiamondCut(
       _diamondCut: FacetCutStruct[],
       _init: string,
       _calldata: BytesLike,
