@@ -1,29 +1,31 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IStargateReceiver",
-  "sourceName": "src/bridges/interfaces/stargate/IStargateReceiver.sol",
+  "contractName": "IStargateRouterETH",
+  "sourceName": "src/bridges/interfaces/stargate/IStargateRouterETH.sol",
   "abi": [
+    {
+      "inputs": [],
+      "name": "addLiquidityETH",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
     {
       "inputs": [
         {
           "internalType": "uint16",
-          "name": "_chainId",
+          "name": "dstChainId",
           "type": "uint16"
         },
         {
-          "internalType": "bytes",
-          "name": "_srcAddress",
-          "type": "bytes"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nonce",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_token",
+          "internalType": "address payable",
+          "name": "refundAddress",
           "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "to",
+          "type": "bytes"
         },
         {
           "internalType": "uint256",
@@ -31,14 +33,14 @@
           "type": "uint256"
         },
         {
-          "internalType": "bytes",
-          "name": "payload",
-          "type": "bytes"
+          "internalType": "uint256",
+          "name": "minAmountLD",
+          "type": "uint256"
         }
       ],
-      "name": "sgReceive",
+      "name": "swapETH",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     }
   ],

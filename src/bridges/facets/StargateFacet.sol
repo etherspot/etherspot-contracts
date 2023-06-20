@@ -1,289 +1,303 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-import {IStargateRouter} from "../interfaces/IStargateRouter.sol";
-import {IStargateReceiver} from "../interfaces/IStargateReceiver.sol";
+import {IStargateRouter} from "../interfaces/stargate/IStargateRouter.sol";
+import {IStargateRouterETH} from "../interfaces/stargate/IStargateRouterETH.sol";
+import {IStargateReceiver} from "../interfaces/stargate/IStargateReceiver.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ReentrancyGuard} from "../../common/helpers/DiamondReentrancyGuard.sol";
-import {CannotBridgeToSameNetwork, InvalidAmount, InvalidConfig} from "../errors/GenericErrors.sol";
-import {SenderNotStargateRouter, NoMsgValueForCrossChainMessage, StargateRouterAddressZero, InvalidSourcePoolId, InvalidDestinationPoolId} from "../errors/StargateErrors.sol";
 import {LibDiamond} from "../libs/LibDiamond.sol";
 
-/// @title StargateFacet
-/// @author Luke Wickens <luke@pillarproject.io>
-/// @notice Stargate/LayerZero intergration for bridging tokens
+/**
+ * @title StargateFacet
+ *
+ * @notice Stargate/LayerZero intergration for bridging tokens
+ *
+ */
 
 contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    //////////////////////////////////////////////////////////////
-    /////////////////////////// Events ///////////////////////////
-    //////////////////////////////////////////////////////////////
-    event SGInitialized(address stargate, uint16 chainId);
-    event SGTransferStarted(
-        string bridgeUsed,
+    ///// STORAGE AND STRUCTS /////
+    bytes32 internal constant NAMESPACE =
+        keccak256("io.etherspot.facets.stargate");
+    struct Storage {
+        IStargateRouter stargateRouter;
+        IStargateRouterETH stargateETHRouter;
+        uint16 chainId;
+    }
+
+    /**
+     * @notice token transfer data object
+     * @param amount - amount to swap
+     * @param bridgeToken - the address of the native ERC20 to swap() - *must* be the token for the poolId
+     * @param dstChainId - stargate/layerzero chainId
+     * @param srcPoolId - stargate poolId - *must* be the poolId for the qty asset
+     * @param dstPoolId - stargate destination poolId
+     * @param to - address to send the destination tokens to
+     * @param slippage - slippage tolerance on _qty (eg 50 == 0.5%)
+     * @param destStargateComposed - destination contract. it must implement sgReceive()
+     */
+    struct StargateTransferData {
+        uint256 amount;
+        address bridgeToken;
+        uint16 dstChainId;
+        uint16 srcPoolId;
+        uint16 dstPoolId;
+        address to;
+        uint16 slippage;
+        uint256 destStargateComposed;
+    }
+
+    /**
+     * @notice ETH transfer data object
+     * @param amount - amount to swap
+     * @param dstChainId - stargate/layerzero chainId
+     * @param to - address to send the destination tokens to
+     * @param slippage - slippage tolerance on _qty (eg 50 == 0.5%)
+     */
+    struct StargateETHTransferData {
+        uint256 amount;
+        uint16 dstChainId;
+        address to;
+        uint16 slippage;
+    }
+
+    ///// EVENTS /////
+    /**
+     * @dev emitted when facet initializes
+     * @param stargateRouter stargate router address
+     * @param stargateETHRouter stargate ETH router address
+     * @param chainId chain id
+     */
+    event StargateInitialized(
+        address stargateRouter,
+        address stargateETHRouter,
+        uint16 chainId
+    );
+
+    /**
+     * @dev emitted on ERC20 token swap
+     * @param fromToken from token
+     * @param from from address
+     * @param to to address
+     * @param amount amount swapping
+     * @param chainIdTo receiving chain id
+     */
+    event StargateTokenSwap(
         address fromToken,
-        address toToken,
         address from,
         address to,
         uint256 amount,
         uint16 chainIdTo
     );
-    event SGReceivedOnDestination(address token, uint256 amount);
-    event SGUpdatedRouter(address newAddress);
-    event SGUpdatedSlippageTolerance(uint256 newSlippage);
-    event SGAddedPool(uint16 chainId, address token, uint16 poolId);
 
-    //////////////////////////////////////////////////////////////
-    ////////////////////////// Storage ///////////////////////////
-    //////////////////////////////////////////////////////////////
+    /**
+     * @dev emitted on ETH swap
+     * @param from from address
+     * @param to to address
+     * @param amount amount swapping
+     * @param chainIdTo receiving chain id
+     */
+    event StargateETHTokenSwap(
+        address from,
+        address to,
+        uint256 amount,
+        uint16 chainIdTo
+    );
 
-    bytes32 internal constant NAMESPACE =
-        keccak256("io.etherspot.facets.stargate");
-    struct Storage {
-        address stargateRouter;
-        uint16 chainId;
-        uint256 dstGas;
-        uint256 slippage;
-        mapping(uint16 => mapping(address => uint16)) poolIds;
-    }
+    /**
+     * @dev emitted when received on destination chain
+     * @param token token address
+     * @param amount amount swapping
+     */
+    event StargateReceivedOnDestination(address token, uint256 amount);
 
-    //////////////////////////////////////////////////////////////
-    ////////////////////////// Structs ///////////////////////////
-    //////////////////////////////////////////////////////////////
-
-    struct StargateData {
-        uint256 qty;
-        address fromToken;
-        address toToken;
-        uint16 dstChainId;
-        address to;
-        address destStargateComposed;
-    }
-
-    /// @notice initializes state variables for the Stargate facet
-    /// @param _stargateRouter - address of the Stargate router contract
-    /// @param _chainId - current chain id
-    function sgInitialize(address _stargateRouter, uint16 _chainId) external {
-        if (_stargateRouter == address(0)) revert InvalidConfig();
+    ///// INITIALIZE FACET /////
+    /**
+     * @notice initializes state variables for the Stargate facet
+     * @param _stargateRouter - address of the Stargate router contract
+     * @param _stargateETHRouter - address of Stargate ETH router contract
+     * @param _chainId - current chain id
+     */
+    function initStargate(
+        address _stargateRouter,
+        address _stargateETHRouter,
+        uint16 _chainId
+    ) external {
+        require(
+            _stargateRouter != address(0) && _stargateETHRouter != address(0),
+            "Stargate:: invalid address"
+        );
         LibDiamond.enforceIsContractOwner();
         Storage storage s = getStorage();
-        s.stargateRouter = address(_stargateRouter);
+        s.stargateRouter = IStargateRouter(_stargateRouter);
+        s.stargateETHRouter = IStargateRouterETH(_stargateETHRouter);
         s.chainId = _chainId;
-        s.slippage = 50; // equates to 0.5%
-        // Adding pre-existing pools => USDC: 1, USDT: 2, BUSD: 5
-        sgAddPool(1, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 1);
-        sgAddPool(1, 0xdAC17F958D2ee523a2206206994597C13D831ec7, 2);
-        sgAddPool(2, 0x55d398326f99059fF775485246999027B3197955, 2);
-        sgAddPool(2, 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56, 5);
-        sgAddPool(6, 0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E, 1);
-        sgAddPool(6, 0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7, 2);
-        sgAddPool(9, 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174, 1);
-        sgAddPool(9, 0xc2132D05D31c914a87C6611C10748AEb04B58e8F, 2);
-        sgAddPool(10, 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8, 1);
-        sgAddPool(10, 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9, 2);
-        sgAddPool(11, 0x7F5c764cBc14f9669B88837ca1490cCa17c31607, 1);
-        sgAddPool(12, 0x04068DA6C83AFCFA0e13ba15A6696662335D5B75, 1);
-        emit SGInitialized(_stargateRouter, _chainId);
+        emit StargateInitialized(_stargateRouter, _stargateETHRouter, _chainId);
     }
 
-    /// @notice initializes state variables for the stargate facet
-    /// @param _sgData - struct containing information required to execute bridge
-    function sgBridgeTokens(StargateData memory _sgData)
-        external
-        payable
-        nonReentrant
-    {
-        // if (msg.value <= 0) revert NoMsgValueForCrossChainMessage();
-        if (_sgData.qty <= 0) revert InvalidAmount();
-        if (
-            _sgData.fromToken == address(0) ||
-            _sgData.toToken == address(0) ||
-            _sgData.to == address(0) ||
-            _sgData.destStargateComposed == address(0)
-        ) revert InvalidConfig();
-
-        // access storage
-        Storage storage s = getStorage();
-
-        // check pool ids are valid
-        uint16 srcPoolId = sgRetrievePoolId(s.chainId, _sgData.fromToken);
-        if (srcPoolId == 0) revert InvalidSourcePoolId();
-        uint16 dstPoolId = sgRetrievePoolId(
-            _sgData.dstChainId,
-            _sgData.toToken
-        );
-
-        // calculate cross chain fees
-        uint256 fees = sgCalculateFees(
-            _sgData.dstChainId,
-            _sgData.to,
-            s.stargateRouter
-        );
-
-        // calculate slippage
-        uint256 minAmountOut = sgMinAmountOut(_sgData.qty);
-
+    /**
+     * @notice initiates token bridge transfer
+     * @param _data StargateTransferData object
+     */
+    function stargateTokenTransfer(
+        StargateTransferData calldata _data
+    ) external payable nonReentrant {
+        require(msg.value > 0, "Stargate:: msg.value required to pay message");
+        require(_data.amount > 0, "Stargate:: invalid quantity");
+        IStargateRouter router = getStargateRouter();
+        // get stargate fees
+        uint256 fee = stargateFees(_data.dstChainId, _data.to, router);
+        // calc minimum amount out
+        uint256 minAmountOut = (_data.amount * (10000 - _data.slippage)) /
+            10000;
         // encode sgReceive implemented
-        bytes memory destination = abi.encodePacked(
-            _sgData.destStargateComposed
-        );
-
+        bytes memory destination = abi.encodePacked(_data.destStargateComposed);
         // encode payload data to send to destination contract, which it will handle with sgReceive()
-        bytes memory payload = abi.encode(_sgData.to);
-
+        bytes memory payload = abi.encode(_data.to);
         // this contract calls stargate swap()
-        IERC20(_sgData.fromToken).safeTransferFrom(
+        IERC20(_data.bridgeToken).safeTransferFrom(
             msg.sender,
             address(this),
-            _sgData.qty
+            _data.amount
         );
-
-        IERC20(_sgData.fromToken).safeApprove(
-            address(s.stargateRouter),
-            _sgData.qty
-        );
-
+        IERC20(_data.bridgeToken).safeApprove(address(router), _data.amount);
         // Stargate's Router.swap() function sends the tokens to the destination chain.
-        IStargateRouter(s.stargateRouter).swap{value: fees}(
-            _sgData.dstChainId, // the destination chain id
-            srcPoolId, // the source Stargate poolId
-            dstPoolId, // the destination Stargate poolId
+        IStargateRouter(router).swap{value: fee}(
+            _data.dstChainId, // the destination chain id
+            _data.srcPoolId, // the source Stargate poolId
+            _data.dstPoolId, // the destination Stargate poolId
             payable(msg.sender), // refund adddress. if msg.sender pays too much gas, return extra eth
-            _sgData.qty, // total tokens to send to destination chain
+            _data.amount, // total tokens to send to destination chain
             minAmountOut, // min amount allowed out
-            IStargateRouter.lzTxObj(200000, 0, "0x"), // default lzTxObj
+            IStargateRouter.lzTxObj(500000, 0, "0x"), // default lzTxObj
             destination, // destination address, the sgReceive() implementer
             payload // bytes payload
         );
-
-        emit SGTransferStarted(
-            "stargate",
-            _sgData.fromToken,
-            _sgData.toToken,
+        emit StargateTokenSwap(
+            _data.bridgeToken,
             msg.sender,
-            _sgData.to,
-            _sgData.qty,
-            _sgData.dstChainId
+            _data.to,
+            _data.amount,
+            _data.dstChainId
         );
     }
 
-    /// @notice required to receive tokens on destination chain
-    /// @param _chainId The remote chainId sending the tokens
-    /// @param _srcAddress The remote Bridge address
-    /// @param _nonce The message ordering nonce
-    /// @param _token The token contract on the local chain
-    /// @param amountLD The qty of local _token contract tokens
-    /// @param _payload The bytes containing the toAddress
-    function sgReceive(
-        uint16 _chainId,
-        bytes memory _srcAddress,
-        uint256 _nonce,
-        address _token,
-        uint256 amountLD,
-        bytes memory _payload
-    ) external override {
-        Storage storage s = getStorage();
-        if (msg.sender != address(s.stargateRouter))
-            revert SenderNotStargateRouter();
+    /**
+     * @notice initiates an ETH bridging transfer
+     * @param _data StargateETHTransferData object
+     */
+    function stargateETHTransfer(
+        StargateETHTransferData calldata _data
+    ) external payable nonReentrant {
+        require(msg.value > 0, "Stargate:: msg.value required");
+        require(_data.amount > 0, "Stargate:: invalid quantity");
+        require(
+            msg.value > _data.amount,
+            "Stargate: no fees added for ETH transfer"
+        );
+        IStargateRouterETH ethRouter = getStargateETHRouter();
+        require(
+            address(ethRouter) != address(0),
+            "Stargate:: ETH transfer not available"
+        );
+        bytes memory receiver = abi.encodePacked(_data.to);
+        uint256 minAmountOut = (_data.amount * (10000 - _data.slippage)) /
+            10000;
 
-        address _toAddr = abi.decode(_payload, (address));
-        IERC20(_token).transfer(_toAddr, amountLD);
-        emit SGReceivedOnDestination(_token, amountLD);
+        // value is amount of ETH to swap + stargate/lz fees
+        ethRouter.swapETH{value: msg.value}(
+            _data.dstChainId,
+            payable(msg.sender),
+            receiver,
+            _data.amount,
+            minAmountOut
+        );
+
+        emit StargateETHTokenSwap(
+            msg.sender,
+            _data.to,
+            _data.amount,
+            _data.dstChainId
+        );
     }
 
-    /// @notice Calculates cross chain fee
-    /// @param _destChain Destination chain id
-    /// @param _receiver Receiver on destination chain
-    /// @param _router Address of stargate router
-    function sgCalculateFees(
+    /**
+     * @notice required to receive tokens on destination chain
+     * @param _token the token contract on the local chain
+     * @param _amountLD the qty of local _token contract tokens
+     * @param _payload the bytes containing the toAddress
+     */
+    function sgReceive(
+        uint16 /*_chainId*/,
+        bytes memory /*_srcAddress*/,
+        uint256 /*_nonce*/,
+        address _token,
+        uint256 _amountLD,
+        bytes memory _payload
+    ) external override {
+        require(
+            msg.sender == address(getStargateRouter()),
+            "Stargate:: only stargate router"
+        );
+
+        address to = abi.decode(_payload, (address));
+        IERC20(_token).safeTransfer(to, _amountLD);
+        emit StargateReceivedOnDestination(_token, _amountLD);
+    }
+
+    /**
+     * @notice Calculates cross chain fee
+     * @param _destChain Destination chain id
+     * @param _receiver Receiver on destination chain
+     * @param _router Address of stargate router
+     */
+    function stargateFees(
         uint16 _destChain,
         address _receiver,
-        address _router
+        IStargateRouter _router
     ) public view returns (uint256) {
-        (uint256 nativeFee, ) = IStargateRouter(_router).quoteLayerZeroFee(
+        (uint256 nativeFee, ) = _router.quoteLayerZeroFee(
             _destChain, // destination chain id
             1, // 1 = swap
             abi.encodePacked(_receiver), // receiver on destination chain
             "0x", // payload, using abi.encode()
-            IStargateRouter.lzTxObj(200000, 0, "0x")
+            IStargateRouter.lzTxObj(200000, 0, abi.encodePacked(address(0)))
         );
         return nativeFee;
     }
 
-    /// @notice Calculates the minimum amount out using slippage tolerance
-    /// @param _amount Transfer amount
-    function sgMinAmountOut(uint256 _amount) public view returns (uint256) {
-        Storage storage s = getStorage();
-        // equates to 0.5% slippage
-        return (_amount * (10000 - s.slippage)) / (10000);
+    ///// PRIVATE FUNCTIONS /////
+
+    /**
+     * @dev returns stargate router contract
+     * @return address stargate router contract
+     */
+    function getStargateRouter() private view returns (IStargateRouter) {
+        return getStorage().stargateRouter;
     }
 
-    /// @notice Updates stargate router address for deployed chain
-    /// @param _newAddress Address of the new router
-    function sgUpdateRouter(address _newAddress) external {
-        LibDiamond.enforceIsContractOwner();
-        if (_newAddress == address(0)) revert StargateRouterAddressZero();
-        Storage storage s = getStorage();
-        s.stargateRouter = address(_newAddress);
-        emit SGUpdatedRouter(_newAddress);
+    /**
+     * @dev returns stargate ETH router contract
+     * @return address stargate ETH router contract
+     */
+    function getStargateETHRouter() private view returns (IStargateRouterETH) {
+        return getStorage().stargateETHRouter;
     }
 
-    /// @notice Updates slippage tolerance amount
-    /// @param _newSlippage New slippage amount
-    function sgUpdateSlippageTolerance(uint256 _newSlippage) external {
-        LibDiamond.enforceIsContractOwner();
-        Storage storage s = getStorage();
-        s.slippage = _newSlippage;
-        emit SGUpdatedSlippageTolerance(_newSlippage);
+    /**
+     * @dev returns stargate chainId
+     * @return address connext contract
+     */
+    function getChainId() private view returns (uint16) {
+        return getStorage().chainId;
     }
 
-    /// @notice Adds a new pool for a specific token and chain
-    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
-    /// @param _token Address of token
-    /// @param _poolId Pool id (check stargate pool ids docs)
-    function sgAddPool(
-        uint16 _chainId,
-        address _token,
-        uint16 _poolId
-    ) public {
-        LibDiamond.enforceIsContractOwner();
-        Storage storage s = getStorage();
-        s.poolIds[_chainId][_token] = _poolId;
-        emit SGAddedPool(_chainId, _token, _poolId);
-    }
-
-    /// @notice Checks for a valid token pool on specific chain
-    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
-    /// @param _token Address of token
-    /// @param _poolId Pool id (check stargate pool ids docs)
-    function sgCheckPoolId(
-        uint16 _chainId,
-        address _token,
-        uint16 _poolId
-    ) external view returns (bool) {
-        Storage storage s = getStorage();
-        return s.poolIds[_chainId][_token] == _poolId ? true : false;
-    }
-
-    /// @notice Retrieves pool id for a token on a specified chain
-    /// @param _chainId Chain id of new pool (NOT actual chain id - check stargate pool ids docs)
-    /// @param _token Address of token
-    function sgRetrievePoolId(uint16 _chainId, address _token)
-        public
-        view
-        returns (uint16)
-    {
-        Storage storage s = getStorage();
-        return s.poolIds[_chainId][_token];
-    }
-
-    //////////////////////////////////////////////////////////////
-    ////////////////////// Private Functions /////////////////////
-    //////////////////////////////////////////////////////////////
-
-    /// @dev fetch local storage
+    /**
+     * @dev fetch local storage
+     */
     function getStorage() private pure returns (Storage storage s) {
         bytes32 namespace = NAMESPACE;
         // solhint-disable-next-line no-inline-assembly

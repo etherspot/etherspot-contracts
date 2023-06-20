@@ -12,10 +12,15 @@ import { expectRevert } from "@openzeppelin/test-helpers";
 import USDC_ABI from "./abi/USDC_ABI.js";
 
 const ETH_CHAIN_ID = 1;
-const POLYGON_CHAIN_ID = 9; // Specified in (https://stargateprotocol.gitbook.io/stargate/developers/contract-addresses/mainnet) - Chain ID normally 137
-const ARBITRUM_CHAIN_ID = 10; // Same as POLYGON_CHAIN_ID comments
+const POLYGON_CHAIN_ID = 137;
+const ARBITRUM_CHAIN_ID = 42161;
+const LZ_ETH_CHAIN_ID = 101;
+const LZ_POLYGON_CHAIN_ID = 109;
+const LZ_ARBITRUM_CHAIN_ID = 110;
 const MAINNET_STARGATE_ROUTER_ADDRESS =
   "0x8731d54E9D02c286767d56ac03e8037C07e01e98";
+const MAINNET_STARGATE_ETH_ROUTER_ADDRESS =
+  "0x150f94B44927F078737562f0fcF3C95c01Cc2376";
 const POLYGON_STARGATE_ROUTER_ADDRESS =
   "0x45A01E4e04F14f7A4a6702c74187c5F6222033cd";
 const ARBITRUM_STARGATE_ROUTER_ADDRESS =
@@ -35,7 +40,7 @@ describe("StargateFacet", () => {
   let alice: SignerWithAddress;
   let bob: SignerWithAddress;
   let dummy: SignerWithAddress;
-  let usdc, StargateData;
+  let usdc, transferData, ethTransferData;
 
   /* eslint-enable @typescript-eslint/no-explicit-any */
   const setupTest = deployments.createFixture(
@@ -72,23 +77,28 @@ describe("StargateFacet", () => {
         await addFacets([facetContract], diamond.address);
       }
 
-      // Impersonate Binance Peg Tokens account
+      // Impersonate Vitalik account
       await network.provider.request({
         method: "hardhat_impersonateAccount",
-        params: ["0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503"],
+        params: ["0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"],
       });
 
       // Assign to alice
       alice = await ethers.getSigner(
-        "0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503",
+        "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
       );
 
       // Initialize StargateFacet contract with Stargate Router address and chain id
       stargateFacet
         .connect(owner)
-        .sgInitialize(MAINNET_STARGATE_ROUTER_ADDRESS, ETH_CHAIN_ID, {
-          gasLimit: 500000,
-        });
+        .initStargate(
+          MAINNET_STARGATE_ROUTER_ADDRESS,
+          MAINNET_STARGATE_ETH_ROUTER_ADDRESS,
+          ETH_CHAIN_ID,
+          {
+            gasLimit: 500000,
+          },
+        );
 
       // get USDC contract instance
       usdc = new ethers.Contract(MAINNET_USDC_ADDRESS, USDC_ABI);
@@ -118,7 +128,7 @@ describe("StargateFacet", () => {
       params: [
         {
           forking: {
-            jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+            jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.MAINNET_ALCHEMY_API_KEY}`,
             blockNumber: 15000000,
           },
         },
@@ -131,404 +141,411 @@ describe("StargateFacet", () => {
     await setupTest();
   });
 
-  describe("sgInitialize()", async function() {
-    it("should revert if stargate router address is address(0)", async function() {
-      await expectRevert(
-        stargateFacet.sgInitialize(ZERO_ADDRESS, ETH_CHAIN_ID),
-        "InvalidConfig",
-      );
-    });
-
+  describe("#initStargate", async function() {
     it("should initialize the stargate router address and chain id", async function() {
       const tx: ContractTransaction = await stargateFacet
         .connect(owner)
-        .sgInitialize(MAINNET_STARGATE_ROUTER_ADDRESS, ETH_CHAIN_ID, {
-          gasLimit: 500000,
-        });
+        .initStargate(
+          MAINNET_STARGATE_ROUTER_ADDRESS,
+          MAINNET_STARGATE_ETH_ROUTER_ADDRESS,
+          ETH_CHAIN_ID,
+          {
+            gasLimit: 500000,
+          },
+        );
       const receipt: ContractReceipt = await tx.wait();
       const result = multiCallCheckLastEventEmitted(receipt);
-      expect(result[0]).toEqual("SGInitialized");
+      expect(result[0]).toEqual("StargateInitialized");
       expect(result[1]).toEqual(MAINNET_STARGATE_ROUTER_ADDRESS);
-      expect(result[2]).toEqual(ETH_CHAIN_ID);
+      expect(result[2]).toEqual(MAINNET_STARGATE_ETH_ROUTER_ADDRESS);
+      expect(result[3]).toEqual(ETH_CHAIN_ID);
+    });
+
+    it("should revert if stargate router address is address(0)", async () => {
+      await expectRevert(
+        stargateFacet.initStargate(
+          ZERO_ADDRESS,
+          MAINNET_STARGATE_ETH_ROUTER_ADDRESS,
+          ETH_CHAIN_ID,
+        ),
+        "Stargate:: invalid address",
+      );
+    });
+
+    it("should revert if stargate ETH router address is address(0)", async () => {
+      await expectRevert(
+        stargateFacet.initStargate(
+          MAINNET_STARGATE_ROUTER_ADDRESS,
+          ZERO_ADDRESS,
+          ETH_CHAIN_ID,
+        ),
+        "Stargate:: invalid address",
+      );
     });
   });
 
-  describe("sgBridgeTokens()", async function() {
-    it("should revert if starting a token bridge transaction and not enough tokens in pool to complete tx", async function() {
-      StargateData = {
+  describe("#stargateTokenTransfer", async function() {
+    it("should trigger error if no msg.value amount to pay for fees", async () => {
+      transferData = {
         qty: utils.parseUnits("1000", 10),
         fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
         dstChainId: POLYGON_CHAIN_ID,
+        srcPoolId: 1, // USDC pool id mainnet
+        dstPoolId: 1, // USDC pool id polygon
         to: bob.address,
+        slippage: 300, // 3%
         destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
       };
 
+      console.log(`bob address: ${bob.address}`);
+      console.log(`from token address: ${usdc.address}`);
+      console.log(`polygon router address: ${POLYGON_STARGATE_ROUTER_ADDRESS}`);
+
       await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "Stargate: not enough balance",
+        stargateFacet.connect(alice).stargateTokenTransfer(transferData),
+        "Stargate:: msg.value required to pay message",
       );
     });
 
-    it("should revert if starting a token bridge transaction and no amount", async function() {
-      StargateData = {
-        qty: 0,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and fromToken is address(0)", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: ZERO_ADDRESS,
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidAmount()",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "InvalidConfig()",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and fromToken is address(0)", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: ZERO_ADDRESS,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and toToken is address(0)", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: ZERO_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidConfig()",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "InvalidConfig()",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and toToken is address(0)", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: ZERO_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and source token is invalid", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidConfig()",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "InvalidSourcePoolId()",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and source token is invalid", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and destination token is invalid", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: "0x0000000000000000000000000000000000001010", // MATIC address
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidSourcePoolId()",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "Stargate: local chainPath does not exist",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and destination token is invalid", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: "0x0000000000000000000000000000000000001010", // MATIC address
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and receiver is address(0)", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: ZERO_ADDRESS,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "Stargate: local chainPath does not exist",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "InvalidConfig()",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and receiver is address(0)", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: ZERO_ADDRESS,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //   it("should revert if starting a token bridge transaction and destStargateComposed is address(0)", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: ZERO_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidConfig()",
-      );
-    });
+    //     await expectRevert(
+    //       stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       }),
+    //       "InvalidConfig()",
+    //     );
+    //   });
 
-    it("should revert if starting a token bridge transaction and destStargateComposed is address(0)", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: ZERO_ADDRESS,
-      };
+    //   it("should start a token bridge transaction on the sending chain - Polygon", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      await expectRevert(
-        stargateFacet.connect(alice).sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        }),
-        "InvalidConfig()",
-      );
-    });
+    //     const tx: ContractTransaction = await stargateFacet
+    //       .connect(alice)
+    //       .sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       });
 
-    it("should start a token bridge transaction on the sending chain - Polygon", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //     const receipt: ContractReceipt = await tx.wait();
+    //     const result = multiCallCheckLastEventEmitted(receipt);
+    //     expect(result[0]).toEqual("SGTransferStarted");
+    //     expect(result[1]).toEqual("stargate");
+    //     expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
+    //     expect(result[3]).toEqual(POLYGON_USDC_ADDRESS);
+    //     expect(result[4]).toEqual(alice.address);
+    //     expect(result[5]).toEqual(bob.address);
+    //     expect(result[6]).toEqual(BigNumber.from(AMOUNT));
+    //     expect(result[7]).toEqual(POLYGON_CHAIN_ID);
+    //   });
 
-      const tx: ContractTransaction = await stargateFacet
-        .connect(alice)
-        .sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        });
+    //   it("should start a token bridge transaction on the sending chain - Arbitrum", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: ARBITRUM_USDC_ADDRESS,
+    //       dstChainId: ARBITRUM_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: ARBITRUM_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      const receipt: ContractReceipt = await tx.wait();
-      const result = multiCallCheckLastEventEmitted(receipt);
-      expect(result[0]).toEqual("SGTransferStarted");
-      expect(result[1]).toEqual("stargate");
-      expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
-      expect(result[3]).toEqual(POLYGON_USDC_ADDRESS);
-      expect(result[4]).toEqual(alice.address);
-      expect(result[5]).toEqual(bob.address);
-      expect(result[6]).toEqual(BigNumber.from(AMOUNT));
-      expect(result[7]).toEqual(POLYGON_CHAIN_ID);
-    });
+    //     const tx: ContractTransaction = await stargateFacet
+    //       .connect(alice)
+    //       .sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       });
 
-    it("should start a token bridge transaction on the sending chain - Arbitrum", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: ARBITRUM_USDC_ADDRESS,
-        dstChainId: ARBITRUM_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: ARBITRUM_STARGATE_ROUTER_ADDRESS,
-      };
+    //     const receipt: ContractReceipt = await tx.wait();
+    //     const result = multiCallCheckLastEventEmitted(receipt);
+    //     expect(result[0]).toEqual("SGTransferStarted");
+    //     expect(result[1]).toEqual("stargate");
+    //     expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
+    //     expect(result[3]).toEqual(ARBITRUM_USDC_ADDRESS);
+    //     expect(result[4]).toEqual(alice.address);
+    //     expect(result[5]).toEqual(bob.address);
+    //     expect(result[6]).toEqual(BigNumber.from(AMOUNT));
+    //     expect(result[7]).toEqual(ARBITRUM_CHAIN_ID);
+    //   });
 
-      const tx: ContractTransaction = await stargateFacet
-        .connect(alice)
-        .sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        });
+    //   it("should deduct users tokens from balance on successful bridge", async function() {
+    //     StargateData = {
+    //       qty: AMOUNT,
+    //       fromToken: usdc.address,
+    //       toToken: POLYGON_USDC_ADDRESS,
+    //       dstChainId: POLYGON_CHAIN_ID,
+    //       to: bob.address,
+    //       destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+    //     };
 
-      const receipt: ContractReceipt = await tx.wait();
-      const result = multiCallCheckLastEventEmitted(receipt);
-      expect(result[0]).toEqual("SGTransferStarted");
-      expect(result[1]).toEqual("stargate");
-      expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
-      expect(result[3]).toEqual(ARBITRUM_USDC_ADDRESS);
-      expect(result[4]).toEqual(alice.address);
-      expect(result[5]).toEqual(bob.address);
-      expect(result[6]).toEqual(BigNumber.from(AMOUNT));
-      expect(result[7]).toEqual(ARBITRUM_CHAIN_ID);
-    });
+    //     const preBalance = await usdc.connect(alice).balanceOf(alice.address);
 
-    it("should deduct users tokens from balance on successful bridge", async function() {
-      StargateData = {
-        qty: AMOUNT,
-        fromToken: usdc.address,
-        toToken: POLYGON_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        to: bob.address,
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
+    //     const tx = await stargateFacet
+    //       .connect(alice)
+    //       .sgBridgeTokens(StargateData, {
+    //         gasLimit: ethers.utils.hexlify(2000000),
+    //       });
 
-      const preBalance = await usdc.connect(alice).balanceOf(alice.address);
+    //     await tx.wait();
 
-      const tx = await stargateFacet
-        .connect(alice)
-        .sgBridgeTokens(StargateData, {
-          gasLimit: ethers.utils.hexlify(2000000),
-        });
-
-      await tx.wait();
-
-      const postBalance = await usdc.connect(alice).balanceOf(alice.address);
-      expect(postBalance.toNumber()).toEqual(preBalance.toNumber() - 100000000);
-    });
+    //     const postBalance = await usdc.connect(alice).balanceOf(alice.address);
+    //     expect(postBalance.toNumber()).toEqual(preBalance.toNumber() - 100000000);
+    //   });
   });
 
-  describe("sgUpdateRouter()", async function() {
-    it("should revert if updating stargate router address and not owner", async function() {
-      await expectRevert(
-        stargateFacet.connect(bob).sgUpdateRouter(bob.address),
-        "LibDiamond: Must be contract owner",
-      );
-    });
+  // describe("sgUpdateRouter()", async function() {
+  //   it("should revert if updating stargate router address and not owner", async function() {
+  //     await expectRevert(
+  //       stargateFacet.connect(bob).sgUpdateRouter(bob.address),
+  //       "LibDiamond: Must be contract owner",
+  //     );
+  //   });
 
-    it("should revert if updating stargate router address with zero address", async function() {
-      await expectRevert(
-        stargateFacet.connect(owner).sgUpdateRouter(ZERO_ADDRESS),
-        "StargateRouterAddressZero()",
-      );
-    });
+  //   it("should revert if updating stargate router address with zero address", async function() {
+  //     await expectRevert(
+  //       stargateFacet.connect(owner).sgUpdateRouter(ZERO_ADDRESS),
+  //       "StargateRouterAddressZero()",
+  //     );
+  //   });
 
-    it("should update stargate router address", async function() {
-      const tx: ContractTransaction = await stargateFacet.sgUpdateRouter(
-        dummy.address,
-      );
-      const receipt: ContractReceipt = await tx.wait();
-      const result = checkEvent(receipt);
-      expect(result[0]).toEqual("SGUpdatedRouter");
-      expect(result[1]).toEqual(dummy.address);
-    });
-  });
+  //   it("should update stargate router address", async function() {
+  //     const tx: ContractTransaction = await stargateFacet.sgUpdateRouter(
+  //       dummy.address,
+  //     );
+  //     const receipt: ContractReceipt = await tx.wait();
+  //     const result = checkEvent(receipt);
+  //     expect(result[0]).toEqual("SGUpdatedRouter");
+  //     expect(result[1]).toEqual(dummy.address);
+  //   });
+  // });
 
-  describe("sgCalculateFees()", async function() {
-    it("should return calculated fee amount in wei for making swap", async function() {
-      const feeWei = await stargateFacet.sgCalculateFees(
-        POLYGON_CHAIN_ID,
-        bob.address,
-        MAINNET_STARGATE_ROUTER_ADDRESS,
-        { gasLimit: ethers.utils.hexlify(2000000) },
-      );
-      expect(feeWei).toBeGreaterThanBN(BigNumber.from(10000000));
-    });
-  });
+  // describe("sgCalculateFees()", async function() {
+  //   it("should return calculated fee amount in wei for making swap", async function() {
+  //     const feeWei = await stargateFacet.sgCalculateFees(
+  //       POLYGON_CHAIN_ID,
+  //       bob.address,
+  //       MAINNET_STARGATE_ROUTER_ADDRESS,
+  //       { gasLimit: ethers.utils.hexlify(2000000) },
+  //     );
+  //     expect(feeWei).toBeGreaterThanBN(BigNumber.from(10000000));
+  //   });
+  // });
 
-  describe("sgUpdateSlippageTolerance()", async function() {
-    it("should revert if updating slippage tolerance amount and not owner", async function() {
-      await expectRevert(
-        stargateFacet.connect(bob).sgUpdateSlippageTolerance(200),
-        "LibDiamond: Must be contract owner",
-      );
-    });
+  // describe("sgUpdateSlippageTolerance()", async function() {
+  //   it("should revert if updating slippage tolerance amount and not owner", async function() {
+  //     await expectRevert(
+  //       stargateFacet.connect(bob).sgUpdateSlippageTolerance(200),
+  //       "LibDiamond: Must be contract owner",
+  //     );
+  //   });
 
-    it("should update slippage tolerance amount", async function() {
-      const tx: ContractTransaction = await stargateFacet.sgUpdateSlippageTolerance(
-        200,
-      );
-      const receipt: ContractReceipt = await tx.wait();
-      const result = checkEvent(receipt);
-      expect(result[0]).toEqual("SGUpdatedSlippageTolerance");
-      expect(result[1]).toEqual(BigNumber.from(200));
-    });
+  //   it("should update slippage tolerance amount", async function() {
+  //     const tx: ContractTransaction = await stargateFacet.sgUpdateSlippageTolerance(
+  //       200,
+  //     );
+  //     const receipt: ContractReceipt = await tx.wait();
+  //     const result = checkEvent(receipt);
+  //     expect(result[0]).toEqual("SGUpdatedSlippageTolerance");
+  //     expect(result[1]).toEqual(BigNumber.from(200));
+  //   });
 
-    it("should return 0.5% of amount for default minimum slippage", async function() {
-      const minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
-      const expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
-      expect(BigNumber.from(minAmount)).toEqual(
-        BigNumber.from(expectAmountOut),
-      );
-    });
+  //   it("should return 0.5% of amount for default minimum slippage", async function() {
+  //     const minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
+  //     const expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
+  //     expect(BigNumber.from(minAmount)).toEqual(
+  //       BigNumber.from(expectAmountOut),
+  //     );
+  //   });
 
-    it("should return 2% of amount for minimum slippage after slippage updated", async function() {
-      // perform slippage calc for default 0.5% tolerance
-      let minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
-      let expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
-      expect(BigNumber.from(minAmount)).toEqual(
-        BigNumber.from(expectAmountOut),
-      );
+  //   it("should return 2% of amount for minimum slippage after slippage updated", async function() {
+  //     // perform slippage calc for default 0.5% tolerance
+  //     let minAmount: BigNumber = await stargateFacet.sgMinAmountOut(1000);
+  //     let expectAmountOut: number = (1000 * (10000 - 50)) / 10000;
+  //     expect(BigNumber.from(minAmount)).toEqual(
+  //       BigNumber.from(expectAmountOut),
+  //     );
 
-      // change slippage tolerance to 2%
-      await stargateFacet.sgUpdateSlippageTolerance(200);
+  //     // change slippage tolerance to 2%
+  //     await stargateFacet.sgUpdateSlippageTolerance(200);
 
-      // perform slippage calc for default 2% tolerance
-      minAmount = await stargateFacet.sgMinAmountOut(1000);
-      expectAmountOut = (1000 * (10000 - 200)) / 10000;
-      expect(BigNumber.from(minAmount)).toEqual(
-        BigNumber.from(expectAmountOut),
-      );
-    });
-  });
+  //     // perform slippage calc for default 2% tolerance
+  //     minAmount = await stargateFacet.sgMinAmountOut(1000);
+  //     expectAmountOut = (1000 * (10000 - 200)) / 10000;
+  //     expect(BigNumber.from(minAmount)).toEqual(
+  //       BigNumber.from(expectAmountOut),
+  //     );
+  //   });
+  // });
 
-  describe("sgAddPool()", async function() {
-    it("should revert if adding pool to mapping and not owner", async function() {
-      await expectRevert(
-        stargateFacet.connect(bob).sgAddPool(1, MAINNET_USDC_ADDRESS, 3),
-        "LibDiamond: Must be contract owner",
-      );
-    });
+  // describe("sgAddPool()", async function() {
+  //   it("should revert if adding pool to mapping and not owner", async function() {
+  //     await expectRevert(
+  //       stargateFacet.connect(bob).sgAddPool(1, MAINNET_USDC_ADDRESS, 3),
+  //       "LibDiamond: Must be contract owner",
+  //     );
+  //   });
 
-    it("should add a new pool id to mapping", async function() {
-      await stargateFacet.connect(owner).sgAddPool(15, MAINNET_USDC_ADDRESS, 3);
-      const isAdded = await stargateFacet.sgCheckPoolId(
-        15,
-        MAINNET_USDC_ADDRESS,
-        3,
-      );
-      expect(isAdded).toEqual(true);
-    });
+  //   it("should add a new pool id to mapping", async function() {
+  //     await stargateFacet.connect(owner).sgAddPool(15, MAINNET_USDC_ADDRESS, 3);
+  //     const isAdded = await stargateFacet.sgCheckPoolId(
+  //       15,
+  //       MAINNET_USDC_ADDRESS,
+  //       3,
+  //     );
+  //     expect(isAdded).toEqual(true);
+  //   });
 
-    it("should emit a SGAddedPool event", async function() {
-      const tx: ContractTransaction = await stargateFacet
-        .connect(owner)
-        .sgAddPool(15, MAINNET_USDC_ADDRESS, 3);
-      const receipt: ContractReceipt = await tx.wait();
-      const result = checkEvent(receipt);
-      expect(result[0]).toEqual("SGAddedPool");
-      expect(result[1]).toEqual(15);
-      expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
-      expect(result[3]).toEqual(3);
-    });
-  });
+  //   it("should emit a SGAddedPool event", async function() {
+  //     const tx: ContractTransaction = await stargateFacet
+  //       .connect(owner)
+  //       .sgAddPool(15, MAINNET_USDC_ADDRESS, 3);
+  //     const receipt: ContractReceipt = await tx.wait();
+  //     const result = checkEvent(receipt);
+  //     expect(result[0]).toEqual("SGAddedPool");
+  //     expect(result[1]).toEqual(15);
+  //     expect(result[2]).toEqual(MAINNET_USDC_ADDRESS);
+  //     expect(result[3]).toEqual(3);
+  //   });
+  // });
 
-  describe("sgCheckPoolId()", async function() {
-    it("should check pool exists in mapping - true", async function() {
-      const isValidPool = await stargateFacet.sgCheckPoolId(
-        ETH_CHAIN_ID,
-        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        1,
-      );
-      expect(isValidPool).toEqual(true);
-    });
+  // describe("sgCheckPoolId()", async function() {
+  //   it("should check pool exists in mapping - true", async function() {
+  //     const isValidPool = await stargateFacet.sgCheckPoolId(
+  //       ETH_CHAIN_ID,
+  //       "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  //       1,
+  //     );
+  //     expect(isValidPool).toEqual(true);
+  //   });
 
-    it("should check pool exists in mapping - false", async function() {
-      const isValidPool = await stargateFacet.sgCheckPoolId(
-        18,
-        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        1,
-      );
-      expect(isValidPool).toEqual(false);
-    });
-  });
+  //   it("should check pool exists in mapping - false", async function() {
+  //     const isValidPool = await stargateFacet.sgCheckPoolId(
+  //       18,
+  //       "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  //       1,
+  //     );
+  //     expect(isValidPool).toEqual(false);
+  //   });
+  // });
 
-  describe("sgRetrievePoolId()", async function() {
-    it("should retrieve pool for a valid token in mapping", async function() {
-      const poolId = await stargateFacet.sgRetrievePoolId(
-        2, // BSC
-        "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", //BUSD address
-      );
-      expect(poolId).toEqual(5);
-    });
+  // describe("sgRetrievePoolId()", async function() {
+  //   it("should retrieve pool for a valid token in mapping", async function() {
+  //     const poolId = await stargateFacet.sgRetrievePoolId(
+  //       2, // BSC
+  //       "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", //BUSD address
+  //     );
+  //     expect(poolId).toEqual(5);
+  //   });
 
-    it("should return zero if token is not in mapping", async function() {
-      const poolId = await stargateFacet.sgRetrievePoolId(
-        ETH_CHAIN_ID,
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
-      );
-      expect(poolId).toEqual(0);
-    });
-  });
+  //   it("should return zero if token is not in mapping", async function() {
+  //     const poolId = await stargateFacet.sgRetrievePoolId(
+  //       ETH_CHAIN_ID,
+  //       "0x6B175474E89094C44Da98b954EedeAC495271d0F", // DAI address
+  //     );
+  //     expect(poolId).toEqual(0);
+  //   });
+  // });
 });

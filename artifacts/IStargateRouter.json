@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IStargateRouter",
-  "sourceName": "src/bridges/interfaces/IStargateRouter.sol",
+  "sourceName": "src/bridges/interfaces/stargate/IStargateRouter.sol",
   "abi": [
     {
       "inputs": [
