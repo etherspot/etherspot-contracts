@@ -24,11 +24,11 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
   const diamond = await ethers.getContract("Diamond");
   const connextFacet = await ethers.getContract("ConnextFacet");
 
-  const ABI = ["function initConnext(address, uint32)"];
+  const ABI = ["function initConnext(address, uint32, address)"];
   const iface = new hre.ethers.utils.Interface(ABI);
 
   const initData = iface.encodeFunctionData("initConnext", [
-    ConnextConfig[network.name].handler,
+    ConnextConfig[network.name].connext,
     ConnextConfig[network.name].domainId,
     ConnextConfig[network.name].weth,
   ]);
