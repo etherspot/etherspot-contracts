@@ -80,13 +80,16 @@ export async function addOrReplaceFacets(
     await ethers.getContractAt("DiamondCutFacet", diamondAddress)
   );
 
+  console.log("Adding/Replacing facets...");
   const tx = await cutter.diamondCut(cut, initContract, initData, {
     // gasLimit: 800000,
   });
+  console.log("Diamond cut tx: ", tx.hash);
   const receipt = await tx.wait();
   if (!receipt.status) {
     throw Error(`Diamond upgrade failed: ${tx.hash}`);
   }
+  console.log("Done.");
 }
 
 export async function addFacets(
@@ -115,13 +118,16 @@ export async function addFacets(
     await ethers.getContractAt("DiamondCutFacet", diamondAddress)
   );
 
+  console.log("Adding facets...");
   const tx = await cutter.diamondCut(cut, initContract, initData, {
     // gasLimit: 800000,
   });
+  console.log("Diamond cut tx: ", tx.hash);
   const receipt = await tx.wait();
   if (!receipt.status) {
     throw Error(`Diamond upgrade failed: ${tx.hash}`);
   }
+  console.log("Done.");
 }
 
 export async function removeFacet(
@@ -140,13 +146,16 @@ export async function removeFacet(
     await ethers.getContractAt("DiamondCutFacet", diamondAddress)
   );
 
+  console.log("Removing facet...");
   const tx = await cutter.diamondCut(cut, constants.AddressZero, "0x", {
     // gasLimit: 800000,
   });
+  console.log("Diamond cut tx: ", tx.hash);
   const receipt = await tx.wait();
   if (!receipt.status) {
     throw Error(`Diamond upgrade failed: ${tx.hash}`);
   }
+  console.log("Done.");
 }
 
 export async function replaceFacet(
@@ -169,11 +178,14 @@ export async function replaceFacet(
     await ethers.getContractAt("DiamondCutFacet", diamondAddress)
   );
 
+  console.log("Replacing facet...");
   const tx = await cutter.diamondCut(cut, initContract, initData, {
     // gasLimit: 800000,
   });
+  console.log("Diamond cut tx: ", tx.hash);
   const receipt = await tx.wait();
   if (!receipt.status) {
     throw Error(`Diamond upgrade failed: ${tx.hash}`);
   }
+  console.log("Done.");
 }

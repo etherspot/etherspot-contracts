@@ -9,9 +9,7 @@ import {LibDiamond} from "../libs/LibDiamond.sol";
 
 /**
  * @title Connext Integration
- *
  * @notice Contract which provides bridging functionality through Connext
- *
  */
 contract ConnextFacet {
     using SafeERC20 for IERC20;

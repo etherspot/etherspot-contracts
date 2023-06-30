@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSAbstractResolverInterface extends utils.Interface {
   functions: {
-    "c_4aed2fa4(bytes8)": FunctionFragment;
-    "c_false4aed2fa4(bytes8)": FunctionFragment;
-    "c_true4aed2fa4(bytes8)": FunctionFragment;
+    "c_8e2129aa(bytes8)": FunctionFragment;
+    "c_false8e2129aa(bytes8)": FunctionFragment;
+    "c_true8e2129aa(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_4aed2fa4",
+    functionFragment: "c_8e2129aa",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_false4aed2fa4",
+    functionFragment: "c_false8e2129aa",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_true4aed2fa4",
+    functionFragment: "c_true8e2129aa",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_4aed2fa4", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_8e2129aa", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_false4aed2fa4",
+    functionFragment: "c_false8e2129aa",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_true4aed2fa4",
+    functionFragment: "c_true8e2129aa",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface ENSAbstractResolver extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_false4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_false8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_true4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_true8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_4aed2fa4(c__4aed2fa4: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_8e2129aa(c__8e2129aa: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_false4aed2fa4(
-    c__4aed2fa4: BytesLike,
+  c_false8e2129aa(
+    c__8e2129aa: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_true4aed2fa4(
-    c__4aed2fa4: BytesLike,
+  c_true8e2129aa(
+    c__8e2129aa: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_false4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_false8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_true4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_true8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface ENSAbstractResolver extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_false4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_false8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_true4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_true8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_false4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_false8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_true4aed2fa4(
-      c__4aed2fa4: BytesLike,
+    c_true8e2129aa(
+      c__8e2129aa: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

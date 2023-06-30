@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ECDSAExtendedLibInterface extends utils.Interface {
   functions: {
-    "c_9bb8a8e4(bytes8)": FunctionFragment;
-    "c_false9bb8a8e4(bytes8)": FunctionFragment;
-    "c_true9bb8a8e4(bytes8)": FunctionFragment;
+    "c_29f5519d(bytes8)": FunctionFragment;
+    "c_false29f5519d(bytes8)": FunctionFragment;
+    "c_true29f5519d(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_9bb8a8e4",
+    functionFragment: "c_29f5519d",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_false9bb8a8e4",
+    functionFragment: "c_false29f5519d",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_true9bb8a8e4",
+    functionFragment: "c_true29f5519d",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_9bb8a8e4", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_29f5519d", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_false9bb8a8e4",
+    functionFragment: "c_false29f5519d",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_true9bb8a8e4",
+    functionFragment: "c_true29f5519d",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface ECDSAExtendedLib extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_false9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_false29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_true9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_true29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_9bb8a8e4(c__9bb8a8e4: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_29f5519d(c__29f5519d: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_false9bb8a8e4(
-    c__9bb8a8e4: BytesLike,
+  c_false29f5519d(
+    c__29f5519d: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_true9bb8a8e4(
-    c__9bb8a8e4: BytesLike,
+  c_true29f5519d(
+    c__29f5519d: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_false9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_false29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_true9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_true29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface ECDSAExtendedLib extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_false9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_false29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_true9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_true29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_false9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_false29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_true9bb8a8e4(
-      c__9bb8a8e4: BytesLike,
+    c_true29f5519d(
+      c__29f5519d: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
