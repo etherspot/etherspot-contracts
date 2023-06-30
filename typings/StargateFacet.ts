@@ -18,21 +18,31 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export type StargateETHTransferDataStruct = {
+export type ChainIdConfigStruct = {
+  chainId: BigNumberish;
+  layerZeroChainId: BigNumberish;
+};
+
+export type ChainIdConfigStructOutput = [BigNumber, number] & {
+  chainId: BigNumber;
+  layerZeroChainId: number;
+};
+
+export type StargateETHDataStruct = {
   amount: BigNumberish;
   dstChainId: BigNumberish;
   to: string;
   slippage: BigNumberish;
 };
 
-export type StargateETHTransferDataStructOutput = [
+export type StargateETHDataStructOutput = [
   BigNumber,
   number,
   string,
   number
 ] & { amount: BigNumber; dstChainId: number; to: string; slippage: number };
 
-export type StargateTransferDataStruct = {
+export type StargateDataStruct = {
   amount: BigNumberish;
   bridgeToken: string;
   dstChainId: BigNumberish;
@@ -40,10 +50,10 @@ export type StargateTransferDataStruct = {
   dstPoolId: BigNumberish;
   to: string;
   slippage: BigNumberish;
-  destStargateComposed: BigNumberish;
+  destStargateComposed: string;
 };
 
-export type StargateTransferDataStructOutput = [
+export type StargateDataStructOutput = [
   BigNumber,
   string,
   number,
@@ -51,7 +61,7 @@ export type StargateTransferDataStructOutput = [
   number,
   string,
   number,
-  BigNumber
+  string
 ] & {
   amount: BigNumber;
   bridgeToken: string;
@@ -60,21 +70,31 @@ export type StargateTransferDataStructOutput = [
   dstPoolId: number;
   to: string;
   slippage: number;
-  destStargateComposed: BigNumber;
+  destStargateComposed: string;
 };
 
 export interface StargateFacetInterface extends utils.Interface {
   functions: {
-    "initStargate(address,address,uint16)": FunctionFragment;
+    "getLzChainId(uint256)": FunctionFragment;
+    "initStargate(address,address,uint16,(uint256,uint16)[])": FunctionFragment;
+    "setLzChainId(uint256,uint16)": FunctionFragment;
     "sgReceive(uint16,bytes,uint256,address,uint256,bytes)": FunctionFragment;
     "stargateETHTransfer((uint256,uint16,address,uint16))": FunctionFragment;
-    "stargateFees(uint16,address,address)": FunctionFragment;
-    "stargateTokenTransfer((uint256,address,uint16,uint16,uint16,address,uint16,uint256))": FunctionFragment;
+    "stargateFees((uint256,address,uint16,uint16,uint16,address,uint16,address),address)": FunctionFragment;
+    "stargateTokenTransfer((uint256,address,uint16,uint16,uint16,address,uint16,address))": FunctionFragment;
   };
 
   encodeFunctionData(
+    functionFragment: "getLzChainId",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "initStargate",
-    values: [string, string, BigNumberish]
+    values: [string, string, BigNumberish, ChainIdConfigStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setLzChainId",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "sgReceive",
@@ -89,19 +109,27 @@ export interface StargateFacetInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "stargateETHTransfer",
-    values: [StargateETHTransferDataStruct]
+    values: [StargateETHDataStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "stargateFees",
-    values: [BigNumberish, string, string]
+    values: [StargateDataStruct, string]
   ): string;
   encodeFunctionData(
     functionFragment: "stargateTokenTransfer",
-    values: [StargateTransferDataStruct]
+    values: [StargateDataStruct]
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "getLzChainId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "initStargate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setLzChainId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "sgReceive", data: BytesLike): Result;
@@ -119,13 +147,15 @@ export interface StargateFacetInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "StargateETHTokenSwap(address,address,uint256,uint16)": EventFragment;
+    "LzChainIdSet(uint256,uint16)": EventFragment;
+    "StargateETHSwap(address,address,uint256,uint16)": EventFragment;
     "StargateInitialized(address,address,uint16)": EventFragment;
     "StargateReceivedOnDestination(address,uint256)": EventFragment;
     "StargateTokenSwap(address,address,address,uint256,uint16)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "StargateETHTokenSwap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LzChainIdSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StargateETHSwap"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StargateInitialized"): EventFragment;
   getEvent(
     nameOrSignatureOrTopic: "StargateReceivedOnDestination"
@@ -133,13 +163,19 @@ export interface StargateFacetInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "StargateTokenSwap"): EventFragment;
 }
 
-export type StargateETHTokenSwapEvent = TypedEvent<
+export type LzChainIdSetEvent = TypedEvent<
+  [BigNumber, number],
+  { chainId: BigNumber; lzChainId: number }
+>;
+
+export type LzChainIdSetEventFilter = TypedEventFilter<LzChainIdSetEvent>;
+
+export type StargateETHSwapEvent = TypedEvent<
   [string, string, BigNumber, number],
   { from: string; to: string; amount: BigNumber; chainIdTo: number }
 >;
 
-export type StargateETHTokenSwapEventFilter =
-  TypedEventFilter<StargateETHTokenSwapEvent>;
+export type StargateETHSwapEventFilter = TypedEventFilter<StargateETHSwapEvent>;
 
 export type StargateInitializedEvent = TypedEvent<
   [string, string, number],
@@ -198,10 +234,22 @@ export interface StargateFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
     initStargate(
       _stargateRouter: string,
       _stargateETHRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -216,27 +264,38 @@ export interface StargateFacet extends BaseContract {
     ): Promise<ContractTransaction>;
 
     stargateETHTransfer(
-      _data: StargateETHTransferDataStruct,
+      _data: StargateETHDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     stargateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
+      _data: StargateDataStruct,
       _router: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     stargateTokenTransfer(
-      _data: StargateTransferDataStruct,
+      _data: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  getLzChainId(
+    _chainId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
 
   initStargate(
     _stargateRouter: string,
     _stargateETHRouter: string,
     _chainId: BigNumberish,
+    _chainIdConfigs: ChainIdConfigStruct[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setLzChainId(
+    _chainId: BigNumberish,
+    _lzChainId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -251,27 +310,38 @@ export interface StargateFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   stargateETHTransfer(
-    _data: StargateETHTransferDataStruct,
+    _data: StargateETHDataStruct,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   stargateFees(
-    _destChain: BigNumberish,
-    _receiver: string,
+    _data: StargateDataStruct,
     _router: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   stargateTokenTransfer(
-    _data: StargateTransferDataStruct,
+    _data: StargateDataStruct,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
     initStargate(
       _stargateRouter: string,
       _stargateETHRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -286,36 +356,41 @@ export interface StargateFacet extends BaseContract {
     ): Promise<void>;
 
     stargateETHTransfer(
-      _data: StargateETHTransferDataStruct,
+      _data: StargateETHDataStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     stargateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
+      _data: StargateDataStruct,
       _router: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     stargateTokenTransfer(
-      _data: StargateTransferDataStruct,
+      _data: StargateDataStruct,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    "StargateETHTokenSwap(address,address,uint256,uint16)"(
+    "LzChainIdSet(uint256,uint16)"(
+      chainId?: null,
+      lzChainId?: null
+    ): LzChainIdSetEventFilter;
+    LzChainIdSet(chainId?: null, lzChainId?: null): LzChainIdSetEventFilter;
+
+    "StargateETHSwap(address,address,uint256,uint16)"(
       from?: null,
       to?: null,
       amount?: null,
       chainIdTo?: null
-    ): StargateETHTokenSwapEventFilter;
-    StargateETHTokenSwap(
+    ): StargateETHSwapEventFilter;
+    StargateETHSwap(
       from?: null,
       to?: null,
       amount?: null,
       chainIdTo?: null
-    ): StargateETHTokenSwapEventFilter;
+    ): StargateETHSwapEventFilter;
 
     "StargateInitialized(address,address,uint16)"(
       stargateRouter?: null,
@@ -354,10 +429,22 @@ export interface StargateFacet extends BaseContract {
   };
 
   estimateGas: {
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     initStargate(
       _stargateRouter: string,
       _stargateETHRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -372,28 +459,39 @@ export interface StargateFacet extends BaseContract {
     ): Promise<BigNumber>;
 
     stargateETHTransfer(
-      _data: StargateETHTransferDataStruct,
+      _data: StargateETHDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     stargateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
+      _data: StargateDataStruct,
       _router: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     stargateTokenTransfer(
-      _data: StargateTransferDataStruct,
+      _data: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initStargate(
       _stargateRouter: string,
       _stargateETHRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -408,19 +506,18 @@ export interface StargateFacet extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     stargateETHTransfer(
-      _data: StargateETHTransferDataStruct,
+      _data: StargateETHDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     stargateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
+      _data: StargateDataStruct,
       _router: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     stargateTokenTransfer(
-      _data: StargateTransferDataStruct,
+      _data: StargateDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

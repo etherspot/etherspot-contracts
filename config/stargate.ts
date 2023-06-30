@@ -102,6 +102,13 @@ const config: StargateConfig = {
     chainId: 84531,
     lzChainId: 10158,
   },
+  // Local Deployment Script Testing
+  // ["hardhat"]: {
+  //   stargateRouter: "0x7612aE2a34E5A363E137De748801FB4c86499152",
+  //   stargateETHRouter: "0xb1b2eeF380f21747944f46d28f683cD1FBB4d03c",
+  //   chainId: 3333,
+  //   lzChainId: 13333,
+  // },
 };
 
 export default config;

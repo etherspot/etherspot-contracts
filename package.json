@@ -80,8 +80,8 @@
     "test": "hardhat test"
   },
   "devDependencies": {
-    "@connext/nxtp-contracts": "0.2.1-rc.16",
     "@ethereumjs/tx": "3.5.2",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
     "@nomiclabs/hardhat-etherscan": "2.1.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.6.0",
