@@ -157,19 +157,7 @@ describe("StargateFacet", () => {
           ETH_CHAIN_ID,
           CHAIN_IDS_TO_LZ_CHAIN_IDS,
         ),
-        "Stargate:: invalid address",
-      );
-    });
-
-    it("should revert if stargate ETH router address is address(0)", async () => {
-      await expectRevert(
-        stargateFacet.initStargate(
-          MAINNET_STARGATE_ROUTER_ADDRESS,
-          ZERO_ADDRESS,
-          ETH_CHAIN_ID,
-          CHAIN_IDS_TO_LZ_CHAIN_IDS,
-        ),
-        "Stargate:: invalid address",
+        "Stargate:: invalid router address",
       );
     });
 

@@ -147,8 +147,8 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         ChainIdConfig[] calldata _chainIdConfigs
     ) external {
         require(
-            _stargateRouter != address(0) && _stargateETHRouter != address(0),
-            "Stargate:: invalid address"
+            _stargateRouter != address(0),
+            "Stargate:: invalid router address"
         );
         LibDiamond.enforceIsContractOwner();
         Storage storage s = getStorage();
