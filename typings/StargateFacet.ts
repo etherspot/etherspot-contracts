@@ -241,7 +241,7 @@ export interface StargateFacet extends BaseContract {
 
     initStargate(
       _stargateRouter: string,
-      _stargateETHRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
       _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -287,7 +287,7 @@ export interface StargateFacet extends BaseContract {
 
   initStargate(
     _stargateRouter: string,
-    _stargateETHRouter: string,
+    _stargateEthRouter: string,
     _chainId: BigNumberish,
     _chainIdConfigs: ChainIdConfigStruct[],
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -333,7 +333,7 @@ export interface StargateFacet extends BaseContract {
 
     initStargate(
       _stargateRouter: string,
-      _stargateETHRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
       _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: CallOverrides
@@ -436,7 +436,7 @@ export interface StargateFacet extends BaseContract {
 
     initStargate(
       _stargateRouter: string,
-      _stargateETHRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
       _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -483,7 +483,7 @@ export interface StargateFacet extends BaseContract {
 
     initStargate(
       _stargateRouter: string,
-      _stargateETHRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
       _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }

@@ -74,7 +74,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     }
 
     ///// VARIABLES /////
-    uint256 immutable BPS = 10000;
+    uint256 private immutable BPS = 10000;
 
     ///// EVENTS /////
     /**
@@ -137,12 +137,12 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     /**
      * @notice initializes state variables for the Stargate facet
      * @param _stargateRouter - address of the Stargate router contract
-     * @param _stargateETHRouter - address of Stargate ETH router contract
+     * @param _stargateEthRouter - address of Stargate ETH router contract
      * @param _chainId - current chain id
      */
     function initStargate(
         address _stargateRouter,
-        address _stargateETHRouter,
+        address _stargateEthRouter,
         uint16 _chainId,
         ChainIdConfig[] calldata _chainIdConfigs
     ) external {
@@ -153,14 +153,14 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         LibDiamond.enforceIsContractOwner();
         Storage storage s = getStorage();
         s.stargateRouter = IStargateRouter(_stargateRouter);
-        s.stargateETHRouter = IStargateRouterETH(_stargateETHRouter);
+        s.stargateETHRouter = IStargateRouterETH(_stargateEthRouter);
         s.chainId = _chainId;
 
         for (uint256 i; i < _chainIdConfigs.length; ++i) {
             s.lzChainIds[_chainIdConfigs[i].chainId] = _chainIdConfigs[i]
                 .layerZeroChainId;
         }
-        emit StargateInitialized(_stargateRouter, _stargateETHRouter, _chainId);
+        emit StargateInitialized(_stargateRouter, _stargateEthRouter, _chainId);
     }
 
     /**
