@@ -13,7 +13,6 @@ import {
 } from "../../typings/StargateFacet";
 import { ethers, network } from "hardhat";
 import { expectRevert } from "@openzeppelin/test-helpers";
-import { impersonateAccount } from "@nomicfoundation/hardhat-network-helpers";
 import USDC_ABI from "./abi/USDC_ABI.js";
 // import USDT_ABI from "./abi/USDT_ABI.js";
 import { defaultAbiCoder } from "ethers/lib/utils";
@@ -62,9 +61,23 @@ describe("StargateFacet", () => {
     accounts = await ethers.getSigners();
     owner = accounts[0];
     bob = accounts[1];
-    await impersonateAccount(VITALIK_ACCOUNT);
+
+    // Impersonate Vitalik account
+    await network.provider.request({
+      method: "hardhat_impersonateAccount",
+      params: [VITALIK_ACCOUNT],
+    });
+
+    // Assign to alice
     alice = await ethers.getSigner(VITALIK_ACCOUNT);
-    await impersonateAccount(USDC_FUNDER_ACCOUNT);
+
+    // Impersonate USDC Funder account
+    await network.provider.request({
+      method: "hardhat_impersonateAccount",
+      params: [USDC_FUNDER_ACCOUNT],
+    });
+
+    // Assign to usdcFunder
     usdcFunder = await ethers.getSigner(USDC_FUNDER_ACCOUNT);
 
     diamondCutFacet = await deployContract("DiamondCutFacet");
