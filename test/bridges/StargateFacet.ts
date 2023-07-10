@@ -15,7 +15,7 @@ import { ethers, network } from "hardhat";
 import { expectRevert } from "@openzeppelin/test-helpers";
 import { impersonateAccount } from "@nomicfoundation/hardhat-network-helpers";
 import USDC_ABI from "./abi/USDC_ABI.js";
-import USDT_ABI from "./abi/USDT_ABI.js";
+// import USDT_ABI from "./abi/USDT_ABI.js";
 import { defaultAbiCoder } from "ethers/lib/utils";
 
 const ETH_CHAIN_ID = 1;
@@ -31,7 +31,7 @@ const MAINNET_STARGATE_ETH_ROUTER_ADDRESS =
 const POLYGON_STARGATE_ROUTER_ADDRESS =
   "0x45A01E4e04F14f7A4a6702c74187c5F6222033cd";
 const MAINNET_USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
-const MAINNET_USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+// const MAINNET_USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 const CHAIN_IDS_TO_LZ_CHAIN_IDS: ChainIdConfigStruct[] = [
   { chainId: ARBITRUM_CHAIN_ID, layerZeroChainId: LZ_ARBITRUM_CHAIN_ID },
   { chainId: ETH_CHAIN_ID, layerZeroChainId: LZ_ETH_CHAIN_ID },
@@ -41,7 +41,7 @@ const ZERO_ADDRESS = ethers.constants.AddressZero;
 const TEN_USDC = ethers.utils.parseUnits("10", 6);
 const VITALIK_ACCOUNT = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 const USDC_FUNDER_ACCOUNT = "0x95Ba4cF87D6723ad9C0Db21737D862bE80e93911";
-const BINANCE_PEG_ACCOUNT = "0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503";
+// const BINANCE_PEG_ACCOUNT = "0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503";
 
 describe("StargateFacet", () => {
   let diamond: Diamond;
@@ -52,11 +52,11 @@ describe("StargateFacet", () => {
   let alice: SignerWithAddress;
   let bob: SignerWithAddress;
   let usdcFunder: SignerWithAddress;
-  let usdtFunder: SignerWithAddress;
+  // let usdtFunder: SignerWithAddress;
   let transferData: StargateDataStruct;
   let ethTransferData: StargateETHDataStruct;
   let usdc: Contract;
-  let usdt: Contract;
+  // let usdt: Contract;
 
   async function setup() {
     accounts = await ethers.getSigners();
