@@ -18,16 +18,64 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSNameResolverInterface extends utils.Interface {
   functions: {
+    "c_6f06df17(bytes8)": FunctionFragment;
+    "c_f395fef5(bytes8)": FunctionFragment;
+    "c_false6f06df17(bytes8)": FunctionFragment;
+    "c_falsef395fef5(bytes8)": FunctionFragment;
+    "c_true6f06df17(bytes8)": FunctionFragment;
+    "c_truef395fef5(bytes8)": FunctionFragment;
     "name(bytes32)": FunctionFragment;
     "setName(bytes32,string)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_6f06df17",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_f395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false6f06df17",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsef395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true6f06df17",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truef395fef5",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "name", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "setName",
     values: [BytesLike, string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_6f06df17", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_f395fef5", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false6f06df17",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsef395fef5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true6f06df17",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truef395fef5",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
 
@@ -72,6 +120,36 @@ export interface ENSNameResolver extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     name(node: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
     setName(
@@ -80,6 +158,30 @@ export interface ENSNameResolver extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_6f06df17(c__6f06df17: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_f395fef5(c__f395fef5: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false6f06df17(
+    c__6f06df17: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true6f06df17(
+    c__6f06df17: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   name(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -90,6 +192,36 @@ export interface ENSNameResolver extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     name(node: BytesLike, overrides?: CallOverrides): Promise<string>;
 
     setName(
@@ -108,6 +240,36 @@ export interface ENSNameResolver extends BaseContract {
   };
 
   estimateGas: {
+    c_6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     name(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     setName(
@@ -118,6 +280,36 @@ export interface ENSNameResolver extends BaseContract {
   };
 
   populateTransaction: {
+    c_6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true6f06df17(
+      c__6f06df17: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     name(
       node: BytesLike,
       overrides?: CallOverrides

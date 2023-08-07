@@ -1,4 +1,9 @@
-import { Contract, ContractReceipt, ContractTransaction } from "ethers";
+import {
+  BigNumber,
+  Contract,
+  ContractReceipt,
+  ContractTransaction,
+} from "ethers";
 import {
   deployContract,
   multiCallCheckLastEventEmitted,
@@ -37,6 +42,7 @@ const CHAIN_IDS_TO_LZ_CHAIN_IDS: ChainIdConfigStruct[] = [
   { chainId: POLYGON_CHAIN_ID, layerZeroChainId: LZ_POLYGON_CHAIN_ID },
 ];
 const ZERO_ADDRESS = ethers.constants.AddressZero;
+const ONE_USDC = ethers.utils.parseUnits("1", 6);
 const TEN_USDC = ethers.utils.parseUnits("10", 6);
 const VITALIK_ACCOUNT = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 const USDC_FUNDER_ACCOUNT = "0x95Ba4cF87D6723ad9C0Db21737D862bE80e93911";
@@ -191,29 +197,11 @@ describe("StargateFacet", () => {
       expect(result[0]).toEqual("StargateInitialized");
       expect(result[1]).toEqual(MAINNET_STARGATE_ROUTER_ADDRESS);
       expect(result[2]).toEqual(MAINNET_STARGATE_ETH_ROUTER_ADDRESS);
-      expect(result[3]).toEqual(ETH_CHAIN_ID);
+      expect(result[3]).toEqual(BigNumber.from(ETH_CHAIN_ID));
     });
   });
 
   describe("#stargateTokenTransfer", async () => {
-    it("should trigger error if no msg.value amount to pay for fees", async () => {
-      transferData = {
-        amount: TEN_USDC,
-        bridgeToken: MAINNET_USDC_ADDRESS,
-        dstChainId: POLYGON_CHAIN_ID,
-        srcPoolId: 1, // USDC pool id mainnet
-        dstPoolId: 1, // USDC pool id polygon
-        to: bob.address,
-        slippage: 300, // 3%
-        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
-      };
-
-      await expectRevert(
-        stargateFacet.connect(alice).stargateTokenTransfer(transferData),
-        "Stargate:: msg.value required to pay message",
-      );
-    });
-
     it("should trigger error if no amount is specified", async () => {
       transferData = {
         amount: ethers.utils.parseUnits("0", 6),
@@ -251,6 +239,32 @@ describe("StargateFacet", () => {
           value: ethers.utils.parseEther("0.01"),
         }),
         "Stargate:: chain not assigned layer zero chain id",
+      );
+    });
+
+    it("should throw error if msg.value is not gte required layer zero fee", async () => {
+      transferData = {
+        amount: ONE_USDC,
+        bridgeToken: MAINNET_USDC_ADDRESS,
+        dstChainId: POLYGON_CHAIN_ID,
+        srcPoolId: 1, // USDC pool id mainnet
+        dstPoolId: 1, // USDC pool id polygon
+        to: bob.address,
+        slippage: 300, // 3%
+        destStargateComposed: POLYGON_STARGATE_ROUTER_ADDRESS,
+      };
+
+      const lzFeeReq = await stargateFacet.stargateFees(
+        transferData,
+        MAINNET_STARGATE_ROUTER_ADDRESS,
+      );
+      const ltLzFee = lzFeeReq.sub(1);
+
+      await expectRevert(
+        stargateFacet.connect(alice).stargateTokenTransfer(transferData, {
+          value: ltLzFee,
+        }),
+        "Stargate:: msg.value not enough to pay bridging fee",
       );
     });
 
@@ -321,7 +335,7 @@ describe("StargateFacet", () => {
       expect(event[0].args.from).toEqual(alice.address);
       expect(event[0].args.to).toEqual(bob.address);
       expect(event[0].args.amount).toEqual(TEN_USDC);
-      expect(event[0].args.chainIdTo).toEqual(POLYGON_CHAIN_ID);
+      expect(event[0].args.chainIdTo).toEqual(BigNumber.from(POLYGON_CHAIN_ID));
     });
 
     it("should perform ERC20 token swap (MAINNET USDC => MATIC USDT)", async () => {
@@ -351,7 +365,7 @@ describe("StargateFacet", () => {
       expect(event[0].args.from).toEqual(alice.address);
       expect(event[0].args.to).toEqual(bob.address);
       expect(event[0].args.amount).toEqual(TEN_USDC);
-      expect(event[0].args.chainIdTo).toEqual(POLYGON_CHAIN_ID);
+      expect(event[0].args.chainIdTo).toEqual(BigNumber.from(POLYGON_CHAIN_ID));
     });
   });
 
@@ -474,7 +488,9 @@ describe("StargateFacet", () => {
       expect(event[0].args.from).toEqual(alice.address);
       expect(event[0].args.to).toEqual(bob.address);
       expect(event[0].args.amount).toEqual(ethers.utils.parseEther("0.1"));
-      expect(event[0].args.chainIdTo).toEqual(ARBITRUM_CHAIN_ID);
+      expect(event[0].args.chainIdTo).toEqual(
+        BigNumber.from(ARBITRUM_CHAIN_ID),
+      );
     });
   });
 
@@ -495,6 +511,8 @@ describe("StargateFacet", () => {
         transferData,
         MAINNET_STARGATE_ROUTER_ADDRESS,
       );
+
+      console.log(`FEES: ${fees}`);
       expect(parseInt(fees.toString())).toBeGreaterThan(0);
     });
   });

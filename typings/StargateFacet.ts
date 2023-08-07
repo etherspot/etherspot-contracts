@@ -37,10 +37,10 @@ export type StargateETHDataStruct = {
 
 export type StargateETHDataStructOutput = [
   BigNumber,
-  number,
+  BigNumber,
   string,
   number
-] & { amount: BigNumber; dstChainId: number; to: string; slippage: number };
+] & { amount: BigNumber; dstChainId: BigNumber; to: string; slippage: number };
 
 export type StargateDataStruct = {
   amount: BigNumberish;
@@ -56,7 +56,7 @@ export type StargateDataStruct = {
 export type StargateDataStructOutput = [
   BigNumber,
   string,
-  number,
+  BigNumber,
   number,
   number,
   string,
@@ -65,7 +65,7 @@ export type StargateDataStructOutput = [
 ] & {
   amount: BigNumber;
   bridgeToken: string;
-  dstChainId: number;
+  dstChainId: BigNumber;
   srcPoolId: number;
   dstPoolId: number;
   to: string;
@@ -75,15 +75,45 @@ export type StargateDataStructOutput = [
 
 export interface StargateFacetInterface extends utils.Interface {
   functions: {
+    "c_8de507f8(bytes8)": FunctionFragment;
+    "c_9296fc39(bytes8)": FunctionFragment;
+    "c_false8de507f8(bytes8)": FunctionFragment;
+    "c_false9296fc39(bytes8)": FunctionFragment;
+    "c_true8de507f8(bytes8)": FunctionFragment;
+    "c_true9296fc39(bytes8)": FunctionFragment;
     "getLzChainId(uint256)": FunctionFragment;
-    "initStargate(address,address,uint16,(uint256,uint16)[])": FunctionFragment;
+    "initStargate(address,address,uint256,(uint256,uint16)[])": FunctionFragment;
     "setLzChainId(uint256,uint16)": FunctionFragment;
     "sgReceive(uint16,bytes,uint256,address,uint256,bytes)": FunctionFragment;
-    "stargateETHTransfer((uint256,uint16,address,uint16))": FunctionFragment;
-    "stargateFees((uint256,address,uint16,uint16,uint16,address,uint16,address),address)": FunctionFragment;
-    "stargateTokenTransfer((uint256,address,uint16,uint16,uint16,address,uint16,address))": FunctionFragment;
+    "stargateETHTransfer((uint256,uint256,address,uint16))": FunctionFragment;
+    "stargateFees((uint256,address,uint256,uint16,uint16,address,uint16,address),address)": FunctionFragment;
+    "stargateTokenTransfer((uint256,address,uint256,uint16,uint16,address,uint16,address))": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_8de507f8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false8de507f8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true8de507f8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9296fc39",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "getLzChainId",
     values: [BigNumberish]
@@ -120,6 +150,24 @@ export interface StargateFacetInterface extends utils.Interface {
     values: [StargateDataStruct]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_8de507f8", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_9296fc39", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false8de507f8",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9296fc39",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true8de507f8",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9296fc39",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getLzChainId",
     data: BytesLike
@@ -148,10 +196,10 @@ export interface StargateFacetInterface extends utils.Interface {
 
   events: {
     "LzChainIdSet(uint256,uint16)": EventFragment;
-    "StargateETHSwap(address,address,uint256,uint16)": EventFragment;
-    "StargateInitialized(address,address,uint16)": EventFragment;
+    "StargateETHSwap(address,address,uint256,uint256)": EventFragment;
+    "StargateInitialized(address,address,uint256)": EventFragment;
     "StargateReceivedOnDestination(address,uint256)": EventFragment;
-    "StargateTokenSwap(address,address,address,uint256,uint16)": EventFragment;
+    "StargateTokenSwap(address,address,address,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "LzChainIdSet"): EventFragment;
@@ -171,15 +219,15 @@ export type LzChainIdSetEvent = TypedEvent<
 export type LzChainIdSetEventFilter = TypedEventFilter<LzChainIdSetEvent>;
 
 export type StargateETHSwapEvent = TypedEvent<
-  [string, string, BigNumber, number],
-  { from: string; to: string; amount: BigNumber; chainIdTo: number }
+  [string, string, BigNumber, BigNumber],
+  { from: string; to: string; amount: BigNumber; chainIdTo: BigNumber }
 >;
 
 export type StargateETHSwapEventFilter = TypedEventFilter<StargateETHSwapEvent>;
 
 export type StargateInitializedEvent = TypedEvent<
-  [string, string, number],
-  { stargateRouter: string; stargateETHRouter: string; chainId: number }
+  [string, string, BigNumber],
+  { stargateRouter: string; stargateETHRouter: string; chainId: BigNumber }
 >;
 
 export type StargateInitializedEventFilter =
@@ -194,13 +242,13 @@ export type StargateReceivedOnDestinationEventFilter =
   TypedEventFilter<StargateReceivedOnDestinationEvent>;
 
 export type StargateTokenSwapEvent = TypedEvent<
-  [string, string, string, BigNumber, number],
+  [string, string, string, BigNumber, BigNumber],
   {
     fromToken: string;
     from: string;
     to: string;
     amount: BigNumber;
-    chainIdTo: number;
+    chainIdTo: BigNumber;
   }
 >;
 
@@ -234,6 +282,36 @@ export interface StargateFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     getLzChainId(
       _chainId: BigNumberish,
       overrides?: CallOverrides
@@ -279,6 +357,30 @@ export interface StargateFacet extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_8de507f8(c__8de507f8: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_9296fc39(c__9296fc39: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false8de507f8(
+    c__8de507f8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true8de507f8(
+    c__8de507f8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   getLzChainId(
     _chainId: BigNumberish,
@@ -326,6 +428,36 @@ export interface StargateFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     getLzChainId(
       _chainId: BigNumberish,
       overrides?: CallOverrides
@@ -379,7 +511,7 @@ export interface StargateFacet extends BaseContract {
     ): LzChainIdSetEventFilter;
     LzChainIdSet(chainId?: null, lzChainId?: null): LzChainIdSetEventFilter;
 
-    "StargateETHSwap(address,address,uint256,uint16)"(
+    "StargateETHSwap(address,address,uint256,uint256)"(
       from?: null,
       to?: null,
       amount?: null,
@@ -392,7 +524,7 @@ export interface StargateFacet extends BaseContract {
       chainIdTo?: null
     ): StargateETHSwapEventFilter;
 
-    "StargateInitialized(address,address,uint16)"(
+    "StargateInitialized(address,address,uint256)"(
       stargateRouter?: null,
       stargateETHRouter?: null,
       chainId?: null
@@ -412,7 +544,7 @@ export interface StargateFacet extends BaseContract {
       amount?: null
     ): StargateReceivedOnDestinationEventFilter;
 
-    "StargateTokenSwap(address,address,address,uint256,uint16)"(
+    "StargateTokenSwap(address,address,address,uint256,uint256)"(
       fromToken?: null,
       from?: null,
       to?: null,
@@ -429,6 +561,36 @@ export interface StargateFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getLzChainId(
       _chainId: BigNumberish,
       overrides?: CallOverrides
@@ -476,6 +638,36 @@ export interface StargateFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getLzChainId(
       _chainId: BigNumberish,
       overrides?: CallOverrides

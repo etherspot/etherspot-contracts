@@ -16,14 +16,38 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface AccountRegistryInterface extends utils.Interface {
   functions: {
+    "c_9649d652(bytes8)": FunctionFragment;
+    "c_false9649d652(bytes8)": FunctionFragment;
+    "c_true9649d652(bytes8)": FunctionFragment;
     "isValidAccountSignature(address,bytes,bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_9649d652",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9649d652",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9649d652",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "isValidAccountSignature",
     values: [string, BytesLike, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_9649d652", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9649d652",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9649d652",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isValidAccountSignature",
     data: BytesLike
@@ -59,6 +83,21 @@ export interface AccountRegistry extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -73,6 +112,18 @@ export interface AccountRegistry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
+
+  c_9649d652(c__9649d652: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false9649d652(
+    c__9649d652: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9649d652(
+    c__9649d652: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   "isValidAccountSignature(address,bytes,bytes)"(
     account: string,
@@ -89,6 +140,21 @@ export interface AccountRegistry extends BaseContract {
   ): Promise<boolean>;
 
   callStatic: {
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -107,6 +173,21 @@ export interface AccountRegistry extends BaseContract {
   filters: {};
 
   estimateGas: {
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,
@@ -123,6 +204,21 @@ export interface AccountRegistry extends BaseContract {
   };
 
   populateTransaction: {
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     "isValidAccountSignature(address,bytes,bytes)"(
       account: string,
       message: BytesLike,

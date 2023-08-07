@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface SafeMathLibInterface extends utils.Interface {
   functions: {
-    "c_329dc82e(bytes8)": FunctionFragment;
-    "c_false329dc82e(bytes8)": FunctionFragment;
-    "c_true329dc82e(bytes8)": FunctionFragment;
+    "c_da111b5b(bytes8)": FunctionFragment;
+    "c_falseda111b5b(bytes8)": FunctionFragment;
+    "c_trueda111b5b(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_329dc82e",
+    functionFragment: "c_da111b5b",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_false329dc82e",
+    functionFragment: "c_falseda111b5b",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_true329dc82e",
+    functionFragment: "c_trueda111b5b",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_329dc82e", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_da111b5b", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_false329dc82e",
+    functionFragment: "c_falseda111b5b",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_true329dc82e",
+    functionFragment: "c_trueda111b5b",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface SafeMathLib extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_329dc82e(
-      c__329dc82e: BytesLike,
+    c_da111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_false329dc82e(
-      c__329dc82e: BytesLike,
+    c_falseda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_true329dc82e(
-      c__329dc82e: BytesLike,
+    c_trueda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_329dc82e(c__329dc82e: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_da111b5b(c__da111b5b: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_false329dc82e(
-    c__329dc82e: BytesLike,
+  c_falseda111b5b(
+    c__da111b5b: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_true329dc82e(
-    c__329dc82e: BytesLike,
+  c_trueda111b5b(
+    c__da111b5b: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_329dc82e(
-      c__329dc82e: BytesLike,
+    c_da111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_false329dc82e(
-      c__329dc82e: BytesLike,
+    c_falseda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_true329dc82e(
-      c__329dc82e: BytesLike,
+    c_trueda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface SafeMathLib extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_329dc82e(
-      c__329dc82e: BytesLike,
+    c_da111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_false329dc82e(
-      c__329dc82e: BytesLike,
+    c_falseda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_true329dc82e(
-      c__329dc82e: BytesLike,
+    c_trueda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_329dc82e(
-      c__329dc82e: BytesLike,
+    c_da111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_false329dc82e(
-      c__329dc82e: BytesLike,
+    c_falseda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_true329dc82e(
-      c__329dc82e: BytesLike,
+    c_trueda111b5b(
+      c__da111b5b: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

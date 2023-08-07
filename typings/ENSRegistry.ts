@@ -19,6 +19,9 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSRegistryInterface extends utils.Interface {
   functions: {
+    "c_d1f32b86(bytes8)": FunctionFragment;
+    "c_falsed1f32b86(bytes8)": FunctionFragment;
+    "c_trued1f32b86(bytes8)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "owner(bytes32)": FunctionFragment;
     "recordExists(bytes32)": FunctionFragment;
@@ -33,6 +36,18 @@ export interface ENSRegistryInterface extends utils.Interface {
     "ttl(bytes32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_d1f32b86",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsed1f32b86",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_trued1f32b86",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
@@ -73,6 +88,15 @@ export interface ENSRegistryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "ttl", values: [BytesLike]): string;
 
+  decodeFunctionResult(functionFragment: "c_d1f32b86", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsed1f32b86",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_trued1f32b86",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
@@ -181,6 +205,21 @@ export interface ENSRegistry extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_d1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_falsed1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_trued1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     isApprovedForAll(
       owner_: string,
       operator: string,
@@ -247,6 +286,18 @@ export interface ENSRegistry extends BaseContract {
     ttl(node: BytesLike, overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
+  c_d1f32b86(c__d1f32b86: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_falsed1f32b86(
+    c__d1f32b86: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_trued1f32b86(
+    c__d1f32b86: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   isApprovedForAll(
     owner_: string,
     operator: string,
@@ -310,6 +361,21 @@ export interface ENSRegistry extends BaseContract {
   ttl(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    c_d1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_falsed1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_trued1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     isApprovedForAll(
       owner_: string,
       operator: string,
@@ -419,6 +485,21 @@ export interface ENSRegistry extends BaseContract {
   };
 
   estimateGas: {
+    c_d1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsed1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_trued1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner_: string,
       operator: string,
@@ -486,6 +567,21 @@ export interface ENSRegistry extends BaseContract {
   };
 
   populateTransaction: {
+    c_d1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsed1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_trued1f32b86(
+      c__d1f32b86: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isApprovedForAll(
       owner_: string,
       operator: string,

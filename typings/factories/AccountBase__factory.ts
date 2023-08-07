@@ -7,6 +7,57 @@ import type { AccountBase, AccountBaseInterface } from "../AccountBase";
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__28344ffb",
+        type: "bytes8",
+      },
+    ],
+    name: "c_28344ffb",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__28344ffb",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false28344ffb",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__28344ffb",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true28344ffb",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "registry",
     outputs: [
@@ -22,7 +73,7 @@ const _abi = [
 ];
 
 const _bytecode =
-  "0x6080604052348015600f57600080fd5b5060908061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c80637b10399914602d575b600080fd5b6033605f565b604051808273ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff168156fea164736f6c634300060c000a";
+  "0x608060405234801561001057600080fd5b506101d2806100206000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c8063221523e51461005157806344f9c9ec146100b05780637b1039991461010f578063a42ea70814610143575b600080fd5b6100986004803603602081101561006757600080fd5b81019080803577ffffffffffffffffffffffffffffffffffffffffffffffff1916906020019092919050505061018c565b60405180821515815260200191505060405180910390f35b6100f7600480360360208110156100c657600080fd5b81019080803577ffffffffffffffffffffffffffffffffffffffffffffffff19169060200190929190505050610193565b60405180821515815260200191505060405180910390f35b61011761019e565b604051808273ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b61018a6004803603602081101561015957600080fd5b81019080803577ffffffffffffffffffffffffffffffffffffffffffffffff191690602001909291905050506101c2565b005b6000919050565b600060019050919050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b5056fea164736f6c634300060c000a";
 
 type AccountBaseConstructorParams =
   | [signer?: Signer]

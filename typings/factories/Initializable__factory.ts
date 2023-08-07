@@ -21,6 +21,57 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__098c0657",
+        type: "bytes8",
+      },
+    ],
+    name: "c_098c0657",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__098c0657",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false098c0657",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__098c0657",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true098c0657",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "isInitialized",
     outputs: [

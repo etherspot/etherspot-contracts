@@ -14,11 +14,11 @@ const _abi = [
     inputs: [
       {
         internalType: "bytes8",
-        name: "c__8e2129aa",
+        name: "c__f395fef5",
         type: "bytes8",
       },
     ],
-    name: "c_8e2129aa",
+    name: "c_f395fef5",
     outputs: [],
     stateMutability: "pure",
     type: "function",
@@ -27,11 +27,11 @@ const _abi = [
     inputs: [
       {
         internalType: "bytes8",
-        name: "c__8e2129aa",
+        name: "c__f395fef5",
         type: "bytes8",
       },
     ],
-    name: "c_false8e2129aa",
+    name: "c_falsef395fef5",
     outputs: [
       {
         internalType: "bool",
@@ -46,11 +46,11 @@ const _abi = [
     inputs: [
       {
         internalType: "bytes8",
-        name: "c__8e2129aa",
+        name: "c__f395fef5",
         type: "bytes8",
       },
     ],
-    name: "c_true8e2129aa",
+    name: "c_truef395fef5",
     outputs: [
       {
         internalType: "bool",

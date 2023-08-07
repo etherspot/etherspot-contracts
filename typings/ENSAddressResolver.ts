@@ -20,16 +20,64 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface ENSAddressResolverInterface extends utils.Interface {
   functions: {
     "addr(bytes32)": FunctionFragment;
+    "c_3f206a34(bytes8)": FunctionFragment;
+    "c_f395fef5(bytes8)": FunctionFragment;
+    "c_false3f206a34(bytes8)": FunctionFragment;
+    "c_falsef395fef5(bytes8)": FunctionFragment;
+    "c_true3f206a34(bytes8)": FunctionFragment;
+    "c_truef395fef5(bytes8)": FunctionFragment;
     "setAddr(bytes32,uint256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addr", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "c_3f206a34",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_f395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false3f206a34",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsef395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true3f206a34",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truef395fef5",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "setAddr",
     values: [BytesLike, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_3f206a34", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_f395fef5", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false3f206a34",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsef395fef5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true3f206a34",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truef395fef5",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setAddr", data: BytesLike): Result;
 
   events: {
@@ -93,6 +141,36 @@ export interface ENSAddressResolver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    c_3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
       coinType: BigNumberish,
@@ -114,6 +192,30 @@ export interface ENSAddressResolver extends BaseContract {
     coinType: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  c_3f206a34(c__3f206a34: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_f395fef5(c__f395fef5: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false3f206a34(
+    c__3f206a34: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true3f206a34(
+    c__3f206a34: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   "setAddr(bytes32,uint256,bytes)"(
     node: BytesLike,
@@ -139,6 +241,36 @@ export interface ENSAddressResolver extends BaseContract {
       coinType: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    c_3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
@@ -185,6 +317,36 @@ export interface ENSAddressResolver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    c_3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     "setAddr(bytes32,uint256,bytes)"(
       node: BytesLike,
       coinType: BigNumberish,
@@ -208,6 +370,36 @@ export interface ENSAddressResolver extends BaseContract {
     "addr(bytes32,uint256)"(
       node: BytesLike,
       coinType: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true3f206a34(
+      c__3f206a34: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

@@ -18,6 +18,12 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSHelperInterface extends utils.Interface {
   functions: {
+    "c_098c0657(bytes8)": FunctionFragment;
+    "c_5c42e10b(bytes8)": FunctionFragment;
+    "c_false098c0657(bytes8)": FunctionFragment;
+    "c_false5c42e10b(bytes8)": FunctionFragment;
+    "c_true098c0657(bytes8)": FunctionFragment;
+    "c_true5c42e10b(bytes8)": FunctionFragment;
     "getAddresses(bytes32[])": FunctionFragment;
     "getNames(bytes32[])": FunctionFragment;
     "initialize(address)": FunctionFragment;
@@ -25,6 +31,30 @@ export interface ENSHelperInterface extends utils.Interface {
     "registry()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_5c42e10b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false5c42e10b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true5c42e10b",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "getAddresses",
     values: [BytesLike[]]
@@ -40,6 +70,24 @@ export interface ENSHelperInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "c_098c0657", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_5c42e10b", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false5c42e10b",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true5c42e10b",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAddresses",
     data: BytesLike
@@ -90,6 +138,36 @@ export interface ENSHelper extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     getAddresses(
       nodes: BytesLike[],
       overrides?: CallOverrides
@@ -110,6 +188,30 @@ export interface ENSHelper extends BaseContract {
     registry(overrides?: CallOverrides): Promise<[string]>;
   };
 
+  c_098c0657(c__098c0657: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_5c42e10b(c__5c42e10b: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false5c42e10b(
+    c__5c42e10b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true5c42e10b(
+    c__5c42e10b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   getAddresses(
     nodes: BytesLike[],
     overrides?: CallOverrides
@@ -127,6 +229,36 @@ export interface ENSHelper extends BaseContract {
   registry(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     getAddresses(
       nodes: BytesLike[],
       overrides?: CallOverrides
@@ -147,6 +279,36 @@ export interface ENSHelper extends BaseContract {
   };
 
   estimateGas: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getAddresses(
       nodes: BytesLike[],
       overrides?: CallOverrides
@@ -165,6 +327,36 @@ export interface ENSHelper extends BaseContract {
   };
 
   populateTransaction: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true5c42e10b(
+      c__5c42e10b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getAddresses(
       nodes: BytesLike[],
       overrides?: CallOverrides

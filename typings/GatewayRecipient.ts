@@ -16,11 +16,35 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface GatewayRecipientInterface extends utils.Interface {
   functions: {
+    "c_d18be0f9(bytes8)": FunctionFragment;
+    "c_falsed18be0f9(bytes8)": FunctionFragment;
+    "c_trued18be0f9(bytes8)": FunctionFragment;
     "gateway()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_d18be0f9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsed18be0f9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_trued18be0f9",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "c_d18be0f9", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsed18be0f9",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_trued18be0f9",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
 
   events: {};
@@ -53,22 +77,94 @@ export interface GatewayRecipient extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     gateway(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  c_d18be0f9(c__d18be0f9: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_falsed18be0f9(
+    c__d18be0f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_trued18be0f9(
+    c__d18be0f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     gateway(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
 
   estimateGas: {
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

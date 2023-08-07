@@ -55,6 +55,15 @@ export type DelegatedBatchWithGasPriceStructOutput = [
 
 export interface GatewayInterface extends utils.Interface {
   functions: {
+    "c_098c0657(bytes8)": FunctionFragment;
+    "c_4b81551d(bytes8)": FunctionFragment;
+    "c_52615ca8(bytes8)": FunctionFragment;
+    "c_false098c0657(bytes8)": FunctionFragment;
+    "c_false4b81551d(bytes8)": FunctionFragment;
+    "c_false52615ca8(bytes8)": FunctionFragment;
+    "c_true098c0657(bytes8)": FunctionFragment;
+    "c_true4b81551d(bytes8)": FunctionFragment;
+    "c_true52615ca8(bytes8)": FunctionFragment;
     "chainId()": FunctionFragment;
     "delegateBatch(address,uint256,address[],bytes[],bytes)": FunctionFragment;
     "delegateBatchWithGasPrice(address,uint256,address[],bytes[],bytes)": FunctionFragment;
@@ -70,6 +79,42 @@ export interface GatewayInterface extends utils.Interface {
     "sendBatchFromAccount(address,address[],bytes[])": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_4b81551d",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_52615ca8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false4b81551d",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false52615ca8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true4b81551d",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true52615ca8",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "delegateBatch",
@@ -120,6 +165,33 @@ export interface GatewayInterface extends utils.Interface {
     values: [string, string[], BytesLike[]]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_098c0657", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_4b81551d", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_52615ca8", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false4b81551d",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false52615ca8",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true4b81551d",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true52615ca8",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "delegateBatch",
@@ -211,6 +283,51 @@ export interface Gateway extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     delegateBatch(
@@ -277,6 +394,42 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_098c0657(c__098c0657: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_4b81551d(c__4b81551d: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_52615ca8(c__52615ca8: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false4b81551d(
+    c__4b81551d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false52615ca8(
+    c__52615ca8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true4b81551d(
+    c__4b81551d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true52615ca8(
+    c__52615ca8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -345,6 +498,51 @@ export interface Gateway extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegateBatch(
@@ -429,6 +627,51 @@ export interface Gateway extends BaseContract {
   };
 
   estimateGas: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegateBatch(
@@ -497,6 +740,51 @@ export interface Gateway extends BaseContract {
   };
 
   populateTransaction: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true4b81551d(
+      c__4b81551d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     delegateBatch(

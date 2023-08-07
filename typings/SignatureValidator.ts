@@ -16,11 +16,35 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface SignatureValidatorInterface extends utils.Interface {
   functions: {
+    "c_52615ca8(bytes8)": FunctionFragment;
+    "c_false52615ca8(bytes8)": FunctionFragment;
+    "c_true52615ca8(bytes8)": FunctionFragment;
     "chainId()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_52615ca8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false52615ca8",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true52615ca8",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "chainId", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "c_52615ca8", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false52615ca8",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true52615ca8",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
 
   events: {};
@@ -53,22 +77,94 @@ export interface SignatureValidator extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     chainId(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
+
+  c_52615ca8(c__52615ca8: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false52615ca8(
+    c__52615ca8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true52615ca8(
+    c__52615ca8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   chainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     chainId(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    c_52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true52615ca8(
+      c__52615ca8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     chainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -23,7 +23,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     struct Storage {
         IStargateRouter stargateRouter;
         IStargateRouterETH stargateETHRouter;
-        uint16 chainId;
+        uint256 chainId;
         mapping(uint256 => uint16) lzChainIds;
     }
 
@@ -41,7 +41,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
      * @notice token transfer data object
      * @param amount - amount to swap
      * @param bridgeToken - the address of the native ERC20 to swap() - *must* be the token for the poolId
-     * @param dstChainId - stargate/layerzero chainId
+     * @param dstChainId - chain id
      * @param srcPoolId - stargate poolId - *must* be the poolId for the qty asset
      * @param dstPoolId - stargate destination poolId
      * @param to - address to send the destination tokens to
@@ -51,7 +51,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     struct StargateData {
         uint256 amount;
         address bridgeToken;
-        uint16 dstChainId;
+        uint256 dstChainId;
         uint16 srcPoolId;
         uint16 dstPoolId;
         address to;
@@ -62,13 +62,13 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     /**
      * @notice ETH transfer data object
      * @param amount - amount to swap
-     * @param dstChainId - stargate/layerzero chainId
+     * @param dstChainId - chain id
      * @param to - address to send the destination tokens to
      * @param slippage - slippage tolerance on _qty (eg 50 == 0.5%)
      */
     struct StargateETHData {
         uint256 amount;
-        uint16 dstChainId;
+        uint256 dstChainId;
         address to;
         uint16 slippage;
     }
@@ -86,7 +86,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     event StargateInitialized(
         address stargateRouter,
         address stargateETHRouter,
-        uint16 chainId
+        uint256 chainId
     );
 
     /**
@@ -102,7 +102,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         address from,
         address to,
         uint256 amount,
-        uint16 chainIdTo
+        uint256 chainIdTo
     );
 
     /**
@@ -116,7 +116,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
         address from,
         address to,
         uint256 amount,
-        uint16 chainIdTo
+        uint256 chainIdTo
     );
 
     /**
@@ -143,7 +143,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     function initStargate(
         address _stargateRouter,
         address _stargateEthRouter,
-        uint16 _chainId,
+        uint256 _chainId,
         ChainIdConfig[] calldata _chainIdConfigs
     ) external {
         require(
@@ -170,12 +170,16 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
     function stargateTokenTransfer(
         StargateData calldata _data
     ) external payable nonReentrant {
-        require(msg.value > 0, "Stargate:: msg.value required to pay message");
         require(_data.amount > 0, "Stargate:: invalid quantity");
         IStargateRouter router = getStargateRouter();
 
         // get stargate fees
         uint256 lzFee = stargateFees(_data, router);
+        // check msg.value is >= lzFee
+        require(
+            msg.value >= lzFee,
+            "Stargate:: msg.value not enough to pay bridging fee"
+        );
 
         // calc minimum amount out
         uint256 minAmountOut = (_data.amount * (BPS - _data.slippage)) / BPS;
@@ -362,7 +366,7 @@ contract StargateFacet is IStargateReceiver, ReentrancyGuard {
      * @dev returns stargate chainId
      * @return address connext contract
      */
-    function getChainId() private view returns (uint16) {
+    function getChainId() private view returns (uint256) {
         return getStorage().chainId;
     }
 

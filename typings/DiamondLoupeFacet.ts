@@ -26,6 +26,9 @@ export type FacetStructOutput = [string, string[]] & {
 
 export interface DiamondLoupeFacetInterface extends utils.Interface {
   functions: {
+    "c_cb71d28d(bytes8)": FunctionFragment;
+    "c_falsecb71d28d(bytes8)": FunctionFragment;
+    "c_truecb71d28d(bytes8)": FunctionFragment;
     "facetAddress(bytes4)": FunctionFragment;
     "facetAddresses()": FunctionFragment;
     "facetFunctionSelectors(address)": FunctionFragment;
@@ -33,6 +36,18 @@ export interface DiamondLoupeFacetInterface extends utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_cb71d28d",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsecb71d28d",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truecb71d28d",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "facetAddress",
     values: [BytesLike]
@@ -51,6 +66,15 @@ export interface DiamondLoupeFacetInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_cb71d28d", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsecb71d28d",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truecb71d28d",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "facetAddress",
     data: BytesLike
@@ -99,6 +123,21 @@ export interface DiamondLoupeFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_cb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_falsecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     facetAddress(
       _functionSelector: BytesLike,
       overrides?: CallOverrides
@@ -123,6 +162,18 @@ export interface DiamondLoupeFacet extends BaseContract {
     ): Promise<[boolean]>;
   };
 
+  c_cb71d28d(c__cb71d28d: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_falsecb71d28d(
+    c__cb71d28d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truecb71d28d(
+    c__cb71d28d: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   facetAddress(
     _functionSelector: BytesLike,
     overrides?: CallOverrides
@@ -143,6 +194,21 @@ export interface DiamondLoupeFacet extends BaseContract {
   ): Promise<boolean>;
 
   callStatic: {
+    c_cb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_falsecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     facetAddress(
       _functionSelector: BytesLike,
       overrides?: CallOverrides
@@ -166,6 +232,21 @@ export interface DiamondLoupeFacet extends BaseContract {
   filters: {};
 
   estimateGas: {
+    c_cb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     facetAddress(
       _functionSelector: BytesLike,
       overrides?: CallOverrides
@@ -187,6 +268,21 @@ export interface DiamondLoupeFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_cb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truecb71d28d(
+      c__cb71d28d: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     facetAddress(
       _functionSelector: BytesLike,
       overrides?: CallOverrides
