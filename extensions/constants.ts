@@ -39,6 +39,8 @@ export enum NetworkNames {
   Mantle = "mantle",
   Linea = "linea",
   Sepolia = "sepolia",
+  Flare = "flare",
+  Coston2 = "coston2",
   Etherspot = "etherspot",
   LocalA = "localA",
   LocalB = "localB",
@@ -282,6 +284,18 @@ export const NETWORK_CONFIGS: {
     chainId: 11155111,
     defaultProviderUrl: "https://eth-sepolia.public.blastapi.io",
     explorer: "https://sepolia.etherscan.io/",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.Flare]: {
+    chainId: 14,
+    defaultProviderUrl: `https://flare-api-tracer.flare.network/ext/C/rpc?auth=${process.env.FLARE_RPC_KEY}`,
+    explorer: "https://flare-explorer.flare.network/",
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.Coston2]: {
+    chainId: 114,
+    defaultProviderUrl: "https://coston2-api.flare.network/ext/C/rpc",
+    explorer: "https://coston2-explorer.flare.network/",
     defaultGasPrice: 1,
   },
   [NetworkNames.Etherspot]: {

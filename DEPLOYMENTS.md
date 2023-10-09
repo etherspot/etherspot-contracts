@@ -41,6 +41,7 @@
 | `BalancesHelper` | `mantle` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xaffc514dbc5d185a52482b2af330dbb6248daa53e89b44067b9ce8566d5cd067 | 
 | `BalancesHelper` | `linea` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xd3426b6b71892b9ca5a6527412bea246b50ec02e1e59d04eb1dd4a82dff6e6af | 
 | `BalancesHelper` | `base` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xe070396dabb54b96938d864b29793266671a3ccd25ec6fd8c90208ddb5ed2111 | 
+| `BalancesHelper` | `coston2` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0x940c1ff781586e3f6d0b4143ec76cf8591fd0d0a78f8b91806dd1f6d21824b23 | 
 | `BalancesHelper` | `etherspot` | 0xa6C165E3539A2bE6d55e2935EC9979D8C850A21b | 0xac7270105c381ce52e137b815727c88f9f03a0005afa776154de199de41c1d33 | 
 | `BalancesHelperV2` | `mainnet` | [0xe5A160F89f330cc933816E896a3F36376DE0a835](https://etherscan.io/address/0xe5A160F89f330cc933816E896a3F36376DE0a835) | [0xf6ea0fa211f992a6b409e3d9808abe1c3c6d9d3136969a5ee403ed9b26c9741f](https://etherscan.io/tx/0xf6ea0fa211f992a6b409e3d9808abe1c3c6d9d3136969a5ee403ed9b26c9741f) | 
 | `BalancesHelperV2` | `ropsten` | [0xe5A160F89f330cc933816E896a3F36376DE0a835](https://ropsten.etherscan.io/address/0xe5A160F89f330cc933816E896a3F36376DE0a835) | [0x85a9b1e970b917b4af56111429d9424409e0527fec62079e6451a94de7a5c737](https://ropsten.etherscan.io/tx/0x85a9b1e970b917b4af56111429d9424409e0527fec62079e6451a94de7a5c737) | 
@@ -75,6 +76,7 @@
 | `BalancesHelperV2` | `mantle` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x17d9b8a2af44091014bff4808bf02feb804fc864184e29f7aaed9c9fd7186003 | 
 | `BalancesHelperV2` | `linea` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x26f0bacb7f0883dba8878b9567e4dee1fd96d0b287e0741a7693e02ba4fbb177 | 
 | `BalancesHelperV2` | `base` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0xad34b9ac6208f50ff1542ce0bae65d4d5a61e8f3071e62cf14079b7994c284c6 | 
+| `BalancesHelperV2` | `coston2` | 0xe5A160F89f330cc933816E896a3F36376DE0a835 | 0x6d8393ad5205c197341a76770bb9b30c58b600daa00ec01e4de842ee4abcf8d9 | 
 | `CBridgeFacet` | `goerli` | [0x9d70f5253949Eb67850C3f1e7371f15b955ee073](https://goerli.etherscan.io/address/0x9d70f5253949Eb67850C3f1e7371f15b955ee073) | [0x047d8e991a3dc6bac32e2ef5d08078ecbf10abe3f32c20a7d87b32a2647a2390](https://goerli.etherscan.io/tx/0x047d8e991a3dc6bac32e2ef5d08078ecbf10abe3f32c20a7d87b32a2647a2390) | 
 | `CBridgeFacet` | `kovan` | [0x9d70f5253949Eb67850C3f1e7371f15b955ee073](https://kovan.etherscan.io/address/0x9d70f5253949Eb67850C3f1e7371f15b955ee073) | [0xf21e1a247dd0a72b5b59ec4556972b6fde6ba038adc000797f643fe71bf93855](https://kovan.etherscan.io/tx/0xf21e1a247dd0a72b5b59ec4556972b6fde6ba038adc000797f643fe71bf93855) | 
 | `CBridgeFacet` | `bscTest` | [0x9d70f5253949Eb67850C3f1e7371f15b955ee073](https://testnet.bscscan.com/address/0x9d70f5253949Eb67850C3f1e7371f15b955ee073) | [0xd72b937134f4fc4d6168bf1dbbe495971df40e540d83e2293e333ca9c5a9567d](https://testnet.bscscan.com/tx/0xd72b937134f4fc4d6168bf1dbbe495971df40e540d83e2293e333ca9c5a9567d) | 
