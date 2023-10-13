@@ -39,6 +39,7 @@ export enum NetworkNames {
   LocalA = "localA",
   LocalB = "localB",
   LocalH = "localH",
+  Flare = "flare",
 }
 
 export const NETWORK_CONFIGS: {
@@ -270,6 +271,12 @@ export const NETWORK_CONFIGS: {
     chainId: 6666,
     defaultProviderUrl: "http://localhost:9545",
     defaultGasPrice: 20,
+  },
+  [NetworkNames.Flare]: {
+    chainId: 14,
+    defaultProviderUrl: "https://rpc.ftso.au/flare",
+    defaultGasPrice: 25,
+    explorer: 'https://flare-explorer.flare.network/',
   },
 };
 
