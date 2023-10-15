@@ -84,7 +84,7 @@
     "@nomiclabs/hardhat-etherscan": "2.1.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.6.0",
-    "@openzeppelin/contracts-upgradeable": "4.6.0",
+    "@openzeppelin/contracts-upgradeable": "4.7.3",
     "@openzeppelin/test-helpers": "0.5.15",
     "@superfluid-finance/ethereum-contracts": "1.2.2",
     "@superfluid-finance/sdk-core": "0.4.2",
