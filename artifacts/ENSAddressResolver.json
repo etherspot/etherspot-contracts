@@ -93,6 +93,108 @@
     {
       "inputs": [
         {
+          "internalType": "bytes8",
+          "name": "c__3f206a34",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_3f206a34",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__f395fef5",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_f395fef5",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__3f206a34",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false3f206a34",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__f395fef5",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_falsef395fef5",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__3f206a34",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true3f206a34",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__f395fef5",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_truef395fef5",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes32",
           "name": "node",
           "type": "bytes32"

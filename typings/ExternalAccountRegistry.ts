@@ -21,6 +21,9 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
   functions: {
     "addAccountOwner(address)": FunctionFragment;
     "addAccountProof(bytes32)": FunctionFragment;
+    "c_9570ce98(bytes8)": FunctionFragment;
+    "c_false9570ce98(bytes8)": FunctionFragment;
+    "c_true9570ce98(bytes8)": FunctionFragment;
     "removeAccountOwner(address)": FunctionFragment;
     "removeAccountProof(bytes32)": FunctionFragment;
     "verifyAccountOwner(address,address)": FunctionFragment;
@@ -35,6 +38,18 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "addAccountProof",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_9570ce98",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9570ce98",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9570ce98",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
@@ -68,6 +83,15 @@ export interface ExternalAccountRegistryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "addAccountProof",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "c_9570ce98", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9570ce98",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9570ce98",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -177,6 +201,21 @@ export interface ExternalAccountRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    c_9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     removeAccountOwner(
       owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -224,6 +263,18 @@ export interface ExternalAccountRegistry extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  c_9570ce98(c__9570ce98: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false9570ce98(
+    c__9570ce98: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9570ce98(
+    c__9570ce98: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   removeAccountOwner(
     owner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -264,6 +315,21 @@ export interface ExternalAccountRegistry extends BaseContract {
     addAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
     addAccountProof(hash: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    c_9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     removeAccountOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
@@ -348,6 +414,21 @@ export interface ExternalAccountRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    c_9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     removeAccountOwner(
       owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -394,6 +475,21 @@ export interface ExternalAccountRegistry extends BaseContract {
     addAccountProof(
       hash: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    c_9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9570ce98(
+      c__9570ce98: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     removeAccountOwner(

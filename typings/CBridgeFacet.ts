@@ -42,12 +42,42 @@ export type CBridgeDataStructOutput = [
 
 export interface CBridgeFacetInterface extends utils.Interface {
   functions: {
+    "c_82a0834b(bytes8)": FunctionFragment;
+    "c_9296fc39(bytes8)": FunctionFragment;
+    "c_false82a0834b(bytes8)": FunctionFragment;
+    "c_false9296fc39(bytes8)": FunctionFragment;
+    "c_true82a0834b(bytes8)": FunctionFragment;
+    "c_true9296fc39(bytes8)": FunctionFragment;
     "cbBridgeTokens((uint64,uint64,uint256,address,address))": FunctionFragment;
     "cbInitialize(address)": FunctionFragment;
     "cbUpdateBridge(address)": FunctionFragment;
     "cbUpdateSlippageTolerance(uint32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_82a0834b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false82a0834b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true82a0834b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9296fc39",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "cbBridgeTokens",
     values: [CBridgeDataStruct]
@@ -65,6 +95,24 @@ export interface CBridgeFacetInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_82a0834b", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_9296fc39", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false82a0834b",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9296fc39",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true82a0834b",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9296fc39",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "cbBridgeTokens",
     data: BytesLike
@@ -156,6 +204,36 @@ export interface CBridgeFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -176,6 +254,30 @@ export interface CBridgeFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_82a0834b(c__82a0834b: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_9296fc39(c__9296fc39: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false82a0834b(
+    c__82a0834b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true82a0834b(
+    c__82a0834b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   cbBridgeTokens(
     _cbData: CBridgeDataStruct,
@@ -198,6 +300,36 @@ export interface CBridgeFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: CallOverrides
@@ -252,6 +384,36 @@ export interface CBridgeFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -274,6 +436,36 @@ export interface CBridgeFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true82a0834b(
+      c__82a0834b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     cbBridgeTokens(
       _cbData: CBridgeDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }

@@ -4,6 +4,57 @@
   "sourceName": "src/common/signature/SignatureValidator.sol",
   "abi": [
     {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__52615ca8",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_52615ca8",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__52615ca8",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false52615ca8",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__52615ca8",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true52615ca8",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "chainId",
       "outputs": [

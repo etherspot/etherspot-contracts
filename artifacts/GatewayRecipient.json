@@ -4,6 +4,57 @@
   "sourceName": "src/gateway/GatewayRecipient.sol",
   "abi": [
     {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__d18be0f9",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_d18be0f9",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__d18be0f9",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_falsed18be0f9",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__d18be0f9",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_trued18be0f9",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "gateway",
       "outputs": [

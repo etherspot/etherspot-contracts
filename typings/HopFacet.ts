@@ -60,10 +60,40 @@ export type HopDataStructOutput = [
 
 export interface HopFacetInterface extends utils.Interface {
   functions: {
+    "c_9296fc39(bytes8)": FunctionFragment;
+    "c_99127806(bytes8)": FunctionFragment;
+    "c_false9296fc39(bytes8)": FunctionFragment;
+    "c_false99127806(bytes8)": FunctionFragment;
+    "c_true9296fc39(bytes8)": FunctionFragment;
+    "c_true99127806(bytes8)": FunctionFragment;
     "hopTokenTransfer((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256))": FunctionFragment;
     "initHop(uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_99127806",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false99127806",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true99127806",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "hopTokenTransfer",
     values: [HopDataStruct]
@@ -73,6 +103,24 @@ export interface HopFacetInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_9296fc39", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_99127806", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9296fc39",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false99127806",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9296fc39",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true99127806",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "hopTokenTransfer",
     data: BytesLike
@@ -153,6 +201,36 @@ export interface HopFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     hopTokenTransfer(
       _hopData: HopDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -163,6 +241,30 @@ export interface HopFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_9296fc39(c__9296fc39: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_99127806(c__99127806: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false99127806(
+    c__99127806: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true99127806(
+    c__99127806: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   hopTokenTransfer(
     _hopData: HopDataStruct,
@@ -175,6 +277,36 @@ export interface HopFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     hopTokenTransfer(
       _hopData: HopDataStruct,
       overrides?: CallOverrides
@@ -225,6 +357,36 @@ export interface HopFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     hopTokenTransfer(
       _hopData: HopDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -237,6 +399,36 @@ export interface HopFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true99127806(
+      c__99127806: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     hopTokenTransfer(
       _hopData: HopDataStruct,
       overrides?: PayableOverrides & { from?: string | Promise<string> }

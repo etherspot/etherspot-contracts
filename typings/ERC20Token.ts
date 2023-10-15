@@ -22,6 +22,9 @@ export interface ERC20TokenInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "c_99a47378(bytes8)": FunctionFragment;
+    "c_false99a47378(bytes8)": FunctionFragment;
+    "c_true99a47378(bytes8)": FunctionFragment;
     "decimals()": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -39,6 +42,18 @@ export interface ERC20TokenInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_99a47378",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false99a47378",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true99a47378",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
@@ -58,6 +73,15 @@ export interface ERC20TokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_99a47378", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false99a47378",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true99a47378",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -135,6 +159,21 @@ export interface ERC20Token extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    c_99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
@@ -171,6 +210,18 @@ export interface ERC20Token extends BaseContract {
 
   balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  c_99a47378(c__99a47378: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false99a47378(
+    c__99a47378: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true99a47378(
+    c__99a47378: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   name(overrides?: CallOverrides): Promise<string>;
@@ -206,6 +257,21 @@ export interface ERC20Token extends BaseContract {
     ): Promise<boolean>;
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    c_99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -268,6 +334,21 @@ export interface ERC20Token extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    c_99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
@@ -305,6 +386,21 @@ export interface ERC20Token extends BaseContract {
 
     balanceOf(
       owner: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false99a47378(
+      c__99a47378: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true99a47378(
+      c__99a47378: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

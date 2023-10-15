@@ -19,6 +19,15 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface AccountImplementationV1Interface extends utils.Interface {
   functions: {
+    "c_098c0657(bytes8)": FunctionFragment;
+    "c_28344ffb(bytes8)": FunctionFragment;
+    "c_2860b96a(bytes8)": FunctionFragment;
+    "c_false098c0657(bytes8)": FunctionFragment;
+    "c_false28344ffb(bytes8)": FunctionFragment;
+    "c_false2860b96a(bytes8)": FunctionFragment;
+    "c_true098c0657(bytes8)": FunctionFragment;
+    "c_true28344ffb(bytes8)": FunctionFragment;
+    "c_true2860b96a(bytes8)": FunctionFragment;
     "canImplementInterfaceForAddress(bytes32,address)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "isInitialized()": FunctionFragment;
@@ -29,6 +38,42 @@ export interface AccountImplementationV1Interface extends utils.Interface {
     "tokensReceived(address,address,address,uint256,bytes,bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_28344ffb",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_2860b96a",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false28344ffb",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false2860b96a",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true28344ffb",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true2860b96a",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "canImplementInterfaceForAddress",
     values: [BytesLike, string]
@@ -56,6 +101,33 @@ export interface AccountImplementationV1Interface extends utils.Interface {
     values: [string, string, string, BigNumberish, BytesLike, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_098c0657", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_28344ffb", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_2860b96a", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false28344ffb",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false2860b96a",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true28344ffb",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true2860b96a",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "canImplementInterfaceForAddress",
     data: BytesLike
@@ -121,6 +193,51 @@ export interface AccountImplementationV1 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     canImplementInterfaceForAddress(
       interfaceHash: BytesLike,
       addr: string,
@@ -175,6 +292,42 @@ export interface AccountImplementationV1 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[void]>;
   };
+
+  c_098c0657(c__098c0657: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_28344ffb(c__28344ffb: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_2860b96a(c__2860b96a: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false28344ffb(
+    c__28344ffb: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false2860b96a(
+    c__2860b96a: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true28344ffb(
+    c__28344ffb: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true2860b96a(
+    c__2860b96a: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   canImplementInterfaceForAddress(
     interfaceHash: BytesLike,
@@ -231,6 +384,51 @@ export interface AccountImplementationV1 extends BaseContract {
   ): Promise<void>;
 
   callStatic: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     canImplementInterfaceForAddress(
       interfaceHash: BytesLike,
       addr: string,
@@ -289,6 +487,51 @@ export interface AccountImplementationV1 extends BaseContract {
   };
 
   estimateGas: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     canImplementInterfaceForAddress(
       interfaceHash: BytesLike,
       addr: string,
@@ -345,6 +588,51 @@ export interface AccountImplementationV1 extends BaseContract {
   };
 
   populateTransaction: {
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true28344ffb(
+      c__28344ffb: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true2860b96a(
+      c__2860b96a: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     canImplementInterfaceForAddress(
       interfaceHash: BytesLike,
       addr: string,

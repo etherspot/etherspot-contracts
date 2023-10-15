@@ -19,6 +19,159 @@
     {
       "inputs": [
         {
+          "internalType": "bytes8",
+          "name": "c__098c0657",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_098c0657",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__28344ffb",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_28344ffb",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__2860b96a",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_2860b96a",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__098c0657",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false098c0657",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__28344ffb",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false28344ffb",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__2860b96a",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_false2860b96a",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__098c0657",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true098c0657",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__28344ffb",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true28344ffb",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes8",
+          "name": "c__2860b96a",
+          "type": "bytes8"
+        }
+      ],
+      "name": "c_true2860b96a",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes32",
           "name": "interfaceHash",
           "type": "bytes32"

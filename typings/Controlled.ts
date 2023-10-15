@@ -16,14 +16,38 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ControlledInterface extends utils.Interface {
   functions: {
+    "c_495bfa8b(bytes8)": FunctionFragment;
+    "c_false495bfa8b(bytes8)": FunctionFragment;
+    "c_true495bfa8b(bytes8)": FunctionFragment;
     "controller()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_495bfa8b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false495bfa8b",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true495bfa8b",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "controller",
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_495bfa8b", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false495bfa8b",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true495bfa8b",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "controller", data: BytesLike): Result;
 
   events: {};
@@ -56,22 +80,94 @@ export interface Controlled extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     controller(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  c_495bfa8b(c__495bfa8b: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false495bfa8b(
+    c__495bfa8b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true495bfa8b(
+    c__495bfa8b: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   controller(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    c_495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     controller(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
 
   estimateGas: {
+    c_495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     controller(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    c_495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true495bfa8b(
+      c__495bfa8b: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     controller(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

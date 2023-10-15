@@ -23,6 +23,24 @@ export interface PersonalAccountRegistryInterface extends utils.Interface {
     "accountRegistry()": FunctionFragment;
     "addAccountOwner(address,address)": FunctionFragment;
     "addGuardian(address)": FunctionFragment;
+    "c_098c0657(bytes8)": FunctionFragment;
+    "c_0b6945c4(bytes8)": FunctionFragment;
+    "c_279b00a1(bytes8)": FunctionFragment;
+    "c_9649d652(bytes8)": FunctionFragment;
+    "c_bf6efb80(bytes8)": FunctionFragment;
+    "c_d18be0f9(bytes8)": FunctionFragment;
+    "c_false098c0657(bytes8)": FunctionFragment;
+    "c_false0b6945c4(bytes8)": FunctionFragment;
+    "c_false279b00a1(bytes8)": FunctionFragment;
+    "c_false9649d652(bytes8)": FunctionFragment;
+    "c_falsebf6efb80(bytes8)": FunctionFragment;
+    "c_falsed18be0f9(bytes8)": FunctionFragment;
+    "c_true098c0657(bytes8)": FunctionFragment;
+    "c_true0b6945c4(bytes8)": FunctionFragment;
+    "c_true279b00a1(bytes8)": FunctionFragment;
+    "c_true9649d652(bytes8)": FunctionFragment;
+    "c_truebf6efb80(bytes8)": FunctionFragment;
+    "c_trued18be0f9(bytes8)": FunctionFragment;
     "computeAccountAddress(address)": FunctionFragment;
     "deployAccount(address)": FunctionFragment;
     "executeAccountTransaction(address,address,uint256,bytes)": FunctionFragment;
@@ -55,6 +73,78 @@ export interface PersonalAccountRegistryInterface extends utils.Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0b6945c4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_279b00a1",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_9649d652",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_bf6efb80",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_d18be0f9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false0b6945c4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false279b00a1",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false9649d652",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsebf6efb80",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsed18be0f9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true098c0657",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true0b6945c4",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true279b00a1",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true9649d652",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truebf6efb80",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_trued18be0f9",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "computeAccountAddress",
     values: [string]
@@ -129,6 +219,60 @@ export interface PersonalAccountRegistryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "addGuardian",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "c_098c0657", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_0b6945c4", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_279b00a1", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_9649d652", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_bf6efb80", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_d18be0f9", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false0b6945c4",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false279b00a1",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false9649d652",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsebf6efb80",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsed18be0f9",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true098c0657",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true0b6945c4",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true279b00a1",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true9649d652",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truebf6efb80",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_trued18be0f9",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -345,6 +489,96 @@ export interface PersonalAccountRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     computeAccountAddress(
       saltOwner: string,
       overrides?: CallOverrides
@@ -458,6 +692,78 @@ export interface PersonalAccountRegistry extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  c_098c0657(c__098c0657: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_0b6945c4(c__0b6945c4: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_279b00a1(c__279b00a1: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_9649d652(c__9649d652: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_bf6efb80(c__bf6efb80: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_d18be0f9(c__d18be0f9: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false0b6945c4(
+    c__0b6945c4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false279b00a1(
+    c__279b00a1: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_false9649d652(
+    c__9649d652: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsebf6efb80(
+    c__bf6efb80: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsed18be0f9(
+    c__d18be0f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true098c0657(
+    c__098c0657: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true0b6945c4(
+    c__0b6945c4: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true279b00a1(
+    c__279b00a1: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9649d652(
+    c__9649d652: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truebf6efb80(
+    c__bf6efb80: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_trued18be0f9(
+    c__d18be0f9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   computeAccountAddress(
     saltOwner: string,
     overrides?: CallOverrides
@@ -567,6 +873,96 @@ export interface PersonalAccountRegistry extends BaseContract {
     ): Promise<void>;
 
     addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
+
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     computeAccountAddress(
       saltOwner: string,
@@ -768,6 +1164,96 @@ export interface PersonalAccountRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     computeAccountAddress(
       saltOwner: string,
       overrides?: CallOverrides
@@ -882,6 +1368,96 @@ export interface PersonalAccountRegistry extends BaseContract {
     addGuardian(
       guardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    c_098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_d18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsed18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true098c0657(
+      c__098c0657: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true0b6945c4(
+      c__0b6945c4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true279b00a1(
+      c__279b00a1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9649d652(
+      c__9649d652: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_trued18be0f9(
+      c__d18be0f9: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     computeAccountAddress(

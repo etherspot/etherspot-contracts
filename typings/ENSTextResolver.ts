@@ -18,10 +18,40 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ENSTextResolverInterface extends utils.Interface {
   functions: {
+    "c_7ffc1d72(bytes8)": FunctionFragment;
+    "c_f395fef5(bytes8)": FunctionFragment;
+    "c_false7ffc1d72(bytes8)": FunctionFragment;
+    "c_falsef395fef5(bytes8)": FunctionFragment;
+    "c_true7ffc1d72(bytes8)": FunctionFragment;
+    "c_truef395fef5(bytes8)": FunctionFragment;
     "setText(bytes32,string,string)": FunctionFragment;
     "text(bytes32,string)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_7ffc1d72",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_f395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false7ffc1d72",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsef395fef5",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true7ffc1d72",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truef395fef5",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "setText",
     values: [BytesLike, string, string]
@@ -31,6 +61,24 @@ export interface ENSTextResolverInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_7ffc1d72", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_f395fef5", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false7ffc1d72",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsef395fef5",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true7ffc1d72",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truef395fef5",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setText", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "text", data: BytesLike): Result;
 
@@ -75,6 +123,36 @@ export interface ENSTextResolver extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     setText(
       node: BytesLike,
       key: string,
@@ -88,6 +166,30 @@ export interface ENSTextResolver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
   };
+
+  c_7ffc1d72(c__7ffc1d72: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_f395fef5(c__f395fef5: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false7ffc1d72(
+    c__7ffc1d72: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_falsef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true7ffc1d72(
+    c__7ffc1d72: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truef395fef5(
+    c__f395fef5: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   setText(
     node: BytesLike,
@@ -103,6 +205,36 @@ export interface ENSTextResolver extends BaseContract {
   ): Promise<string>;
 
   callStatic: {
+    c_7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     setText(
       node: BytesLike,
       key: string,
@@ -131,6 +263,36 @@ export interface ENSTextResolver extends BaseContract {
   };
 
   estimateGas: {
+    c_7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     setText(
       node: BytesLike,
       key: string,
@@ -146,6 +308,36 @@ export interface ENSTextResolver extends BaseContract {
   };
 
   populateTransaction: {
+    c_7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_f395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true7ffc1d72(
+      c__7ffc1d72: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truef395fef5(
+      c__f395fef5: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     setText(
       node: BytesLike,
       key: string,

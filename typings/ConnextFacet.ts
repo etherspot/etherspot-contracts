@@ -20,11 +20,26 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface ConnextFacetInterface extends utils.Interface {
   functions: {
+    "c_4f0a9270(bytes8)": FunctionFragment;
+    "c_false4f0a9270(bytes8)": FunctionFragment;
+    "c_true4f0a9270(bytes8)": FunctionFragment;
     "connextEthTransfer(address,uint256,address,uint32,uint256,uint256)": FunctionFragment;
     "connextTokenTransfer(address,uint256,address,uint32,uint256,uint256)": FunctionFragment;
     "initConnext(address,uint32,address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "c_4f0a9270",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_false4f0a9270",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_true4f0a9270",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "connextEthTransfer",
     values: [
@@ -52,6 +67,15 @@ export interface ConnextFacetInterface extends utils.Interface {
     values: [string, BigNumberish, string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "c_4f0a9270", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_false4f0a9270",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_true4f0a9270",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "connextEthTransfer",
     data: BytesLike
@@ -139,6 +163,21 @@ export interface ConnextFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    c_4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     connextEthTransfer(
       _destinationUnwrapper: string,
       _amount: BigNumberish,
@@ -166,6 +205,18 @@ export interface ConnextFacet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  c_4f0a9270(c__4f0a9270: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_false4f0a9270(
+    c__4f0a9270: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true4f0a9270(
+    c__4f0a9270: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   connextEthTransfer(
     _destinationUnwrapper: string,
@@ -195,6 +246,21 @@ export interface ConnextFacet extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    c_4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_false4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     connextEthTransfer(
       _destinationUnwrapper: string,
       _amount: BigNumberish,
@@ -269,6 +335,21 @@ export interface ConnextFacet extends BaseContract {
   };
 
   estimateGas: {
+    c_4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     connextEthTransfer(
       _destinationUnwrapper: string,
       _amount: BigNumberish,
@@ -298,6 +379,21 @@ export interface ConnextFacet extends BaseContract {
   };
 
   populateTransaction: {
+    c_4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true4f0a9270(
+      c__4f0a9270: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     connextEthTransfer(
       _destinationUnwrapper: string,
       _amount: BigNumberish,

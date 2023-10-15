@@ -32,6 +32,108 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes8",
+        name: "c__6f06df17",
+        type: "bytes8",
+      },
+    ],
+    name: "c_6f06df17",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__f395fef5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_f395fef5",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__6f06df17",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false6f06df17",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__f395fef5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_falsef395fef5",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__6f06df17",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true6f06df17",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__f395fef5",
+        type: "bytes8",
+      },
+    ],
+    name: "c_truef395fef5",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes32",
         name: "node",
         type: "bytes32",

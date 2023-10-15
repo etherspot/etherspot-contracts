@@ -16,31 +16,31 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface BytesLibInterface extends utils.Interface {
   functions: {
-    "c_cf01c64c(bytes8)": FunctionFragment;
-    "c_falsecf01c64c(bytes8)": FunctionFragment;
-    "c_truecf01c64c(bytes8)": FunctionFragment;
+    "c_2ad25a5a(bytes8)": FunctionFragment;
+    "c_false2ad25a5a(bytes8)": FunctionFragment;
+    "c_true2ad25a5a(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "c_cf01c64c",
+    functionFragment: "c_2ad25a5a",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_falsecf01c64c",
+    functionFragment: "c_false2ad25a5a",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "c_truecf01c64c",
+    functionFragment: "c_true2ad25a5a",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "c_cf01c64c", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_2ad25a5a", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "c_falsecf01c64c",
+    functionFragment: "c_false2ad25a5a",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "c_truecf01c64c",
+    functionFragment: "c_true2ad25a5a",
     data: BytesLike
   ): Result;
 
@@ -74,47 +74,47 @@ export interface BytesLib extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    c_cf01c64c(
-      c__cf01c64c: BytesLike,
+    c_2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    c_falsecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_false2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    c_truecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_true2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  c_cf01c64c(c__cf01c64c: BytesLike, overrides?: CallOverrides): Promise<void>;
+  c_2ad25a5a(c__2ad25a5a: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  c_falsecf01c64c(
-    c__cf01c64c: BytesLike,
+  c_false2ad25a5a(
+    c__2ad25a5a: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  c_truecf01c64c(
-    c__cf01c64c: BytesLike,
+  c_true2ad25a5a(
+    c__2ad25a5a: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    c_cf01c64c(
-      c__cf01c64c: BytesLike,
+    c_2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    c_falsecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_false2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    c_truecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_true2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,35 +122,35 @@ export interface BytesLib extends BaseContract {
   filters: {};
 
   estimateGas: {
-    c_cf01c64c(
-      c__cf01c64c: BytesLike,
+    c_2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_falsecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_false2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_truecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_true2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    c_cf01c64c(
-      c__cf01c64c: BytesLike,
+    c_2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_falsecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_false2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    c_truecf01c64c(
-      c__cf01c64c: BytesLike,
+    c_true2ad25a5a(
+      c__2ad25a5a: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

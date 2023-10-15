@@ -8,6 +8,57 @@ import type { Controlled, ControlledInterface } from "../Controlled";
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__495bfa8b",
+        type: "bytes8",
+      },
+    ],
+    name: "c_495bfa8b",
+    outputs: [],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__495bfa8b",
+        type: "bytes8",
+      },
+    ],
+    name: "c_false495bfa8b",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes8",
+        name: "c__495bfa8b",
+        type: "bytes8",
+      },
+    ],
+    name: "c_true495bfa8b",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "controller",
     outputs: [

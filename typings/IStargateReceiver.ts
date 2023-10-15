@@ -67,7 +67,7 @@ export interface IStargateReceiver extends BaseContract {
 
   functions: {
     sgReceive(
-      _srcChainId: BigNumberish,
+      _chainId: BigNumberish,
       _srcAddress: BytesLike,
       _nonce: BigNumberish,
       _token: string,
@@ -78,7 +78,7 @@ export interface IStargateReceiver extends BaseContract {
   };
 
   sgReceive(
-    _srcChainId: BigNumberish,
+    _chainId: BigNumberish,
     _srcAddress: BytesLike,
     _nonce: BigNumberish,
     _token: string,
@@ -89,7 +89,7 @@ export interface IStargateReceiver extends BaseContract {
 
   callStatic: {
     sgReceive(
-      _srcChainId: BigNumberish,
+      _chainId: BigNumberish,
       _srcAddress: BytesLike,
       _nonce: BigNumberish,
       _token: string,
@@ -103,7 +103,7 @@ export interface IStargateReceiver extends BaseContract {
 
   estimateGas: {
     sgReceive(
-      _srcChainId: BigNumberish,
+      _chainId: BigNumberish,
       _srcAddress: BytesLike,
       _nonce: BigNumberish,
       _token: string,
@@ -115,7 +115,7 @@ export interface IStargateReceiver extends BaseContract {
 
   populateTransaction: {
     sgReceive(
-      _srcChainId: BigNumberish,
+      _chainId: BigNumberish,
       _srcAddress: BytesLike,
       _nonce: BigNumberish,
       _token: string,

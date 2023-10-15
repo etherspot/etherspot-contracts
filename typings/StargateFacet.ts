@@ -18,68 +18,113 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export type StargateDataStruct = {
-  qty: BigNumberish;
-  fromToken: string;
-  toToken: string;
+export type ChainIdConfigStruct = {
+  chainId: BigNumberish;
+  layerZeroChainId: BigNumberish;
+};
+
+export type ChainIdConfigStructOutput = [BigNumber, number] & {
+  chainId: BigNumber;
+  layerZeroChainId: number;
+};
+
+export type StargateETHDataStruct = {
+  amount: BigNumberish;
   dstChainId: BigNumberish;
   to: string;
+  slippage: BigNumberish;
+};
+
+export type StargateETHDataStructOutput = [
+  BigNumber,
+  BigNumber,
+  string,
+  number
+] & { amount: BigNumber; dstChainId: BigNumber; to: string; slippage: number };
+
+export type StargateDataStruct = {
+  amount: BigNumberish;
+  bridgeToken: string;
+  dstChainId: BigNumberish;
+  srcPoolId: BigNumberish;
+  dstPoolId: BigNumberish;
+  to: string;
+  slippage: BigNumberish;
   destStargateComposed: string;
 };
 
 export type StargateDataStructOutput = [
   BigNumber,
   string,
-  string,
+  BigNumber,
+  number,
   number,
   string,
+  number,
   string
 ] & {
-  qty: BigNumber;
-  fromToken: string;
-  toToken: string;
-  dstChainId: number;
+  amount: BigNumber;
+  bridgeToken: string;
+  dstChainId: BigNumber;
+  srcPoolId: number;
+  dstPoolId: number;
   to: string;
+  slippage: number;
   destStargateComposed: string;
 };
 
 export interface StargateFacetInterface extends utils.Interface {
   functions: {
-    "sgAddPool(uint16,address,uint16)": FunctionFragment;
-    "sgBridgeTokens((uint256,address,address,uint16,address,address))": FunctionFragment;
-    "sgCalculateFees(uint16,address,address)": FunctionFragment;
-    "sgCheckPoolId(uint16,address,uint16)": FunctionFragment;
-    "sgInitialize(address,uint16)": FunctionFragment;
-    "sgMinAmountOut(uint256)": FunctionFragment;
+    "c_8de507f8(bytes8)": FunctionFragment;
+    "c_9296fc39(bytes8)": FunctionFragment;
+    "c_false8de507f8(bytes8)": FunctionFragment;
+    "c_false9296fc39(bytes8)": FunctionFragment;
+    "c_true8de507f8(bytes8)": FunctionFragment;
+    "c_true9296fc39(bytes8)": FunctionFragment;
+    "getLzChainId(uint256)": FunctionFragment;
+    "initStargate(address,address,uint256,(uint256,uint16)[])": FunctionFragment;
+    "setLzChainId(uint256,uint16)": FunctionFragment;
     "sgReceive(uint16,bytes,uint256,address,uint256,bytes)": FunctionFragment;
-    "sgRetrievePoolId(uint16,address)": FunctionFragment;
-    "sgUpdateRouter(address)": FunctionFragment;
-    "sgUpdateSlippageTolerance(uint256)": FunctionFragment;
+    "stargateETHTransfer((uint256,uint256,address,uint16))": FunctionFragment;
+    "stargateFees((uint256,address,uint256,uint16,uint16,address,uint16,address),address)": FunctionFragment;
+    "stargateTokenTransfer((uint256,address,uint256,uint16,uint16,address,uint16,address))": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "sgAddPool",
-    values: [BigNumberish, string, BigNumberish]
+    functionFragment: "c_8de507f8",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgBridgeTokens",
-    values: [StargateDataStruct]
+    functionFragment: "c_9296fc39",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgCalculateFees",
-    values: [BigNumberish, string, string]
+    functionFragment: "c_false8de507f8",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgCheckPoolId",
-    values: [BigNumberish, string, BigNumberish]
+    functionFragment: "c_false9296fc39",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgInitialize",
-    values: [string, BigNumberish]
+    functionFragment: "c_true8de507f8",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgMinAmountOut",
+    functionFragment: "c_true9296fc39",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLzChainId",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initStargate",
+    values: [string, string, BigNumberish, ChainIdConfigStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setLzChainId",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "sgReceive",
@@ -93,119 +138,122 @@ export interface StargateFacetInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgRetrievePoolId",
-    values: [BigNumberish, string]
+    functionFragment: "stargateETHTransfer",
+    values: [StargateETHDataStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgUpdateRouter",
-    values: [string]
+    functionFragment: "stargateFees",
+    values: [StargateDataStruct, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "sgUpdateSlippageTolerance",
-    values: [BigNumberish]
+    functionFragment: "stargateTokenTransfer",
+    values: [StargateDataStruct]
   ): string;
 
-  decodeFunctionResult(functionFragment: "sgAddPool", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_8de507f8", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "c_9296fc39", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "sgBridgeTokens",
+    functionFragment: "c_false8de507f8",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgCalculateFees",
+    functionFragment: "c_false9296fc39",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgCheckPoolId",
+    functionFragment: "c_true8de507f8",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgInitialize",
+    functionFragment: "c_true9296fc39",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgMinAmountOut",
+    functionFragment: "getLzChainId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "initStargate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setLzChainId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "sgReceive", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "sgRetrievePoolId",
+    functionFragment: "stargateETHTransfer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgUpdateRouter",
+    functionFragment: "stargateFees",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sgUpdateSlippageTolerance",
+    functionFragment: "stargateTokenTransfer",
     data: BytesLike
   ): Result;
 
   events: {
-    "SGAddedPool(uint16,address,uint16)": EventFragment;
-    "SGInitialized(address,uint16)": EventFragment;
-    "SGReceivedOnDestination(address,uint256)": EventFragment;
-    "SGTransferStarted(string,address,address,address,address,uint256,uint16)": EventFragment;
-    "SGUpdatedRouter(address)": EventFragment;
-    "SGUpdatedSlippageTolerance(uint256)": EventFragment;
+    "LzChainIdSet(uint256,uint16)": EventFragment;
+    "StargateETHSwap(address,address,uint256,uint256)": EventFragment;
+    "StargateInitialized(address,address,uint256)": EventFragment;
+    "StargateReceivedOnDestination(address,uint256)": EventFragment;
+    "StargateTokenSwap(address,address,address,uint256,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "SGAddedPool"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SGInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SGReceivedOnDestination"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SGTransferStarted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SGUpdatedRouter"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SGUpdatedSlippageTolerance"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LzChainIdSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StargateETHSwap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StargateInitialized"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "StargateReceivedOnDestination"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StargateTokenSwap"): EventFragment;
 }
 
-export type SGAddedPoolEvent = TypedEvent<
-  [number, string, number],
-  { chainId: number; token: string; poolId: number }
+export type LzChainIdSetEvent = TypedEvent<
+  [BigNumber, number],
+  { chainId: BigNumber; lzChainId: number }
 >;
 
-export type SGAddedPoolEventFilter = TypedEventFilter<SGAddedPoolEvent>;
+export type LzChainIdSetEventFilter = TypedEventFilter<LzChainIdSetEvent>;
 
-export type SGInitializedEvent = TypedEvent<
-  [string, number],
-  { stargate: string; chainId: number }
+export type StargateETHSwapEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber],
+  { from: string; to: string; amount: BigNumber; chainIdTo: BigNumber }
 >;
 
-export type SGInitializedEventFilter = TypedEventFilter<SGInitializedEvent>;
+export type StargateETHSwapEventFilter = TypedEventFilter<StargateETHSwapEvent>;
 
-export type SGReceivedOnDestinationEvent = TypedEvent<
+export type StargateInitializedEvent = TypedEvent<
+  [string, string, BigNumber],
+  { stargateRouter: string; stargateETHRouter: string; chainId: BigNumber }
+>;
+
+export type StargateInitializedEventFilter =
+  TypedEventFilter<StargateInitializedEvent>;
+
+export type StargateReceivedOnDestinationEvent = TypedEvent<
   [string, BigNumber],
   { token: string; amount: BigNumber }
 >;
 
-export type SGReceivedOnDestinationEventFilter =
-  TypedEventFilter<SGReceivedOnDestinationEvent>;
+export type StargateReceivedOnDestinationEventFilter =
+  TypedEventFilter<StargateReceivedOnDestinationEvent>;
 
-export type SGTransferStartedEvent = TypedEvent<
-  [string, string, string, string, string, BigNumber, number],
+export type StargateTokenSwapEvent = TypedEvent<
+  [string, string, string, BigNumber, BigNumber],
   {
-    bridgeUsed: string;
     fromToken: string;
-    toToken: string;
     from: string;
     to: string;
     amount: BigNumber;
-    chainIdTo: number;
+    chainIdTo: BigNumber;
   }
 >;
 
-export type SGTransferStartedEventFilter =
-  TypedEventFilter<SGTransferStartedEvent>;
-
-export type SGUpdatedRouterEvent = TypedEvent<[string], { newAddress: string }>;
-
-export type SGUpdatedRouterEventFilter = TypedEventFilter<SGUpdatedRouterEvent>;
-
-export type SGUpdatedSlippageToleranceEvent = TypedEvent<
-  [BigNumber],
-  { newSlippage: BigNumber }
->;
-
-export type SGUpdatedSlippageToleranceEventFilter =
-  TypedEventFilter<SGUpdatedSlippageToleranceEvent>;
+export type StargateTokenSwapEventFilter =
+  TypedEventFilter<StargateTokenSwapEvent>;
 
 export interface StargateFacet extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -234,382 +282,435 @@ export interface StargateFacet extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    sgAddPool(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    sgBridgeTokens(
-      _sgData: StargateDataStruct,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    sgCalculateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
-      _router: string,
+    c_8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[void]>;
 
-    sgCheckPoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
+    c_9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    sgInitialize(
-      _stargateRouter: string,
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    getLzChainId(
       _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    initStargate(
+      _stargateRouter: string,
+      _stargateEthRouter: string,
+      _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    sgMinAmountOut(
-      _amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     sgReceive(
-      _chainId: BigNumberish,
-      _srcAddress: BytesLike,
-      _nonce: BigNumberish,
+      arg0: BigNumberish,
+      arg1: BytesLike,
+      arg2: BigNumberish,
       _token: string,
-      amountLD: BigNumberish,
+      _amountLD: BigNumberish,
       _payload: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    sgRetrievePoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
-
-    sgUpdateRouter(
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    stargateETHTransfer(
+      _data: StargateETHDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    sgUpdateSlippageTolerance(
-      _newSlippage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    stargateFees(
+      _data: StargateDataStruct,
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    stargateTokenTransfer(
+      _data: StargateDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  sgAddPool(
-    _chainId: BigNumberish,
-    _token: string,
-    _poolId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  c_8de507f8(c__8de507f8: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  sgBridgeTokens(
-    _sgData: StargateDataStruct,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  c_9296fc39(c__9296fc39: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-  sgCalculateFees(
-    _destChain: BigNumberish,
-    _receiver: string,
-    _router: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  sgCheckPoolId(
-    _chainId: BigNumberish,
-    _token: string,
-    _poolId: BigNumberish,
+  c_false8de507f8(
+    c__8de507f8: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  sgInitialize(
-    _stargateRouter: string,
+  c_false9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true8de507f8(
+    c__8de507f8: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_true9296fc39(
+    c__9296fc39: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  getLzChainId(
     _chainId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
+  initStargate(
+    _stargateRouter: string,
+    _stargateEthRouter: string,
+    _chainId: BigNumberish,
+    _chainIdConfigs: ChainIdConfigStruct[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  sgMinAmountOut(
-    _amount: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  setLzChainId(
+    _chainId: BigNumberish,
+    _lzChainId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   sgReceive(
-    _chainId: BigNumberish,
-    _srcAddress: BytesLike,
-    _nonce: BigNumberish,
+    arg0: BigNumberish,
+    arg1: BytesLike,
+    arg2: BigNumberish,
     _token: string,
-    amountLD: BigNumberish,
+    _amountLD: BigNumberish,
     _payload: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  sgRetrievePoolId(
-    _chainId: BigNumberish,
-    _token: string,
-    overrides?: CallOverrides
-  ): Promise<number>;
-
-  sgUpdateRouter(
-    _newAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  stargateETHTransfer(
+    _data: StargateETHDataStruct,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  sgUpdateSlippageTolerance(
-    _newSlippage: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  stargateFees(
+    _data: StargateDataStruct,
+    _router: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  stargateTokenTransfer(
+    _data: StargateDataStruct,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    sgAddPool(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
+    c_8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sgBridgeTokens(
-      _sgData: StargateDataStruct,
+    c_9296fc39(
+      c__9296fc39: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sgCalculateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
-      _router: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    sgCheckPoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    sgInitialize(
-      _stargateRouter: string,
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    getLzChainId(
       _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
+    initStargate(
+      _stargateRouter: string,
+      _stargateEthRouter: string,
+      _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sgMinAmountOut(
-      _amount: BigNumberish,
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
     sgReceive(
-      _chainId: BigNumberish,
-      _srcAddress: BytesLike,
-      _nonce: BigNumberish,
+      arg0: BigNumberish,
+      arg1: BytesLike,
+      arg2: BigNumberish,
       _token: string,
-      amountLD: BigNumberish,
+      _amountLD: BigNumberish,
       _payload: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sgRetrievePoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
-    sgUpdateRouter(
-      _newAddress: string,
+    stargateETHTransfer(
+      _data: StargateETHDataStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    sgUpdateSlippageTolerance(
-      _newSlippage: BigNumberish,
+    stargateFees(
+      _data: StargateDataStruct,
+      _router: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    stargateTokenTransfer(
+      _data: StargateDataStruct,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    "SGAddedPool(uint16,address,uint16)"(
+    "LzChainIdSet(uint256,uint16)"(
       chainId?: null,
-      token?: null,
-      poolId?: null
-    ): SGAddedPoolEventFilter;
-    SGAddedPool(
-      chainId?: null,
-      token?: null,
-      poolId?: null
-    ): SGAddedPoolEventFilter;
+      lzChainId?: null
+    ): LzChainIdSetEventFilter;
+    LzChainIdSet(chainId?: null, lzChainId?: null): LzChainIdSetEventFilter;
 
-    "SGInitialized(address,uint16)"(
-      stargate?: null,
+    "StargateETHSwap(address,address,uint256,uint256)"(
+      from?: null,
+      to?: null,
+      amount?: null,
+      chainIdTo?: null
+    ): StargateETHSwapEventFilter;
+    StargateETHSwap(
+      from?: null,
+      to?: null,
+      amount?: null,
+      chainIdTo?: null
+    ): StargateETHSwapEventFilter;
+
+    "StargateInitialized(address,address,uint256)"(
+      stargateRouter?: null,
+      stargateETHRouter?: null,
       chainId?: null
-    ): SGInitializedEventFilter;
-    SGInitialized(stargate?: null, chainId?: null): SGInitializedEventFilter;
+    ): StargateInitializedEventFilter;
+    StargateInitialized(
+      stargateRouter?: null,
+      stargateETHRouter?: null,
+      chainId?: null
+    ): StargateInitializedEventFilter;
 
-    "SGReceivedOnDestination(address,uint256)"(
+    "StargateReceivedOnDestination(address,uint256)"(
       token?: null,
       amount?: null
-    ): SGReceivedOnDestinationEventFilter;
-    SGReceivedOnDestination(
+    ): StargateReceivedOnDestinationEventFilter;
+    StargateReceivedOnDestination(
       token?: null,
       amount?: null
-    ): SGReceivedOnDestinationEventFilter;
+    ): StargateReceivedOnDestinationEventFilter;
 
-    "SGTransferStarted(string,address,address,address,address,uint256,uint16)"(
-      bridgeUsed?: null,
+    "StargateTokenSwap(address,address,address,uint256,uint256)"(
       fromToken?: null,
-      toToken?: null,
       from?: null,
       to?: null,
       amount?: null,
       chainIdTo?: null
-    ): SGTransferStartedEventFilter;
-    SGTransferStarted(
-      bridgeUsed?: null,
+    ): StargateTokenSwapEventFilter;
+    StargateTokenSwap(
       fromToken?: null,
-      toToken?: null,
       from?: null,
       to?: null,
       amount?: null,
       chainIdTo?: null
-    ): SGTransferStartedEventFilter;
-
-    "SGUpdatedRouter(address)"(newAddress?: null): SGUpdatedRouterEventFilter;
-    SGUpdatedRouter(newAddress?: null): SGUpdatedRouterEventFilter;
-
-    "SGUpdatedSlippageTolerance(uint256)"(
-      newSlippage?: null
-    ): SGUpdatedSlippageToleranceEventFilter;
-    SGUpdatedSlippageTolerance(
-      newSlippage?: null
-    ): SGUpdatedSlippageToleranceEventFilter;
+    ): StargateTokenSwapEventFilter;
   };
 
   estimateGas: {
-    sgAddPool(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    sgBridgeTokens(
-      _sgData: StargateDataStruct,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    sgCalculateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
-      _router: string,
+    c_8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    sgCheckPoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
+    c_9296fc39(
+      c__9296fc39: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    sgInitialize(
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    initStargate(
       _stargateRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    sgMinAmountOut(
-      _amount: BigNumberish,
-      overrides?: CallOverrides
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     sgReceive(
-      _chainId: BigNumberish,
-      _srcAddress: BytesLike,
-      _nonce: BigNumberish,
+      arg0: BigNumberish,
+      arg1: BytesLike,
+      arg2: BigNumberish,
       _token: string,
-      amountLD: BigNumberish,
+      _amountLD: BigNumberish,
       _payload: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    sgRetrievePoolId(
-      _chainId: BigNumberish,
-      _token: string,
+    stargateETHTransfer(
+      _data: StargateETHDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    stargateFees(
+      _data: StargateDataStruct,
+      _router: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    sgUpdateRouter(
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    sgUpdateSlippageTolerance(
-      _newSlippage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    stargateTokenTransfer(
+      _data: StargateDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    sgAddPool(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sgBridgeTokens(
-      _sgData: StargateDataStruct,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sgCalculateFees(
-      _destChain: BigNumberish,
-      _receiver: string,
-      _router: string,
+    c_8de507f8(
+      c__8de507f8: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    sgCheckPoolId(
-      _chainId: BigNumberish,
-      _token: string,
-      _poolId: BigNumberish,
+    c_9296fc39(
+      c__9296fc39: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    sgInitialize(
+    c_false8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_false9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true8de507f8(
+      c__8de507f8: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_true9296fc39(
+      c__9296fc39: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getLzChainId(
+      _chainId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    initStargate(
       _stargateRouter: string,
+      _stargateEthRouter: string,
       _chainId: BigNumberish,
+      _chainIdConfigs: ChainIdConfigStruct[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    sgMinAmountOut(
-      _amount: BigNumberish,
-      overrides?: CallOverrides
+    setLzChainId(
+      _chainId: BigNumberish,
+      _lzChainId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     sgReceive(
-      _chainId: BigNumberish,
-      _srcAddress: BytesLike,
-      _nonce: BigNumberish,
+      arg0: BigNumberish,
+      arg1: BytesLike,
+      arg2: BigNumberish,
       _token: string,
-      amountLD: BigNumberish,
+      _amountLD: BigNumberish,
       _payload: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    sgRetrievePoolId(
-      _chainId: BigNumberish,
-      _token: string,
+    stargateETHTransfer(
+      _data: StargateETHDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    stargateFees(
+      _data: StargateDataStruct,
+      _router: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    sgUpdateRouter(
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sgUpdateSlippageTolerance(
-      _newSlippage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    stargateTokenTransfer(
+      _data: StargateDataStruct,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

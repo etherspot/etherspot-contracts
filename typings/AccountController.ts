@@ -18,6 +18,9 @@ export interface AccountControllerInterface extends utils.Interface {
   functions: {
     "accountImplementation()": FunctionFragment;
     "accountRegistry()": FunctionFragment;
+    "c_bf6efb80(bytes8)": FunctionFragment;
+    "c_falsebf6efb80(bytes8)": FunctionFragment;
+    "c_truebf6efb80(bytes8)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -28,6 +31,18 @@ export interface AccountControllerInterface extends utils.Interface {
     functionFragment: "accountRegistry",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "c_bf6efb80",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_falsebf6efb80",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_truebf6efb80",
+    values: [BytesLike]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "accountImplementation",
@@ -35,6 +50,15 @@ export interface AccountControllerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "accountRegistry",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "c_bf6efb80", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_falsebf6efb80",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_truebf6efb80",
     data: BytesLike
   ): Result;
 
@@ -129,16 +153,58 @@ export interface AccountController extends BaseContract {
     accountImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     accountRegistry(overrides?: CallOverrides): Promise<[string]>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
   };
 
   accountImplementation(overrides?: CallOverrides): Promise<string>;
 
   accountRegistry(overrides?: CallOverrides): Promise<string>;
 
+  c_bf6efb80(c__bf6efb80: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+  c_falsebf6efb80(
+    c__bf6efb80: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  c_truebf6efb80(
+    c__bf6efb80: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   callStatic: {
     accountImplementation(overrides?: CallOverrides): Promise<string>;
 
     accountRegistry(overrides?: CallOverrides): Promise<string>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
   };
 
   filters: {
@@ -194,6 +260,21 @@ export interface AccountController extends BaseContract {
     accountImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     accountRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -202,5 +283,20 @@ export interface AccountController extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     accountRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    c_bf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_falsebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_truebf6efb80(
+      c__bf6efb80: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
   };
 }
