@@ -45,6 +45,7 @@ export enum NetworkNames {
   LocalB = "localB",
   LocalH = "localH",
   Flare = "flare",
+  Scroll = "scroll",
 }
 
 export const NETWORK_CONFIGS: {
@@ -313,6 +314,12 @@ export const NETWORK_CONFIGS: {
     defaultGasPrice: 25,
     explorer: 'https://flare-explorer.flare.network/',
   },
+  [NetworkNames.Scroll]: {
+    chainId: 534352,
+    defaultProviderUrl: 'https://rpc.scroll.io',
+    explorer: 'https://scrollscan.com/',
+    defaultGasPrice: 1,
+  }
 };
 
 export enum ContractNames {
