@@ -1,4 +1,4 @@
-import { Contract } from 'ethers';
+import { Contract } from "ethers";
 export declare function getSelectors(contract: Contract): string[];
 export declare const FacetCutAction: {
     Add: number;
