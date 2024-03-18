@@ -46,6 +46,7 @@ export enum NetworkNames {
   LocalH = "localH",
   Flare = "flare",
   Scroll = "scroll",
+  BaseSepolia = 'baseSepolia',
 }
 
 export const NETWORK_CONFIGS: {
@@ -318,6 +319,12 @@ export const NETWORK_CONFIGS: {
     chainId: 534352,
     defaultProviderUrl: 'https://rpc.scroll.io',
     explorer: 'https://scrollscan.com/',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.BaseSepolia]: {
+    chainId: 84532,
+    defaultProviderUrl: 'https://base-sepolia-rpc.publicnode.com',
+    explorer: 'https://sepolia.basescan.org/',
     defaultGasPrice: 1,
   }
 };

@@ -8,10 +8,9 @@ require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
-require("hardhat-tracer");
 const ethers_1 = require("ethers");
 const extensions_1 = require("./extensions");
-const { HARDHAT_MNEMONIC, ETHERSCAN_API_KEY } = process.env;
+const { HARDHAT_MNEMONIC, MAINNET_ALCHEMY_API_KEY, ETHERSCAN_API_KEY, } = process.env;
 const config = {
     namedAccounts: {
         from: 0,
@@ -19,7 +18,7 @@ const config = {
     networks: Object.assign({ hardhat: {
             forking: {
                 enabled: false,
-                url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+                url: `https://eth-mainnet.alchemyapi.io/v2/${MAINNET_ALCHEMY_API_KEY}`,
                 blockNumber: 13798171,
             },
             accounts: {
@@ -68,6 +67,9 @@ const config = {
                     },
                 },
             },
+            {
+                version: "0.8.17",
+            },
         ],
     },
     paths: {
@@ -98,9 +100,6 @@ const config = {
             funding: "10000000000000000",
             signedTx: "0xf8a88085174876e800830186a08080b853604580600e600039806000f350fe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3830150f8a0d69f418f6da8f01fb95d6d87e1f2eabd85884784cd2ba2d306ba066d41b7c5e6a05a2b76982a148ca8ca2803ceac3d39a3f26208b654c473b17b01e7536eeba55e",
         },
-    },
-    gasReporter: {
-        enabled: false,
     },
     ens: {
         internalTopLevelDomains: ["pillar", "etherspot", "dank"],

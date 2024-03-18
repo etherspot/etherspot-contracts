@@ -5,7 +5,7 @@ const ethers_1 = require("ethers");
 const hardhat_1 = require("hardhat");
 function getSelectors(contract) {
     const selectors = contract.interface.fragments.reduce((acc, val) => {
-        if (val.type === 'function') {
+        if (val.type === "function") {
             const sig = contract.interface.getSighash(val);
             acc.push(sig);
             return acc;
@@ -22,8 +22,8 @@ exports.FacetCutAction = {
     Replace: 1,
     Remove: 2,
 };
-async function addOrReplaceFacets(facets, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = '0x') {
-    const loupe = (await hardhat_1.ethers.getContractAt('IDiamondLoupe', diamondAddress));
+async function addOrReplaceFacets(facets, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = "0x") {
+    const loupe = (await hardhat_1.ethers.getContractAt("IDiamondLoupe", diamondAddress));
     const cut = [];
     for (const f of facets) {
         const replaceSelectors = [];
@@ -55,21 +55,21 @@ async function addOrReplaceFacets(facets, diamondAddress, initContract = ethers_
         }
     }
     if (!cut.length) {
-        console.log('No facets to add or replace.');
+        console.log("No facets to add or replace.");
         return;
     }
-    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
-    console.log('Adding/Replacing facets...');
+    const cutter = (await hardhat_1.ethers.getContractAt("DiamondCutFacet", diamondAddress));
+    console.log("Adding/Replacing facets...");
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
-    console.log('Diamond cut tx: ', tx.hash);
+    console.log("Diamond cut tx: ", tx.hash);
     const receipt = await tx.wait();
     if (!receipt.status) {
         throw Error(`Diamond upgrade failed: ${tx.hash}`);
     }
-    console.log('Done.');
+    console.log("Done.");
 }
 exports.addOrReplaceFacets = addOrReplaceFacets;
-async function addFacets(facets, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = '0x') {
+async function addFacets(facets, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = "0x") {
     const cut = [];
     for (const f of facets) {
         const selectors = getSelectors(f);
@@ -80,18 +80,18 @@ async function addFacets(facets, diamondAddress, initContract = ethers_1.constan
         });
     }
     if (!cut.length) {
-        console.log('No facets to add or replace.');
+        console.log("No facets to add or replace.");
         return;
     }
-    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
-    console.log('Adding facets...');
+    const cutter = (await hardhat_1.ethers.getContractAt("DiamondCutFacet", diamondAddress));
+    console.log("Adding facets...");
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
-    console.log('Diamond cut tx: ', tx.hash);
+    console.log("Diamond cut tx: ", tx.hash);
     const receipt = await tx.wait();
     if (!receipt.status) {
         throw Error(`Diamond upgrade failed: ${tx.hash}`);
     }
-    console.log('Done.');
+    console.log("Done.");
 }
 exports.addFacets = addFacets;
 async function removeFacet(selectors, diamondAddress) {
@@ -102,18 +102,18 @@ async function removeFacet(selectors, diamondAddress) {
             functionSelectors: selectors,
         },
     ];
-    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
-    console.log('Removing facet...');
-    const tx = await cutter.diamondCut(cut, ethers_1.constants.AddressZero, '0x', {});
-    console.log('Diamond cut tx: ', tx.hash);
+    const cutter = (await hardhat_1.ethers.getContractAt("DiamondCutFacet", diamondAddress));
+    console.log("Removing facet...");
+    const tx = await cutter.diamondCut(cut, ethers_1.constants.AddressZero, "0x", {});
+    console.log("Diamond cut tx: ", tx.hash);
     const receipt = await tx.wait();
     if (!receipt.status) {
         throw Error(`Diamond upgrade failed: ${tx.hash}`);
     }
-    console.log('Done.');
+    console.log("Done.");
 }
 exports.removeFacet = removeFacet;
-async function replaceFacet(facet, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = '0x') {
+async function replaceFacet(facet, diamondAddress, initContract = ethers_1.constants.AddressZero, initData = "0x") {
     const selectors = getSelectors(facet);
     const cut = [
         {
@@ -122,14 +122,14 @@ async function replaceFacet(facet, diamondAddress, initContract = ethers_1.const
             functionSelectors: selectors,
         },
     ];
-    const cutter = (await hardhat_1.ethers.getContractAt('DiamondCutFacet', diamondAddress));
-    console.log('Replacing facet...');
+    const cutter = (await hardhat_1.ethers.getContractAt("DiamondCutFacet", diamondAddress));
+    console.log("Replacing facet...");
     const tx = await cutter.diamondCut(cut, initContract, initData, {});
-    console.log('Diamond cut tx: ', tx.hash);
+    console.log("Diamond cut tx: ", tx.hash);
     const receipt = await tx.wait();
     if (!receipt.status) {
         throw Error(`Diamond upgrade failed: ${tx.hash}`);
     }
-    console.log('Done.');
+    console.log("Done.");
 }
 exports.replaceFacet = replaceFacet;

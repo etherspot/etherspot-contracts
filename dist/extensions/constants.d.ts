@@ -32,12 +32,21 @@ export declare enum NetworkNames {
     ArbitrumNitro = "arbitrumNitro",
     BaseGoerli = "baseGoerli",
     OktcTest = "oktcTest",
+    OKTC = "oktc",
     KlaytnBaobab = "klaytnBaobab",
     Klaytn = "klaytn",
+    Base = "base",
+    Mantle = "mantle",
+    Linea = "linea",
+    Sepolia = "sepolia",
+    Coston2 = "coston2",
     Etherspot = "etherspot",
     LocalA = "localA",
     LocalB = "localB",
-    LocalH = "localH"
+    LocalH = "localH",
+    Flare = "flare",
+    Scroll = "scroll",
+    BaseSepolia = "baseSepolia"
 }
 export declare const NETWORK_CONFIGS: {
     [key: string]: {
