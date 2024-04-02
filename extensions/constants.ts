@@ -47,6 +47,7 @@ export enum NetworkNames {
   Flare = "flare",
   Scroll = "scroll",
   BaseSepolia = 'baseSepolia',
+  RootstockTestnet = 'rootstockTestnet',
 }
 
 export const NETWORK_CONFIGS: {
@@ -325,6 +326,12 @@ export const NETWORK_CONFIGS: {
     chainId: 84532,
     defaultProviderUrl: 'https://base-sepolia-rpc.publicnode.com',
     explorer: 'https://sepolia.basescan.org/',
+    defaultGasPrice: 1,
+  },
+  [NetworkNames.RootstockTestnet]: {
+    chainId: 31,
+    defaultProviderUrl: 'https://public-node.testnet.rsk.co',
+    explorer: 'https://explorer.testnet.rootstock.io/',
     defaultGasPrice: 1,
   }
 };

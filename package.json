@@ -67,6 +67,7 @@
     "deploy:linea": "hardhat deploy --network linea --tags create,setup",
     "deploy:sepolia": "hardhat deploy --network sepolia --tags create,setup",
     "deploy:baseSepolia": "hardhat deploy --network baseSepolia --tags create,setup",
+    "deploy:rootstockTestnet": "hardhat deploy --network rootstockTestnet --tags create,setup",
     "deploy:etherspot": "hardhat deploy --network etherspot --tags create,setup",
     "deploy:localA": "hardhat deploy --network localA --tags create,setup",
     "deploy:localB": "hardhat deploy --network localB --tags create,setup",
