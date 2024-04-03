@@ -20,6 +20,7 @@ const {
   HARDHAT_MNEMONIC,
   MAINNET_ALCHEMY_API_KEY,
   ETHERSCAN_API_KEY,
+  BLOCKSCOUT_API_KEY,
 } = process.env;
 
 const config: HardhatUserConfig = {
@@ -133,7 +134,20 @@ const config: HardhatUserConfig = {
     [ContractNames.ENSReverseRegistrar]: utils.id("ETHERspot@1.2.0"),
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: ETHERSCAN_API_KEY,
+      rootstockTestnet: BLOCKSCOUT_API_KEY,
+    },
+    customChains: [
+      {
+        network: "rootstockTestnet",
+        chainId: 31,
+        urls: {
+          apiURL: "https://rootstock-testnet.blockscout.com/api",
+          browserURL: "https://rootstock-testnet.blockscout.com/",
+        },
+      },
+    ],
   },
 };
 

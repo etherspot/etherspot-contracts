@@ -1,10 +1,8 @@
 import { DeployFunction } from "hardhat-deploy/types";
 
 const func: DeployFunction = async hre => {
-  const {
-    deployments: { deploy },
-    getNamedAccounts,
-  } = hre;
+  const { deployments, getNamedAccounts } = hre;
+  const { deploy } = deployments;
   const { from } = await getNamedAccounts();
 
   await deploy("BalancesHelper", {
@@ -18,6 +16,6 @@ const func: DeployFunction = async hre => {
   });
 };
 
-func.tags = ["create", "common"];
+func.tags = ["create", "common", "balanceHelpers"];
 
 module.exports = func;

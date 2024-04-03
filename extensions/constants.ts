@@ -46,8 +46,9 @@ export enum NetworkNames {
   LocalH = "localH",
   Flare = "flare",
   Scroll = "scroll",
-  BaseSepolia = 'baseSepolia',
-  RootstockTestnet = 'rootstockTestnet',
+  BaseSepolia = "baseSepolia",
+  RootstockTestnet = "rootstockTestnet",
+  Rootstock = "rootstock",
 }
 
 export const NETWORK_CONFIGS: {
@@ -314,26 +315,31 @@ export const NETWORK_CONFIGS: {
     chainId: 14,
     defaultProviderUrl: "https://rpc.ftso.au/flare",
     defaultGasPrice: 25,
-    explorer: 'https://flare-explorer.flare.network/',
+    explorer: "https://flare-explorer.flare.network/",
   },
   [NetworkNames.Scroll]: {
     chainId: 534352,
-    defaultProviderUrl: 'https://rpc.scroll.io',
-    explorer: 'https://scrollscan.com/',
+    defaultProviderUrl: "https://rpc.scroll.io",
+    explorer: "https://scrollscan.com/",
     defaultGasPrice: 1,
   },
   [NetworkNames.BaseSepolia]: {
     chainId: 84532,
-    defaultProviderUrl: 'https://base-sepolia-rpc.publicnode.com',
-    explorer: 'https://sepolia.basescan.org/',
+    defaultProviderUrl: "https://base-sepolia-rpc.publicnode.com",
+    explorer: "https://sepolia.basescan.org/",
     defaultGasPrice: 1,
   },
   [NetworkNames.RootstockTestnet]: {
     chainId: 31,
-    defaultProviderUrl: 'https://public-node.testnet.rsk.co',
-    explorer: 'https://explorer.testnet.rootstock.io/',
+    defaultProviderUrl: "https://public-node.testnet.rsk.co",
+    explorer: "https://explorer.testnet.rootstock.io/",
     defaultGasPrice: 1,
-  }
+  },
+  [NetworkNames.Rootstock]: {
+    chainId: 30,
+    defaultProviderUrl: "https://public-node.rsk.co",
+    explorer: "https://rootstock.blockscout.com/",
+  },
 };
 
 export enum ContractNames {
