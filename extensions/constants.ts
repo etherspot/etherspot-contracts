@@ -332,7 +332,7 @@ export const NETWORK_CONFIGS: {
   [NetworkNames.RootstockTestnet]: {
     chainId: 31,
     defaultProviderUrl: "https://public-node.testnet.rsk.co",
-    explorer: "https://explorer.testnet.rootstock.io/",
+    explorer: "https://rootstock-testnet.blockscout.com/",
     defaultGasPrice: 1,
   },
   [NetworkNames.Rootstock]: {

@@ -1,6 +1,6 @@
 {
   "name": "@etherspot/contracts",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Etherspot Solidity contracts",
   "keywords": [
     "ether",
@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "@ethereumjs/tx": "3.5.2",
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
+    "@nomiclabs/hardhat-etherscan": "2.1.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.6.0",
     "@openzeppelin/contracts-upgradeable": "4.6.0",

@@ -51,6 +51,8 @@ var NetworkNames;
     NetworkNames["Flare"] = "flare";
     NetworkNames["Scroll"] = "scroll";
     NetworkNames["BaseSepolia"] = "baseSepolia";
+    NetworkNames["RootstockTestnet"] = "rootstockTestnet";
+    NetworkNames["Rootstock"] = "rootstock";
 })(NetworkNames = exports.NetworkNames || (exports.NetworkNames = {}));
 exports.NETWORK_CONFIGS = {
     [NetworkNames.Mainnet]: {
@@ -303,20 +305,31 @@ exports.NETWORK_CONFIGS = {
         chainId: 14,
         defaultProviderUrl: "https://rpc.ftso.au/flare",
         defaultGasPrice: 25,
-        explorer: 'https://flare-explorer.flare.network/',
+        explorer: "https://flare-explorer.flare.network/",
     },
     [NetworkNames.Scroll]: {
         chainId: 534352,
-        defaultProviderUrl: 'https://rpc.scroll.io',
-        explorer: 'https://scrollscan.com/',
+        defaultProviderUrl: "https://rpc.scroll.io",
+        explorer: "https://scrollscan.com/",
         defaultGasPrice: 1,
     },
     [NetworkNames.BaseSepolia]: {
         chainId: 84532,
-        defaultProviderUrl: 'https://base-sepolia-rpc.publicnode.com',
-        explorer: 'https://sepolia.basescan.org/',
+        defaultProviderUrl: "https://base-sepolia-rpc.publicnode.com",
+        explorer: "https://sepolia.basescan.org/",
         defaultGasPrice: 1,
-    }
+    },
+    [NetworkNames.RootstockTestnet]: {
+        chainId: 31,
+        defaultProviderUrl: "https://public-node.testnet.rsk.co",
+        explorer: "https://rootstock-testnet.blockscout.com/",
+        defaultGasPrice: 1,
+    },
+    [NetworkNames.Rootstock]: {
+        chainId: 30,
+        defaultProviderUrl: "https://public-node.rsk.co",
+        explorer: "https://rootstock.blockscout.com/",
+    },
 };
 var ContractNames;
 (function (ContractNames) {

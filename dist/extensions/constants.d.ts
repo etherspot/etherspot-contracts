@@ -46,7 +46,9 @@ export declare enum NetworkNames {
     LocalH = "localH",
     Flare = "flare",
     Scroll = "scroll",
-    BaseSepolia = "baseSepolia"
+    BaseSepolia = "baseSepolia",
+    RootstockTestnet = "rootstockTestnet",
+    Rootstock = "rootstock"
 }
 export declare const NETWORK_CONFIGS: {
     [key: string]: {

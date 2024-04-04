@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const func = async (hre) => {
-    const { deployments: { deploy }, getNamedAccounts, } = hre;
+    const { deployments, getNamedAccounts } = hre;
+    const { deploy } = deployments;
     const { from } = await getNamedAccounts();
     await deploy("BalancesHelper", {
         from,
@@ -12,5 +13,5 @@ const func = async (hre) => {
         log: true,
     });
 };
-func.tags = ["create", "common"];
+func.tags = ["create", "common", "balanceHelpers"];
 module.exports = func;
